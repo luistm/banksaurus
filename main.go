@@ -78,7 +78,7 @@ func main() {
 	}
 
 	for transactionDescription, transactionValue := range report {
-		fmt.Println(transactionDescription, transactionValue)
+		fmt.Printf("%24s %8.2f \n", transactionDescription, transactionValue)
 	}
 
 	// TODO: Fetch data
