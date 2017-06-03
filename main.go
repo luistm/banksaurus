@@ -9,18 +9,6 @@ import (
 	"strings"
 )
 
-// TODO: Persist the expense types
-// TODO: Parse transaction description in order to categorize expenses
-// TODO: Want to know the expenses per category in this month
-// TODO: produce a report in an excel file
-// TODO: Send the excel file by mail
-// TODO: Use decimals to represent money
-// TODO: The final report should have the initial balance and the end balance
-
-// struct Category{}
-// struct Expense{}
-// struct Credit{}
-
 var credit float64
 var expense float64
 
@@ -82,4 +70,13 @@ func main() {
 
 		lineCount++
 	}
+
+	// TODO: Fetch data
+	// Here, i want this data
+	// Initial balance
+	// Final Balance
+	// Expense per 'description field'
+	// Total expense
+	// Total credit
+
 }
