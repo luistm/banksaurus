@@ -19,27 +19,30 @@ func parseValue(value string) float64 {
 	return retValue
 }
 
-func parseRecord(record []string) {
-	// for i := 0; i < len(record); i++ {
-	// 	fmt.Println(" ", record[i])
-	// }
+func parseRecord(record []string) (float64, string) {
+
+	// Columns in the file are:
+	// Date of the movement, --, description, expense, credit, --, balance
 
 	for i := 0; i < len(record); i++ {
 		// Expense
-		if i == 3 {
+		if i == 3 && record[i] != "" {
 			value := parseValue(record[i])
 			expense += value
 			fmt.Println("Expense is ", expense)
+			return value, record[2]
 		}
 
 		// Credit
-		if i == 4 {
+		if i == 4 && record[i] != "" {
 			value := parseValue(record[i])
 			credit += value
 			fmt.Println("Credit is ", credit)
+			return value, record[2]
 		}
 	}
 
+	return 0, ""
 }
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
@@ -56,6 +59,9 @@ func main() {
 	reader.Comma = ';'
 	lineCount := 0
 
+	var report map[string]float64
+	report = make(map[string]float64)
+
 	for {
 		record, error := reader.Read()
 		if error == io.EOF {
@@ -66,9 +72,13 @@ func main() {
 		}
 
 		fmt.Println("Record", lineCount, "is", record, "and has", len(record), "fields")
-		parseRecord(record)
-
+		transactionValue, transactionDescription := parseRecord(record)
+		report[transactionDescription] += transactionValue
 		lineCount++
+	}
+
+	for transactionDescription, transactionValue := range report {
+		fmt.Println(transactionDescription, transactionValue)
 	}
 
 	// TODO: Fetch data
