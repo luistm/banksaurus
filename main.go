@@ -57,18 +57,29 @@ func main() {
 
 	reader := csv.NewReader(file)
 	reader.Comma = ';'
+	reader.FieldsPerRecord = -1 // If FieldsPerRecord is negative, no check is made and records may have a variable number of fields.
 	lineCount := 0
 
 	var report map[string]float64
 	report = make(map[string]float64)
 
 	for {
+		fmt.Println("Reading line ", lineCount)
 		record, error := reader.Read()
 		if error == io.EOF {
+			fmt.Println("EOF:", error)
 			break
-		} else if error != nil {
+		}
+		if error != nil {
 			fmt.Println("Error:", error)
-			return
+			lineCount++
+			continue
+		}
+
+		if lineCount < 7 {
+			fmt.Println("Ignoring line")
+			lineCount++
+			continue
 		}
 
 		fmt.Println("Record", lineCount, "is", record, "and has", len(record), "fields")
