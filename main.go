@@ -75,8 +75,14 @@ func main() {
 			continue
 		}
 
-		if lineCount < 7 {
-			fmt.Println("Ignoring line")
+		if lineCount < 4 {
+			fmt.Println("Ignoring line", record)
+			lineCount++
+			continue
+		}
+
+		if len(record) != 8 {
+			fmt.Println("Skipping line because not enough fields")
 			lineCount++
 			continue
 		}
