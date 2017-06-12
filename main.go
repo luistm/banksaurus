@@ -67,7 +67,6 @@ func main() {
 		fmt.Println("Reading line ", lineCount)
 		record, error := reader.Read()
 		if error == io.EOF {
-			fmt.Println("EOF:", error)
 			break
 		}
 		if error != nil {
