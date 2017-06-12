@@ -30,7 +30,6 @@ func parseRecord(record []string) (float64, string) {
 		if i == 3 && record[i] != "" {
 			value := parseValue(record[i])
 			expense += value
-			fmt.Println("Expense is ", expense)
 			return value, record[2]
 		}
 
@@ -38,7 +37,6 @@ func parseRecord(record []string) (float64, string) {
 		if i == 4 && record[i] != "" {
 			value := parseValue(record[i])
 			credit += value
-			fmt.Println("Credit is ", credit)
 			return value, record[2]
 		}
 	}
@@ -65,7 +63,6 @@ func main() {
 	report = make(map[string]float64)
 
 	for {
-		fmt.Println("Reading line ", lineCount)
 		record, error := reader.Read()
 		if error == io.EOF {
 			break
@@ -77,18 +74,15 @@ func main() {
 		}
 
 		if lineCount < 4 {
-			fmt.Println("Ignoring line", record)
 			lineCount++
 			continue
 		}
 
 		if len(record) != 8 {
-			fmt.Println("Skipping line because not enough fields")
 			lineCount++
 			continue
 		}
 
-		fmt.Println("Record", lineCount, "is", record, "and has", len(record), "fields")
 		transactionValue, transactionDescription := parseRecord(record)
 		report[transactionDescription] += transactionValue
 		lineCount++
@@ -97,6 +91,9 @@ func main() {
 	for transactionDescription, transactionValue := range report {
 		fmt.Printf("%24s %8.2f \n", transactionDescription, transactionValue)
 	}
+
+	fmt.Println("Expense is ", expense)
+	fmt.Println("Credit is ", credit)
 
 	// TODO: Fetch data
 	// Here, i want this data
