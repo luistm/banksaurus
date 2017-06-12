@@ -12,6 +12,11 @@ import (
 var credit float64
 var expense float64
 
+// Record represents a single line the the file
+type Record struct {
+	record []string
+}
+
 func parseValue(value string) float64 {
 	parsedValue := strings.Replace(value, ".", "", -1)
 	parsedValue = strings.Replace(parsedValue, ",", ".", -1)
@@ -20,24 +25,24 @@ func parseValue(value string) float64 {
 	return retValue
 }
 
-func parseRecord(record []string) (float64, string) {
+func parseRecord(record Record) (float64, string) {
 
 	// Columns in the file are:
 	// Date of the movement, --, description, expense, credit, --, balance
 
-	for i := 0; i < len(record); i++ {
+	for i := 0; i < len(record.record); i++ {
 		// Expense
-		if i == 3 && record[i] != "" {
-			value := parseValue(record[i])
+		if i == 3 && record.record[i] != "" {
+			value := parseValue(record.record[i])
 			expense += value
-			return value, record[2]
+			return value, record.record[2]
 		}
 
 		// Credit
-		if i == 4 && record[i] != "" {
-			value := parseValue(record[i])
+		if i == 4 && record.record[i] != "" {
+			value := parseValue(record.record[i])
 			credit += value
-			return value, record[2]
+			return value, record.record[2]
 		}
 	}
 
@@ -63,7 +68,8 @@ func main() {
 	report = make(map[string]float64)
 
 	for {
-		record, error := reader.Read()
+		r, error := reader.Read()
+		record := Record{r}
 		if error == io.EOF {
 			break
 		}
@@ -78,7 +84,7 @@ func main() {
 			continue
 		}
 
-		if len(record) != 8 {
+		if len(record.record) != 8 {
 			lineCount++
 			continue
 		}
