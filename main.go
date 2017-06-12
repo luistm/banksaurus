@@ -13,7 +13,8 @@ var credit float64
 var expense float64
 
 func parseValue(value string) float64 {
-	parsedValue := strings.Replace(value, ",", ".", -1)
+	parsedValue := strings.Replace(value, ".", "", -1)
+	parsedValue = strings.Replace(parsedValue, ",", ".", -1)
 	retValue, _ := strconv.ParseFloat(parsedValue, 64)
 
 	return retValue
