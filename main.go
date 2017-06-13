@@ -17,36 +17,42 @@ type Record struct {
 	record []string
 }
 
-func parseValue(value string) float64 {
-	parsedValue := strings.Replace(value, ".", "", -1)
-	parsedValue = strings.Replace(parsedValue, ",", ".", -1)
-	retValue, _ := strconv.ParseFloat(parsedValue, 64)
-
-	return retValue
+// Transaction is a money movement
+type Transaction struct {
+	field       string
+	description string
 }
 
-func parseRecord(record Record) (float64, string) {
-
-	// Columns in the file are:
-	// Date of the movement, --, description, expense, credit, --, balance
+func (t *Transaction) new(record Record) *Transaction {
 
 	for i := 0; i < len(record.record); i++ {
+		t.field = record.record[i]
+		t.description = record.record[2]
+
 		// Expense
 		if i == 3 && record.record[i] != "" {
-			value := parseValue(record.record[i])
+			value := t.value()
 			expense += value
-			return value, record.record[2]
+			return t
 		}
 
 		// Credit
 		if i == 4 && record.record[i] != "" {
-			value := parseValue(record.record[i])
+			value := t.value()
 			credit += value
-			return value, record.record[2]
+			return t
 		}
 	}
 
-	return 0, ""
+	return t
+}
+
+func (t *Transaction) value() float64 {
+	parsedField := strings.Replace(t.field, ".", "", -1)
+	parsedField = strings.Replace(parsedField, ",", ".", -1)
+	retValue, _ := strconv.ParseFloat(parsedField, 64)
+
+	return retValue
 }
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
@@ -89,8 +95,9 @@ func main() {
 			continue
 		}
 
-		transactionValue, transactionDescription := parseRecord(record)
-		report[transactionDescription] += transactionValue
+		t := Transaction{}
+		transaction := t.new(record)
+		report[transaction.description] += transaction.value()
 		lineCount++
 	}
 
