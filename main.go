@@ -2,67 +2,14 @@ package main
 
 import (
 	"encoding/csv"
+	"expensetracker/entities"
 	"fmt"
 	"io"
 	"os"
-	"strconv"
-	"strings"
 )
 
 var credit float64
 var expense float64
-
-// Record represents a single line the the file
-type Record struct {
-	record []string
-}
-
-// CREDIT ...
-var CREDIT = "Credit"
-
-// DEBT ..
-var DEBT = "Debt"
-
-// Transaction is a money movement
-type Transaction struct {
-	field           string
-	description     string
-	transactionType string
-}
-
-func (t *Transaction) new(record Record) *Transaction {
-
-	for i := 0; i < len(record.record); i++ {
-		t.field = record.record[i]
-		t.description = record.record[2]
-
-		// Expense
-		if i == 3 && record.record[i] != "" {
-			value := t.value()
-			t.transactionType = DEBT
-			expense += value
-			return t
-		}
-
-		// Credit
-		if i == 4 && record.record[i] != "" {
-			t.transactionType = CREDIT
-			value := t.value()
-			credit += value
-			return t
-		}
-	}
-
-	return t
-}
-
-func (t *Transaction) value() float64 {
-	parsedField := strings.Replace(t.field, ".", "", -1)
-	parsedField = strings.Replace(parsedField, ",", ".", -1)
-	retValue, _ := strconv.ParseFloat(parsedField, 64)
-
-	return retValue
-}
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
 func main() {
@@ -88,7 +35,7 @@ func main() {
 
 	for {
 		r, error := reader.Read()
-		record := Record{r}
+		record := entities.Record{Record: r}
 		if error == io.EOF {
 			break
 		}
@@ -103,14 +50,19 @@ func main() {
 			continue
 		}
 
-		if len(record.record) != 8 {
+		if len(record.Record) != 8 {
 			lineCount++
 			continue
 		}
 
-		t := Transaction{}
-		transaction := t.new(record)
-		report[transaction.description] += transaction.value()
+		t := entities.Transaction{}
+		transaction := t.New(record)
+		report[transaction.Description] += transaction.Value()
+		if transaction.TransactionType == entities.DEBT {
+			expense += transaction.Value()
+		} else {
+			credit += transaction.Value()
+		}
 		lineCount++
 	}
 
