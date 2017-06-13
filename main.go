@@ -17,10 +17,17 @@ type Record struct {
 	record []string
 }
 
+// CREDIT ...
+var CREDIT = "Credit"
+
+// DEBT ..
+var DEBT = "Debt"
+
 // Transaction is a money movement
 type Transaction struct {
-	field       string
-	description string
+	field           string
+	description     string
+	transactionType string
 }
 
 func (t *Transaction) new(record Record) *Transaction {
@@ -32,12 +39,14 @@ func (t *Transaction) new(record Record) *Transaction {
 		// Expense
 		if i == 3 && record.record[i] != "" {
 			value := t.value()
+			t.transactionType = DEBT
 			expense += value
 			return t
 		}
 
 		// Credit
 		if i == 4 && record.record[i] != "" {
+			t.transactionType = CREDIT
 			value := t.value()
 			credit += value
 			return t
