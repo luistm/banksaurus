@@ -82,6 +82,10 @@ func main() {
 	var report map[string]float64
 	report = make(map[string]float64)
 
+	// TODO: Open SQlite, read the initial balance.
+	// TODO: Check if the initial balance matches the one comming in the file
+	// TODO: Read the records and save each one to the SQlite
+
 	for {
 		r, error := reader.Read()
 		record := Record{r}
