@@ -1,15 +1,69 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/csv"
+	"errors"
 	"expensetracker/entities"
 	"fmt"
 	"io"
+	"log"
 	"os"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var credit float64
 var expense float64
+
+var DATABASE_NAME string = "./expensetracker.db"
+var DATABASE_ENGINE = "sqlite3"
+
+// Database is the holder for database operations
+type Database struct {
+	db *sql.DB
+}
+
+// NewDBConnection provides a new connection to the database
+func (d *Database) NewDBConnection() error {
+	log.Println("Creating new database connection")
+
+	if d.db == nil {
+		os.Remove(DATABASE_NAME)
+		db, err := sql.Open(DATABASE_ENGINE, DATABASE_NAME)
+		if err != nil {
+			return err
+		}
+
+		d.db = db
+
+		return nil
+	}
+
+	return errors.New("Database connection already exists")
+}
+
+// CreateExpenseDatabase creates the expense database
+func (d *Database) CreateExpenseDatabase() error {
+	log.Println("Creating new database")
+
+	sqlStmt := `
+	create table foo (id integer not null primary key, name text);
+	delete from foo;
+	`
+	d.db.Ping()
+	_, err := d.db.Exec(sqlStmt)
+	if err != nil {
+		// log.Printf("%q: %s\n", err, sqlStmt)
+		return err
+	}
+
+	return nil
+}
+
+func (d *Database) Close() {
+	d.db.Close()
+}
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
 func main() {
@@ -30,8 +84,14 @@ func main() {
 	report = make(map[string]float64)
 
 	// TODO: Open SQlite, read the initial balance.
-	// TODO: Check if the initial balance matches the one comming in the file
-	// TODO: Read the records and save each one to the SQlite
+	database := Database{}
+	if err := database.NewDBConnection(); err != nil {
+		log.Fatal(err)
+	}
+	defer database.Close()
+	if err := database.CreateExpenseDatabase(); err != nil {
+		log.Fatal(err)
+	}
 
 	for {
 		r, error := reader.Read()
