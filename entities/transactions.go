@@ -1,8 +1,9 @@
 package entities
 
 import (
-	"strconv"
 	"strings"
+
+	"github.com/shopspring/decimal"
 )
 
 // CREDIT ...
@@ -42,10 +43,12 @@ func (t *Transaction) New(record Record) *Transaction {
 }
 
 // Value returns the field value parsed for money
-func (t *Transaction) Value() float64 {
+func (t *Transaction) Value() decimal.Decimal {
 	parsedField := strings.Replace(t.field, ".", "", -1)
 	parsedField = strings.Replace(parsedField, ",", ".", -1)
-	retValue, _ := strconv.ParseFloat(parsedField, 64)
+	// retValue, _ := strconv.ParseFloat(parsedField, 64)
+
+	retValue, _ := decimal.NewFromString(parsedField)
 
 	return retValue
 }

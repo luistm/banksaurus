@@ -19,19 +19,16 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/shopspring/decimal"
 	"github.com/tealeg/xlsx"
 )
-
-// var credit float64
-// var expense float64
 
 var DATABASE_NAME string = "./expensetracker.db"
 var DATABASE_ENGINE = "sqlite3"
 
-func toExcel(value float64, description string) {
+func toExcel(value decimal.Decimal, description string) {
 	var file *xlsx.File
 	var sheet *xlsx.Sheet
 	var row *xlsx.Row
@@ -47,7 +44,8 @@ func toExcel(value float64, description string) {
 	cell = row.AddCell()
 	cell.Value = description
 	cell = row.AddCell()
-	cell.Value = strconv.FormatFloat(value, 'f', 2, 64)
+	// cell.Value = strconv.FormatFloat(value, 'f', 2, 64)
+	cell.Value = value.String()
 
 	err = file.Save("MyXLSXFile.xlsx")
 	if err != nil {
@@ -119,7 +117,7 @@ func (d *Database) Close() {
 	d.db.Close()
 }
 
-func (d *Database) SaveExpense(value float64, description string) {
+func (d *Database) SaveExpense(value decimal.Decimal, description string) {
 	_, err := d.db.Exec("insert into expenses(value, description) values(?, ?)", value, description)
 	if err != nil {
 		log.Fatal("Error while saving expense: ", err)
@@ -166,7 +164,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	database.SaveExpense(1, "descricao")
+	database.SaveExpense(decimal.NewFromFloat(1), "descricao")
 
 	records, err := reader.ReadAll()
 	if err != nil {
