@@ -11,11 +11,8 @@ var CREDIT = "Credit"
 // DEBT ..
 var DEBT = "Debt"
 
-// TODO: Use shopspring/decimal package for money
-
 // Transaction is a money movement
 type Transaction struct {
-	// TODO: Make all these propreties private
 	field           string
 	Description     string
 	TransactionType string
