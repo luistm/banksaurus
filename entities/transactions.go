@@ -1,7 +1,10 @@
 package entities
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/shopspring/decimal"
 )
@@ -17,6 +20,7 @@ type Transaction struct {
 	value           string
 	Description     string
 	TransactionType string
+	date            string
 }
 
 // New creates a record with some parsed data
@@ -37,6 +41,11 @@ func (t *Transaction) New(record Record) *Transaction {
 			t.TransactionType = CREDIT
 			return t
 		}
+
+		// Transaction Date
+		if i == 0 {
+			t.date = record.Record[i]
+		}
 	}
 
 	return t
@@ -51,4 +60,20 @@ func (t *Transaction) Value() decimal.Decimal {
 	retValue, _ := decimal.NewFromString(parsedField)
 
 	return retValue
+}
+
+// IsFromThisMonth checks if a transaction is from the current month
+func (t *Transaction) IsFromThisMonth() bool {
+
+	// This code sucks so much.... i'm sure there is a better way, i'm just to lazy now...
+	splittedDate := strings.Split(t.date, "-")
+	fmt.Println("Date is:", t.date)
+	year, _ := strconv.Atoi(splittedDate[2])
+	month, _ := strconv.Atoi(splittedDate[1])
+
+	if time.Month(month) == time.Now().Month() &&
+		year == time.Now().Year() {
+		return true
+	}
+	return false
 }

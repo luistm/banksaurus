@@ -27,12 +27,15 @@ func MonthlyReport(records [][]string) error {
 		t := entities.Transaction{}
 		transaction := t.New(r)
 
-		report[transaction.Description] = report[transaction.Description].Add(transaction.Value())
-		if transaction.TransactionType == entities.DEBT {
-			expense = expense.Add(transaction.Value())
-		} else {
-			credit = credit.Add(transaction.Value())
+		if transaction.IsFromThisMonth() {
+			report[transaction.Description] = report[transaction.Description].Add(transaction.Value())
+			if transaction.TransactionType == entities.DEBT {
+				expense = expense.Add(transaction.Value())
+			} else {
+				credit = credit.Add(transaction.Value())
+			}
 		}
+
 	}
 
 	for transactionDescription, transactionValue := range report {
