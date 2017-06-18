@@ -10,6 +10,7 @@ import (
 // MonthlyReport builds a sum of expenses and credits
 func MonthlyReport(records [][]string) error {
 
+	// TODO: Create an entity report
 	var report map[string]decimal.Decimal
 	report = make(map[string]decimal.Decimal)
 	var credit decimal.Decimal

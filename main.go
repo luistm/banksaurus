@@ -2,14 +2,7 @@ package main
 
 // This software is an expense tracker i made to read the transactions exported from
 // my bank account.
-// TODO: Save a report for the current data in an excel format
-// TODO: Save credit/debt to an excel file if --excel option provided
-// TODO: Save each transaction to an sql database
-// TODO: Use shopspring decimals to represent money
-// TODO: Refactor, because this code is crap
-// TODO: Add some kind of GUI to see transactions. Maybe i will use eletron.. i dunno
-// TODO: Add a good readme: How to Build? How to run? How to contribute?
-// TODO: Have fun!!
+// Currently is just crap code... :D
 
 import (
 	"database/sql"
@@ -61,7 +54,7 @@ type Database struct {
 
 // NewDBConnection provides a new connection to the database
 func (d *Database) NewDBConnection() error {
-	log.Println("Creating new database connection")
+	// log.Println("Creating new database connection")
 
 	if _, err := os.Stat(DATABASE_NAME); os.IsNotExist(err) && d.db == nil {
 		// os.Remove(DATABASE_NAME)
@@ -96,7 +89,7 @@ func (d *Database) NewDBConnection() error {
 
 // CreateExpenseDatabase creates the expense database
 func (d *Database) CreateExpenseDatabase() error {
-	log.Println("Creating new database")
+	// log.Println("Creating new database")
 
 	sqlStmt := `
 	create table expenses (id integer not null primary key, description text, value float);

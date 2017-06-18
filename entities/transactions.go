@@ -1,7 +1,6 @@
 package entities
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -10,12 +9,13 @@ import (
 )
 
 // CREDIT ...
-var CREDIT = "Credit"
+var CREDIT = "Credit" // TODO: Replace with function in the Transaction structure
 
 // DEBT ..
-var DEBT = "Debt"
+var DEBT = "Debt" // TODO: Replace with function in the Transaction structure
 
 // Transaction is a money movement
+// TODO: Make all attributes private
 type Transaction struct {
 	value           string
 	Description     string
@@ -55,7 +55,6 @@ func (t *Transaction) New(record Record) *Transaction {
 func (t *Transaction) Value() decimal.Decimal {
 	parsedField := strings.Replace(t.value, ".", "", -1)
 	parsedField = strings.Replace(parsedField, ",", ".", -1)
-	// retValue, _ := strconv.ParseFloat(parsedField, 64)
 
 	retValue, _ := decimal.NewFromString(parsedField)
 
@@ -67,7 +66,6 @@ func (t *Transaction) IsFromThisMonth() bool {
 
 	// This code sucks so much.... i'm sure there is a better way, i'm just to lazy now...
 	splittedDate := strings.Split(t.date, "-")
-	fmt.Println("Date is:", t.date)
 	year, _ := strconv.Atoi(splittedDate[2])
 	month, _ := strconv.Atoi(splittedDate[1])
 

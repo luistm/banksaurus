@@ -12,6 +12,7 @@ type Record struct {
 
 // Valid returns a boolean regarding if the record is valid or not
 func (r *Record) Valid() bool {
+	// TODO: Allow the extention with  multiple types of validators
 	// TODO: Use regular expressions where appropriated
 	if r.Record[0] == " " {
 		return false
