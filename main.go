@@ -21,6 +21,7 @@ import (
 	"os"
 
 	_ "github.com/mattn/go-sqlite3"
+	flag "github.com/ogier/pflag"
 	"github.com/shopspring/decimal"
 	"github.com/tealeg/xlsx"
 )
@@ -144,6 +145,12 @@ func (d *Database) SaveExpense(value decimal.Decimal, description string) {
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
 func main() {
 
+	var inputFilePath string
+	var showReport bool
+	flag.StringVarP(&inputFilePath, "file", "f", "", "Specify the path to the input file")
+	flag.BoolVarP(&showReport, "report", "r", false, "Show report")
+	flag.Parse()
+
 	file, error := os.Open("comprovativo.csv")
 	if error != nil {
 		fmt.Println("Error:", error)
@@ -170,6 +177,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to read CSV file ", err)
 	}
-	interactor.MonthlyReport(records)
 
+	if showReport {
+		interactor.MonthlyReport(records)
+	}
 }
