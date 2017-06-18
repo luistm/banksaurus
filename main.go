@@ -149,6 +149,10 @@ func main() {
 	var showReport bool
 	flag.StringVarP(&inputFilePath, "file", "f", "", "Specify the path to the input file")
 	flag.BoolVarP(&showReport, "report", "r", false, "Show report")
+
+	var showBalance bool
+	flag.BoolVarP(&showBalance, "balance", "b", false, "Show current balance")
+
 	flag.Parse()
 
 	file, error := os.Open("comprovativo.csv")
@@ -180,5 +184,9 @@ func main() {
 
 	if showReport {
 		interactor.MonthlyReport(records)
+	}
+
+	if showBalance {
+		fmt.Println(interactor.CurrentBalance().String())
 	}
 }
