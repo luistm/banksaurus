@@ -1,6 +1,9 @@
 package entities
 
-// Record represents a single line the the file
+// Record represents a single line of an importend transaction.
+// Data will be imported most likely from a text base format.
+// Therefore a record will be the representation of each of of those lines.
+// Forthe time being, nothis will be closely coupled to the CSV format.
 type Record struct {
 	Record []string
 }
