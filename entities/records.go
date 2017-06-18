@@ -12,7 +12,11 @@ type Record struct {
 
 // Valid returns a boolean regarding if the record is valid or not
 func (r *Record) Valid() bool {
-	// TODO: Use regular expression
+	// TODO: Use regular expressions where appropriated
+	if r.Record[0] == " " {
+		return false
+	}
+
 	if len(r.Record) == 8 && !strings.HasPrefix(r.Record[0], "Data mov") {
 		return true
 	}
