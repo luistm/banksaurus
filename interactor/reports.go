@@ -20,7 +20,7 @@ func MonthlyReport(records [][]string) error {
 
 		r := entities.Record{Record: record}
 
-		if len(r.Record) != 8 || lineCount < 4 {
+		if !r.Valid() || lineCount < 4 {
 			continue
 		}
 
