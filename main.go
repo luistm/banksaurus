@@ -134,6 +134,16 @@ func (d *Database) SaveExpense(value decimal.Decimal, description string) {
 // 	tx.Commit()
 // }
 
+// database := Database{}
+// if err := database.NewDBConnection(); err != nil {
+// 	log.Fatal(err)
+// }
+// defer database.Close()
+// if err := database.CreateExpenseDatabase(); err != nil {
+// 	log.Fatal(err)
+// }
+// database.SaveExpense(decimal.NewFromFloat(1), "descricao")
+
 func main() {
 
 	var inputFilePath string
@@ -153,16 +163,6 @@ func main() {
 		return
 	}
 	defer file.Close()
-
-	// database := Database{}
-	// if err := database.NewDBConnection(); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer database.Close()
-	// if err := database.CreateExpenseDatabase(); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// database.SaveExpense(decimal.NewFromFloat(1), "descricao")
 
 	records, err := interactor.ImportData(file)
 	if err != nil {
