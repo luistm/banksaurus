@@ -6,7 +6,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/csv"
 	"errors"
 	"expensetracker/interactor"
 	"fmt"
@@ -135,12 +134,12 @@ func (d *Database) SaveExpense(value decimal.Decimal, description string) {
 // 	tx.Commit()
 // }
 
-// documentation for csv is at http://golang.org/pkg/encoding/csv/
 func main() {
 
 	var inputFilePath string
-	var showReport bool
 	flag.StringVarP(&inputFilePath, "file", "f", "", "Specify the path to the input file")
+
+	var showReport bool
 	flag.BoolVarP(&showReport, "report", "r", false, "Show report")
 
 	var showBalance bool
@@ -155,24 +154,19 @@ func main() {
 	}
 	defer file.Close()
 
-	reader := csv.NewReader(file)
-	reader.Comma = ';'
-	reader.FieldsPerRecord = -1 // If FieldsPerRecord is negative, no check is made and records may have a variable number of fields.
+	// database := Database{}
+	// if err := database.NewDBConnection(); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer database.Close()
+	// if err := database.CreateExpenseDatabase(); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// database.SaveExpense(decimal.NewFromFloat(1), "descricao")
 
-	database := Database{}
-	if err := database.NewDBConnection(); err != nil {
-		log.Fatal(err)
-	}
-	defer database.Close()
-	if err := database.CreateExpenseDatabase(); err != nil {
-		log.Fatal(err)
-	}
-
-	database.SaveExpense(decimal.NewFromFloat(1), "descricao")
-
-	records, err := reader.ReadAll()
+	records, err := interactor.ImportData(file)
 	if err != nil {
-		log.Fatal("Failed to read CSV file ", err)
+		log.Fatal("Failed to read input data ", err)
 	}
 
 	if showReport {
