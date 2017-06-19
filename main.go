@@ -147,7 +147,7 @@ func (d *Database) SaveExpense(value decimal.Decimal, description string) {
 func main() {
 
 	var inputFilePath string
-	flag.StringVarP(&inputFilePath, "file", "f", "", "Specify the path to the input file")
+	flag.StringVarP(&inputFilePath, "load", "l", "", "Specify the path to the input file")
 
 	var showReport bool
 	flag.BoolVarP(&showReport, "report", "r", false, "Show report")
@@ -157,7 +157,8 @@ func main() {
 
 	flag.Parse()
 
-	file, error := os.Open("comprovativo.csv")
+	// TODO: validate the inputFilePath
+	file, error := os.Open(inputFilePath)
 	if error != nil {
 		fmt.Println("Error:", error)
 		return
