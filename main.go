@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"expensetracker/datastore"
 	"expensetracker/interactor"
 	"fmt"
 	"log"
@@ -157,18 +158,9 @@ func main() {
 
 	flag.Parse()
 
-	_, err := os.Stat(inputFilePath)
+	file, err := datastore.OpenFile(inputFilePath)
 	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("File " + inputFilePath + " does not exist")
-			return
-		}
-		log.Fatal("Input error: ", err)
-	}
-
-	file, err := os.Open(inputFilePath)
-	if err != nil {
-		log.Fatal("Error while opening input file: ", err)
+		log.Fatal(err)
 	}
 	defer file.Close()
 
