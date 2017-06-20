@@ -30,7 +30,7 @@ func MonthlyReport(records [][]string) error {
 
 		if transaction.IsFromThisMonth() {
 			report[transaction.Description] = report[transaction.Description].Add(transaction.Value())
-			if transaction.TransactionType == entities.DEBT {
+			if transaction.IsDebt() {
 				expense = expense.Add(transaction.Value())
 			} else {
 				credit = credit.Add(transaction.Value())

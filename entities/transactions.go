@@ -8,11 +8,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// CREDIT ...
-var CREDIT = "Credit" // TODO: Replace with function in the Transaction structure
-
-// DEBT ..
-var DEBT = "Debt" // TODO: Replace with function in the Transaction structure
+var isCREDIT = "Credit"
+var isDEBT = "Debt"
 
 // Transaction is a money movement
 // TODO: Make all attributes private
@@ -32,13 +29,13 @@ func (t *Transaction) New(record Record) *Transaction {
 
 		// Expense
 		if i == 3 && record.Record[i] != "" {
-			t.TransactionType = DEBT
+			t.TransactionType = isDEBT
 			return t
 		}
 
 		// Credit
 		if i == 4 && record.Record[i] != "" {
-			t.TransactionType = CREDIT
+			t.TransactionType = isCREDIT
 			return t
 		}
 
@@ -71,6 +68,14 @@ func (t *Transaction) IsFromThisMonth() bool {
 
 	if time.Month(month) == time.Now().Month() &&
 		year == time.Now().Year() {
+		return true
+	}
+	return false
+}
+
+// IsDebt returns true if a transaction is a debt
+func (t *Transaction) IsDebt() bool {
+	if t.TransactionType == isDEBT {
 		return true
 	}
 	return false
