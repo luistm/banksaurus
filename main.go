@@ -157,11 +157,18 @@ func main() {
 
 	flag.Parse()
 
-	// TODO: validate the inputFilePath
-	file, error := os.Open(inputFilePath)
-	if error != nil {
-		fmt.Println("Error:", error)
-		return
+	_, err := os.Stat(inputFilePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("File " + inputFilePath + " does not exist")
+			return
+		}
+		log.Fatal("Input error: ", err)
+	}
+
+	file, err := os.Open(inputFilePath)
+	if err != nil {
+		log.Fatal("Error while opening input file: ", err)
 	}
 	defer file.Close()
 
