@@ -7,6 +7,7 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"expensetracker/categories"
 	"expensetracker/datastore"
 	"expensetracker/interactor"
 	"fmt"
@@ -156,24 +157,33 @@ func main() {
 	var showBalance bool
 	flag.BoolVarP(&showBalance, "balance", "b", false, "Show current balance")
 
+	var createCategory string
+	flag.StringVarP(&createCategory, "category", "c", "", "Create category")
+
 	flag.Parse()
 
-	file, err := datastore.OpenFile(inputFilePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+	if createCategory != "" {
+		categories.NewCategory(createCategory)
 
-	records, err := interactor.ImportData(file)
-	if err != nil {
-		log.Fatal("Failed to read input data ", err)
-	}
+	} else {
+		file, err := datastore.OpenFile(inputFilePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
 
-	if showReport {
-		interactor.MonthlyReport(records)
-	}
+		records, err := interactor.ImportData(file)
+		if err != nil {
+			log.Fatal("Failed to read input data ", err)
+		}
 
-	if showBalance {
-		fmt.Println(interactor.CurrentBalance().String())
+		if showReport {
+			interactor.MonthlyReport(records)
+		}
+
+		if showBalance {
+			fmt.Println(interactor.CurrentBalance().String())
+		}
+
 	}
 }
