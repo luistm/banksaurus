@@ -8,7 +8,7 @@ import (
 
 func TestMain(m *testing.M) {
 	flag.Parse()
-	if testing.Short() {
+	if !testing.Short() {
 		// setupDatabase()
 	}
 	result := m.Run()
