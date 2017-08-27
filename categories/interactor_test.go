@@ -12,6 +12,16 @@ func TestNewCategory(t *testing.T) {
 	}
 
 	name := "testCategory"
-	err := NewCategory(name)
-	assert.NoError(t, err)
+	_, err := NewCategory(name)
+	assert.Error(t, err)
+}
+
+func TestGetCategory(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	name := "testCategory"
+	_, err := GetCategory(name)
+	assert.Error(t, err)
 }

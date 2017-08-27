@@ -1,5 +1,5 @@
 unit-tests:
-	go test ./... -short
+	go test ./... -v -short
 
 integration-test:
-	go test ./...
+	go test ./... -v
