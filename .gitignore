@@ -16,3 +16,4 @@
 comprovativo.csv
 debug
 expensetracker.db
+vendor/*
