@@ -1,3 +1,6 @@
+install: deps unit-tests integration-tests
+	$(shell go install)
+
 unit-tests:
 	go test ./... -v -short
 
@@ -7,5 +10,3 @@ integration-tests:
 deps:
 	$(shell glide install)
 
-install: deps unit-tests integration-tests
-	$(shell go install)
