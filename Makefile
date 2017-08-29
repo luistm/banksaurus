@@ -1,7 +1,7 @@
 unit-tests:
 	go test ./... -v -short
 
-integration-test:
+integration-tests:
 	go test ./... -v
 
 deps:
