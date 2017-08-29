@@ -3,3 +3,6 @@ unit-tests:
 
 integration-test:
 	go test ./... -v
+
+deps:
+	$(shell glide install)
