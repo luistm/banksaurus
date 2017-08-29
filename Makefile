@@ -6,3 +6,6 @@ integration-test:
 
 deps:
 	$(shell glide install)
+
+install: deps unit-tests integration-tests
+	$(shell go install)
