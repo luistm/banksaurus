@@ -55,9 +55,4 @@ func TestNewCategory(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, categoryName, c.name, name)
 
-	// name = "Allows to recreate existing category"
-	// c, err = NewCategory(categoryName)
-	// m.AssertExpectations(t)
-	// assert.NoError(t, err)
-	// assert.Equal(t, c.name, categoryName, name)
 }
