@@ -163,7 +163,13 @@ func main() {
 	flag.Parse()
 
 	if createCategory != "" {
-		categories.NewCategory(createCategory)
+		i := categories.Interactor{
+			Repository: nil,
+		}
+		_, err := i.NewCategory(createCategory)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	} else {
 		file, err := datastore.OpenFile(inputFilePath)
