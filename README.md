@@ -1,3 +1,5 @@
-# Expense Tracker
+# Command line expense tracker
 
-Command line expense tracker. Lots of crap code, viewers discretion is advised :)
+Command line expense tracker. 
+
+Work in progress...
