@@ -22,15 +22,16 @@ func (i *Interactor) NewCategory(name string) (*Category, error) {
 		return &Category{}, errors.New("Cannot create category whitout a category name")
 	}
 
-	c := Category{name: name}
 	if i.Repository == nil {
 		return &Category{}, errors.New("Repository is not defined")
 	}
+
+	c := Category{name: name}
 	if err := i.Repository.Save(&c); err != nil {
 		return &Category{}, fmt.Errorf("Failed to create category: %s", err)
 	}
 
-	return &Category{}, nil
+	return &c, nil
 }
 
 // GetCategory returns a category by name

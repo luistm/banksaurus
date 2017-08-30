@@ -32,7 +32,7 @@ func TestNewCategory(t *testing.T) {
 	c, err := i.NewCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.Error(t, err)
-	assert.Equal(t, &Category{}, c, name)
+	assert.Equal(t, c, &Category{}, name)
 
 	name = "Fails to create category if repository is not defined"
 	i = new(Interactor)
@@ -43,13 +43,17 @@ func TestNewCategory(t *testing.T) {
 	i = new(Interactor)
 	c, err = i.NewCategory("")
 	assert.EqualError(t, err, "Cannot create category whitout a category name")
-	assert.Equal(t, &Category{}, c, name)
+	assert.Equal(t, c, &Category{}, name)
 
-	// name = "Creates category with specified name"
-	// c, err = NewCategory(categoryName)
-	// m.AssertExpectations(t)
-	// assert.NoError(t, err)
-	// assert.Equal(t, c.name, categoryName, name)
+	name = "Creates category with specified name"
+	i = new(Interactor)
+	m = new(repositoryMock)
+	i.Repository = m
+	m.On("Save", &Category{name: categoryName}).Return(nil)
+	c, err = i.NewCategory(categoryName)
+	m.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Equal(t, categoryName, c.name, name)
 
 	// name = "Allows to recreate existing category"
 	// c, err = NewCategory(categoryName)
