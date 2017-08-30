@@ -4,6 +4,9 @@ install: deps unit-tests integration-tests
 unit-tests:
 	go test ./... -v -short
 
+coverage-unit:
+	go test ./... -v -short -cover
+
 integration-tests:
 	go test ./... -v
 
