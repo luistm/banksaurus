@@ -16,9 +16,9 @@ func TestIntegration(t *testing.T) {
 
 	c, err := i.NewCategory(categoryName)
 	assert.NoError(t, err)
-	assert.Equal(t, c.name, categoryName)
+	assert.Equal(t, c.name, categoryName, "Creates a new category")
 
-	// c, err = GetCategory(c.name)
-	// assert.NoError(t, err)
-	// assert.Equal(t, c.name, categoryName)
+	c, err = i.GetCategory(c.name)
+	assert.NoError(t, err)
+	assert.Equal(t, c.name, categoryName, "Fetches category")
 }

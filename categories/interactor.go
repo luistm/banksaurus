@@ -30,6 +30,6 @@ func (i *Interactor) NewCategory(name string) (*Category, error) {
 }
 
 // GetCategory returns a category by name
-func GetCategory(name string) (Category, error) {
-	return Category{}, errors.New("Could not find category")
+func (i *Interactor) GetCategory(name string) (*Category, error) {
+	return &Category{}, errors.New("Could not find category")
 }

@@ -57,15 +57,3 @@ func TestNewCategory(t *testing.T) {
 	// assert.NoError(t, err)
 	// assert.Equal(t, c.name, categoryName, name)
 }
-
-func TestGetCategory(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
-
-	// TODO: Test that this calls a repository to fetch a category
-
-	name := "testCategory"
-	_, err := GetCategory(name)
-	assert.Error(t, err)
-}
