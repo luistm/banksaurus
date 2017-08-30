@@ -39,11 +39,11 @@ func TestNewCategory(t *testing.T) {
 	_, err = i.NewCategory(categoryName)
 	assert.Error(t, err)
 
-	// name = "Fails to create category is name is empty"
-	// c, err = NewCategory("")
-	// m.AssertExpectations(t)
-	// assert.Error(t, err)
-	// assert.Equal(t, &Category{}, c, name)
+	name = "Fails to create category is name is empty"
+	i = new(Interactor)
+	c, err = i.NewCategory("")
+	assert.EqualError(t, err, "Cannot create category whitout a category name")
+	assert.Equal(t, &Category{}, c, name)
 
 	// name = "Creates category with specified name"
 	// c, err = NewCategory(categoryName)

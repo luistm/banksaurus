@@ -18,6 +18,10 @@ type Interactor struct {
 // NewCategory allows the creation of a new category
 func (i *Interactor) NewCategory(name string) (*Category, error) {
 
+	if name == "" {
+		return &Category{}, errors.New("Cannot create category whitout a category name")
+	}
+
 	c := Category{name: name}
 	if i.Repository == nil {
 		return &Category{}, errors.New("Repository is not defined")
