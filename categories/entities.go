@@ -1,6 +1,6 @@
 package categories
 
 // Category ...
-type Category struct{
+type Category struct {
 	name string
 }
