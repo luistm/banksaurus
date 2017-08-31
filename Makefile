@@ -17,3 +17,6 @@ integration-tests:
 deps:
 	$(shell glide install)
 
+style:
+	golint
+	go fmt ./...
