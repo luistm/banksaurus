@@ -38,6 +38,10 @@ func (i *Interactor) NewCategory(name string) (*Category, error) {
 // GetCategory returns a category by name
 func (i *Interactor) GetCategory(name string) (*Category, error) {
 
+	if i.Repository == nil {
+		return &Category{}, errors.New("Repository is not defined")
+	}
+
 	c, err := i.Repository.Get(name)
 	if err != nil {
 		return &Category{}, fmt.Errorf("Failed to get category: %s", err)

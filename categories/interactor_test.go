@@ -34,11 +34,15 @@ func TestGetCategory(t *testing.T) {
 	categoryName := "testCategory"
 
 	name := "Fails to get the category due to repository failure"
-	m.On("Get", categoryName).Return(&Category{}, errors.New("Failed to get category due to repository failure"))
-	c, err := i.GetCategory(categoryName)
+	m.On("Get", categoryName).Return(&Category{}, errors.New("Error"))
+	_, err := i.GetCategory(categoryName)
 	m.AssertExpectations(t)
-	assert.Error(t, err)
-	assert.Equal(t, c, &Category{}, name)
+	assert.EqualError(t, err, "Failed to get category: Error", name)
+
+	name = "Fails to get category when no repository available"
+	i = new(Interactor)
+	_, err = i.GetCategory(categoryName)
+	assert.EqualError(t, err, "Repository is not defined", name)
 
 }
 
@@ -53,22 +57,20 @@ func TestNewCategory(t *testing.T) {
 	categoryName := "testCategory"
 
 	name := "Fails to create a new category due to repository failure"
-	m.On("Save", &Category{name: categoryName}).Return(errors.New("Failed to create category due to repository failure"))
+	m.On("Save", &Category{name: categoryName}).Return(errors.New("Error"))
 	c, err := i.NewCategory(categoryName)
 	m.AssertExpectations(t)
-	assert.Error(t, err)
-	assert.Equal(t, c, &Category{}, name)
+	assert.EqualError(t, err, "Failed to create category: Error", name)
 
 	name = "Fails to create category if repository is not defined"
 	i = new(Interactor)
 	_, err = i.NewCategory(categoryName)
-	assert.Error(t, err)
+	assert.EqualError(t, err, "Repository is not defined", name)
 
 	name = "Fails to create category is name is empty"
 	i = new(Interactor)
-	c, err = i.NewCategory("")
+	_, err = i.NewCategory("")
 	assert.EqualError(t, err, "Cannot create category whitout a category name")
-	assert.Equal(t, c, &Category{}, name)
 
 	name = "Creates category with specified name"
 	i = new(Interactor)
