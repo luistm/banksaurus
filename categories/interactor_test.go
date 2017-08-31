@@ -50,6 +50,15 @@ func TestGetCategory(t *testing.T) {
 	_, err = i.GetCategory("")
 	assert.EqualError(t, err, "Cannot get category whitout a category name", name)
 
+	name = "Gets specified category"
+	i = new(Interactor)
+	m = new(repositoryMock)
+	i.Repository = m
+	m.On("Get", categoryName).Return(&Category{name: categoryName}, nil)
+	c, err := i.GetCategory(categoryName)
+	m.AssertExpectations(t)
+	assert.NoError(t, err)
+	assert.Equal(t, categoryName, c.name, name)
 }
 
 func TestNewCategory(t *testing.T) {
