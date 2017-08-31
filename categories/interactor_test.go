@@ -44,6 +44,12 @@ func TestGetCategory(t *testing.T) {
 	_, err = i.GetCategory(categoryName)
 	assert.EqualError(t, err, "Repository is not defined", name)
 
+	name = "Fails to get category if name is not defined"
+	i = new(Interactor)
+	i.Repository = m
+	_, err = i.GetCategory("")
+	assert.EqualError(t, err, "Cannot get category whitout a category name", name)
+
 }
 
 func TestNewCategory(t *testing.T) {
