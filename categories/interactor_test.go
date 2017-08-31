@@ -17,6 +17,31 @@ func (m *repositoryMock) Save(c *Category) error {
 	return args.Error(0)
 }
 
+func (m *repositoryMock) Get(s string) (*Category, error) {
+	args := m.Called(s)
+	return args.Get(0).(*Category), args.Error(1)
+}
+
+func TestGetCategory(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	m := new(repositoryMock)
+	i := new(Interactor)
+
+	i.Repository = m
+	categoryName := "testCategory"
+
+	name := "Fails to get the category due to repository failure"
+	m.On("Get", categoryName).Return(&Category{}, errors.New("Failed to get category due to repository failure"))
+	c, err := i.GetCategory(categoryName)
+	m.AssertExpectations(t)
+	assert.Error(t, err)
+	assert.Equal(t, c, &Category{}, name)
+
+}
+
 func TestNewCategory(t *testing.T) {
 	if !testing.Short() {
 		t.Skip()

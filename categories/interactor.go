@@ -8,6 +8,7 @@ import (
 //IRepository is the interface for repositories which handle categories
 type IRepository interface {
 	Save(*Category) error
+	Get(string) (*Category, error)
 }
 
 // Interactor for categories
@@ -36,5 +37,11 @@ func (i *Interactor) NewCategory(name string) (*Category, error) {
 
 // GetCategory returns a category by name
 func (i *Interactor) GetCategory(name string) (*Category, error) {
-	return &Category{}, errors.New("Could not find category")
+
+	c, err := i.Repository.Get(name)
+	if err != nil {
+		return &Category{}, fmt.Errorf("Failed to get category: %s", err)
+	}
+
+	return c, nil
 }
