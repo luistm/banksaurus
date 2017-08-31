@@ -18,7 +18,6 @@ func (m *repositoryMock) Save(c *Category) error {
 }
 
 func TestNewCategory(t *testing.T) {
-	// TODO: Refactor to table tests
 	if !testing.Short() {
 		t.Skip()
 	}
