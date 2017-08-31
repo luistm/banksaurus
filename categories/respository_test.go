@@ -14,4 +14,5 @@ func TestCategoryRepositorySave(t *testing.T) {
 	cr := CategoryRepository{}
 	err := cr.Save(&Category{})
 	assert.Error(t, err)
+	t.Error("WORK IN PROGRESS")
 }
