@@ -5,16 +5,13 @@ package main
 // Currently is just crap code... :D
 
 import (
-	"database/sql"
-	"errors"
 	"expensetracker/categories"
 	"expensetracker/datastore"
 	"expensetracker/interactor"
 	"fmt"
 	"log"
-	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	// _ "github.com/mattn/go-sqlite3"
 	flag "github.com/ogier/pflag"
 	"github.com/shopspring/decimal"
 	"github.com/tealeg/xlsx"
@@ -48,76 +45,76 @@ func toExcel(value decimal.Decimal, description string) {
 	}
 }
 
-// Database is the holder for database operations
-type Database struct {
-	db *sql.DB
-}
+// // Database is the holder for database operations
+// type Database struct {
+// 	db *sql.DB
+// }
 
-// NewDBConnection provides a new connection to the database
-func (d *Database) NewDBConnection() error {
-	// log.Println("Creating new database connection")
+// // NewDBConnection provides a new connection to the database
+// func (d *Database) NewDBConnection() error {
+// 	// log.Println("Creating new database connection")
 
-	if _, err := os.Stat(DATABASE_NAME); os.IsNotExist(err) && d.db == nil {
-		// os.Remove(DATABASE_NAME)
-		db, err := sql.Open(DATABASE_ENGINE, DATABASE_NAME)
-		if err != nil {
-			return err
-		}
+// 	if _, err := os.Stat(DATABASE_NAME); os.IsNotExist(err) && d.db == nil {
+// 		// os.Remove(DATABASE_NAME)
+// 		db, err := sql.Open(DATABASE_ENGINE, DATABASE_NAME)
+// 		if err != nil {
+// 			return err
+// 		}
 
-		d.db = db
+// 		d.db = db
 
-		return nil
-	}
+// 		return nil
+// 	}
 
-	if _, err := os.Stat(DATABASE_NAME); os.IsNotExist(err) && d.db != nil {
-		log.Fatal("Connection exists, but database file does not... wtf??")
-	}
+// 	if _, err := os.Stat(DATABASE_NAME); os.IsNotExist(err) && d.db != nil {
+// 		log.Fatal("Connection exists, but database file does not... wtf??")
+// 	}
 
-	if d.db == nil {
-		os.Remove(DATABASE_NAME)
-		db, err := sql.Open(DATABASE_ENGINE, DATABASE_NAME)
-		if err != nil {
-			return err
-		}
+// 	if d.db == nil {
+// 		os.Remove(DATABASE_NAME)
+// 		db, err := sql.Open(DATABASE_ENGINE, DATABASE_NAME)
+// 		if err != nil {
+// 			return err
+// 		}
 
-		d.db = db
+// 		d.db = db
 
-		return nil
-	}
+// 		return nil
+// 	}
 
-	return errors.New("Database connection already exists")
-}
+// 	return errors.New("Database connection already exists")
+// }
 
-// CreateExpenseDatabase creates the expense database
-func (d *Database) CreateExpenseDatabase() error {
-	// log.Println("Creating new database")
+// // CreateExpenseDatabase creates the expense database
+// func (d *Database) CreateExpenseDatabase() error {
+// 	// log.Println("Creating new database")
 
-	sqlStmt := `
-	create table expenses (id integer not null primary key, description text, value float);
-	create table credits (id integer not null primary key, description text, value float);
-	delete from expenses;
-	delete from expenses;
-	`
-	d.db.Ping()
-	_, err := d.db.Exec(sqlStmt)
-	if err != nil {
-		// log.Printf("%q: %s\n", err, sqlStmt)
-		return err
-	}
+// 	sqlStmt := `
+// 	create table expenses (id integer not null primary key, description text, value float);
+// 	create table credits (id integer not null primary key, description text, value float);
+// 	delete from expenses;
+// 	delete from expenses;
+// 	`
+// 	d.db.Ping()
+// 	_, err := d.db.Exec(sqlStmt)
+// 	if err != nil {
+// 		// log.Printf("%q: %s\n", err, sqlStmt)
+// 		return err
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (d *Database) Close() {
-	d.db.Close()
-}
+// func (d *Database) Close() {
+// 	d.db.Close()
+// }
 
-func (d *Database) SaveExpense(value decimal.Decimal, description string) {
-	_, err := d.db.Exec("insert into expenses(value, description) values(?, ?)", value, description)
-	if err != nil {
-		log.Fatal("Error while saving expense: ", err)
-	}
-}
+// func (d *Database) SaveExpense(value decimal.Decimal, description string) {
+// 	_, err := d.db.Exec("insert into expenses(value, description) values(?, ?)", value, description)
+// 	if err != nil {
+// 		log.Fatal("Error while saving expense: ", err)
+// 	}
+// }
 
 // func (d *Database) SaveCredit(value float64, description string) {
 // 	tx, err := d.db.Begin()
