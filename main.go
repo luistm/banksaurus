@@ -6,8 +6,9 @@ package main
 
 import (
 	"expensetracker/categories"
-	"expensetracker/datastore"
+	"expensetracker/infrastructure"
 	"expensetracker/interactor"
+	"expensetracker/reports"
 	"fmt"
 	"log"
 
@@ -169,7 +170,7 @@ func main() {
 		}
 
 	} else {
-		file, err := datastore.OpenFile(inputFilePath)
+		file, err := infrastructure.OpenFile(inputFilePath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -181,7 +182,7 @@ func main() {
 		}
 
 		if showReport {
-			interactor.MonthlyReport(records)
+			reports.MonthlyReport(records)
 		}
 
 		if showBalance {
