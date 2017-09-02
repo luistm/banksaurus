@@ -177,7 +177,10 @@ func main() {
 		defer file.Close()
 
 		if showReport {
-			reports.MonthlyReport(file)
+			err := reports.MonthlyReport(file)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		if showBalance {
