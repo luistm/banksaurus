@@ -1,4 +1,4 @@
-package interactor
+package reports
 
 import (
 	"encoding/csv"

@@ -176,13 +176,8 @@ func main() {
 		}
 		defer file.Close()
 
-		records, err := interactor.ImportData(file)
-		if err != nil {
-			log.Fatal("Failed to read input data ", err)
-		}
-
 		if showReport {
-			reports.MonthlyReport(records)
+			reports.MonthlyReport(file)
 		}
 
 		if showBalance {

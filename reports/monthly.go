@@ -3,12 +3,18 @@ package reports
 import (
 	"expensetracker/transactions"
 	"fmt"
+	"io"
 
 	"github.com/shopspring/decimal"
 )
 
 // MonthlyReport builds a sum of expenses and credits
-func MonthlyReport(records [][]string) error {
+func MonthlyReport(file io.Reader) error {
+
+	records, err := ImportData(file)
+	if err != nil {
+		return fmt.Errorf("Failed to import data: %s", err)
+	}
 
 	// TODO: Create an entity report
 	var report map[string]decimal.Decimal
