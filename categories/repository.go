@@ -1,13 +1,22 @@
 package categories
 
-import (
-	"database/sql"
-	"errors"
-)
+import "errors"
+
+// IRow ...
+type IRow interface {
+	Scan(dest ...interface{})
+	Next() bool
+}
+
+// IDBHandler ...
+type IDBHandler interface {
+	Execute(statement string) error
+	Query(statement string) (IRow, error)
+}
 
 // CategoryRepository allows us the save a read categories from a repository
 type CategoryRepository struct {
-	db *sql.DB
+	dbHandler *IDBHandler
 }
 
 // Save to persist a category

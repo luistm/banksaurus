@@ -12,6 +12,6 @@ func TestSetupStorage(t *testing.T) {
 	}
 
 	name := "Fails to created storage if type is not defined"
-	err := SetupStorage("")
+	_, err := SetupStorage("")
 	assert.Equal(t, err, errSetupFailed, name)
 }

@@ -1,11 +1,21 @@
 package datastore
 
-import "errors"
+import (
+	"database/sql"
+	"errors"
+)
 
 var errSetupFailed = errors.New("Failed to setup storage")
 
-// SetupStorage setups up the specified storage mechanism
-func SetupStorage(storageType string) error {
+const DATABASE_NAME = "~/.expensetracker.db"
+const DATABASE_ENGINE = "sqlite3"
 
-	return errSetupFailed
+// SetupStorage sets up the specified storage mechanism
+func SetupStorage(storageType string) (*sql.DB, error) {
+
+	if storageType == "" {
+		return nil, errSetupFailed
+	}
+
+	return nil, errSetupFailed
 }
