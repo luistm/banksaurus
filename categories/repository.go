@@ -2,6 +2,8 @@ package categories
 
 import "errors"
 
+var errInvalidCategory = errors.New("Invalid category")
+
 // IRow ...
 type IRow interface {
 	Scan(dest ...interface{})
@@ -16,11 +18,15 @@ type IDBHandler interface {
 
 // CategoryRepository allows us the save a read categories from a repository
 type CategoryRepository struct {
-	dbHandler *IDBHandler
+	dbHandler IDBHandler
 }
 
 // Save to persist a category
 func (cr *CategoryRepository) Save(c *Category) error {
+
+	if c == nil || c.name == "" {
+		return errInvalidCategory
+	}
 
 	// Query goes here...
 	// INSERT INTO CATEGORY VALUE (name);
