@@ -1,7 +1,7 @@
 package reports
 
 import (
-	"expensetracker/entities"
+	"expensetracker/transactions"
 	"fmt"
 
 	"github.com/shopspring/decimal"
@@ -19,13 +19,13 @@ func MonthlyReport(records [][]string) error {
 	// Read all transactions
 	for lineCount, record := range records {
 
-		r := entities.Record{Record: record}
+		r := transactions.Record{Record: record}
 
 		if !r.Valid() || lineCount < 4 {
 			continue
 		}
 
-		t := entities.Transaction{}
+		t := transactions.Transaction{}
 		transaction := t.New(r)
 
 		if transaction.IsFromThisMonth() {
