@@ -1,10 +1,9 @@
-package interactor
+package accounts
 
-import "expensetracker/entities"
 import "github.com/shopspring/decimal"
 
 // CurrentBalance returns the current balance for an account
 func CurrentBalance() decimal.Decimal {
-	account := entities.Account{}
+	account := Account{}
 	return account.Balance()
 }

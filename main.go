@@ -5,9 +5,9 @@ package main
 // Currently is just crap code... :D
 
 import (
+	"expensetracker/accounts"
 	"expensetracker/categories"
 	"expensetracker/infrastructure"
-	"expensetracker/interactor"
 	"expensetracker/reports"
 	"fmt"
 	"log"
@@ -184,7 +184,7 @@ func main() {
 		}
 
 		if showBalance {
-			fmt.Println(interactor.CurrentBalance().String())
+			fmt.Println(accounts.CurrentBalance().String())
 		}
 
 	}
