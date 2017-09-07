@@ -10,6 +10,7 @@ import (
 	"expensetracker/infrastructure"
 	"expensetracker/reports"
 	"fmt"
+	"io"
 	"log"
 
 	// _ "github.com/mattn/go-sqlite3"
@@ -157,6 +158,14 @@ func CommandCreateCategory(name string) {
 	}
 }
 
+// CommandShowReport handles report commands
+func CommandShowReport(file io.Reader) {
+	err := reports.MonthlyReport(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 
 	var inputFilePath string
@@ -183,10 +192,7 @@ func main() {
 		defer file.Close()
 
 		if showReport {
-			err := reports.MonthlyReport(file)
-			if err != nil {
-				log.Fatal(err)
-			}
+			CommandShowReport(file)
 		}
 
 		if showBalance {
