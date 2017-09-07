@@ -144,6 +144,19 @@ func toExcel(value decimal.Decimal, description string) {
 // }
 // database.SaveExpense(decimal.NewFromFloat(1), "descricao")
 
+// CommandCreateCategory handles category creation command
+func CommandCreateCategory(name string) {
+	cr := categories.CategoryRepository{}
+
+	i := categories.Interactor{
+		Repository: &cr,
+	}
+	_, err := i.NewCategory(name)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 
 	var inputFilePath string
@@ -161,14 +174,7 @@ func main() {
 	flag.Parse()
 
 	if createCategory != "" {
-		i := categories.Interactor{
-			Repository: nil,
-		}
-		_, err := i.NewCategory(createCategory)
-		if err != nil {
-			log.Fatal(err)
-		}
-
+		CommandCreateCategory(createCategory)
 	} else {
 		file, err := infrastructure.OpenFile(inputFilePath)
 		if err != nil {
