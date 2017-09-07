@@ -1,8 +1,21 @@
 package categories
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 var errInvalidCategory = errors.New("Invalid category")
+
+type errInfrastructure struct {
+	arg string
+}
+
+func (e *errInfrastructure) Error() string {
+	return fmt.Sprintf("Infrastructure error: %s", e.arg)
+}
+
+const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
 // IRow ...
 type IRow interface {
@@ -28,8 +41,22 @@ func (cr *CategoryRepository) Save(c *Category) error {
 		return errInvalidCategory
 	}
 
-	// Query goes here...
-	// INSERT INTO CATEGORY VALUE (name);
+	if err := cr.dbHandler.Execute(insertStatement); err != nil {
+		return &errInfrastructure{arg: err.Error()}
+	}
 
-	return errors.New("Failed to save category")
+	return nil
+}
+
+// Get fetches a category by name
+func (cr *CategoryRepository) Get(name string) (*Category, error) {
+	statement := "SELECT * FROM categories WHERE name=?"
+	_, err := cr.dbHandler.Query(statement)
+	if err != nil {
+		return &Category{}, fmt.Errorf("Failed to get category, database faillure: %s", err)
+	}
+
+	// Build category from rows
+
+	return &Category{}, nil
 }

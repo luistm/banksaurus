@@ -1,6 +1,7 @@
 package categories
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -26,6 +27,7 @@ func TestCategoryRepositorySave(t *testing.T) {
 		t.Skip()
 	}
 
+	// Category has no name
 	name := "Returns error if category has no name"
 	m := new(mockDBHandler)
 	cr := CategoryRepository{dbHandler: m}
@@ -37,5 +39,26 @@ func TestCategoryRepositorySave(t *testing.T) {
 	m = new(mockDBHandler)
 	cr = CategoryRepository{dbHandler: m}
 	err = cr.Save(nil)
+	assert.EqualError(t, err, "Invalid category", name)
+
+	// Infrastructure failure
+	name = "Returns error if it fails to save category into infrastructure"
+	m = new(mockDBHandler)
+	m.On("Execute", insertStatement).Return(errors.New("TestError"))
+	cr = CategoryRepository{dbHandler: m}
+	c := Category{name: "TestCategory"}
+	err = cr.Save(&c)
+	m.AssertExpectations(t)
+	assert.Error(t, err)
+	assert.EqualError(t, err, "Infrastructure error: TestError", name)
+
+	// Success
+	name = "Saves category to infrastructure"
+	m = new(mockDBHandler)
+	m.On("Execute", insertStatement).Return(nil)
+	cr = CategoryRepository{dbHandler: m}
+	c = Category{name: "TestCategory"}
+	err = cr.Save(&c)
+	m.AssertExpectations(t)
 	assert.NoError(t, err)
 }
