@@ -2,6 +2,7 @@ package main
 
 import (
 	"expensetracker/categories"
+	"expensetracker/infrastructure"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,10 +14,14 @@ func TestIntegration(t *testing.T) {
 	}
 
 	categoryName := "TestCategory"
-	CommandCreateCategory(categoryName)
-
-	i := new(categories.Interactor)
-	_, err := i.GetCategory(categoryName)
+	dbHandler := infrastructure.DatabaseHandler{}
+	cr := categories.CategoryRepository{DBHandler: &dbHandler}
+	i := categories.Interactor{Repository: &cr}
+	c, err := i.NewCategory(categoryName)
 	assert.NoError(t, err)
-	// assert.Equal(t, c.name, categoryName, "Fetches category")
+	assert.Equal(t, categoryName, c.Name, "Fetches category")
+
+	c, err = i.GetCategory(categoryName)
+	assert.NoError(t, err)
+	assert.Equal(t, categoryName, c.Name, "Fetches category")
 }

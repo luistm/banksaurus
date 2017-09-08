@@ -1,6 +1,10 @@
 package infrastructure
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+	"expensetracker/categories"
+)
 
 // DatabaseHandler handles database operations
 type DatabaseHandler struct {
@@ -10,10 +14,10 @@ type DatabaseHandler struct {
 
 // Execute an sql statement
 func (dh *DatabaseHandler) Execute(statement string) error {
-	return nil
+	return errors.New("Failed to run database statement")
 }
 
 // Query fetches data from the database
-func (dh *DatabaseHandler) Query(statement string) (*sql.Rows, error) {
-	return nil, nil
+func (dh *DatabaseHandler) Query(statement string) (categories.IRow, error) {
+	return nil, errors.New("Failed to query database")
 }

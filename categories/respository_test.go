@@ -30,14 +30,14 @@ func TestCategoryRepositorySave(t *testing.T) {
 	// Category has no name
 	name := "Returns error if category has no name"
 	m := new(mockDBHandler)
-	cr := CategoryRepository{dbHandler: m}
+	cr := CategoryRepository{DBHandler: m}
 	err := cr.Save(&Category{})
 	assert.EqualError(t, err, "Invalid category", name)
 
 	// Category is nil
 	name = "Returns error if category is nil"
 	m = new(mockDBHandler)
-	cr = CategoryRepository{dbHandler: m}
+	cr = CategoryRepository{DBHandler: m}
 	err = cr.Save(nil)
 	assert.EqualError(t, err, "Invalid category", name)
 
@@ -45,8 +45,8 @@ func TestCategoryRepositorySave(t *testing.T) {
 	name = "Returns error if it fails to save category into infrastructure"
 	m = new(mockDBHandler)
 	m.On("Execute", insertStatement).Return(errors.New("TestError"))
-	cr = CategoryRepository{dbHandler: m}
-	c := Category{name: "TestCategory"}
+	cr = CategoryRepository{DBHandler: m}
+	c := Category{Name: "TestCategory"}
 	err = cr.Save(&c)
 	m.AssertExpectations(t)
 	assert.Error(t, err)
@@ -56,8 +56,8 @@ func TestCategoryRepositorySave(t *testing.T) {
 	name = "Saves category to infrastructure"
 	m = new(mockDBHandler)
 	m.On("Execute", insertStatement).Return(nil)
-	cr = CategoryRepository{dbHandler: m}
-	c = Category{name: "TestCategory"}
+	cr = CategoryRepository{DBHandler: m}
+	c = Category{Name: "TestCategory"}
 	err = cr.Save(&c)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)

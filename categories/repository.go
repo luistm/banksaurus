@@ -31,17 +31,17 @@ type IDBHandler interface {
 
 // CategoryRepository allows us the save a read categories from a repository
 type CategoryRepository struct {
-	dbHandler IDBHandler
+	DBHandler IDBHandler
 }
 
 // Save to persist a category
 func (cr *CategoryRepository) Save(c *Category) error {
 
-	if c == nil || c.name == "" {
+	if c == nil || c.Name == "" {
 		return errInvalidCategory
 	}
 
-	if err := cr.dbHandler.Execute(insertStatement); err != nil {
+	if err := cr.DBHandler.Execute(insertStatement); err != nil {
 		return &errInfrastructure{arg: err.Error()}
 	}
 
@@ -51,7 +51,7 @@ func (cr *CategoryRepository) Save(c *Category) error {
 // Get fetches a category by name
 func (cr *CategoryRepository) Get(name string) (*Category, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
-	_, err := cr.dbHandler.Query(statement)
+	_, err := cr.DBHandler.Query(statement)
 	if err != nil {
 		return &Category{}, fmt.Errorf("Failed to get category, database faillure: %s", err)
 	}

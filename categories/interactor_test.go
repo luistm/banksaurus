@@ -54,11 +54,11 @@ func TestGetCategory(t *testing.T) {
 	i = new(Interactor)
 	m = new(repositoryMock)
 	i.Repository = m
-	m.On("Get", categoryName).Return(&Category{name: categoryName}, nil)
+	m.On("Get", categoryName).Return(&Category{Name: categoryName}, nil)
 	c, err := i.GetCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)
-	assert.Equal(t, categoryName, c.name, name)
+	assert.Equal(t, categoryName, c.Name, name)
 }
 
 func TestNewCategory(t *testing.T) {
@@ -72,7 +72,7 @@ func TestNewCategory(t *testing.T) {
 	categoryName := "testCategory"
 
 	name := "Fails to create a new category due to repository failure"
-	m.On("Save", &Category{name: categoryName}).Return(errors.New("Error"))
+	m.On("Save", &Category{Name: categoryName}).Return(errors.New("Error"))
 	c, err := i.NewCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.EqualError(t, err, "Failed to create category: Error", name)
@@ -91,10 +91,10 @@ func TestNewCategory(t *testing.T) {
 	i = new(Interactor)
 	m = new(repositoryMock)
 	i.Repository = m
-	m.On("Save", &Category{name: categoryName}).Return(nil)
+	m.On("Save", &Category{Name: categoryName}).Return(nil)
 	c, err = i.NewCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)
-	assert.Equal(t, categoryName, c.name, name)
+	assert.Equal(t, categoryName, c.Name, name)
 
 }

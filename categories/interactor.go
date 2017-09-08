@@ -27,7 +27,7 @@ func (i *Interactor) NewCategory(name string) (*Category, error) {
 		return &Category{}, errors.New("Repository is not defined")
 	}
 
-	c := Category{name: name}
+	c := Category{Name: name}
 	if err := i.Repository.Save(&c); err != nil {
 		return &Category{}, fmt.Errorf("Failed to create category: %s", err)
 	}

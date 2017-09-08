@@ -147,13 +147,13 @@ func toExcel(value decimal.Decimal, description string) {
 
 // CommandCreateCategory handles category creation command
 func CommandCreateCategory(name string) {
-	cr := categories.CategoryRepository{}
 
-	i := categories.Interactor{
-		Repository: &cr,
-	}
+	dbHandler := infrastructure.DatabaseHandler{}
+	cr := categories.CategoryRepository{DBHandler: &dbHandler}
+	i := categories.Interactor{Repository: &cr}
 	_, err := i.NewCategory(name)
 	if err != nil {
+		// TODO: Handle error gracefully
 		log.Fatal(err)
 	}
 }
