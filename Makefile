@@ -5,10 +5,10 @@ unit-tests:
 	go test ./... -v -short
 
 coverage-unit:
-	go test ./... -v -short -cover
+	go test ./... -short -cover
 
 coverage-package:
-	go test $(PACKAGE) -v -short -cover -covermode=count -coverprofile=count.out
+	go test $(PACKAGE)  -short -cover -covermode=count -coverprofile=count.out
 	go tool cover -func=count.out
 
 integration-tests:
