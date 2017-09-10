@@ -8,10 +8,10 @@ import (
 	"expensetracker/categories"
 	"expensetracker/infrastructure"
 	"expensetracker/reports"
+	"flag"
 	"fmt"
 	"os"
-
-	flag "github.com/ogier/pflag"
+	// flag "github.com/ogier/pflag"
 )
 
 // CommandCreateCategory handles category creation command
@@ -51,33 +51,25 @@ func errorf(format string, args ...interface{}) {
 
 func main() {
 
-	var inputFilePath string
-	flag.StringVarP(&inputFilePath, "load", "l", "", "Specify the path to the input file")
-
-	var showReport bool
-	flag.BoolVarP(&showReport, "report", "r", false, "Show report")
-
-	var showBalance bool
-	flag.BoolVarP(&showBalance, "balance", "b", false, "Show current balance")
-
-	var createCategory string
-	flag.StringVarP(&createCategory, "category", "c", "", "Create category")
-
+	inputFilePath := flag.String("load", "", "Specify the path to the input file")
+	showReport := flag.Bool("report", false, "Show report")
+	showBalance := flag.Bool("balance", false, "Show current balance")
+	createCategory := flag.String("category", "", "Create category")
 	flag.Parse()
 
-	if createCategory != "" {
-		if err := CommandCreateCategory(createCategory); err != nil {
+	if *createCategory != "" {
+		if err := CommandCreateCategory(*createCategory); err != nil {
 			errorf("Failed to create category: %v\n", err)
 		}
 	}
 
-	if showReport {
-		if err := CommandShowReport(inputFilePath); err != nil {
+	if *showReport {
+		if err := CommandShowReport(*inputFilePath); err != nil {
 			errorf("Failed to show report: %v\n", err)
 		}
 	}
 
-	if showBalance {
+	if *showBalance {
 		fmt.Println(accounts.CurrentBalance().String())
 	}
 }
