@@ -10,7 +10,6 @@ import (
 	"expensetracker/infrastructure"
 	"expensetracker/reports"
 	"fmt"
-	"io"
 	"log"
 
 	// _ "github.com/mattn/go-sqlite3"
@@ -146,7 +145,7 @@ func toExcel(value decimal.Decimal, description string) {
 // database.SaveExpense(decimal.NewFromFloat(1), "descricao")
 
 // CommandCreateCategory handles category creation command
-func CommandCreateCategory(name string) {
+func CommandCreateCategory(name string) error {
 
 	dbHandler := infrastructure.DatabaseHandler{}
 	cr := categories.CategoryRepository{DBHandler: &dbHandler}
@@ -154,16 +153,26 @@ func CommandCreateCategory(name string) {
 	_, err := i.NewCategory(name)
 	if err != nil {
 		// TODO: Handle error gracefully
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }
 
 // CommandShowReport handles report commands
-func CommandShowReport(file io.Reader) {
-	err := reports.MonthlyReport(file)
+func CommandShowReport(inputFilePath string) error {
+	file, err := infrastructure.OpenFile(inputFilePath)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+	defer file.Close()
+
+	err = reports.MonthlyReport(file)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func main() {
@@ -183,21 +192,18 @@ func main() {
 	flag.Parse()
 
 	if createCategory != "" {
-		CommandCreateCategory(createCategory)
-	} else {
-		file, err := infrastructure.OpenFile(inputFilePath)
-		if err != nil {
-			log.Fatal(err)
+		if err := CommandCreateCategory(createCategory); err != nil {
+			log.Fatalf("Failed to create category: %s", err)
 		}
-		defer file.Close()
+	}
 
-		if showReport {
-			CommandShowReport(file)
+	if showReport {
+		if err := CommandShowReport(inputFilePath); err != nil {
+			log.Fatalf("Failed to show report %s", err)
 		}
+	}
 
-		if showBalance {
-			fmt.Println(accounts.CurrentBalance().String())
-		}
-
+	if showBalance {
+		fmt.Println(accounts.CurrentBalance().String())
 	}
 }
