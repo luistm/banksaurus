@@ -4,3 +4,5 @@ import:
   version: ^1.2.0
 - package: github.com/tealeg/xlsx
   version: ^1.0.0
+- package: github.com/DATA-DOG/go-sqlmock
+  version: ^1.2.0

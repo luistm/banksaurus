@@ -1,6 +1,8 @@
-hash: 1edc6c774ca373421df2af1d4353ead055efe94db306fde1e9d8c8f85b9f4c47
-updated: 2017-09-10T12:34:49.079914147+01:00
+hash: 0c50010dda410dac8539eb2f59a7c0c5c8096ddfb2cb9cfd641d800896c17f55
+updated: 2017-09-10T16:08:37.03359079+01:00
 imports:
+- name: github.com/DATA-DOG/go-sqlmock
+  version: b983233bc0bbea4dc6e8ec8c8c923d935765ffec
 - name: github.com/mattn/go-sqlite3
   version: ca5e3819723d8eeaf170ad510e7da1d6d2e94a08
 - name: github.com/shopspring/decimal
