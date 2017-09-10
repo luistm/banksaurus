@@ -6,15 +6,37 @@ import (
 	"go-cli-bank/categories"
 )
 
+// ErrDataBaseConnUndefined ...
+var ErrDataBaseConnUndefined = errors.New("Database connection is undefined")
+
+// ErrDataBase to be used when the infrastructure database returns error
+type ErrDataBase struct {
+	s string
+}
+
+func (e *ErrDataBase) Error() string {
+	return e.s
+}
+
 // DatabaseHandler handles database operations
 type DatabaseHandler struct {
-	path string
-	*sql.DB
+	dbConn *sql.DB
 }
 
 // Execute an sql statement
 func (dh *DatabaseHandler) Execute(statement string) error {
-	return errors.New("Failed to run database statement")
+	if dh.dbConn == nil {
+		return ErrDataBaseConnUndefined
+	}
+
+	tx, _ := dh.dbConn.Begin()
+	_, err := tx.Exec(statement)
+	if err != nil {
+		return &ErrDataBase{err.Error()}
+	}
+	tx.Commit()
+
+	return nil
 }
 
 // Query fetches data from the database
