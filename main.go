@@ -9,7 +9,7 @@ import (
 	"expensetracker/infrastructure"
 	"expensetracker/reports"
 	"fmt"
-	"log"
+	"os"
 
 	flag "github.com/ogier/pflag"
 )
@@ -44,6 +44,11 @@ func CommandShowReport(inputFilePath string) error {
 	return nil
 }
 
+func errorf(format string, args ...interface{}) {
+	fmt.Fprintln(os.Stderr, format, args)
+	os.Exit(2)
+}
+
 func main() {
 
 	var inputFilePath string
@@ -62,13 +67,13 @@ func main() {
 
 	if createCategory != "" {
 		if err := CommandCreateCategory(createCategory); err != nil {
-			log.Fatalf("Failed to create category: %s", err)
+			errorf("Failed to create category: %v\n", err)
 		}
 	}
 
 	if showReport {
 		if err := CommandShowReport(inputFilePath); err != nil {
-			log.Fatalf("Failed to show report %s", err)
+			errorf("Failed to show report: %v\n", err)
 		}
 	}
 
