@@ -53,7 +53,7 @@ func (cr *CategoryRepository) Get(name string) (*Category, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
 	_, err := cr.DBHandler.Query(statement)
 	if err != nil {
-		return &Category{}, fmt.Errorf("Failed to get category, database faillure: %s", err)
+		return &Category{}, fmt.Errorf("Database failure: %s", err)
 	}
 
 	// Build category from rows
