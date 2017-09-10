@@ -22,7 +22,6 @@ func CommandCreateCategory(name string) error {
 	i := categories.Interactor{Repository: &cr}
 	_, err := i.NewCategory(name)
 	if err != nil {
-		// TODO: Handle error gracefully
 		return err
 	}
 
