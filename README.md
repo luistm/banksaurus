@@ -1,4 +1,4 @@
-# Command line expense tracker
+# Go-cli-bank
 
 Command line expense tracker. 
 

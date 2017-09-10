@@ -1,8 +1,8 @@
 package main
 
 import (
-	"expensetracker/categories"
-	"expensetracker/infrastructure"
+	"go-cli-bank/categories"
+	"go-cli-bank/infrastructure"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

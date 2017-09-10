@@ -15,5 +15,5 @@
 
 comprovativo.csv
 debug
-expensetracker.db
+go-cli-bank.db
 vendor/*

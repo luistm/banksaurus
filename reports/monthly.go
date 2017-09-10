@@ -1,8 +1,8 @@
 package reports
 
 import (
-	"expensetracker/transactions"
 	"fmt"
+	"go-cli-bank/transactions"
 	"io"
 
 	"github.com/shopspring/decimal"

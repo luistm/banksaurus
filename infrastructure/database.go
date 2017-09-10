@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"errors"
-	"expensetracker/categories"
+	"go-cli-bank/categories"
 )
 
 // DatabaseHandler handles database operations

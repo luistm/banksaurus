@@ -4,12 +4,12 @@ package main
 // my bank account.
 
 import (
-	"expensetracker/accounts"
-	"expensetracker/categories"
-	"expensetracker/infrastructure"
-	"expensetracker/reports"
 	"flag"
 	"fmt"
+	"go-cli-bank/accounts"
+	"go-cli-bank/categories"
+	"go-cli-bank/infrastructure"
+	"go-cli-bank/reports"
 	"os"
 	// flag "github.com/ogier/pflag"
 )
@@ -74,7 +74,7 @@ func main() {
 	}
 }
 
-// var DATABASE_NAME string = "./expensetracker.db"
+// var DATABASE_NAME string = "./go-cli-bank.db"
 // var DATABASE_ENGINE = "sqlite3"
 
 // func toExcel(value decimal.Decimal, description string) {

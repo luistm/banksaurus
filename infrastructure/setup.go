@@ -7,7 +7,7 @@ import (
 
 var errSetupFailed = errors.New("Failed to setup storage")
 
-const DATABASE_NAME = "~/.expensetracker.db"
+const DATABASE_NAME = "~/.go-cli-bank.db"
 const DATABASE_ENGINE = "sqlite3"
 
 // SetupStorage sets up the specified storage mechanism
