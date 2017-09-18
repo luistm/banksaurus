@@ -1,5 +1,5 @@
-install: deps unit-tests integration-tests
-	$(shell go install)
+install: deps
+	go install
 
 unit-tests:
 	go test ./... -v -short
@@ -14,8 +14,11 @@ coverage-package:
 integration-tests:
 	go test ./... -v
 
+system-tests: install
+	go test -run=^TestSystem$
+	
 deps:
-	$(shell glide install)
+	glide install
 
 style:
 	golint
