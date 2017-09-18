@@ -42,6 +42,11 @@ func TestSystem(t *testing.T) {
 			command:  []string{""},
 			expected: "",
 		},
+		{
+			name:     "Create category",
+			command:  []string{"new", "category", "testCategory"},
+			expected: "Created category 'testCategory'",
+		},
 	}
 
 	for _, tc := range testCases {
