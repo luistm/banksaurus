@@ -11,6 +11,8 @@ import (
 	"go-cli-bank/infrastructure"
 	"go-cli-bank/reports"
 	"os"
+
+	docopt "github.com/docopt/docopt-go"
 	// flag "github.com/ogier/pflag"
 )
 
@@ -49,7 +51,18 @@ func errorf(format string, args ...interface{}) {
 	os.Exit(2)
 }
 
+var usage = `Your command line money manager.
+
+Usage:
+	go-cli-bank -h | --help
+
+Options:
+	-h --help     Show this screen.`
+
 func main() {
+
+	arguments, _ := docopt.Parse(usage, nil, true, "Go CLI Bank 0.0.1", false)
+	fmt.Println(arguments)
 
 	inputFilePath := flag.String("load", "", "Specify the path to the input file")
 	showReport := flag.Bool("report", false, "Show report")

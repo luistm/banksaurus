@@ -33,19 +33,28 @@ func TestSystem(t *testing.T) {
 	}
 
 	testCases := []struct {
-		name     string
-		command  []string
-		expected string
+		name          string
+		command       []string
+		expected      string
+		errorExpected bool
 	}{
 		{
-			name:     "No output if no option is defined",
-			command:  []string{""},
-			expected: "",
+			name:          "Shows usage if no option is defined",
+			command:       []string{""},
+			expected:      "Usage:\n\tgo-cli-bank -h | --help\n",
+			errorExpected: true,
+		},
+		{
+			name:          "Shows usage if option is '-h'",
+			command:       []string{"-h"},
+			expected:      usage + "\n",
+			errorExpected: false,
 		},
 		{
 			name:     "Create category",
 			command:  []string{"new", "category", "testCategory"},
 			expected: "Created category 'testCategory'",
+		errorExpected: true,
 		},
 	}
 
@@ -54,7 +63,11 @@ func TestSystem(t *testing.T) {
 
 		stdoutStderr, err := cmd.CombinedOutput()
 
-		assert.NoError(t, err)
+		if tc.errorExpected {
+			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
+		}
 		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
 	}
 }
