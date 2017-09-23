@@ -17,3 +17,4 @@ comprovativo.csv
 debug
 go-cli-bank.db
 vendor/*
+go-cli-bank
