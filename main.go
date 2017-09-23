@@ -5,8 +5,8 @@ package main
 
 import (
 	"fmt"
-	"go-cli-bank/categories"
 	"go-cli-bank/infrastructure"
+	"go-cli-bank/lib/categories"
 	"go-cli-bank/reports"
 	"os"
 
