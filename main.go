@@ -6,7 +6,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go-cli-bank/accounts"
 	"go-cli-bank/categories"
 	"go-cli-bank/infrastructure"
 	"go-cli-bank/reports"
@@ -66,7 +65,6 @@ func main() {
 
 	inputFilePath := flag.String("load", "", "Specify the path to the input file")
 	showReport := flag.Bool("report", false, "Show report")
-	showBalance := flag.Bool("balance", false, "Show current balance")
 	createCategory := flag.String("category", "", "Create category")
 	flag.Parse()
 
@@ -82,9 +80,6 @@ func main() {
 		}
 	}
 
-	if *showBalance {
-		fmt.Println(accounts.CurrentBalance().String())
-	}
 }
 
 // var DATABASE_NAME string = "./go-cli-bank.db"
