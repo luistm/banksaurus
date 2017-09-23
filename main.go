@@ -54,9 +54,10 @@ var usage = `Your command line money manager.
 Usage:
 	go-cli-bank -h | --help
 	go-cli-bank report --input <file>
+	go-cli-bank category new <name>
 
 Options:
-	-f --input    The path to the transactions list.
+	--input    The path to the transactions list.
 	-h --help     Show this screen.
 `
 
@@ -64,19 +65,11 @@ func main() {
 
 	arguments, _ := docopt.Parse(usage, nil, true, "Go CLI Bank 0.0.1", false)
 
-	// createCategory := arguments[]
-	// inputFilePath := ""
-
-	// inputFilePath := flag.String("load", "", "Specify the path to the input file")
-	// showReport := flag.Bool("report", false, "Show report")
-	// createCategory := flag.String("category", "", "Create category")
-	// flag.Parse()
-
-	// if createCategory {
-	// 	if err := CommandCreateCategory(createCategory); err != nil {
-	// 		errorf("Failed to create category: %v\n", err)
-	// 	}
-	// }
+	if arguments["category"].(bool) && arguments["new"].(bool) {
+		if err := CommandCreateCategory(arguments["<name>"].(string)); err != nil {
+			errorf("Failed to create category: %v\n", err)
+		}
+	}
 
 	if arguments["report"].(bool) {
 		if err := CommandShowReport(arguments["<file>"].(string)); err != nil {
