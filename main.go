@@ -49,21 +49,21 @@ func errorf(format string, args ...interface{}) {
 	os.Exit(2)
 }
 
-var usage = `Your command line money manager.
+var intro = "Your command line money manager.\n"
 
-Usage:
+var usage = `Usage:
 	go-cli-bank -h | --help
 	go-cli-bank report --input <file>
-	go-cli-bank category new <name>
+	go-cli-bank category new <name>`
 
+var options = `
 Options:
 	--input    The path to the transactions list.
-	-h --help     Show this screen.
-`
+	-h --help     Show this screen.`
 
 func main() {
 
-	arguments, _ := docopt.Parse(usage, nil, true, "Go CLI Bank 0.0.1", false)
+	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
 	if arguments["category"].(bool) && arguments["new"].(bool) {
 		if err := CommandCreateCategory(arguments["<name>"].(string)); err != nil {

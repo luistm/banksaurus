@@ -21,25 +21,25 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows usage if no option is defined",
 			command:       []string{""},
-			expected:      "Usage:\n\tgo-cli-bank -h | --help\n",
+			expected:      usage + "\n",
 			errorExpected: true,
 		},
 		{
 			name:          "Shows usage if option is '-h'",
 			command:       []string{"-h"},
-			expected:      usage + "\n",
+			expected:      intro + usage + options + "\n",
 			errorExpected: false,
 		},
 		{
 			name:          "Create category",
-			command:       []string{"new", "category", "testCategory"},
+			command:       []string{"category", "new", "testCategory"},
 			expected:      "Created category 'testCategory'",
 			errorExpected: true,
 		},
 	}
 
 	for _, tc := range testCases {
-		cmd := exec.Command("go-cli-bank", tc.command...)
+		cmd := exec.Command("./go-cli-bank", tc.command...)
 
 		stdoutStderr, err := cmd.CombinedOutput()
 
