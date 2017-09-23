@@ -4,7 +4,6 @@ package main
 // my bank account.
 
 import (
-	"flag"
 	"fmt"
 	"go-cli-bank/categories"
 	"go-cli-bank/infrastructure"
@@ -54,28 +53,33 @@ var usage = `Your command line money manager.
 
 Usage:
 	go-cli-bank -h | --help
+	go-cli-bank report --input <file>
 
 Options:
-	-h --help     Show this screen.`
+	-f --input    The path to the transactions list.
+	-h --help     Show this screen.
+`
 
 func main() {
 
 	arguments, _ := docopt.Parse(usage, nil, true, "Go CLI Bank 0.0.1", false)
-	fmt.Println(arguments)
 
-	inputFilePath := flag.String("load", "", "Specify the path to the input file")
-	showReport := flag.Bool("report", false, "Show report")
-	createCategory := flag.String("category", "", "Create category")
-	flag.Parse()
+	// createCategory := arguments[]
+	// inputFilePath := ""
 
-	if *createCategory != "" {
-		if err := CommandCreateCategory(*createCategory); err != nil {
-			errorf("Failed to create category: %v\n", err)
-		}
-	}
+	// inputFilePath := flag.String("load", "", "Specify the path to the input file")
+	// showReport := flag.Bool("report", false, "Show report")
+	// createCategory := flag.String("category", "", "Create category")
+	// flag.Parse()
 
-	if *showReport {
-		if err := CommandShowReport(*inputFilePath); err != nil {
+	// if createCategory {
+	// 	if err := CommandCreateCategory(createCategory); err != nil {
+	// 		errorf("Failed to create category: %v\n", err)
+	// 	}
+	// }
+
+	if arguments["report"].(bool) {
+		if err := CommandShowReport(arguments["<file>"].(string)); err != nil {
 			errorf("Failed to show report: %v\n", err)
 		}
 	}
