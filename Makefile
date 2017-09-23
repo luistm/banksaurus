@@ -5,7 +5,7 @@ build: clean deps
 	go build -o go-cli-bank
 
 clean:
-	rm go-cli-bank
+	- rm go-cli-bank
 
 unit-tests:
 	go test ./... -v -short
