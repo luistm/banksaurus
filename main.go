@@ -11,37 +11,37 @@ import (
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
-	// flag "github.com/ogier/pflag"
 )
 
 // CommandCreateCategory handles category creation command
-func CommandCreateCategory(name string) error {
+func CommandCreateCategory(name string) (string, error) {
 
 	dbHandler := infrastructure.DatabaseHandler{}
 	cr := categories.CategoryRepository{DBHandler: &dbHandler}
 	i := categories.Interactor{Repository: &cr}
 	_, err := i.NewCategory(name)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	msg := "Created category " + name
+	return msg, nil
 }
 
 // CommandShowReport handles report commands
-func CommandShowReport(inputFilePath string) error {
+func CommandShowReport(inputFilePath string) (string, error) {
 	file, err := infrastructure.OpenFile(inputFilePath)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer file.Close()
 
 	err = reports.MonthlyReport(file)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return "", nil
 }
 
 func errorf(format string, args ...interface{}) {
@@ -65,15 +65,18 @@ func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
+	out := ""
+	var err error
 	if arguments["category"].(bool) && arguments["new"].(bool) {
-		if err := CommandCreateCategory(arguments["<name>"].(string)); err != nil {
-			errorf("Error:", err)
-		}
+		out, err = CommandCreateCategory(arguments["<name>"].(string))
 	}
 
 	if arguments["report"].(bool) {
-		if err := CommandShowReport(arguments["<file>"].(string)); err != nil {
-			errorf("Error:", err)
-		}
+		out, err = CommandShowReport(arguments["<file>"].(string))
 	}
+
+	if err != nil {
+		errorf("Error:", err)
+	}
+	fmt.Printf(out)
 }
