@@ -7,6 +7,8 @@ build: clean deps
 clean:
 	- rm go-cli-bank
 
+test: unit-tests system-tests
+
 unit-tests:
 	go test ./... -v -short
 
