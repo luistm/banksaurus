@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"go-cli-bank/infrastructure"
 	"go-cli-bank/lib/categories"
-	"go-cli-bank/reports"
+	"go-cli-bank/lib/reports"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
