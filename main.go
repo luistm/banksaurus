@@ -5,44 +5,11 @@ package main
 
 import (
 	"fmt"
-	"go-cli-bank/infrastructure"
-	"go-cli-bank/lib/categories"
-	"go-cli-bank/lib/reports"
+	"go-cli-bank/commands"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
 )
-
-// CommandCreateCategory handles category creation command
-func CommandCreateCategory(name string) (string, error) {
-
-	dbHandler := infrastructure.DatabaseHandler{}
-	cr := categories.CategoryRepository{DBHandler: &dbHandler}
-	i := categories.Interactor{Repository: &cr}
-	_, err := i.NewCategory(name)
-	if err != nil {
-		return "", err
-	}
-
-	msg := "Created category " + name
-	return msg, nil
-}
-
-// CommandShowReport handles report commands
-func CommandShowReport(inputFilePath string) (string, error) {
-	file, err := infrastructure.OpenFile(inputFilePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	err = reports.MonthlyReport(file)
-	if err != nil {
-		return "", err
-	}
-
-	return "", nil
-}
 
 func errorf(format string, args ...interface{}) {
 	fmt.Fprintln(os.Stderr, format, args)
@@ -68,11 +35,11 @@ func main() {
 	out := ""
 	var err error
 	if arguments["category"].(bool) && arguments["new"].(bool) {
-		out, err = CommandCreateCategory(arguments["<name>"].(string))
+		out, err = commands.CreateCategoryHandler(arguments["<name>"].(string))
 	}
 
 	if arguments["report"].(bool) {
-		out, err = CommandShowReport(arguments["<file>"].(string))
+		out, err = commands.ShowReportHandler(arguments["<file>"].(string))
 	}
 
 	if err != nil {
