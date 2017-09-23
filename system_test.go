@@ -37,7 +37,7 @@ func TestSystem(t *testing.T) {
 			errorExpected: true,
 		},
 		{
-			name:          "/go-cli-bank report --input test_file.csv",
+			name:          "Shows report from file",
 			command:       []string{"report", "--input", "dev/test_file.csv"},
 			expected:      "Expense is  0\nCredit is  0\n",
 			errorExpected: false,
