@@ -45,7 +45,7 @@ func TestSystem(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		cmd := exec.Command("./go-cli-bank", tc.command...)
+		cmd := exec.Command("./go-bank-cli", tc.command...)
 
 		stdoutStderr, err := cmd.CombinedOutput()
 

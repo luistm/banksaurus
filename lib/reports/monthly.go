@@ -2,7 +2,7 @@ package reports
 
 import (
 	"fmt"
-	"go-cli-bank/transactions"
+	"go-bank-cli/transactions"
 	"io"
 
 	"github.com/shopspring/decimal"

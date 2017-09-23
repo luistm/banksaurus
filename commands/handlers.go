@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"go-cli-bank/infrastructure"
-	"go-cli-bank/lib/categories"
-	"go-cli-bank/lib/reports"
+	"go-bank-cli/infrastructure"
+	"go-bank-cli/lib/categories"
+	"go-bank-cli/lib/reports"
 )
 
 // CommandCreateCategory handles category creation command

@@ -1,5 +1,5 @@
-hash: d26ce5c94628a6d40ae376574ee10aaebc8ea9bcfbcdbdf78e6ba3e865793250
-updated: 2017-09-18T22:19:40.664455+01:00
+hash: 4c965cdeda2c91ef5f66561e6c1ee72da8677564f9dd6b1d15f2b063ad044e63
+updated: 2017-09-23T18:55:49.582324262+01:00
 imports:
 - name: github.com/DATA-DOG/go-sqlmock
   version: b983233bc0bbea4dc6e8ec8c8c923d935765ffec

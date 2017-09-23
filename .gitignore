@@ -15,6 +15,6 @@
 
 comprovativo.csv
 debug
-go-cli-bank.db
+go-bank-cli.db
 vendor/*
-go-cli-bank
+go-bank-cli

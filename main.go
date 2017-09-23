@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	"go-cli-bank/commands"
+	"go-bank-cli/commands"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
@@ -19,9 +19,9 @@ func errorf(format string, args ...interface{}) {
 var intro = "Your command line money manager.\n"
 
 var usage = `Usage:
-	go-cli-bank -h | --help
-	go-cli-bank report --input <file>
-	go-cli-bank category new <name>`
+	go-bank-cli -h | --help
+	go-bank-cli report --input <file>
+	go-bank-cli category new <name>`
 
 var options = `
 Options:

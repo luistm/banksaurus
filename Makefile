@@ -2,10 +2,10 @@ install: deps
 	go install
 
 build: clean deps
-	go build -o go-cli-bank
+	go build -o go-bank-cli
 
 clean:
-	- rm go-cli-bank
+	- rm go-bank-cli
 
 test: unit-tests system-tests
 
