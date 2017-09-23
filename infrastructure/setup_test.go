@@ -1,11 +1,17 @@
 package infrastructure
 
-// func TestSetupStorage(t *testing.T) {
-// 	if !testing.Short() {
-// 		t.Skip()
-// 	}
+import (
+	"testing"
 
-// 	name := "Fails to created storage if type is not defined"
-// 	_, err := SetupStorage("")
-// 	assert.Equal(t, err, errSetupFailed, name)
-// }
+	"github.com/stretchr/testify/assert"
+)
+
+func TestSetupStorage(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	name := "Fails to created storage"
+	err := SetupStorage()
+	assert.Equal(t, err, errSetupFailed, name)
+}

@@ -1,21 +1,11 @@
 package infrastructure
 
-import (
-	"database/sql"
-	"errors"
-)
+import "errors"
 
 var errSetupFailed = errors.New("Failed to setup storage")
 
-const DATABASE_NAME = "~/.go-bank-cli.db"
-const DATABASE_ENGINE = "sqlite3"
+// SetupStorage configures the storage to persist data
+func SetupStorage() error {
 
-// SetupStorage sets up the specified storage mechanism
-func SetupStorage(storageType string) (*sql.DB, error) {
-
-	if storageType == "" {
-		return nil, errSetupFailed
-	}
-
-	return nil, errSetupFailed
+	return errSetupFailed
 }
