@@ -76,33 +76,4 @@ func main() {
 			errorf("Failed to show report: %v\n", err)
 		}
 	}
-
 }
-
-// var DATABASE_NAME string = "./go-cli-bank.db"
-// var DATABASE_ENGINE = "sqlite3"
-
-// func toExcel(value decimal.Decimal, description string) {
-// 	var file *xlsx.File
-// 	var sheet *xlsx.Sheet
-// 	var row *xlsx.Row
-// 	var cell *xlsx.Cell
-// 	var err error
-
-// 	file = xlsx.NewFile()
-// 	sheet, err = file.AddSheet("Sheet1")
-// 	if err != nil {
-// 		fmt.Printf(err.Error())
-// 	}
-// 	row = sheet.AddRow()
-// 	cell = row.AddCell()
-// 	cell.Value = description
-// 	cell = row.AddCell()
-// 	// cell.Value = strconv.FormatFloat(value, 'f', 2, 64)
-// 	cell.Value = value.String()
-
-// 	err = file.Save("MyXLSXFile.xlsx")
-// 	if err != nil {
-// 		fmt.Printf(err.Error())
-// 	}
-// }
