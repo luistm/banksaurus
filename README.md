@@ -1,5 +1,5 @@
 # go-bank-cli
 
-Command line expense tracker. 
+Command line personal finance manager. 
 
 Work in progress...
