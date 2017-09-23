@@ -67,13 +67,13 @@ func main() {
 
 	if arguments["category"].(bool) && arguments["new"].(bool) {
 		if err := CommandCreateCategory(arguments["<name>"].(string)); err != nil {
-			errorf("Failed to create category: %v\n", err)
+			errorf("Error:", err)
 		}
 	}
 
 	if arguments["report"].(bool) {
 		if err := CommandShowReport(arguments["<file>"].(string)); err != nil {
-			errorf("Failed to show report: %v\n", err)
+			errorf("Error:", err)
 		}
 	}
 }
