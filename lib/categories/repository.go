@@ -25,7 +25,7 @@ type IRow interface {
 
 // IDBHandler ...
 type IDBHandler interface {
-	Execute(statement string) error
+	Execute(statement string, values ...interface{}) error
 	Query(statement string) (IRow, error)
 }
 
@@ -41,7 +41,7 @@ func (cr *CategoryRepository) Save(c *Category) error {
 		return errInvalidCategory
 	}
 
-	if err := cr.DBHandler.Execute(insertStatement); err != nil {
+	if err := cr.DBHandler.Execute(insertStatement, c.Name); err != nil {
 		return &errInfrastructure{arg: err.Error()}
 	}
 

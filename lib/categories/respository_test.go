@@ -12,7 +12,7 @@ type mockDBHandler struct {
 	mock.Mock
 }
 
-func (m *mockDBHandler) Execute(statement string) error {
+func (m *mockDBHandler) Execute(statement string, value ...interface{}) error {
 	args := m.Called(statement)
 	return args.Error(0)
 }

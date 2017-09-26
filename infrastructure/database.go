@@ -22,17 +22,17 @@ func (e *ErrDataBase) Error() string {
 
 // DatabaseHandler handles database operations
 type DatabaseHandler struct {
-	dbConn *sql.DB
+	Database *sql.DB
 }
 
 // Execute is to execute an sql statement
-func (dh *DatabaseHandler) Execute(statement string) error {
-	if dh.dbConn == nil {
+func (dh *DatabaseHandler) Execute(statement string, values ...interface{}) error {
+	if dh.Database == nil {
 		return ErrDataBaseConnUndefined
 	}
 
-	tx, _ := dh.dbConn.Begin()
-	_, err := tx.Exec(statement)
+	tx, _ := dh.Database.Begin()
+	_, err := tx.Exec(statement, values...)
 	if err != nil {
 		return &ErrDataBase{err.Error()}
 	}

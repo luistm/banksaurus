@@ -32,11 +32,11 @@ func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
-	db, err := infrastructure.InitStorage("bank", "/tmp")
+	// TODO: Get database values from a configuration
+	err := infrastructure.InitStorage("bank", "/tmp")
 	if err != nil {
 		errorf("Error:", err)
 	}
-	defer db.Close()
 
 	out := ""
 	if arguments["category"].(bool) && arguments["new"].(bool) {

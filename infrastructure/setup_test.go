@@ -42,14 +42,12 @@ func TestInitStorage(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		db, err := InitStorage(tc.dbName, tc.dbPath)
+		err := InitStorage(tc.dbName, tc.dbPath)
 
 		if tc.errorExpected {
 			assert.Error(t, err, tc.name)
-			assert.Empty(t, db, tc.name)
 		} else {
 			assert.NoError(t, err, tc.name)
-			assert.NotEmpty(t, db, tc.name)
 
 			// Remove any test files
 			if err := os.RemoveAll(tc.dbPath); err != nil {

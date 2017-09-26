@@ -48,30 +48,41 @@ func validatePath(path string) error {
 	return nil
 }
 
+// ConnectDB creates a new instance of the database
+func ConnectDB(dbName, path string) (*sql.DB, error) {
+	db, err := sql.Open("sqlite3", path+"/"+dbName+".db")
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
 // InitStorage configures the storage to persist data.
 // Receives:
 // a) The name of the database
 // b) The path where the database file should be
 //
 // Returns the path of the database file
-func InitStorage(dbName string, path string) (*sql.DB, error) {
+func InitStorage(dbName string, path string) error {
 
 	if dbName == "" {
-		return nil, &ErrInitFailed{arg: messageDBNameEmpty}
+		return &ErrInitFailed{arg: messageDBNameEmpty}
 	}
 
 	if path == "" {
-		return nil, &ErrInitFailed{arg: messageDBPathEmpty}
+		return &ErrInitFailed{arg: messageDBPathEmpty}
 	}
 
 	if err := validatePath(path); err != nil {
-		return nil, err
+		return err
 	}
 
-	db, err := sql.Open("sqlite3", path+"/"+dbName+".db")
+	db, err := ConnectDB(dbName, path)
 	if err != nil {
-		return nil, &ErrInitFailed{arg: err.Error()}
+		return &ErrInitFailed{arg: err.Error()}
 	}
+	defer db.Close()
 
 	// Create table in order to create the database file
 	sqlStmt := `
@@ -80,8 +91,8 @@ func InitStorage(dbName string, path string) (*sql.DB, error) {
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return nil, &ErrInitFailed{arg: err.Error()}
+		return &ErrInitFailed{arg: err.Error()}
 	}
 
-	return db, nil
+	return nil
 }

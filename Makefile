@@ -7,7 +7,7 @@ build: clean deps
 clean:
 	- rm bank
 
-test: unit-tests system-tests
+test: unit-tests system-tests coverage-unit
 
 unit-tests:
 	go test ./... -short

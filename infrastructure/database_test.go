@@ -32,6 +32,7 @@ func TestExecutesStatement(t *testing.T) {
 	assert.NoError(t, mock.ExpectationsWereMet(), name)
 	assert.EqualError(t, err, e.Error(), name)
 
+	// TODO: Test an insert with values
 	// TODO: Test transaction begin error
 	// TODO: Test transaction commit error
 }
