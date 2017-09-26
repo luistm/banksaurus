@@ -19,9 +19,9 @@ func errorf(format string, args ...interface{}) {
 var intro = "Your command line money manager.\n"
 
 var usage = `Usage:
-	go-bank-cli -h | --help
-	go-bank-cli report --input <file>
-	go-bank-cli category new <name>`
+	bank -h | --help
+	bank report --input <file>
+	bank category new <name>`
 
 var options = `
 Options:

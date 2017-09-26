@@ -1,22 +1,22 @@
 install: deps
-	go install
+	go install ./cmd/bank
 
 build: clean deps
-	go build -o go-bank-cli
+	go build -o bank ./cmd/bank 
 
 clean:
-	- rm go-bank-cli
+	- rm bank
 
 test: unit-tests system-tests
 
 unit-tests:
-	go test ./... -v -short
+	go test ./... -short
 
 coverage-unit:
 	go test ./... -short -cover
 
 system-tests: build
-	go test -run=^TestSystem$
+	go test ./... -run=^TestSystem$ 
 
 coverage-package:
 	go test $(PACKAGE)  -short -cover -covermode=count -coverprofile=count.out

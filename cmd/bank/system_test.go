@@ -38,14 +38,14 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:          "Shows report from file",
-			command:       []string{"report", "--input", "dev/test_file.csv"},
+			command:       []string{"report", "--input", "../../dev/test_file.csv"},
 			expected:      "Expense is  0\nCredit is  0\n",
 			errorExpected: false,
 		},
 	}
 
 	for _, tc := range testCases {
-		cmd := exec.Command("./go-bank-cli", tc.command...)
+		cmd := exec.Command("../../bank", tc.command...)
 
 		stdoutStderr, err := cmd.CombinedOutput()
 
