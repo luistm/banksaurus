@@ -1,17 +1,61 @@
 package infrastructure
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSetupStorage(t *testing.T) {
+func TestInitStorage(t *testing.T) {
+	// NOTE: Actually i don't like tests which touch the disk
+	// I will look into this when i have the time. For now it will do....
+
 	if !testing.Short() {
 		t.Skip()
 	}
 
-	name := "Fails to created storage"
-	err := SetupStorage()
-	assert.Equal(t, err, errSetupFailed, name)
+	testCases := []struct {
+		name          string
+		dbName        string
+		dbPath        string
+		errorExpected bool
+	}{
+		{
+			name:          "Name is empty",
+			dbName:        "",
+			dbPath:        "ignoreThisForNow",
+			errorExpected: true,
+		},
+		{
+			name:          "Path is empty",
+			dbName:        "ignoreThisForNow",
+			dbPath:        "",
+			errorExpected: true,
+		},
+		{
+			name:          "Path does not exist",
+			dbName:        "ignoreThisForNow",
+			dbPath:        "./ThisPathDoesNotExist",
+			errorExpected: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		db, err := InitStorage(tc.dbName, tc.dbPath)
+
+		if tc.errorExpected {
+			assert.Error(t, err, tc.name)
+			assert.Empty(t, db, tc.name)
+		} else {
+			assert.NoError(t, err, tc.name)
+			assert.NotEmpty(t, db, tc.name)
+
+			// Remove any test files
+			if err := os.RemoveAll(tc.dbPath); err != nil {
+				t.Error(err)
+			}
+		}
+	}
+
 }
