@@ -1,8 +1,8 @@
 install: deps
 	go install ./cmd/bank
 
-build: clean deps
-	go build -o bank ./cmd/bank 
+build: clean
+	go build -i -o bank ./cmd/bank 
 
 clean:
 	- rm bank
