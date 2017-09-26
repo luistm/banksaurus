@@ -75,14 +75,13 @@ func InitStorage(dbName string, path string) (*sql.DB, error) {
 
 	// Create table in order to create the database file
 	sqlStmt := `
-	create table categories (id integer not null primary key, name text);
+	CREATE TABLE IF NOT EXISTS categories
+	 (id INTEGER NOT NULL PRIMARY KEY, name TEXT);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		return nil, &ErrInitFailed{arg: err.Error()}
 	}
-
-	// TODO: Don't forget to close the database connection
 
 	return db, nil
 }
