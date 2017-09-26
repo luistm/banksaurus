@@ -5,7 +5,6 @@ package main
 
 import (
 	"fmt"
-	"go-bank-cli/commands"
 	"go-bank-cli/infrastructure"
 	"os"
 
@@ -41,11 +40,11 @@ func main() {
 
 	out := ""
 	if arguments["category"].(bool) && arguments["new"].(bool) {
-		out, err = commands.CreateCategoryHandler(arguments["<name>"].(string))
+		out, err = createCategoryHandler(arguments["<name>"].(string))
 	}
 
 	if arguments["report"].(bool) {
-		out, err = commands.ShowReportHandler(arguments["<file>"].(string))
+		out, err = showReportHandler(arguments["<file>"].(string))
 	}
 
 	if err != nil {

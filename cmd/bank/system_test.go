@@ -38,7 +38,7 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:          "Shows report from file",
-			command:       []string{"report", "--input", "../../dev/test_file.csv"},
+			command:       []string{"report", "--input", "../../tests/fixtures/test_file.csv"},
 			expected:      "Expense is  0\nCredit is  0\n",
 			errorExpected: false,
 		},
