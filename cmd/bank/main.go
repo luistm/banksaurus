@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"go-bank-cli/commands"
+	"go-bank-cli/infrastructure"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
@@ -32,8 +33,13 @@ func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
+	db, err := infrastructure.InitStorage("bank", "/tmp")
+	if err != nil {
+		errorf("Error:", err)
+	}
+	defer db.Close()
+
 	out := ""
-	var err error
 	if arguments["category"].(bool) && arguments["new"].(bool) {
 		out, err = commands.CreateCategoryHandler(arguments["<name>"].(string))
 	}
