@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"os/exec"
 	"testing"
 
@@ -53,6 +54,12 @@ func TestSystem(t *testing.T) {
 			assert.Error(t, err)
 		} else {
 			assert.NoError(t, err)
+
+			// Remove any test files
+			if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
+				t.Error(err)
+			}
+
 		}
 		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
 	}
