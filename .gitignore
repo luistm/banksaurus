@@ -13,7 +13,6 @@
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
 
-comprovativo.csv
-debug
-go-bank-cli.db
 vendor/*
+bank
+!cmd/*
