@@ -58,7 +58,8 @@ func TestGetCategory(t *testing.T) {
 	c, err := i.GetCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)
-	assert.Equal(t, categoryName, c.Name, name)
+	assert.Equal(t, 1, len(c), name)
+	assert.Equal(t, categoryName, c[0].Name, name)
 }
 
 func TestNewCategory(t *testing.T) {
@@ -95,6 +96,7 @@ func TestNewCategory(t *testing.T) {
 	c, err = i.NewCategory(categoryName)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)
-	assert.Equal(t, categoryName, c.Name, name)
+	assert.Equal(t, 1, len(c), name)
+	assert.Equal(t, categoryName, c[0].Name, name)
 
 }

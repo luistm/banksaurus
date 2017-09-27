@@ -17,39 +17,45 @@ type Interactor struct {
 }
 
 // NewCategory allows the creation of a new category
-func (i *Interactor) NewCategory(name string) (*Category, error) {
+func (i *Interactor) NewCategory(name string) ([]*Category, error) {
+
+	cs := []*Category{}
 
 	if name == "" {
-		return &Category{}, errors.New("Cannot create category whitout a category name")
+		return cs, errors.New("Cannot create category whitout a category name")
 	}
 
 	if i.Repository == nil {
-		return &Category{}, errors.New("Repository is not defined")
+		return cs, errors.New("Repository is not defined")
 	}
 
 	c := Category{Name: name}
 	if err := i.Repository.Save(&c); err != nil {
-		return &Category{}, fmt.Errorf("Failed to create category: %s", err)
+		return cs, fmt.Errorf("Failed to create category: %s", err)
 	}
 
-	return &c, nil
+	cs = append(cs, &c)
+	return cs, nil
 }
 
 // GetCategory returns a category by name
-func (i *Interactor) GetCategory(name string) (*Category, error) {
+func (i *Interactor) GetCategory(name string) ([]*Category, error) {
+
+	cs := []*Category{}
 
 	if name == "" {
-		return &Category{}, errors.New("Cannot get category whitout a category name")
+		return cs, errors.New("Cannot get category whitout a category name")
 	}
 
 	if i.Repository == nil {
-		return &Category{}, errors.New("Repository is not defined")
+		return cs, errors.New("Repository is not defined")
 	}
 
 	c, err := i.Repository.Get(name)
 	if err != nil {
-		return &Category{}, fmt.Errorf("Failed to get category: %s", err)
+		return cs, fmt.Errorf("Failed to get category: %s", err)
 	}
 
-	return c, nil
+	cs = append(cs, c)
+	return cs, nil
 }
