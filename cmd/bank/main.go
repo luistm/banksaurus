@@ -21,11 +21,12 @@ var intro = "Your command line money manager.\n"
 var usage = `Usage:
 	bank -h | --help
 	bank report --input <file>
-	bank category new <name>`
+	bank category new <name>
+	bank category show`
 
 var options = `
 Options:
-	--input    The path to the transactions list.
+	--input       The path to the transactions list.
 	-h --help     Show this screen.`
 
 func main() {

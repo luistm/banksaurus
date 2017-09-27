@@ -16,7 +16,7 @@ coverage-unit:
 	go test ./... -short -cover
 
 system-tests: build
-	go test ./... -run=^TestSystem$ 
+	go test ./... -run System -v
 
 coverage-package:
 	go test $(PACKAGE)  -short -cover -covermode=count -coverprofile=count.out

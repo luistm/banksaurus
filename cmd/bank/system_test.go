@@ -32,12 +32,6 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:          "Create category",
-			command:       []string{"category", "new", "testCategory"},
-			expected:      "Created category 'testCategory'",
-			errorExpected: false,
-		},
-		{
 			name:          "Shows report from file",
 			command:       []string{"report", "--input", "../../tests/fixtures/test_file.csv"},
 			expected:      "Expense is  0\nCredit is  0\n",
@@ -62,5 +56,37 @@ func TestSystem(t *testing.T) {
 
 		}
 		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
+	}
+}
+
+func TestSystemCategories(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	categoryName := "ThisIsACategoryNameForTesting"
+
+	name := "Create category"
+	command := []string{"category", "new", categoryName}
+	expected := "Created category '" + categoryName + "'"
+
+	cmd := exec.Command("../../bank", command...)
+	stdoutStderr, err := cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, string(stdoutStderr), name)
+
+	name = "Show category"
+	command = []string{"category", "show"}
+	expected = categoryName
+
+	cmd = exec.Command("../../bank", command...)
+	stdoutStderr, err = cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, string(stdoutStderr), name)
+
+	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
+		t.Error(err)
 	}
 }
