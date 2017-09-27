@@ -16,7 +16,7 @@ func errorf(format string, args ...interface{}) {
 	os.Exit(2)
 }
 
-var intro = "Your command line money manager.\n"
+var intro = "Your command line finance manager.\n"
 
 var usage = `Usage:
 	bank -h | --help
