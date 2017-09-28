@@ -60,3 +60,8 @@ func (cr *CategoryRepository) Get(name string) (*Category, error) {
 
 	return &Category{}, nil
 }
+
+// GetAll fetches all categories
+func (cr *CategoryRepository) GetAll() ([]*Category, error) {
+	return []*Category{}, nil
+}

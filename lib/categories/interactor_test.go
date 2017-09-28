@@ -22,6 +22,89 @@ func (m *repositoryMock) Get(s string) (*Category, error) {
 	return args.Get(0).(*Category), args.Error(1)
 }
 
+func (m *repositoryMock) GetAll() ([]*Category, error) {
+	args := m.Called()
+	return args.Get(0).([]*Category), args.Error(1)
+}
+
+func TestGetCategories(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	testCases := []struct {
+		name          string
+		expectedLen   int
+		errorExpected bool
+		mock          *repositoryMock
+		mInput        *struct {
+			method          string
+			returnArguments []interface{}
+		}
+	}{
+		{
+			name:          "Fails to get categories if repository is not defined",
+			expectedLen:   0,
+			errorExpected: true,
+			mock:          nil,
+			mInput:        nil,
+		},
+		{
+			name:          "Fails to get categories on repository error",
+			expectedLen:   0,
+			errorExpected: true,
+			mock:          new(repositoryMock),
+			mInput: &struct {
+				method          string
+				returnArguments []interface{}
+			}{
+				method: "GetAll",
+				returnArguments: []interface{}{
+					[]*Category{},
+					errors.New("Repository mock error"),
+				},
+			},
+		},
+		{
+			name:          "Returns slice of categories",
+			expectedLen:   1,
+			errorExpected: false,
+			mock:          new(repositoryMock),
+			mInput: &struct {
+				method          string
+				returnArguments []interface{}
+			}{
+				method: "GetAll",
+				returnArguments: []interface{}{
+					[]*Category{&Category{Name: "ThisIsATestCategory"}},
+					nil,
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		i := new(Interactor)
+		if tc.mock != nil {
+			i.Repository = tc.mock
+			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
+		}
+
+		cats, err := i.GetCategories()
+
+		if tc.mock != nil {
+			tc.mock.AssertExpectations(t)
+		}
+		if tc.errorExpected {
+			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
+			assert.Equal(t, len(cats), tc.expectedLen, tc.name)
+		}
+	}
+
+}
+
 func TestGetCategory(t *testing.T) {
 	if !testing.Short() {
 		t.Skip()

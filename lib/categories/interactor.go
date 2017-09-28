@@ -9,6 +9,7 @@ import (
 type IRepository interface {
 	Save(*Category) error
 	Get(string) (*Category, error)
+	GetAll() ([]*Category, error)
 }
 
 // Interactor for categories
@@ -35,6 +36,22 @@ func (i *Interactor) NewCategory(name string) ([]*Category, error) {
 	}
 
 	cs = append(cs, &c)
+	return cs, nil
+}
+
+// GetCategories fetches all categories
+func (i *Interactor) GetCategories() ([]*Category, error) {
+
+	cs := []*Category{}
+	if i.Repository == nil {
+		return cs, errors.New("Repository is not defined")
+	}
+
+	cs, err := i.Repository.GetAll()
+	if err != nil {
+		return cs, fmt.Errorf("Failed to get category: %s", err)
+	}
+
 	return cs, nil
 }
 
