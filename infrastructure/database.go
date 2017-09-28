@@ -43,5 +43,16 @@ func (dh *DatabaseHandler) Execute(statement string, values ...interface{}) erro
 
 // Query fetches data from the database
 func (dh *DatabaseHandler) Query(statement string) (categories.IRow, error) {
-	return nil, errors.New("Failed to query database")
+	if dh.Database == nil {
+		return nil, ErrDataBaseConnUndefined
+	}
+
+	tx, _ := dh.Database.Begin()
+	_, err := tx.Query(statement)
+	if err != nil {
+		return nil, &ErrDataBase{err.Error()}
+	}
+	tx.Commit()
+
+	return nil, nil
 }

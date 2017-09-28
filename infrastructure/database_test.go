@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"database/sql"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
@@ -35,4 +36,67 @@ func TestExecutesStatement(t *testing.T) {
 	// TODO: Test an insert with values
 	// TODO: Test transaction begin error
 	// TODO: Test transaction commit error
+}
+
+func TestQuery(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	testCases := []struct {
+		name          string
+		errorExpected bool
+		query         string
+		hasDatabase   bool
+	}{
+		{
+			name:          "Returns error if database not defined",
+			errorExpected: true,
+			query:         "",
+			hasDatabase:   false,
+		},
+		{
+			name:          "Returns error if database query returns error",
+			errorExpected: true,
+			query:         "SELECT * FROM testTable",
+			hasDatabase:   true,
+		},
+	}
+
+	for _, tc := range testCases {
+
+		// Setup
+		var dbh *DatabaseHandler
+		var mock sqlmock.Sqlmock
+		var dbConnMock *sql.DB
+		var err error
+		if tc.hasDatabase {
+			dbConnMock, mock, err = sqlmock.New()
+			assert.NoError(t, err)
+
+			e := &ErrDataBase{"testError"}
+			mock.ExpectBegin()
+			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(e)
+
+			dbh = &DatabaseHandler{Database: dbConnMock}
+
+		} else {
+			dbh = &DatabaseHandler{}
+		}
+
+		// Call the function being tested
+		_, err = dbh.Query(tc.query)
+
+		// Assert result
+		if tc.hasDatabase {
+			assert.NoError(t, mock.ExpectationsWereMet(), tc.name)
+		}
+
+		if tc.errorExpected {
+			assert.Error(t, err)
+		} else {
+			assert.NoError(t, err)
+		}
+	}
+
 }
