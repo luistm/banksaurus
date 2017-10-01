@@ -23,7 +23,7 @@ coverage-package:
 	go tool cover -func=count.out
 	
 deps:
-	glide install
+	dep ensure
 
 style:
 	golint
