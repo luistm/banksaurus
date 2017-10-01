@@ -22,6 +22,23 @@ func (m *mockDBHandler) Query(statement string) (IRow, error) {
 	return args.Get(0).(IRow), args.Error(1)
 }
 
+func TestCategoryRepositoryGetAll(t *testing.T) {
+	if !testing.Short() {
+		t.Skip()
+	}
+
+	testCases := []struct {
+		name string
+	}{}
+
+	for _, tc := range testCases {
+		m := new(mockDBHandler)
+		cr := CategoryRepository{DBHandler: m}
+		_, err := cr.GetAll()
+		assert.Error(t, err, tc.name)
+	}
+}
+
 func TestCategoryRepositorySave(t *testing.T) {
 	if !testing.Short() {
 		t.Skip()

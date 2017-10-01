@@ -14,7 +14,7 @@ type IRepository interface {
 
 // Interactor for categories
 type Interactor struct {
-	Repository IRepository // TODO: Make repository private
+	Repository IRepository
 }
 
 // NewCategory allows the creation of a new category

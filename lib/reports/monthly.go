@@ -17,7 +17,6 @@ func MonthlyReport(file io.Reader) error {
 		return fmt.Errorf("Failed to import data: %s", err)
 	}
 
-	// TODO: Create an entity report
 	var report map[string]decimal.Decimal
 	report = make(map[string]decimal.Decimal)
 	var credit decimal.Decimal

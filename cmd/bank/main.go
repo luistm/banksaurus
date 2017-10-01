@@ -33,7 +33,6 @@ func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
-	// TODO: Get database values from a configuration
 	err := infrastructure.InitStorage(DatabaseName, DatabasePath)
 	if err != nil {
 		errorf("Error:", err)
@@ -42,6 +41,10 @@ func main() {
 	out := ""
 	if arguments["category"].(bool) && arguments["new"].(bool) {
 		out, err = createCategoryHandler(arguments["<name>"].(string))
+	}
+
+	if arguments["category"].(bool) && arguments["show"].(bool) {
+		out, err = showCategoryHandler()
 	}
 
 	if arguments["report"].(bool) {

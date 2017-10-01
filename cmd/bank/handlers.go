@@ -13,7 +13,6 @@ var DatabasePath = "/tmp"
 // createCategoryHandler handles category creation command
 func createCategoryHandler(name string) (string, error) {
 
-	// TODO: Get database values from a configuration
 	db, err := infrastructure.ConnectDB(DatabaseName, DatabasePath)
 	if err != nil {
 		return "", err
@@ -23,13 +22,37 @@ func createCategoryHandler(name string) (string, error) {
 	dbHandler := infrastructure.DatabaseHandler{Database: db}
 	cr := categories.CategoryRepository{DBHandler: &dbHandler}
 	i := categories.Interactor{Repository: &cr}
-	_, err = i.NewCategory(name)
+	cats, err := i.NewCategory(name)
 	if err != nil {
 		return "", err
 	}
 
-	msg := fmt.Sprintf("Created category '%s'", name)
+	msg := fmt.Sprintf("Created category '%s'", cats[0].Name)
 	return msg, nil
+}
+
+func showCategoryHandler() (string, error) {
+	db, err := infrastructure.ConnectDB(DatabaseName, DatabasePath)
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+
+	dbHandler := infrastructure.DatabaseHandler{Database: db}
+	cr := categories.CategoryRepository{DBHandler: &dbHandler}
+	i := categories.Interactor{Repository: &cr}
+
+	cats, err := i.GetCategories()
+	if err != nil {
+		return "", err
+	}
+
+	out := ""
+	for _, c := range cats {
+		out += fmt.Sprintf("%s\n", c.Name)
+	}
+
+	return out, nil
 }
 
 // showReportHandler handles report commands

@@ -78,7 +78,7 @@ func TestSystemCategories(t *testing.T) {
 
 	name = "Show category"
 	command = []string{"category", "show"}
-	expected = categoryName
+	expected = categoryName + "\n"
 
 	cmd = exec.Command("../../bank", command...)
 	stdoutStderr, err = cmd.CombinedOutput()

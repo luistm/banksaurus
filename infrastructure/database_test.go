@@ -75,7 +75,6 @@ func TestQuery(t *testing.T) {
 			assert.NoError(t, err)
 
 			e := &ErrDataBase{"testError"}
-			mock.ExpectBegin()
 			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(e)
 
 			dbh = &DatabaseHandler{Database: dbConnMock}

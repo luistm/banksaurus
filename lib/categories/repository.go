@@ -19,7 +19,7 @@ const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
 // IRow ...
 type IRow interface {
-	Scan(dest ...interface{})
+	Scan(dest ...interface{}) error
 	Next() bool
 }
 
@@ -56,12 +56,28 @@ func (cr *CategoryRepository) Get(name string) (*Category, error) {
 		return &Category{}, fmt.Errorf("Database failure: %s", err)
 	}
 
-	// Build category from rows
-
 	return &Category{}, nil
 }
 
 // GetAll fetches all categories
 func (cr *CategoryRepository) GetAll() ([]*Category, error) {
-	return []*Category{}, nil
+	statement := "SELECT * FROM categories"
+	rows, err := cr.DBHandler.Query(statement)
+	if err != nil {
+		return []*Category{}, fmt.Errorf("Database failure: %s", err)
+	}
+
+	categories := []*Category{}
+
+	for rows.Next() {
+		var id int
+		var cat string
+		err := rows.Scan(&id, &cat)
+		if err != nil {
+			return nil, err
+		}
+		categories = append(categories, &Category{Name: cat})
+	}
+
+	return categories, nil
 }

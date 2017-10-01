@@ -34,6 +34,7 @@ func (dh *DatabaseHandler) Execute(statement string, values ...interface{}) erro
 	tx, _ := dh.Database.Begin()
 	_, err := tx.Exec(statement, values...)
 	if err != nil {
+		// TODO: tx.Rollback
 		return &ErrDataBase{err.Error()}
 	}
 	tx.Commit()
@@ -47,12 +48,10 @@ func (dh *DatabaseHandler) Query(statement string) (categories.IRow, error) {
 		return nil, ErrDataBaseConnUndefined
 	}
 
-	tx, _ := dh.Database.Begin()
-	_, err := tx.Query(statement)
+	rows, err := dh.Database.Query(statement)
 	if err != nil {
 		return nil, &ErrDataBase{err.Error()}
 	}
-	tx.Commit()
 
-	return nil, nil
+	return rows, nil
 }
