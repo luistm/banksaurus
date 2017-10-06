@@ -22,7 +22,8 @@ var usage = `Usage:
 	bank -h | --help
 	bank report --input <file>
 	bank category new <name>
-	bank category show`
+	bank category show
+	bank description show`
 
 var options = `
 Options:

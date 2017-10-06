@@ -33,7 +33,7 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:          "Shows report from file",
-			command:       []string{"report", "--input", "../../tests/fixtures/test_file.csv"},
+			command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
 			expected:      "Expense is  0\nCredit is  0\n",
 			errorExpected: false,
 		},
@@ -57,6 +57,38 @@ func TestSystem(t *testing.T) {
 		}
 		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
 	}
+}
+
+func TestSystemDescriptions(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	name := "Shows report from file"
+	command := []string{"report", "--input", "./tests/fixtures/test_file.csv"}
+	expected := "Expense is  0\nCredit is  0\n"
+
+	cmd := exec.Command("../../bank", command...)
+	stdoutStderr, err := cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, string(stdoutStderr), name)
+
+	name = "Shows report from file"
+	command = []string{"description", "show"}
+	expected = "COMPRA CONTINENTE MAI\nLEVANTAMENTO Est Circ\nCOMPRA MODELO BONJOUR\nCOMPRA LIDL   CIA  LJ\nBX VALOR 03 TRANSACCO\n"
+
+	cmd = exec.Command("../../bank", command...)
+	stdoutStderr, err = cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, string(stdoutStderr), name)
+
+	// Remove any test files
+	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
+		t.Error(err)
+	}
+
 }
 
 func TestSystemCategories(t *testing.T) {
