@@ -63,7 +63,7 @@ func showReportHandler(inputFilePath string) (string, error) {
 	}
 	defer file.Close()
 
-	err = reports.MonthlyReport(file)
+	err = reports.LoadReport(file)
 	if err != nil {
 		return "", err
 	}

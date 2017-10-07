@@ -3,14 +3,40 @@ package reports
 import (
 	"fmt"
 	"go-bank-cli/lib/transactions"
-
 	"io"
 
 	"github.com/shopspring/decimal"
 )
 
-// MonthlyReport builds a sum of expenses and credits
-func MonthlyReport(file io.Reader) error {
+// IRepository is the interface for report repositories
+type IRepository interface {
+	AllTransactions() ([]*Transaction, error)
+}
+
+// Interactor ...
+type Interactor struct {
+	Repository IRepository
+}
+
+// MonthlyReport produces a report for the current month
+func (i *Interactor) MonthlyReport() (*Report, error) {
+
+	// Import transactions from this month
+	_, err := i.Repository.AllTransactions()
+	if err != nil {
+		return &Report{}, fmt.Errorf("Failed to create report: %s", err)
+	}
+	// For each expense transaction
+	// If transaction isDebt: Report.AddExpense(t)
+	// If transaction isCredit: Report.AddCredit(t)
+	//
+	// Return report, nil
+
+	return &Report{}, nil
+}
+
+// LoadReport loads an external list of an account movement
+func LoadReport(file io.Reader) error {
 
 	records, err := ImportData(file)
 	if err != nil {
