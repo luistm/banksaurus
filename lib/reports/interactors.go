@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"go-bank-cli/lib/transactions"
-	"io"
 
 	"github.com/shopspring/decimal"
 )
@@ -41,9 +40,9 @@ func (i *Interactor) MonthlyReport() (*Report, error) {
 }
 
 // LoadReport loads an external list of an account movement
-func LoadReport(file io.Reader) error {
+func LoadReport(filePath string) error {
 
-	records, err := ImportData(file)
+	records, err := ParseAccountMovements(filePath)
 	if err != nil {
 		return fmt.Errorf("Failed to import data: %s", err)
 	}

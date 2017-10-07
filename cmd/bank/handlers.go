@@ -57,13 +57,8 @@ func showCategoryHandler() (string, error) {
 
 // showReportHandler handles report commands
 func showReportHandler(inputFilePath string) (string, error) {
-	file, err := infrastructure.OpenFile(inputFilePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
 
-	err = reports.LoadReport(file)
+	err := reports.LoadReport(inputFilePath)
 	if err != nil {
 		return "", err
 	}

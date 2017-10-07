@@ -1,21 +1,18 @@
 package reports
 
 import (
-	"encoding/csv"
-	"io"
+	"go-bank-cli/infrastructure"
 )
 
-// ImportData imports data from a data source
-func ImportData(r io.Reader) ([][]string, error) {
+// ParseAccountMovements imports data from a data source
+func ParseAccountMovements(filePath string) ([][]string, error) {
 
-	reader := csv.NewReader(r)
-	reader.Comma = ';'
-	reader.FieldsPerRecord = -1
-
-	records, err := reader.ReadAll()
+	fileRecords, err := infrastructure.OpenFile(filePath)
 	if err != nil {
 		return [][]string{}, err
 	}
 
-	return records, nil
+	// TODO: Transfor records into transactions
+
+	return fileRecords, nil
 }
