@@ -1,6 +1,10 @@
 package descriptions
 
-// Description describes a single entity which an account interacts
+// IRepository ...
+type IRepository interface{}
+
+// Description describes a single entity of many, which an account interacts with
 type Description struct {
-	name string
+	rawName      string
+	friendlyName string
 }
