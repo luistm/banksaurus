@@ -7,13 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestInitStorage(t *testing.T) {
+func TestUnitInitStorage(t *testing.T) {
 	// NOTE: Actually i don't like tests which touch the disk
 	// I will look into this when i have the time. For now it will do....
-
-	if !testing.Short() {
-		t.Skip()
-	}
 
 	testCases := []struct {
 		name          string

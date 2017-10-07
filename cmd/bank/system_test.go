@@ -9,9 +9,6 @@ import (
 )
 
 func TestSystem(t *testing.T) {
-	if testing.Short() {
-		t.Skip()
-	}
 
 	testCases := []struct {
 		name          string
@@ -60,9 +57,6 @@ func TestSystem(t *testing.T) {
 }
 
 func TestSystemDescriptions(t *testing.T) {
-	if testing.Short() {
-		t.Skip()
-	}
 
 	name := "Shows report from file"
 	command := []string{"report", "--input", "./tests/fixtures/test_file.csv"}
@@ -92,9 +86,6 @@ func TestSystemDescriptions(t *testing.T) {
 }
 
 func TestSystemCategories(t *testing.T) {
-	if testing.Short() {
-		t.Skip()
-	}
 
 	categoryName := "ThisIsACategoryNameForTesting"
 

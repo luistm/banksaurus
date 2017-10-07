@@ -8,10 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestExecutesStatement(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitExecutesStatement(t *testing.T) {
 
 	name := "Returns error if sql database is not defined"
 	dbh := &DatabaseHandler{}
@@ -38,10 +35,7 @@ func TestExecutesStatement(t *testing.T) {
 	// TODO: Test transaction commit error
 }
 
-func TestQuery(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitQuery(t *testing.T) {
 
 	testCases := []struct {
 		name          string

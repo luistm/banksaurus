@@ -27,10 +27,7 @@ func (m *repositoryMock) GetAll() ([]*Category, error) {
 	return args.Get(0).([]*Category), args.Error(1)
 }
 
-func TestGetCategories(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitGetCategories(t *testing.T) {
 
 	testCases := []struct {
 		name          string
@@ -105,10 +102,7 @@ func TestGetCategories(t *testing.T) {
 
 }
 
-func TestGetCategory(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitGetCategory(t *testing.T) {
 
 	m := new(repositoryMock)
 	i := new(Interactor)
@@ -145,10 +139,7 @@ func TestGetCategory(t *testing.T) {
 	assert.Equal(t, categoryName, c[0].Name, name)
 }
 
-func TestNewCategory(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitNewCategory(t *testing.T) {
 
 	m := new(repositoryMock)
 	i := new(Interactor)

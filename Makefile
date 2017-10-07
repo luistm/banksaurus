@@ -10,16 +10,16 @@ clean:
 test: unit-tests system-tests coverage-unit
 
 unit-tests:
-	go test ./... -short
+	go test ./... -run Unit
 
 coverage-unit:
-	go test ./... -short -cover
+	go test ./... -run Unit -cover
 
 system-tests: build
 	go test ./... -run System -v
 
 coverage-package:
-	go test $(PACKAGE)  -short -cover -covermode=count -coverprofile=count.out
+	go test $(PACKAGE)  -run Unit -cover -covermode=count -coverprofile=count.out
 	go tool cover -func=count.out
 	
 deps:

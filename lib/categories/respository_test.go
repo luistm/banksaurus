@@ -23,9 +23,6 @@ func (m *mockDBHandler) Query(statement string) (IRow, error) {
 }
 
 func TestCategoryRepositoryGetAll(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
 
 	testCases := []struct {
 		name string
@@ -39,10 +36,7 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 	}
 }
 
-func TestCategoryRepositorySave(t *testing.T) {
-	if !testing.Short() {
-		t.Skip()
-	}
+func TestUnitCategoryRepositorySave(t *testing.T) {
 
 	// Category has no name
 	name := "Returns error if category has no name"
