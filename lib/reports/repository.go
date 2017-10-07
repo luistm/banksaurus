@@ -1,18 +1,58 @@
 package reports
 
 import (
+	"fmt"
 	"go-bank-cli/infrastructure"
+	"go-bank-cli/lib/transactions"
+
+	"github.com/shopspring/decimal"
 )
 
 // ParseAccountMovements imports data from a data source
-func ParseAccountMovements(filePath string) ([][]string, error) {
+func ParseAccountMovements(filePath string) error {
 
 	fileRecords, err := infrastructure.OpenFile(filePath)
 	if err != nil {
-		return [][]string{}, err
+		return err
 	}
 
-	// TODO: Transfor records into transactions
+	var report map[string]decimal.Decimal
+	report = make(map[string]decimal.Decimal)
+	var credit decimal.Decimal
+	var expense decimal.Decimal
 
-	return fileRecords, nil
+	// Read all transactions
+	for lineCount, record := range fileRecords {
+
+		r := transactions.Record{Record: record}
+
+		if !r.Valid() || lineCount < 4 {
+			continue
+		}
+
+		t := transactions.Transaction{}
+		transaction := t.New(r)
+
+		// descriptions.New(transaction.Description)
+
+		if transaction.IsFromThisMonth() {
+			report[transaction.Description] = report[transaction.Description].Add(transaction.Value())
+			if transaction.IsDebt() {
+				expense = expense.Add(transaction.Value())
+			} else {
+				credit = credit.Add(transaction.Value())
+			}
+		}
+
+	}
+
+	for transactionDescription, transactionValue := range report {
+		fmt.Printf("%24s %8s \n", transactionDescription, transactionValue.String())
+	}
+
+	fmt.Println("Expense is ", expense.String())
+	fmt.Println("Credit is ", credit.String())
+
+	return nil
+
 }
