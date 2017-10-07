@@ -21,17 +21,23 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 
 	testCases := []struct {
 		name           string
-		i              *Interactor
 		mockRepository *mockRepository
 		mockReturn     []interface{}
 		expectedReport *Report
 		expectedError  error
 	}{
 		{
+			name:           "Returns error if respository is not defined",
+			mockRepository: nil,
+			mockReturn:     []interface{}{},
+			expectedReport: &Report{},
+			expectedError:  errors.New("Failed"),
+		},
+		{
 			name:           "Returns error if transactions repository returns error",
-			i:              &Interactor{},
 			mockRepository: new(mockRepository),
-			mockReturn:     []interface{}{[]*Transaction{}, errors.New("Repository error")},
+			mockReturn: []interface{}{[]*Transaction{},
+				errors.New("Repository error")},
 			expectedReport: &Report{},
 			expectedError:  errors.New("Failed"),
 		},
@@ -39,13 +45,17 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
+			i := &Interactor{}
+			if tc.mockRepository != nil {
+				tc.mockRepository.On("AllTransactions").Return(tc.mockReturn...)
+				i.Repository = tc.mockRepository
+			}
 
-			tc.mockRepository.On("AllTransactions").Return(tc.mockReturn...)
-			tc.i.Repository = tc.mockRepository
+			r, err := i.MonthlyReport()
 
-			r, err := tc.i.MonthlyReport()
-
-			tc.mockRepository.AssertExpectations(t)
+			if tc.mockRepository != nil {
+				tc.mockRepository.AssertExpectations(t)
+			}
 			if tc.expectedError != nil && err == nil {
 				t.Errorf("Expecting %v, got %v", tc.expectedError, err)
 			}

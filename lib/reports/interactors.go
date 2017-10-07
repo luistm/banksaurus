@@ -1,6 +1,7 @@
 package reports
 
 import (
+	"errors"
 	"fmt"
 	"go-bank-cli/lib/transactions"
 	"io"
@@ -20,6 +21,10 @@ type Interactor struct {
 
 // MonthlyReport produces a report for the current month
 func (i *Interactor) MonthlyReport() (*Report, error) {
+
+	if i.Repository == nil {
+		return &Report{}, errors.New("Repository is not defined")
+	}
 
 	// Import transactions from this month
 	_, err := i.Repository.AllTransactions()
