@@ -14,7 +14,7 @@ var DatabasePath = "/tmp"
 // createCategoryHandler handles category creation command
 func createCategoryHandler(name string) (string, error) {
 
-	storage, err := sqlite.New(DatabasePath, DatabaseName)
+	storage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
 	}
@@ -32,7 +32,7 @@ func createCategoryHandler(name string) (string, error) {
 }
 
 func showCategoryHandler() (string, error) {
-	storage, err := sqlite.New(DatabasePath, DatabaseName)
+	storage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
 	}

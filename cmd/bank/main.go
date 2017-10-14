@@ -33,7 +33,7 @@ Options:
 func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
-	storage, err := sqlite.New(DatabasePath, DatabaseName)
+	storage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		errorf("Error:", err)
 	}

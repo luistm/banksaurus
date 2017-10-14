@@ -2,7 +2,6 @@ package sqlite
 
 import (
 	"database/sql"
-	"os"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
@@ -11,8 +10,6 @@ import (
 )
 
 func TestUnitNew(t *testing.T) {
-	// NOTE: Actually i don't like tests which touch the disk
-	// I will look into this when i have the time. For now it will do....
 
 	testCases := []struct {
 		name          string
@@ -42,17 +39,12 @@ func TestUnitNew(t *testing.T) {
 
 	for _, tc := range testCases {
 		// TODO: test that the correct interface is returned
-		_, err := New(tc.dbPath, tc.dbName)
+		_, err := New(tc.dbPath, tc.dbName, true)
 
 		if tc.errorExpected {
 			assert.Error(t, err, tc.name)
 		} else {
 			assert.NoError(t, err, tc.name)
-
-			// Remove any test files
-			if err := os.RemoveAll(tc.dbPath); err != nil {
-				t.Error(err)
-			}
 		}
 	}
 
