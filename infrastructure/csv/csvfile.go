@@ -1,4 +1,4 @@
-package infrastructure
+package csv
 
 import (
 	"encoding/csv"

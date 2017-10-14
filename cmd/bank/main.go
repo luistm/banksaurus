@@ -8,7 +8,7 @@ import (
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
-	"github.com/luistm/go-bank-cli/infrastructure"
+	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 )
 
 func errorf(format string, args ...interface{}) {
@@ -33,11 +33,11 @@ Options:
 func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
-
-	err := infrastructure.InitStorage(DatabaseName, DatabasePath)
+	storage, err := sqlite.New(DatabasePath, DatabaseName)
 	if err != nil {
 		errorf("Error:", err)
 	}
+	defer storage.Close()
 
 	out := ""
 	if arguments["category"].(bool) && arguments["new"].(bool) {

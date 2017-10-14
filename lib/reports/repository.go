@@ -3,7 +3,7 @@ package reports
 import (
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/infrastructure"
+	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/lib/transactions"
 
 	"github.com/shopspring/decimal"
@@ -12,7 +12,7 @@ import (
 // ParseAccountMovements imports data from a data source
 func ParseAccountMovements(filePath string) error {
 
-	fileRecords, err := infrastructure.OpenFile(filePath)
+	fileRecords, err := csv.OpenFile(filePath)
 	if err != nil {
 		return err
 	}

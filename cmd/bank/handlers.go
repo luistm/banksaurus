@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/luistm/go-bank-cli/infrastructure"
+
+	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
 	"github.com/luistm/go-bank-cli/lib/reports"
 )
@@ -13,14 +14,13 @@ var DatabasePath = "/tmp"
 // createCategoryHandler handles category creation command
 func createCategoryHandler(name string) (string, error) {
 
-	db, err := infrastructure.ConnectDB(DatabaseName, DatabasePath)
+	storage, err := sqlite.New(DatabasePath, DatabaseName)
 	if err != nil {
 		return "", err
 	}
-	defer db.Close()
+	defer storage.Close()
 
-	dbHandler := infrastructure.DatabaseHandler{Database: db}
-	cr := categories.CategoryRepository{DBHandler: &dbHandler}
+	cr := categories.CategoryRepository{DBHandler: storage}
 	i := categories.Interactor{Repository: &cr}
 	cats, err := i.NewCategory(name)
 	if err != nil {
@@ -32,14 +32,13 @@ func createCategoryHandler(name string) (string, error) {
 }
 
 func showCategoryHandler() (string, error) {
-	db, err := infrastructure.ConnectDB(DatabaseName, DatabasePath)
+	storage, err := sqlite.New(DatabasePath, DatabaseName)
 	if err != nil {
 		return "", err
 	}
-	defer db.Close()
+	defer storage.Close()
 
-	dbHandler := infrastructure.DatabaseHandler{Database: db}
-	cr := categories.CategoryRepository{DBHandler: &dbHandler}
+	cr := categories.CategoryRepository{DBHandler: storage}
 	i := categories.Interactor{Repository: &cr}
 
 	cats, err := i.GetCategories()

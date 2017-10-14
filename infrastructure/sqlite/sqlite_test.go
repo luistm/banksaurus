@@ -1,19 +1,69 @@
-package infrastructure
+package sqlite
 
 import (
 	"database/sql"
+	"os"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
+
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUnitExecutesStatement(t *testing.T) {
+func TestUnitNew(t *testing.T) {
+	// NOTE: Actually i don't like tests which touch the disk
+	// I will look into this when i have the time. For now it will do....
+
+	testCases := []struct {
+		name          string
+		dbName        string
+		dbPath        string
+		errorExpected bool
+	}{
+		{
+			name:          "Name is empty",
+			dbName:        "",
+			dbPath:        "ignoreThisForNow",
+			errorExpected: true,
+		},
+		{
+			name:          "Path is empty",
+			dbName:        "ignoreThisForNow",
+			dbPath:        "",
+			errorExpected: true,
+		},
+		{
+			name:          "Path does not exist",
+			dbName:        "ignoreThisForNow",
+			dbPath:        "./ThisPathDoesNotExist",
+			errorExpected: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		// TODO: test that the correct interface is returned
+		_, err := New(tc.dbPath, tc.dbName)
+
+		if tc.errorExpected {
+			assert.Error(t, err, tc.name)
+		} else {
+			assert.NoError(t, err, tc.name)
+
+			// Remove any test files
+			if err := os.RemoveAll(tc.dbPath); err != nil {
+				t.Error(err)
+			}
+		}
+	}
+
+}
+
+func TestUnitSqliteExecute(t *testing.T) {
 
 	name := "Returns error if sql database is not defined"
-	dbh := &DatabaseHandler{}
+	dbh := &Sqlite{}
 	err := dbh.Execute("SELECT * FROM testTable")
-	assert.EqualError(t, err, ErrDataBaseConnUndefined.Error(), name)
+	assert.EqualError(t, err, errConnectionIsNil.Error(), name)
 
 	name = "Returns error if database returns error"
 	dbConnMock, mock, err := sqlmock.New()
@@ -23,7 +73,7 @@ func TestUnitExecutesStatement(t *testing.T) {
 
 	mock.ExpectBegin()
 	mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnError(e)
-	dbh = &DatabaseHandler{dbConnMock}
+	dbh = &Sqlite{dbConnMock}
 
 	err = dbh.Execute("SELECT * FROM testTable")
 
@@ -35,7 +85,7 @@ func TestUnitExecutesStatement(t *testing.T) {
 	// TODO: Test transaction commit error
 }
 
-func TestUnitQuery(t *testing.T) {
+func TestUnitSqliteQuery(t *testing.T) {
 
 	testCases := []struct {
 		name          string
@@ -60,7 +110,7 @@ func TestUnitQuery(t *testing.T) {
 	for _, tc := range testCases {
 
 		// Setup
-		var dbh *DatabaseHandler
+		var dbh *Sqlite
 		var mock sqlmock.Sqlmock
 		var dbConnMock *sql.DB
 		var err error
@@ -71,10 +121,10 @@ func TestUnitQuery(t *testing.T) {
 			e := &ErrDataBase{"testError"}
 			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(e)
 
-			dbh = &DatabaseHandler{Database: dbConnMock}
+			dbh = &Sqlite{db: dbConnMock}
 
 		} else {
-			dbh = &DatabaseHandler{}
+			dbh = &Sqlite{}
 		}
 
 		// Call the function being tested
