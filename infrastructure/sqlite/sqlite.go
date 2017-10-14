@@ -19,7 +19,7 @@ var errFailedToCreatedDB = errors.New("failed to create database")
 func New(path string, name string, memory bool) (infrastructure.Storage, error) {
 
 	if name == "" || path == "" {
-		return &Sqlite{}, errInvalidConfiguration
+		return &sqlite{}, errInvalidConfiguration
 	}
 
 	var db *sql.DB
@@ -29,7 +29,7 @@ func New(path string, name string, memory bool) (infrastructure.Storage, error) 
 		db, err = sql.Open("sqlite3", ":memory:")
 	} else {
 		if err := validatePath(path); err != nil {
-			return &Sqlite{}, errInvalidConfiguration
+			return &sqlite{}, errInvalidConfiguration
 		}
 		db, err = sql.Open("sqlite3", path+"/"+name+".db")
 	}
@@ -44,10 +44,10 @@ func New(path string, name string, memory bool) (infrastructure.Storage, error) 
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return &Sqlite{}, errFailedToCreatedDB
+		return &sqlite{}, errFailedToCreatedDB
 	}
 
-	s := &Sqlite{db}
+	s := &sqlite{db}
 	return s, nil
 }
 
@@ -73,13 +73,13 @@ func validatePath(path string) error {
 	return nil
 }
 
-// Sqlite contains a sqlite database
-type Sqlite struct {
+// sqlite contains a sqlite database
+type sqlite struct {
 	db *sql.DB
 }
 
 // Close closes the connection with the sqlite database
-func (s *Sqlite) Close() error {
+func (s *sqlite) Close() error {
 	if s.db == nil {
 		return errConnectionIsNil
 	}
@@ -88,7 +88,7 @@ func (s *Sqlite) Close() error {
 }
 
 // Execute is to execute an sql statement
-func (s *Sqlite) Execute(statement string, values ...interface{}) error {
+func (s *sqlite) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
 		return errConnectionIsNil
 	}
@@ -105,7 +105,7 @@ func (s *Sqlite) Execute(statement string, values ...interface{}) error {
 }
 
 // Query fetches data from the database
-func (s *Sqlite) Query(statement string) (entities.Row, error) {
+func (s *sqlite) Query(statement string) (entities.Row, error) {
 	if s.db == nil {
 		return nil, errConnectionIsNil
 	}

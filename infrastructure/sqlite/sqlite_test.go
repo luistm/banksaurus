@@ -50,10 +50,10 @@ func TestUnitNew(t *testing.T) {
 
 }
 
-func TestUnitSqliteExecute(t *testing.T) {
+func TestUnitsqliteExecute(t *testing.T) {
 
 	name := "Returns error if sql database is not defined"
-	dbh := &Sqlite{}
+	dbh := &sqlite{}
 	err := dbh.Execute("SELECT * FROM testTable")
 	assert.EqualError(t, err, errConnectionIsNil.Error(), name)
 
@@ -65,7 +65,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 
 	mock.ExpectBegin()
 	mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnError(e)
-	dbh = &Sqlite{dbConnMock}
+	dbh = &sqlite{dbConnMock}
 
 	err = dbh.Execute("SELECT * FROM testTable")
 
@@ -77,7 +77,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 	// TODO: Test transaction commit error
 }
 
-func TestUnitSqliteQuery(t *testing.T) {
+func TestUnitsqliteQuery(t *testing.T) {
 
 	testCases := []struct {
 		name          string
@@ -102,7 +102,7 @@ func TestUnitSqliteQuery(t *testing.T) {
 	for _, tc := range testCases {
 
 		// Setup
-		var dbh *Sqlite
+		var dbh *sqlite
 		var mock sqlmock.Sqlmock
 		var dbConnMock *sql.DB
 		var err error
@@ -113,10 +113,10 @@ func TestUnitSqliteQuery(t *testing.T) {
 			e := &ErrDataBase{"testError"}
 			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(e)
 
-			dbh = &Sqlite{db: dbConnMock}
+			dbh = &sqlite{db: dbConnMock}
 
 		} else {
-			dbh = &Sqlite{}
+			dbh = &sqlite{}
 		}
 
 		// Call the function being tested
