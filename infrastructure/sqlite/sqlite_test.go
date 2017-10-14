@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"reflect"
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
@@ -9,42 +10,36 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUnitNew(t *testing.T) {
+func TestUnitNewSqlite(t *testing.T) {
 
 	testCases := []struct {
-		name          string
-		dbName        string
-		dbPath        string
-		errorExpected bool
+		name     string
+		dbName   string
+		dbPath   string
+		expected []interface{}
 	}{
 		{
-			name:          "Name is empty",
-			dbName:        "",
-			dbPath:        "ignoreThisForNow",
-			errorExpected: true,
+			name:     "Name is empty",
+			dbName:   "",
+			dbPath:   "ignoreThisForNow",
+			expected: []interface{}{&sqlite{}, errInvalidConfiguration},
 		},
 		{
-			name:          "Path is empty",
-			dbName:        "ignoreThisForNow",
-			dbPath:        "",
-			errorExpected: true,
+			name:     "Path is empty",
+			dbName:   "ignoreThisForNow",
+			dbPath:   "",
+			expected: []interface{}{&sqlite{}, errInvalidConfiguration},
 		},
-		{
-			name:          "Path does not exist",
-			dbName:        "ignoreThisForNow",
-			dbPath:        "./ThisPathDoesNotExist",
-			errorExpected: false,
-		},
+		// TODO: Test that exec was called as it should be
 	}
 
 	for _, tc := range testCases {
-		// TODO: test that the correct interface is returned
-		_, err := New(tc.dbPath, tc.dbName, true)
+		t.Log(tc.name)
 
-		if tc.errorExpected {
-			assert.Error(t, err, tc.name)
-		} else {
-			assert.NoError(t, err, tc.name)
+		storage, err := New(tc.dbPath, tc.dbName, true)
+
+		if !reflect.DeepEqual(tc.expected, []interface{}{storage, err}) {
+			t.Errorf("Expected %v, got %v", tc.expected, storage)
 		}
 	}
 
