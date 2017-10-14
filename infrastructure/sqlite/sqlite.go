@@ -18,16 +18,13 @@ var errFailedToCreatedDB = errors.New("failed to create database")
 // New creates a new instance of sqlite
 func New(path string, name string, memory bool) (infrastructure.Storage, error) {
 
-	if name == "" {
-		return &Sqlite{}, errInvalidConfiguration
-	}
-
-	if path == "" {
+	if name == "" || path == "" {
 		return &Sqlite{}, errInvalidConfiguration
 	}
 
 	var db *sql.DB
 	var err error
+
 	if memory {
 		db, err = sql.Open("sqlite3", ":memory:")
 	} else {
