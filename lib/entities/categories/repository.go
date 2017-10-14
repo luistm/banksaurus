@@ -3,6 +3,8 @@ package categories
 import (
 	"errors"
 	"fmt"
+
+	"github.com/luistm/go-bank-cli/lib/entities"
 )
 
 var errInvalidCategory = errors.New("Invalid category")
@@ -17,21 +19,9 @@ func (e *errInfrastructure) Error() string {
 
 const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
-// IRow ...
-type IRow interface {
-	Scan(dest ...interface{}) error
-	Next() bool
-}
-
-// IDBHandler ...
-type IDBHandler interface {
-	Execute(statement string, values ...interface{}) error
-	Query(statement string) (IRow, error)
-}
-
 // CategoryRepository allows us the save a read categories from a repository
 type CategoryRepository struct {
-	DBHandler IDBHandler
+	DBHandler entities.InfrastructureHandler
 }
 
 // Save to persist a category

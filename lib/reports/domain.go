@@ -1,8 +1,8 @@
 package reports
 
 import (
-	"github.com/luistm/go-bank-cli/lib/categories"
-	"github.com/luistm/go-bank-cli/lib/descriptions"
+	"github.com/luistm/go-bank-cli/lib/entities/categories"
+	"github.com/luistm/go-bank-cli/lib/entities/descriptions"
 )
 
 // Transaction is a single movement in an account

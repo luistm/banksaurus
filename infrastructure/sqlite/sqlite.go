@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/luistm/go-bank-cli/infrastructure"
-	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/go-bank-cli/lib/entities"
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -105,7 +105,7 @@ func (s *Sqlite) Execute(statement string, values ...interface{}) error {
 }
 
 // Query fetches data from the database
-func (s *Sqlite) Query(statement string) (categories.IRow, error) {
+func (s *Sqlite) Query(statement string) (entities.Row, error) {
 	if s.db == nil {
 		return nil, errConnectionIsNil
 	}

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/lib/entities"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -17,9 +18,9 @@ func (m *mockDBHandler) Execute(statement string, value ...interface{}) error {
 	return args.Error(0)
 }
 
-func (m *mockDBHandler) Query(statement string) (IRow, error) {
+func (m *mockDBHandler) Query(statement string) (entities.Row, error) {
 	args := m.Called(statement)
-	return args.Get(0).(IRow), args.Error(1)
+	return args.Get(0).(entities.Row), args.Error(1)
 }
 
 func TestCategoryRepositoryGetAll(t *testing.T) {

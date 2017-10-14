@@ -1,9 +1,9 @@
 package infrastructure
 
-import "github.com/luistm/go-bank-cli/lib/categories"
+import "github.com/luistm/go-bank-cli/lib/entities"
 
 // Storage ...
 type Storage interface {
-	categories.IDBHandler
+	entities.InfrastructureHandler
 	Close() error
 }
