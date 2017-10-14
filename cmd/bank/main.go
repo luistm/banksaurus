@@ -5,10 +5,10 @@ package main
 
 import (
 	"fmt"
-	"go-bank-cli/infrastructure"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
+	"github.com/luistm/go-bank-cli/infrastructure"
 )
 
 func errorf(format string, args ...interface{}) {

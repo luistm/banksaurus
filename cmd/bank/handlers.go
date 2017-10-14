@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-bank-cli/infrastructure"
-	"go-bank-cli/lib/categories"
-	"go-bank-cli/lib/reports"
+	"github.com/luistm/go-bank-cli/infrastructure"
+	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/go-bank-cli/lib/reports"
 )
 
 var DatabaseName = "bank.db"

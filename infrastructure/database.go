@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"errors"
-	"go-bank-cli/lib/categories"
+	"github.com/luistm/go-bank-cli/lib/categories"
 )
 
 // ErrDataBaseConnUndefined is to be returns when the

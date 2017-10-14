@@ -2,8 +2,9 @@ package reports
 
 import (
 	"fmt"
-	"go-bank-cli/infrastructure"
-	"go-bank-cli/lib/transactions"
+
+	"github.com/luistm/go-bank-cli/infrastructure"
+	"github.com/luistm/go-bank-cli/lib/transactions"
 
 	"github.com/shopspring/decimal"
 )
