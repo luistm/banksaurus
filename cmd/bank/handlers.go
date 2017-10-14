@@ -22,6 +22,7 @@ func createCategoryHandler(name string) (string, error) {
 
 	cr := categories.CategoryRepository{DBHandler: storage}
 	i := categories.Interactor{Repository: &cr}
+
 	cats, err := i.NewCategory(name)
 	if err != nil {
 		return "", err
