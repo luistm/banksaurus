@@ -68,7 +68,7 @@ func TestSystemDescriptions(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, string(stdoutStderr), name)
 
-	name = "Shows report from file"
+	name = "Shows descriptions loaded by the run report"
 	command = []string{"description", "show"}
 	expected = "COMPRA CONTINENTE MAI\nLEVANTAMENTO Est Circ\nCOMPRA MODELO BONJOUR\nCOMPRA LIDL   CIA  LJ\nBX VALOR 03 TRANSACCO\n"
 
