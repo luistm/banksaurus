@@ -1,11 +1,11 @@
 install: deps
-	go install ./cmd/bank
+	go install ./cmd/bankcli
 
 build: clean
-	go build -i -o bank ./cmd/bank 
+	go build -i -o bankcli ./cmd/bankcli
 
 clean:
-	- rm bank
+	- rm bankcli
 
 test: unit-tests system-tests coverage-unit
 
@@ -16,7 +16,7 @@ coverage-unit:
 	go test ./... -run Unit -cover
 
 system-tests: build
-	go test ./... -run System -v
+	go test ./... -run System
 
 coverage-package:
 	go test $(PACKAGE)  -run Unit -cover -covermode=count -coverprofile=count.out

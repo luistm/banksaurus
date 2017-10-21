@@ -1,6 +1,6 @@
 package infrastructure
 
-import "github.com/luistm/go-bank-cli/lib/entities"
+import "github.com/luistm/go-bank-cli/entities"
 
 // Storage ...
 type Storage interface {

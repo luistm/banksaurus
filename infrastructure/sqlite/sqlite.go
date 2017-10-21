@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/luistm/go-bank-cli/infrastructure"
-	"github.com/luistm/go-bank-cli/lib/entities"
+	"github.com/luistm/go-bank-cli/entities"
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
 )
