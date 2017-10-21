@@ -1,6 +1,6 @@
 package descriptions
 
-import "errors"
+import "github.com/luistm/go-bank-cli/lib/entities"
 
 // Interactor ...
 type Interactor struct {
@@ -11,7 +11,7 @@ type Interactor struct {
 func (i *Interactor) Add(name string) (*Description, error) {
 
 	if i.Repository == nil {
-		return &Description{}, errors.New("Repository is not defined")
+		return &Description{}, entities.ErrRepositoryIsNil
 	}
 
 	return &Description{}, nil

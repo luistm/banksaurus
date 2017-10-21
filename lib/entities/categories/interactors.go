@@ -3,14 +3,9 @@ package categories
 import (
 	"errors"
 	"fmt"
-)
 
-//IRepository is the interface for repositories which handle categories
-type IRepository interface {
-	Save(*Category) error
-	Get(string) (*Category, error)
-	GetAll() ([]*Category, error)
-}
+	"github.com/luistm/go-bank-cli/lib/entities"
+)
 
 // Interactor for categories
 type Interactor struct {
@@ -27,7 +22,7 @@ func (i *Interactor) NewCategory(name string) ([]*Category, error) {
 	}
 
 	if i.Repository == nil {
-		return cs, errors.New("Repository is not defined")
+		return cs, entities.ErrRepositoryIsNil
 	}
 
 	c := Category{Name: name}
@@ -44,12 +39,12 @@ func (i *Interactor) GetCategories() ([]*Category, error) {
 
 	cs := []*Category{}
 	if i.Repository == nil {
-		return cs, errors.New("Repository is not defined")
+		return cs, entities.ErrRepositoryIsNil
 	}
 
 	cs, err := i.Repository.GetAll()
 	if err != nil {
-		return cs, fmt.Errorf("Failed to get category: %s", err)
+		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}
 
 	return cs, nil
@@ -65,12 +60,12 @@ func (i *Interactor) GetCategory(name string) ([]*Category, error) {
 	}
 
 	if i.Repository == nil {
-		return cs, errors.New("Repository is not defined")
+		return cs, entities.ErrRepositoryIsNil
 	}
 
 	c, err := i.Repository.Get(name)
 	if err != nil {
-		return cs, fmt.Errorf("Failed to get category: %s", err)
+		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, c)

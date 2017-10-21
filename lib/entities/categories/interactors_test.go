@@ -114,12 +114,12 @@ func TestUnitGetCategory(t *testing.T) {
 	m.On("Get", categoryName).Return(&Category{}, errors.New("Error"))
 	_, err := i.GetCategory(categoryName)
 	m.AssertExpectations(t)
-	assert.EqualError(t, err, "Failed to get category: Error", name)
+	assert.EqualError(t, err, "repository error: Error", name)
 
 	name = "Fails to get category when no repository available"
 	i = new(Interactor)
 	_, err = i.GetCategory(categoryName)
-	assert.EqualError(t, err, "Repository is not defined", name)
+	assert.EqualError(t, err, "repository is undefined", name)
 
 	name = "Fails to get category if name is not defined"
 	i = new(Interactor)
@@ -155,7 +155,7 @@ func TestUnitNewCategory(t *testing.T) {
 	name = "Fails to create category if repository is not defined"
 	i = new(Interactor)
 	_, err = i.NewCategory(categoryName)
-	assert.EqualError(t, err, "Repository is not defined", name)
+	assert.EqualError(t, err, "repository is undefined", name)
 
 	name = "Fails to create category is name is empty"
 	i = new(Interactor)
