@@ -4,8 +4,7 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
-	"github.com/luistm/go-bank-cli/lib/transactions"
-
+	"github.com/luistm/go-bank-cli/lib/bank/accounts/transactions"
 	"github.com/shopspring/decimal"
 )
 

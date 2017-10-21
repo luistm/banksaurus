@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
+	"github.com/luistm/go-bank-cli/lib/bank/reports"
 	"github.com/luistm/go-bank-cli/lib/entities/categories"
-	"github.com/luistm/go-bank-cli/lib/reports"
 )
 
 var DatabaseName = "bank.db"
