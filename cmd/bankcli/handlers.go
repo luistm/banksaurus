@@ -31,7 +31,7 @@ func createCategoryHandler(name string) (string, error) {
 	return msg, nil
 }
 
-func showcategoriesHandler() (string, error) {
+func showCategoriesHandler() (string, error) {
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
@@ -52,7 +52,7 @@ func showcategoriesHandler() (string, error) {
 	return out, nil
 }
 
-func showDescriptionHandler(name string) (string, error) {
+func createDescriptionHandler(name string) (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/luistm/go-bank-cli/infrastructure"
 	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/infrastructure"
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -41,6 +41,8 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS categories
 	(id INTEGER NOT NULL PRIMARY KEY, name TEXT);
+	CREATE TABLE IF NOT EXISTS descriptions
+	(slug TEXT, friendlyName TEXT);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
