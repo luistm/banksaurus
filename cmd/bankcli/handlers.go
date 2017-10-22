@@ -5,6 +5,7 @@ import (
 
 	"github.com/luistm/go-bank-cli/bank/reports"
 	"github.com/luistm/go-bank-cli/entities/categories"
+	"github.com/luistm/go-bank-cli/entities/descriptions"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 )
 
@@ -53,6 +54,23 @@ func showCategoryHandler() (string, error) {
 	}
 
 	return out, nil
+}
+
+func showDescriptionHandler(name string) (string, error) {
+	var out string
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	if err != nil {
+		return out, err
+	}
+	defer SQLStorage.Close()
+
+	descriptionsInteractor := descriptions.NewInteractor(SQLStorage)
+	d, err := descriptionsInteractor.Add(name)
+	if err != nil {
+		return out, err
+	}
+
+	return d.String(), nil
 }
 
 // showReportHandler handles report commands

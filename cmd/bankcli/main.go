@@ -42,6 +42,9 @@ func main() {
 	if arguments["category"].(bool) && arguments["show"].(bool) {
 		out, err = showCategoryHandler()
 	}
+	if arguments["description"].(bool) && arguments["show"].(bool) {
+		out, err = showDescriptionHandler(arguments["<name>"].(string))
+	}
 
 	if arguments["report"].(bool) {
 		out, err = showReportHandler(arguments["<file>"].(string))

@@ -10,3 +10,7 @@ type Description struct {
 	rawName      string
 	friendlyName string
 }
+
+func (d *Description) String() string {
+	return d.friendlyName
+}
