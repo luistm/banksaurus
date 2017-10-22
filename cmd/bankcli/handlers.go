@@ -71,7 +71,7 @@ func createDescriptionHandler(name string) (string, error) {
 
 func showDescriptionsHandler() (string, error) {
 	var out string
-	SQLStorage, err := sqlite.New(DatabaseName, DatabasePath, false)
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return out, err
 	}
