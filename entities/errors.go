@@ -6,8 +6,8 @@ import "fmt"
 // ErrBadInput for inputs wich does not meet the requirements
 var ErrBadInput = errors.New("bad input")
 
-// ErrRepositoryIsNil to use when repository is not defined
-var ErrRepositoryIsNil = errors.New("repository is undefined")
+// ErrRepositoryUndefined to use when repository is not defined
+var ErrRepositoryUndefined = errors.New("repository is not defined")
 
 // ErrRepository for errors returned by repositories
 type ErrRepository struct {
@@ -16,7 +16,7 @@ type ErrRepository struct {
 
 // Error to return the error message
 func (e *ErrRepository) Error() string {
-	return fmt.Sprintf("repository error: %s", e.Msg)
+	return fmt.Sprintf("repository error, %s", e.Msg)
 }
 
 // ErrInfrastructureUndefined to use when infrastructure is not defined
@@ -28,5 +28,5 @@ type ErrInfrastructure struct {
 }
 
 func (e *ErrInfrastructure) Error() string {
-	return fmt.Sprintf("infrastructure error: %s", e.Msg)
+	return fmt.Sprintf("infrastructure error, %s", e.Msg)
 }

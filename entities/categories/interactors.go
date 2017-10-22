@@ -31,7 +31,7 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 	}
 
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryIsNil
+		return cs, entities.ErrRepositoryUndefined
 	}
 
 	c := Category{Name: name}
@@ -48,7 +48,7 @@ func (i *interactor) GetAll() ([]*Category, error) {
 
 	cs := []*Category{}
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryIsNil
+		return cs, entities.ErrRepositoryUndefined
 	}
 
 	cs, err := i.repository.GetAll()
@@ -69,7 +69,7 @@ func (i *interactor) GetCategory(name string) ([]*Category, error) {
 	}
 
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryIsNil
+		return cs, entities.ErrRepositoryUndefined
 	}
 
 	c, err := i.repository.Get(name)

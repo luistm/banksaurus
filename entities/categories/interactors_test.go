@@ -139,7 +139,7 @@ func TestUnitGetCategory(t *testing.T) {
 	assert.Equal(t, categoryName, c[0].Name, name)
 }
 
-func TestUnitAdd(t *testing.T) {
+func TestUnitInteractorAdd(t *testing.T) {
 
 	m := new(repositoryMock)
 	i := new(interactor)

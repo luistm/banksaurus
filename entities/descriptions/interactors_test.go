@@ -43,7 +43,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		{
 			name:       "Returns error if repository is not defined",
 			input:      description,
-			output:     []interface{}{&Description{}, entities.ErrRepositoryIsNil},
+			output:     []interface{}{&Description{}, entities.ErrRepositoryUndefined},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -113,7 +113,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]*Description{}, entities.ErrRepositoryIsNil},
+			output:     []interface{}{[]*Description{}, entities.ErrRepositoryUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},

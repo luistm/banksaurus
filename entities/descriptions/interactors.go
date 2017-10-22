@@ -23,7 +23,7 @@ func (i *interactor) Add(name string) (*Description, error) {
 	}
 
 	if i.repository == nil {
-		return &Description{}, entities.ErrRepositoryIsNil
+		return &Description{}, entities.ErrRepositoryUndefined
 	}
 
 	d := &Description{rawName: name}
@@ -38,7 +38,7 @@ func (i *interactor) GetAll() ([]*Description, error) {
 
 	descriptions := []*Description{}
 	if i.repository == nil {
-		return descriptions, entities.ErrRepositoryIsNil
+		return descriptions, entities.ErrRepositoryUndefined
 	}
 
 	return []*Description{}, nil
