@@ -35,5 +35,11 @@ func (i *interactor) Add(name string) (*Description, error) {
 }
 
 func (i *interactor) GetAll() ([]*Description, error) {
+
+	descriptions := []*Description{}
+	if i.repository == nil {
+		return descriptions, entities.ErrRepositoryIsNil
+	}
+
 	return []*Description{}, nil
 }

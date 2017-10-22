@@ -18,6 +18,16 @@ func (m *repositoryMock) Save(c *Description) error {
 	return args.Error(0)
 }
 
+func (m *repositoryMock) Get(s string) (*Description, error) {
+	args := m.Called(s)
+	return args.Get(0).(*Description), args.Error(1)
+}
+
+func (m *repositoryMock) GetAll() ([]*Description, error) {
+	args := m.Called()
+	return args.Get(0).([]*Description), args.Error(1)
+}
+
 func TestUnitInteractorAdd(t *testing.T) {
 
 	var description = "TestDescrition"
@@ -91,5 +101,41 @@ func TestUnitInteractorAdd(t *testing.T) {
 		}
 
 	}
+}
 
+func TestUnitInteractorGetAll(t *testing.T) {
+
+	testCases := []struct {
+		name       string
+		output     []interface{}
+		withMock   bool
+		mockOutput []interface{}
+	}{
+		{
+			name:       "Returns error if repository is undefined",
+			output:     []interface{}{[]*Description{}, entities.ErrRepositoryIsNil},
+			withMock:   false,
+			mockOutput: nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		i := interactor{}
+		var m *repositoryMock
+		if tc.withMock {
+			m = new(repositoryMock)
+			m.On("GetAll").Return(tc.mockOutput...)
+			i.repository = m
+		}
+
+		descriptions, err := i.GetAll()
+
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		got := []interface{}{descriptions, err}
+		if !reflect.DeepEqual(tc.output, got) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, got)
+		}
+	}
 }
