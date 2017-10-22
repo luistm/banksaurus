@@ -12,8 +12,8 @@ type Interactor struct {
 	Repository IRepository
 }
 
-// NewCategory allows the creation of a new category
-func (i *Interactor) NewCategory(name string) ([]*Category, error) {
+// Add allows the creation of a new category
+func (i *Interactor) Add(name string) ([]*Category, error) {
 
 	cs := []*Category{}
 

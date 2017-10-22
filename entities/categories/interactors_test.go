@@ -139,7 +139,7 @@ func TestUnitGetCategory(t *testing.T) {
 	assert.Equal(t, categoryName, c[0].Name, name)
 }
 
-func TestUnitNewCategory(t *testing.T) {
+func TestUnitAdd(t *testing.T) {
 
 	m := new(repositoryMock)
 	i := new(Interactor)
@@ -148,18 +148,18 @@ func TestUnitNewCategory(t *testing.T) {
 
 	name := "Fails to create a new category due to repository failure"
 	m.On("Save", &Category{Name: categoryName}).Return(errors.New("Error"))
-	c, err := i.NewCategory(categoryName)
+	c, err := i.Add(categoryName)
 	m.AssertExpectations(t)
 	assert.EqualError(t, err, "Failed to create category: Error", name)
 
 	name = "Fails to create category if repository is not defined"
 	i = new(Interactor)
-	_, err = i.NewCategory(categoryName)
+	_, err = i.Add(categoryName)
 	assert.EqualError(t, err, "repository is undefined", name)
 
 	name = "Fails to create category is name is empty"
 	i = new(Interactor)
-	_, err = i.NewCategory("")
+	_, err = i.Add("")
 	assert.EqualError(t, err, "Cannot create category whitout a category name")
 
 	name = "Creates category with specified name"
@@ -167,7 +167,7 @@ func TestUnitNewCategory(t *testing.T) {
 	m = new(repositoryMock)
 	i.Repository = m
 	m.On("Save", &Category{Name: categoryName}).Return(nil)
-	c, err = i.NewCategory(categoryName)
+	c, err = i.Add(categoryName)
 	m.AssertExpectations(t)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(c), name)
