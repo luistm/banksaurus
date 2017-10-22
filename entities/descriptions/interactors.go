@@ -33,3 +33,7 @@ func (i *interactor) Add(name string) (*Description, error) {
 
 	return d, nil
 }
+
+func (i *interactor) GetAll() ([]*Description, error) {
+	return []*Description{}, nil
+}

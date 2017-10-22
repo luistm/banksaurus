@@ -69,6 +69,27 @@ func createDescriptionHandler(name string) (string, error) {
 	return d.String(), nil
 }
 
+func showDescriptionsHandler() (string, error) {
+	var out string
+	SQLStorage, err := sqlite.New(DatabaseName, DatabasePath, false)
+	if err != nil {
+		return out, err
+	}
+	defer SQLStorage.Close()
+
+	descriptionsInteractor := descriptions.NewInteractor(SQLStorage)
+	descriptions, err := descriptionsInteractor.GetAll()
+	if err != nil {
+		return out, err
+	}
+
+	for _, d := range descriptions {
+		out += fmt.Sprintf("%s\n", d.String())
+	}
+
+	return out, nil
+}
+
 // showReportHandler handles report commands
 func showReportHandler(inputFilePath string) (string, error) {
 

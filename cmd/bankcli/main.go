@@ -47,6 +47,10 @@ func main() {
 		out, err = createDescriptionHandler(arguments["<name>"].(string))
 	}
 
+	if arguments["description"].(bool) && arguments["show"].(bool) {
+		out, err = showDescriptionsHandler()
+	}
+
 	if arguments["report"].(bool) {
 		out, err = showReportHandler(arguments["<file>"].(string))
 	}
