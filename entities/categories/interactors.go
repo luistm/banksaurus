@@ -4,8 +4,17 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/luistm/go-bank-cli/infrastructure"
+
 	"github.com/luistm/go-bank-cli/entities"
 )
+
+// NewInteractor creates an interactor for categories
+func NewInteractor(storage infrastructure.SQLStorage) *Interactor {
+	cr := Repository{SQLStorage: storage}
+
+	return &Interactor{Repository: &cr}
+}
 
 // Interactor for categories
 type Interactor struct {
@@ -34,8 +43,8 @@ func (i *Interactor) Add(name string) ([]*Category, error) {
 	return cs, nil
 }
 
-// GetCategories fetches all categories
-func (i *Interactor) GetCategories() ([]*Category, error) {
+// Get fetches all categories
+func (i *Interactor) Get() ([]*Category, error) {
 
 	cs := []*Category{}
 	if i.Repository == nil {

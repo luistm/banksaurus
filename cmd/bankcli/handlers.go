@@ -21,10 +21,8 @@ func createCategoryHandler(name string) (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	cr := categories.Repository{SQLStorage: SQLStorage}
-	i := categories.Interactor{Repository: &cr}
-
-	cats, err := i.Add(name)
+	categoriesInteractor := categories.NewInteractor(SQLStorage)
+	cats, err := categoriesInteractor.Add(name)
 	if err != nil {
 		return "", err
 	}
@@ -40,10 +38,8 @@ func showCategoryHandler() (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	cr := categories.Repository{SQLStorage: SQLStorage}
-	i := categories.Interactor{Repository: &cr}
-
-	cats, err := i.GetCategories()
+	categoriesInteractor := categories.NewInteractor(SQLStorage)
+	cats, err := categoriesInteractor.Get()
 	if err != nil {
 		return "", err
 	}
