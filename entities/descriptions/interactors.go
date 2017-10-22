@@ -4,19 +4,19 @@ import "github.com/luistm/go-bank-cli/entities"
 import "github.com/luistm/go-bank-cli/infrastructure"
 
 // NewInteractor creates a new interactor object for descriptions
-func NewInteractor(storage infrastructure.SQLStorage) *Interactor {
-	return &Interactor{
+func NewInteractor(storage infrastructure.SQLStorage) *interactor {
+	return &interactor{
 		repository: &repository{SQLStorage: storage},
 	}
 }
 
-// Interactor ...
-type Interactor struct {
+// interactor ...
+type interactor struct {
 	repository IRepository
 }
 
 // Add adds a new description
-func (i *Interactor) Add(name string) (*Description, error) {
+func (i *interactor) Add(name string) (*Description, error) {
 
 	if name == "" {
 		return &Description{}, entities.ErrBadInput

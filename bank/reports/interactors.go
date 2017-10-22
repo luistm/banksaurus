@@ -10,13 +10,13 @@ type IRepository interface {
 	AllTransactions() ([]*Transaction, error)
 }
 
-// Interactor ...
-type Interactor struct {
+// interactor ...
+type interactor struct {
 	repository IRepository
 }
 
 // MonthlyReport produces a report for the current month
-func (i *Interactor) MonthlyReport() (*Report, error) {
+func (i *interactor) MonthlyReport() (*Report, error) {
 
 	if i.repository == nil {
 		return &Report{}, errors.New("repository is not defined")

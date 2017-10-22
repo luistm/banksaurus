@@ -81,7 +81,7 @@ func TestUnitGet(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		i := new(Interactor)
+		i := new(interactor)
 		if tc.mock != nil {
 			i.repository = tc.mock
 			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
@@ -105,7 +105,7 @@ func TestUnitGet(t *testing.T) {
 func TestUnitGetCategory(t *testing.T) {
 
 	m := new(repositoryMock)
-	i := new(Interactor)
+	i := new(interactor)
 
 	i.repository = m
 	categoryName := "testCategory"
@@ -117,18 +117,18 @@ func TestUnitGetCategory(t *testing.T) {
 	assert.EqualError(t, err, "repository error: Error", name)
 
 	name = "Fails to get category when no repository available"
-	i = new(Interactor)
+	i = new(interactor)
 	_, err = i.GetCategory(categoryName)
 	assert.EqualError(t, err, "repository is undefined", name)
 
 	name = "Fails to get category if name is not defined"
-	i = new(Interactor)
+	i = new(interactor)
 	i.repository = m
 	_, err = i.GetCategory("")
 	assert.EqualError(t, err, "Cannot get category whitout a category name", name)
 
 	name = "Gets specified category"
-	i = new(Interactor)
+	i = new(interactor)
 	m = new(repositoryMock)
 	i.repository = m
 	m.On("Get", categoryName).Return(&Category{Name: categoryName}, nil)
@@ -142,7 +142,7 @@ func TestUnitGetCategory(t *testing.T) {
 func TestUnitAdd(t *testing.T) {
 
 	m := new(repositoryMock)
-	i := new(Interactor)
+	i := new(interactor)
 	i.repository = m
 	categoryName := "testCategory"
 
@@ -153,17 +153,17 @@ func TestUnitAdd(t *testing.T) {
 	assert.EqualError(t, err, "Failed to create category: Error", name)
 
 	name = "Fails to create category if repository is not defined"
-	i = new(Interactor)
+	i = new(interactor)
 	_, err = i.Add(categoryName)
 	assert.EqualError(t, err, "repository is undefined", name)
 
 	name = "Fails to create category is name is empty"
-	i = new(Interactor)
+	i = new(interactor)
 	_, err = i.Add("")
 	assert.EqualError(t, err, "Cannot create category whitout a category name")
 
 	name = "Creates category with specified name"
-	i = new(Interactor)
+	i = new(interactor)
 	m = new(repositoryMock)
 	i.repository = m
 	m.On("Save", &Category{Name: categoryName}).Return(nil)

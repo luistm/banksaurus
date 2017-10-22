@@ -45,7 +45,7 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			i := &Interactor{}
+			i := &interactor{}
 			if tc.mockRepository != nil {
 				tc.mockRepository.On("AllTransactions").Return(tc.mockReturn...)
 				i.repository = tc.mockRepository

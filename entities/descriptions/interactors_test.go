@@ -72,7 +72,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &Interactor{}
+		i := &interactor{}
 		var m *repositoryMock
 		if tc.withMock {
 			m = new(repositoryMock)

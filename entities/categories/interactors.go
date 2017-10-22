@@ -10,19 +10,19 @@ import (
 )
 
 // NewInteractor creates an interactor for categories
-func NewInteractor(storage infrastructure.SQLStorage) *Interactor {
+func NewInteractor(storage infrastructure.SQLStorage) *interactor {
 	cr := repository{SQLStorage: storage}
 
-	return &Interactor{repository: &cr}
+	return &interactor{repository: &cr}
 }
 
-// Interactor for categories
-type Interactor struct {
+// interactor for categories
+type interactor struct {
 	repository IRepository
 }
 
 // Add allows the creation of a new category
-func (i *Interactor) Add(name string) ([]*Category, error) {
+func (i *interactor) Add(name string) ([]*Category, error) {
 
 	cs := []*Category{}
 
@@ -44,7 +44,7 @@ func (i *Interactor) Add(name string) ([]*Category, error) {
 }
 
 // Get fetches all categories
-func (i *Interactor) Get() ([]*Category, error) {
+func (i *interactor) Get() ([]*Category, error) {
 
 	cs := []*Category{}
 	if i.repository == nil {
@@ -60,7 +60,7 @@ func (i *Interactor) Get() ([]*Category, error) {
 }
 
 // GetCategory returns a category by name
-func (i *Interactor) GetCategory(name string) ([]*Category, error) {
+func (i *interactor) GetCategory(name string) ([]*Category, error) {
 
 	cs := []*Category{}
 
