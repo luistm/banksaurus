@@ -19,19 +19,19 @@ func (e *errInfrastructure) Error() string {
 
 const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
-// CategoryRepository allows us the save a read categories from a repository
-type CategoryRepository struct {
-	DBHandler entities.InfrastructureHandler
+// Repository allows us the save a read categories from a repository
+type Repository struct {
+	SQLStorage entities.SQLDatabaseHandler
 }
 
 // Save to persist a category
-func (cr *CategoryRepository) Save(c *Category) error {
+func (cr *Repository) Save(c *Category) error {
 
 	if c == nil || c.Name == "" {
 		return errInvalidCategory
 	}
 
-	if err := cr.DBHandler.Execute(insertStatement, c.Name); err != nil {
+	if err := cr.SQLStorage.Execute(insertStatement, c.Name); err != nil {
 		return &errInfrastructure{arg: err.Error()}
 	}
 
@@ -39,9 +39,9 @@ func (cr *CategoryRepository) Save(c *Category) error {
 }
 
 // Get fetches a category by name
-func (cr *CategoryRepository) Get(name string) (*Category, error) {
+func (cr *Repository) Get(name string) (*Category, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
-	_, err := cr.DBHandler.Query(statement)
+	_, err := cr.SQLStorage.Query(statement)
 	if err != nil {
 		return &Category{}, fmt.Errorf("Database failure: %s", err)
 	}
@@ -50,9 +50,9 @@ func (cr *CategoryRepository) Get(name string) (*Category, error) {
 }
 
 // GetAll fetches all categories
-func (cr *CategoryRepository) GetAll() ([]*Category, error) {
+func (cr *Repository) GetAll() ([]*Category, error) {
 	statement := "SELECT * FROM categories"
-	rows, err := cr.DBHandler.Query(statement)
+	rows, err := cr.SQLStorage.Query(statement)
 	if err != nil {
 		return []*Category{}, fmt.Errorf("Database failure: %s", err)
 	}

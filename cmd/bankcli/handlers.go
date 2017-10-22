@@ -14,13 +14,13 @@ var DatabasePath = "/tmp"
 // createCategoryHandler handles category creation command
 func createCategoryHandler(name string) (string, error) {
 
-	storage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
 	}
-	defer storage.Close()
+	defer SQLStorage.Close()
 
-	cr := categories.CategoryRepository{DBHandler: storage}
+	cr := categories.Repository{SQLStorage: SQLStorage}
 	i := categories.Interactor{Repository: &cr}
 
 	cats, err := i.NewCategory(name)
@@ -33,13 +33,13 @@ func createCategoryHandler(name string) (string, error) {
 }
 
 func showCategoryHandler() (string, error) {
-	storage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
 	}
-	defer storage.Close()
+	defer SQLStorage.Close()
 
-	cr := categories.CategoryRepository{DBHandler: storage}
+	cr := categories.Repository{SQLStorage: SQLStorage}
 	i := categories.Interactor{Repository: &cr}
 
 	cats, err := i.GetCategories()

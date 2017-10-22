@@ -16,7 +16,7 @@ var errInvalidConfiguration = errors.New("sqlite configuration parameters are in
 var errFailedToCreatedDB = errors.New("failed to create database")
 
 // New creates a new instance of sqlite
-func New(path string, name string, memory bool) (infrastructure.Storage, error) {
+func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
 
 	if name == "" || path == "" {
 		return &sqlite{}, errInvalidConfiguration

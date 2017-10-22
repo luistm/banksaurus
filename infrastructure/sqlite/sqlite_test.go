@@ -36,10 +36,10 @@ func TestUnitNewSqlite(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 
-		storage, err := New(tc.dbPath, tc.dbName, true)
+		SQLStorage, err := New(tc.dbPath, tc.dbName, true)
 
-		if !reflect.DeepEqual(tc.expected, []interface{}{storage, err}) {
-			t.Errorf("Expected %v, got %v", tc.expected, storage)
+		if !reflect.DeepEqual(tc.expected, []interface{}{SQLStorage, err}) {
+			t.Errorf("Expected %v, got %v", tc.expected, SQLStorage)
 		}
 	}
 

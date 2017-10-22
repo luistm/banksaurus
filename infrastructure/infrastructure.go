@@ -2,8 +2,8 @@ package infrastructure
 
 import "github.com/luistm/go-bank-cli/entities"
 
-// Storage ...
-type Storage interface {
-	entities.InfrastructureHandler
+// SQLStorage ...
+type SQLStorage interface {
+	entities.SQLDatabaseHandler
 	Close() error
 }

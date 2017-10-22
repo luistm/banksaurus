@@ -5,7 +5,7 @@ import (
 )
 
 type repository struct {
-	DBHandler infrastructure.Storage
+	SQLStorage infrastructure.SQLStorage
 }
 
 func (r *repository) Save(d *Description) error {
