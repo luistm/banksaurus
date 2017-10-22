@@ -43,8 +43,8 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 	return cs, nil
 }
 
-// Get fetches all categories
-func (i *interactor) Get() ([]*Category, error) {
+// GetAll fetches all categories
+func (i *interactor) GetAll() ([]*Category, error) {
 
 	cs := []*Category{}
 	if i.repository == nil {

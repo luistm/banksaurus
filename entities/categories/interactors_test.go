@@ -27,7 +27,7 @@ func (m *repositoryMock) GetAll() ([]*Category, error) {
 	return args.Get(0).([]*Category), args.Error(1)
 }
 
-func TestUnitGet(t *testing.T) {
+func TestUnitGetAll(t *testing.T) {
 
 	testCases := []struct {
 		name          string
@@ -87,7 +87,7 @@ func TestUnitGet(t *testing.T) {
 			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
 		}
 
-		cats, err := i.Get()
+		cats, err := i.GetAll()
 
 		if tc.mock != nil {
 			tc.mock.AssertExpectations(t)

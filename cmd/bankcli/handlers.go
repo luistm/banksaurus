@@ -31,7 +31,7 @@ func createCategoryHandler(name string) (string, error) {
 	return msg, nil
 }
 
-func showCategoryHandler() (string, error) {
+func showcategoriesHandler() (string, error) {
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
@@ -39,7 +39,7 @@ func showCategoryHandler() (string, error) {
 	defer SQLStorage.Close()
 
 	categoriesInteractor := categories.NewInteractor(SQLStorage)
-	cats, err := categoriesInteractor.Get()
+	cats, err := categoriesInteractor.GetAll()
 	if err != nil {
 		return "", err
 	}

@@ -40,7 +40,7 @@ func main() {
 	}
 
 	if arguments["category"].(bool) && arguments["show"].(bool) {
-		out, err = showCategoryHandler()
+		out, err = showcategoriesHandler()
 	}
 	if arguments["description"].(bool) && arguments["show"].(bool) {
 		out, err = showDescriptionHandler(arguments["<name>"].(string))
