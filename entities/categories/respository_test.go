@@ -2,6 +2,7 @@ package categories
 
 import (
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/luistm/go-bank-cli/entities"
@@ -23,39 +24,65 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 }
 
 func TestUnitCategoryRepositorySave(t *testing.T) {
+	category := &Category{Name: "Test Category"}
 
-	// Category has no name
-	name := "Returns error if category has no name"
-	m := new(entities.MockSQLStorage)
-	cr := repository{SQLStorage: m}
-	err := cr.Save(&Category{})
-	assert.EqualError(t, err, "Invalid category", name)
+	testCases := []struct {
+		name      string
+		input     *Category
+		output    error
+		withMock  bool
+		mockInput []interface{}
+		mockOuput error
+	}{
+		{
+			name:      "Returns error if infrastructure not defined",
+			input:     category,
+			output:    entities.ErrInfrastructureUndefined,
+			withMock:  false,
+			mockInput: nil,
+			mockOuput: nil,
+		},
+		{
+			name:     "Returns error if infrastructure fails",
+			input:    category,
+			output:   &entities.ErrInfrastructure{Msg: "Test Error"},
+			withMock: true,
+			mockInput: []interface{}{
+				insertStatement,
+				category.Name,
+			},
+			mockOuput: errors.New("Test Error"),
+		},
+		{
+			name:     "Saves category to infrastructure",
+			input:    category,
+			output:   nil,
+			withMock: true,
+			mockInput: []interface{}{
+				insertStatement,
+				category.Name,
+			},
+			mockOuput: nil,
+		},
+	}
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		r := repository{}
+		var m *entities.MockSQLStorage
+		if tc.withMock {
+			m = new(entities.MockSQLStorage)
+			m.On("Execute", tc.mockInput...).Return(tc.mockOuput)
+			r.SQLStorage = m
+		}
 
-	// Category is nil
-	name = "Returns error if category is nil"
-	m = new(entities.MockSQLStorage)
-	cr = repository{SQLStorage: m}
-	err = cr.Save(nil)
-	assert.EqualError(t, err, "Invalid category", name)
+		err := r.Save(tc.input)
 
-	// Infrastructure failure
-	name = "Returns error if it fails to save category into infrastructure"
-	m = new(entities.MockSQLStorage)
-	m.On("Execute", insertStatement).Return(errors.New("TestError"))
-	cr = repository{SQLStorage: m}
-	c := Category{Name: "TestCategory"}
-	err = cr.Save(&c)
-	m.AssertExpectations(t)
-	assert.Error(t, err)
-	assert.EqualError(t, err, "Infrastructure error: TestError", name)
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
 
-	// Success
-	name = "Saves category to infrastructure"
-	m = new(entities.MockSQLStorage)
-	m.On("Execute", insertStatement).Return(nil)
-	cr = repository{SQLStorage: m}
-	c = Category{Name: "TestCategory"}
-	err = cr.Save(&c)
-	m.AssertExpectations(t)
-	assert.NoError(t, err)
+	}
 }

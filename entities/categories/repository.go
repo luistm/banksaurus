@@ -9,14 +9,6 @@ import (
 
 var errInvalidCategory = errors.New("Invalid category")
 
-type errInfrastructure struct {
-	arg string
-}
-
-func (e *errInfrastructure) Error() string {
-	return fmt.Sprintf("Infrastructure error: %s", e.arg)
-}
-
 const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
 // repository allows us the save a read categories from a repository
@@ -25,23 +17,27 @@ type repository struct {
 }
 
 // Save to persist a category
-func (cr *repository) Save(c *Category) error {
+func (r *repository) Save(c *Category) error {
 
 	if c == nil || c.Name == "" {
 		return errInvalidCategory
 	}
 
-	if err := cr.SQLStorage.Execute(insertStatement, c.Name); err != nil {
-		return &errInfrastructure{arg: err.Error()}
+	if r.SQLStorage == nil {
+		return entities.ErrInfrastructureUndefined
+	}
+
+	if err := r.SQLStorage.Execute(insertStatement, c.Name); err != nil {
+		return &entities.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return nil
 }
 
 // Get fetches a category by name
-func (cr *repository) Get(name string) (*Category, error) {
+func (r *repository) Get(name string) (*Category, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
-	_, err := cr.SQLStorage.Query(statement)
+	_, err := r.SQLStorage.Query(statement)
 	if err != nil {
 		return &Category{}, fmt.Errorf("Database failure: %s", err)
 	}
@@ -50,9 +46,9 @@ func (cr *repository) Get(name string) (*Category, error) {
 }
 
 // GetAll fetches all categories
-func (cr *repository) GetAll() ([]*Category, error) {
+func (r *repository) GetAll() ([]*Category, error) {
 	statement := "SELECT * FROM categories"
-	rows, err := cr.SQLStorage.Query(statement)
+	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
 		return []*Category{}, fmt.Errorf("Database failure: %s", err)
 	}
