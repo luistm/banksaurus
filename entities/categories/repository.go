@@ -19,13 +19,13 @@ func (e *errInfrastructure) Error() string {
 
 const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
-// Repository allows us the save a read categories from a repository
-type Repository struct {
+// repository allows us the save a read categories from a repository
+type repository struct {
 	SQLStorage entities.SQLDatabaseHandler
 }
 
 // Save to persist a category
-func (cr *Repository) Save(c *Category) error {
+func (cr *repository) Save(c *Category) error {
 
 	if c == nil || c.Name == "" {
 		return errInvalidCategory
@@ -39,7 +39,7 @@ func (cr *Repository) Save(c *Category) error {
 }
 
 // Get fetches a category by name
-func (cr *Repository) Get(name string) (*Category, error) {
+func (cr *repository) Get(name string) (*Category, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
 	_, err := cr.SQLStorage.Query(statement)
 	if err != nil {
@@ -50,7 +50,7 @@ func (cr *Repository) Get(name string) (*Category, error) {
 }
 
 // GetAll fetches all categories
-func (cr *Repository) GetAll() ([]*Category, error) {
+func (cr *repository) GetAll() ([]*Category, error) {
 	statement := "SELECT * FROM categories"
 	rows, err := cr.SQLStorage.Query(statement)
 	if err != nil {

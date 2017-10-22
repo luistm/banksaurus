@@ -11,14 +11,14 @@ import (
 
 // NewInteractor creates an interactor for categories
 func NewInteractor(storage infrastructure.SQLStorage) *Interactor {
-	cr := Repository{SQLStorage: storage}
+	cr := repository{SQLStorage: storage}
 
-	return &Interactor{Repository: &cr}
+	return &Interactor{repository: &cr}
 }
 
 // Interactor for categories
 type Interactor struct {
-	Repository IRepository
+	repository IRepository
 }
 
 // Add allows the creation of a new category
@@ -30,12 +30,12 @@ func (i *Interactor) Add(name string) ([]*Category, error) {
 		return cs, errors.New("Cannot create category whitout a category name")
 	}
 
-	if i.Repository == nil {
+	if i.repository == nil {
 		return cs, entities.ErrRepositoryIsNil
 	}
 
 	c := Category{Name: name}
-	if err := i.Repository.Save(&c); err != nil {
+	if err := i.repository.Save(&c); err != nil {
 		return cs, fmt.Errorf("Failed to create category: %s", err)
 	}
 
@@ -47,11 +47,11 @@ func (i *Interactor) Add(name string) ([]*Category, error) {
 func (i *Interactor) Get() ([]*Category, error) {
 
 	cs := []*Category{}
-	if i.Repository == nil {
+	if i.repository == nil {
 		return cs, entities.ErrRepositoryIsNil
 	}
 
-	cs, err := i.Repository.GetAll()
+	cs, err := i.repository.GetAll()
 	if err != nil {
 		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}
@@ -68,11 +68,11 @@ func (i *Interactor) GetCategory(name string) ([]*Category, error) {
 		return cs, errors.New("Cannot get category whitout a category name")
 	}
 
-	if i.Repository == nil {
+	if i.repository == nil {
 		return cs, entities.ErrRepositoryIsNil
 	}
 
-	c, err := i.Repository.Get(name)
+	c, err := i.repository.Get(name)
 	if err != nil {
 		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}

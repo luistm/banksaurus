@@ -77,7 +77,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		if tc.withMock {
 			m = new(repositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
-			i.Repository = m
+			i.repository = m
 		}
 
 		d, err := i.Add(tc.input)

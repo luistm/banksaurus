@@ -37,7 +37,7 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 			name:           "Returns error if transactions repository returns error",
 			mockRepository: new(mockRepository),
 			mockReturn: []interface{}{[]*Transaction{},
-				errors.New("Repository error")},
+				errors.New("repository error")},
 			expectedReport: &Report{},
 			expectedError:  errors.New("Failed"),
 		},
@@ -48,7 +48,7 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 			i := &Interactor{}
 			if tc.mockRepository != nil {
 				tc.mockRepository.On("AllTransactions").Return(tc.mockReturn...)
-				i.Repository = tc.mockRepository
+				i.repository = tc.mockRepository
 			}
 
 			r, err := i.MonthlyReport()

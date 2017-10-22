@@ -12,18 +12,18 @@ type IRepository interface {
 
 // Interactor ...
 type Interactor struct {
-	Repository IRepository
+	repository IRepository
 }
 
 // MonthlyReport produces a report for the current month
 func (i *Interactor) MonthlyReport() (*Report, error) {
 
-	if i.Repository == nil {
-		return &Report{}, errors.New("Repository is not defined")
+	if i.repository == nil {
+		return &Report{}, errors.New("repository is not defined")
 	}
 
 	// Import transactions from this month
-	_, err := i.Repository.AllTransactions()
+	_, err := i.repository.AllTransactions()
 	if err != nil {
 		return &Report{}, fmt.Errorf("Failed to create report: %s", err)
 	}

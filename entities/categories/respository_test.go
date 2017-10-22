@@ -31,7 +31,7 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		m := new(mockSQLStorage)
-		cr := Repository{SQLStorage: m}
+		cr := repository{SQLStorage: m}
 		_, err := cr.GetAll()
 		assert.Error(t, err, tc.name)
 	}
@@ -42,14 +42,14 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 	// Category has no name
 	name := "Returns error if category has no name"
 	m := new(mockSQLStorage)
-	cr := Repository{SQLStorage: m}
+	cr := repository{SQLStorage: m}
 	err := cr.Save(&Category{})
 	assert.EqualError(t, err, "Invalid category", name)
 
 	// Category is nil
 	name = "Returns error if category is nil"
 	m = new(mockSQLStorage)
-	cr = Repository{SQLStorage: m}
+	cr = repository{SQLStorage: m}
 	err = cr.Save(nil)
 	assert.EqualError(t, err, "Invalid category", name)
 
@@ -57,7 +57,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 	name = "Returns error if it fails to save category into infrastructure"
 	m = new(mockSQLStorage)
 	m.On("Execute", insertStatement).Return(errors.New("TestError"))
-	cr = Repository{SQLStorage: m}
+	cr = repository{SQLStorage: m}
 	c := Category{Name: "TestCategory"}
 	err = cr.Save(&c)
 	m.AssertExpectations(t)
@@ -68,7 +68,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 	name = "Saves category to infrastructure"
 	m = new(mockSQLStorage)
 	m.On("Execute", insertStatement).Return(nil)
-	cr = Repository{SQLStorage: m}
+	cr = repository{SQLStorage: m}
 	c = Category{Name: "TestCategory"}
 	err = cr.Save(&c)
 	m.AssertExpectations(t)

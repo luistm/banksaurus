@@ -58,7 +58,7 @@ func TestUnitGet(t *testing.T) {
 				method: "GetAll",
 				returnArguments: []interface{}{
 					[]*Category{},
-					errors.New("Repository mock error"),
+					errors.New("repository mock error"),
 				},
 			},
 		},
@@ -83,7 +83,7 @@ func TestUnitGet(t *testing.T) {
 	for _, tc := range testCases {
 		i := new(Interactor)
 		if tc.mock != nil {
-			i.Repository = tc.mock
+			i.repository = tc.mock
 			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
 		}
 
@@ -107,7 +107,7 @@ func TestUnitGetCategory(t *testing.T) {
 	m := new(repositoryMock)
 	i := new(Interactor)
 
-	i.Repository = m
+	i.repository = m
 	categoryName := "testCategory"
 
 	name := "Fails to get the category due to repository failure"
@@ -123,14 +123,14 @@ func TestUnitGetCategory(t *testing.T) {
 
 	name = "Fails to get category if name is not defined"
 	i = new(Interactor)
-	i.Repository = m
+	i.repository = m
 	_, err = i.GetCategory("")
 	assert.EqualError(t, err, "Cannot get category whitout a category name", name)
 
 	name = "Gets specified category"
 	i = new(Interactor)
 	m = new(repositoryMock)
-	i.Repository = m
+	i.repository = m
 	m.On("Get", categoryName).Return(&Category{Name: categoryName}, nil)
 	c, err := i.GetCategory(categoryName)
 	m.AssertExpectations(t)
@@ -143,7 +143,7 @@ func TestUnitAdd(t *testing.T) {
 
 	m := new(repositoryMock)
 	i := new(Interactor)
-	i.Repository = m
+	i.repository = m
 	categoryName := "testCategory"
 
 	name := "Fails to create a new category due to repository failure"
@@ -165,7 +165,7 @@ func TestUnitAdd(t *testing.T) {
 	name = "Creates category with specified name"
 	i = new(Interactor)
 	m = new(repositoryMock)
-	i.Repository = m
+	i.repository = m
 	m.On("Save", &Category{Name: categoryName}).Return(nil)
 	c, err = i.Add(categoryName)
 	m.AssertExpectations(t)
