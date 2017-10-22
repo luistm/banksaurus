@@ -16,7 +16,8 @@ coverage-unit:
 	go test ./... -run Unit -cover
 
 system-tests: build
-	go test ./... -run System
+	- go test ./... -run System
+	- rm bankcli
 
 coverage-package:
 	go test $(PACKAGE)  -run Unit -cover -covermode=count -coverprofile=count.out
