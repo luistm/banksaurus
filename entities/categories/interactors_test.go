@@ -8,27 +8,7 @@ import (
 	"github.com/luistm/go-bank-cli/entities"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-type repositoryMock struct {
-	mock.Mock
-}
-
-func (m *repositoryMock) Save(c *Category) error {
-	args := m.Called(c)
-	return args.Error(0)
-}
-
-func (m *repositoryMock) Get(s string) (*Category, error) {
-	args := m.Called(s)
-	return args.Get(0).(*Category), args.Error(1)
-}
-
-func (m *repositoryMock) GetAll() ([]*Category, error) {
-	args := m.Called()
-	return args.Get(0).([]*Category), args.Error(1)
-}
 
 func TestUnitGetAll(t *testing.T) {
 
@@ -36,7 +16,7 @@ func TestUnitGetAll(t *testing.T) {
 		name          string
 		expectedLen   int
 		errorExpected bool
-		mock          *repositoryMock
+		mock          *entities.RepositoryMock
 		mInput        *struct {
 			method          string
 			returnArguments []interface{}
@@ -53,14 +33,14 @@ func TestUnitGetAll(t *testing.T) {
 			name:          "Fails to get categories on repository error",
 			expectedLen:   0,
 			errorExpected: true,
-			mock:          new(repositoryMock),
+			mock:          new(entities.RepositoryMock),
 			mInput: &struct {
 				method          string
 				returnArguments []interface{}
 			}{
 				method: "GetAll",
 				returnArguments: []interface{}{
-					[]*Category{},
+					[]entities.Entity{},
 					errors.New("repository mock error"),
 				},
 			},
@@ -69,14 +49,14 @@ func TestUnitGetAll(t *testing.T) {
 			name:          "Returns slice of categories",
 			expectedLen:   1,
 			errorExpected: false,
-			mock:          new(repositoryMock),
+			mock:          new(entities.RepositoryMock),
 			mInput: &struct {
 				method          string
 				returnArguments []interface{}
 			}{
 				method: "GetAll",
 				returnArguments: []interface{}{
-					[]*Category{&Category{name: "ThisIsATestCategory"}},
+					[]entities.Entity{&Category{name: "ThisIsATestCategory"}},
 					nil,
 				},
 			},
@@ -121,7 +101,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns error if repository is undefined",
 			input: categoryName,
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				entities.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -132,7 +112,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns empty result if categoryName name is not defined",
 			input: "",
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				nil,
 			},
 			withMock:   false,
@@ -143,7 +123,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns error on respository error",
 			input: categoryName,
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				&entities.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
@@ -154,7 +134,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns list of categories with one categoryName",
 			input: categoryName,
 			output: []interface{}{
-				[]*Category{&Category{name: categoryName}},
+				[]entities.Entity{&Category{name: categoryName}},
 				nil,
 			},
 			withMock:   true,
@@ -166,9 +146,9 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &interactor{}
-		var m *repositoryMock
+		var m *entities.RepositoryMock
 		if tc.withMock {
-			m = new(repositoryMock)
+			m = new(entities.RepositoryMock)
 			m.On("Get", tc.input).Return(tc.mockOutput...)
 			i.repository = m
 		}
@@ -201,7 +181,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns error if repository is not defined",
 			input: categoryNameName,
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				entities.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -212,7 +192,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns empty list if input is empty",
 			input: "",
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				entities.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -223,7 +203,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns error on repository error",
 			input: categoryNameName,
 			output: []interface{}{
-				[]*Category{},
+				[]entities.Entity{},
 				&entities.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
@@ -234,7 +214,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Adds categoryName to repository",
 			input: categoryNameName,
 			output: []interface{}{
-				[]*Category{&Category{name: categoryNameName}},
+				[]entities.Entity{&Category{name: categoryNameName}},
 				nil,
 			},
 			withMock:   true,
@@ -246,9 +226,9 @@ func TestUnitInteractorAdd(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &interactor{}
-		var m *repositoryMock
+		var m *entities.RepositoryMock
 		if tc.withMock {
-			m = new(repositoryMock)
+			m = new(entities.RepositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
 			i.repository = m
 		}

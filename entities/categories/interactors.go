@@ -15,13 +15,13 @@ func NewInteractor(storage infrastructure.SQLStorage) *interactor {
 
 // interactor for categories
 type interactor struct {
-	repository IRepository
+	repository entities.IRepository
 }
 
 // Add allows the creation of a new category
-func (i *interactor) Add(name string) ([]*Category, error) {
+func (i *interactor) Add(name string) ([]entities.Entity, error) {
 
-	cs := []*Category{}
+	cs := []entities.Entity{}
 
 	if name == "" {
 		return cs, nil
@@ -41,9 +41,9 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 }
 
 // GetAll fetches all categories
-func (i *interactor) GetAll() ([]*Category, error) {
+func (i *interactor) GetAll() ([]entities.Entity, error) {
 
-	cs := []*Category{}
+	cs := []entities.Entity{}
 	if i.repository == nil {
 		return cs, entities.ErrRepositoryUndefined
 	}
@@ -57,9 +57,9 @@ func (i *interactor) GetAll() ([]*Category, error) {
 }
 
 // GetCategory returns a category by name
-func (i *interactor) GetCategory(name string) ([]*Category, error) {
+func (i *interactor) GetCategory(name string) ([]entities.Entity, error) {
 
-	cs := []*Category{}
+	cs := []entities.Entity{}
 
 	if name == "" {
 		return cs, nil
