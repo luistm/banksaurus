@@ -27,7 +27,7 @@ func createCategoryHandler(name string) (string, error) {
 		return "", err
 	}
 
-	msg := fmt.Sprintf("Created category '%s'", cats[0].Name)
+	msg := fmt.Sprintf("Created category '%s'", cats[0])
 	return msg, nil
 }
 
@@ -46,7 +46,7 @@ func showCategoriesHandler() (string, error) {
 
 	out := ""
 	for _, c := range cats {
-		out += fmt.Sprintf("%s\n", c.Name)
+		out += fmt.Sprintf("%s\n", c)
 	}
 
 	return out, nil

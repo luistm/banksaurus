@@ -76,7 +76,7 @@ func TestUnitGetAll(t *testing.T) {
 			}{
 				method: "GetAll",
 				returnArguments: []interface{}{
-					[]*Category{&Category{Name: "ThisIsATestCategory"}},
+					[]*Category{&Category{name: "ThisIsATestCategory"}},
 					nil,
 				},
 			},
@@ -107,7 +107,7 @@ func TestUnitGetAll(t *testing.T) {
 
 func TestUnitInteractorGetCategory(t *testing.T) {
 
-	categoryName := "Category Name"
+	categoryName := "Category name"
 
 	testCases := []struct {
 		name       string
@@ -154,12 +154,12 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns list of categories with one categoryName",
 			input: categoryName,
 			output: []interface{}{
-				[]*Category{&Category{Name: categoryName}},
+				[]*Category{&Category{name: categoryName}},
 				nil,
 			},
 			withMock:   true,
 			mockInput:  categoryName,
-			mockOutput: []interface{}{&Category{Name: categoryName}, nil},
+			mockOutput: []interface{}{&Category{name: categoryName}, nil},
 		},
 	}
 
@@ -227,18 +227,18 @@ func TestUnitInteractorAdd(t *testing.T) {
 				&entities.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
-			mockInput:  &Category{Name: categoryNameName},
+			mockInput:  &Category{name: categoryNameName},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
 			name:  "Adds categoryName to repository",
 			input: categoryNameName,
 			output: []interface{}{
-				[]*Category{&Category{Name: categoryNameName}},
+				[]*Category{&Category{name: categoryNameName}},
 				nil,
 			},
 			withMock:   true,
-			mockInput:  &Category{Name: categoryNameName},
+			mockInput:  &Category{name: categoryNameName},
 			mockOutput: nil,
 		},
 	}

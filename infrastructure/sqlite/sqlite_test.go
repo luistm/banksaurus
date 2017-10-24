@@ -19,7 +19,7 @@ func TestUnitNewSqlite(t *testing.T) {
 		expected []interface{}
 	}{
 		{
-			name:     "Name is empty",
+			name:     "name is empty",
 			dbName:   "",
 			dbPath:   "ignoreThisForNow",
 			expected: []interface{}{&sqlite{}, errInvalidConfiguration},

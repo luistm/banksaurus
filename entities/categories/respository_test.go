@@ -24,7 +24,7 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 }
 
 func TestUnitCategoryRepositorySave(t *testing.T) {
-	category := &Category{Name: "Test Category"}
+	category := &Category{name: "Test Category"}
 
 	testCases := []struct {
 		name      string
@@ -49,7 +49,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 			withMock: true,
 			mockInput: []interface{}{
 				insertStatement,
-				category.Name,
+				category.name,
 			},
 			mockOuput: errors.New("Test Error"),
 		},
@@ -60,7 +60,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 			withMock: true,
 			mockInput: []interface{}{
 				insertStatement,
-				category.Name,
+				category.name,
 			},
 			mockOuput: nil,
 		},

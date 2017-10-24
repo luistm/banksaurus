@@ -31,7 +31,7 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 		return cs, entities.ErrRepositoryUndefined
 	}
 
-	c := Category{Name: name}
+	c := Category{name: name}
 	if err := i.repository.Save(&c); err != nil {
 		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}

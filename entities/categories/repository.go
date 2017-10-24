@@ -19,7 +19,7 @@ type repository struct {
 // Save to persist a category
 func (r *repository) Save(c *Category) error {
 
-	if c == nil || c.Name == "" {
+	if c == nil || c.name == "" {
 		return errInvalidCategory
 	}
 
@@ -27,7 +27,7 @@ func (r *repository) Save(c *Category) error {
 		return entities.ErrInfrastructureUndefined
 	}
 
-	if err := r.SQLStorage.Execute(insertStatement, c.Name); err != nil {
+	if err := r.SQLStorage.Execute(insertStatement, c.name); err != nil {
 		return &entities.ErrInfrastructure{Msg: err.Error()}
 	}
 
@@ -62,7 +62,7 @@ func (r *repository) GetAll() ([]*Category, error) {
 		if err != nil {
 			return nil, err
 		}
-		categories = append(categories, &Category{Name: cat})
+		categories = append(categories, &Category{name: cat})
 	}
 
 	return categories, nil

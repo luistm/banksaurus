@@ -10,7 +10,7 @@ import (
 
 func TestUnitRepositorySave(t *testing.T) {
 
-	description := &Description{rawName: "Raw Name", friendlyName: "Friendly Name"}
+	description := &Description{rawName: "Raw name", friendlyName: "Friendly name"}
 
 	testCases := []struct {
 		name       string

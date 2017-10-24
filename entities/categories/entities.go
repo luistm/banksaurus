@@ -9,5 +9,9 @@ type IRepository interface {
 
 // Category ...
 type Category struct {
-	Name string
+	name string
+}
+
+func (c *Category) String() string {
+	return c.name
 }
