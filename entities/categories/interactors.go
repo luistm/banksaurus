@@ -1,9 +1,6 @@
 package categories
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/luistm/go-bank-cli/infrastructure"
 
 	"github.com/luistm/go-bank-cli/entities"
@@ -27,7 +24,7 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 	cs := []*Category{}
 
 	if name == "" {
-		return cs, errors.New("Cannot create category whitout a category name")
+		return cs, nil
 	}
 
 	if i.repository == nil {
@@ -36,7 +33,7 @@ func (i *interactor) Add(name string) ([]*Category, error) {
 
 	c := Category{Name: name}
 	if err := i.repository.Save(&c); err != nil {
-		return cs, fmt.Errorf("Failed to create category: %s", err)
+		return cs, &entities.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, &c)
@@ -65,7 +62,7 @@ func (i *interactor) GetCategory(name string) ([]*Category, error) {
 	cs := []*Category{}
 
 	if name == "" {
-		return cs, errors.New("Cannot get category whitout a category name")
+		return cs, nil
 	}
 
 	if i.repository == nil {

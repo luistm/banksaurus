@@ -2,7 +2,10 @@ package categories
 
 import (
 	"errors"
+	"reflect"
 	"testing"
+
+	"github.com/luistm/go-bank-cli/entities"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -102,75 +105,162 @@ func TestUnitGetAll(t *testing.T) {
 
 }
 
-func TestUnitGetCategory(t *testing.T) {
+func TestUnitInteractorGetCategory(t *testing.T) {
 
-	m := new(repositoryMock)
-	i := new(interactor)
+	categoryName := "Category Name"
 
-	i.repository = m
-	categoryName := "testCategory"
+	testCases := []struct {
+		name       string
+		input      string
+		output     []interface{}
+		withMock   bool
+		mockInput  string
+		mockOutput []interface{}
+	}{
+		{
+			name:  "Returns error if repository is undefined",
+			input: categoryName,
+			output: []interface{}{
+				[]*Category{},
+				entities.ErrRepositoryUndefined,
+			},
+			withMock:   false,
+			mockInput:  "",
+			mockOutput: nil,
+		},
+		{
+			name:  "Returns empty result if categoryName name is not defined",
+			input: "",
+			output: []interface{}{
+				[]*Category{},
+				nil,
+			},
+			withMock:   false,
+			mockInput:  "",
+			mockOutput: nil,
+		},
+		{
+			name:  "Returns error on respository error",
+			input: categoryName,
+			output: []interface{}{
+				[]*Category{},
+				&entities.ErrRepository{Msg: "Test Error"},
+			},
+			withMock:   true,
+			mockInput:  "",
+			mockOutput: []interface{}{&Category{}, errors.New("Test Error")},
+		},
+		{
+			name:  "Returns list of categories with one categoryName",
+			input: categoryName,
+			output: []interface{}{
+				[]*Category{&Category{Name: categoryName}},
+				nil,
+			},
+			withMock:   true,
+			mockInput:  categoryName,
+			mockOutput: []interface{}{&Category{Name: categoryName}, nil},
+		},
+	}
 
-	name := "Fails to get the category due to repository failure"
-	m.On("Get", categoryName).Return(&Category{}, errors.New("Error"))
-	_, err := i.GetCategory(categoryName)
-	m.AssertExpectations(t)
-	assert.EqualError(t, err, "repository error: Error", name)
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		i := &interactor{}
+		var m *repositoryMock
+		if tc.withMock {
+			m = new(repositoryMock)
+			m.On("Get", tc.input).Return(tc.mockOutput...)
+			i.repository = m
+		}
 
-	name = "Fails to get category when no repository available"
-	i = new(interactor)
-	_, err = i.GetCategory(categoryName)
-	assert.EqualError(t, err, "repository is undefined", name)
+		c, err := i.GetCategory(tc.input)
 
-	name = "Fails to get category if name is not defined"
-	i = new(interactor)
-	i.repository = m
-	_, err = i.GetCategory("")
-	assert.EqualError(t, err, "Cannot get category whitout a category name", name)
-
-	name = "Gets specified category"
-	i = new(interactor)
-	m = new(repositoryMock)
-	i.repository = m
-	m.On("Get", categoryName).Return(&Category{Name: categoryName}, nil)
-	c, err := i.GetCategory(categoryName)
-	m.AssertExpectations(t)
-	assert.NoError(t, err)
-	assert.Equal(t, 1, len(c), name)
-	assert.Equal(t, categoryName, c[0].Name, name)
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		got := []interface{}{c, err}
+		if !reflect.DeepEqual(tc.output, got) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, got)
+		}
+	}
 }
 
 func TestUnitInteractorAdd(t *testing.T) {
 
-	m := new(repositoryMock)
-	i := new(interactor)
-	i.repository = m
-	categoryName := "testCategory"
+	categoryNameName := "testCategory"
 
-	name := "Fails to create a new category due to repository failure"
-	m.On("Save", &Category{Name: categoryName}).Return(errors.New("Error"))
-	c, err := i.Add(categoryName)
-	m.AssertExpectations(t)
-	assert.EqualError(t, err, "Failed to create category: Error", name)
+	testCases := []struct {
+		name       string
+		input      string
+		output     []interface{}
+		withMock   bool
+		mockInput  *Category
+		mockOutput error
+	}{
+		{
+			name:  "Returns error if repository is not defined",
+			input: categoryNameName,
+			output: []interface{}{
+				[]*Category{},
+				entities.ErrRepositoryUndefined,
+			},
+			withMock:   false,
+			mockInput:  nil,
+			mockOutput: nil,
+		},
+		{
+			name:  "Returns empty list if input is empty",
+			input: "",
+			output: []interface{}{
+				[]*Category{},
+				entities.ErrRepositoryUndefined,
+			},
+			withMock:   false,
+			mockInput:  nil,
+			mockOutput: nil,
+		},
+		{
+			name:  "Returns error on repository error",
+			input: categoryNameName,
+			output: []interface{}{
+				[]*Category{},
+				&entities.ErrRepository{Msg: "Test Error"},
+			},
+			withMock:   true,
+			mockInput:  &Category{Name: categoryNameName},
+			mockOutput: errors.New("Test Error"),
+		},
+		{
+			name:  "Adds categoryName to repository",
+			input: categoryNameName,
+			output: []interface{}{
+				[]*Category{&Category{Name: categoryNameName}},
+				nil,
+			},
+			withMock:   true,
+			mockInput:  &Category{Name: categoryNameName},
+			mockOutput: nil,
+		},
+	}
 
-	name = "Fails to create category if repository is not defined"
-	i = new(interactor)
-	_, err = i.Add(categoryName)
-	assert.EqualError(t, err, "repository is undefined", name)
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		i := &interactor{}
+		var m *repositoryMock
+		if tc.withMock {
+			m = new(repositoryMock)
+			m.On("Save", tc.mockInput).Return(tc.mockOutput)
+			i.repository = m
+		}
 
-	name = "Fails to create category is name is empty"
-	i = new(interactor)
-	_, err = i.Add("")
-	assert.EqualError(t, err, "Cannot create category whitout a category name")
+		c, err := i.Add(categoryNameName)
 
-	name = "Creates category with specified name"
-	i = new(interactor)
-	m = new(repositoryMock)
-	i.repository = m
-	m.On("Save", &Category{Name: categoryName}).Return(nil)
-	c, err = i.Add(categoryName)
-	m.AssertExpectations(t)
-	assert.NoError(t, err)
-	assert.Equal(t, 1, len(c), name)
-	assert.Equal(t, categoryName, c[0].Name, name)
-
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		got := []interface{}{c, err}
+		if !reflect.DeepEqual(tc.output, got) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, got)
+		}
+	}
 }
