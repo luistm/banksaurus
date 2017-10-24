@@ -12,3 +12,9 @@ type SQLDatabaseHandler interface {
 	Execute(statement string, values ...interface{}) error
 	Query(statement string) (Row, error)
 }
+
+type IRepository interface {
+	Save(Entity) error
+	Get(string) (Entity, error)
+	GetAll() ([]Entity, error)
+}

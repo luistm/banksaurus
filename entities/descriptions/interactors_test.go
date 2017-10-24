@@ -6,27 +6,7 @@ import (
 	"testing"
 
 	"github.com/luistm/go-bank-cli/entities"
-	"github.com/stretchr/testify/mock"
 )
-
-type repositoryMock struct {
-	mock.Mock
-}
-
-func (m *repositoryMock) Save(c *Description) error {
-	args := m.Called(c)
-	return args.Error(0)
-}
-
-func (m *repositoryMock) Get(s string) (*Description, error) {
-	args := m.Called(s)
-	return args.Get(0).(*Description), args.Error(1)
-}
-
-func (m *repositoryMock) GetAll() ([]*Description, error) {
-	args := m.Called()
-	return args.Get(0).([]*Description), args.Error(1)
-}
 
 func TestUnitInteractorAdd(t *testing.T) {
 
@@ -83,9 +63,9 @@ func TestUnitInteractorAdd(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &interactor{}
-		var m *repositoryMock
+		var m *entities.RepositoryMock
 		if tc.withMock {
-			m = new(repositoryMock)
+			m = new(entities.RepositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
 			i.repository = m
 		}
@@ -121,9 +101,9 @@ func TestUnitInteractorGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		i := interactor{}
-		var m *repositoryMock
+		var m *entities.RepositoryMock
 		if tc.withMock {
-			m = new(repositoryMock)
+			m = new(entities.RepositoryMock)
 			m.On("GetAll").Return(tc.mockOutput...)
 			i.repository = m
 		}
