@@ -42,7 +42,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	CREATE TABLE IF NOT EXISTS categories
 	(id INTEGER NOT NULL PRIMARY KEY, name TEXT);
 	CREATE TABLE IF NOT EXISTS descriptions
-	(slug TEXT, friendlyName TEXT);
+	(rawName TEXT, friendlyName TEXT);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
