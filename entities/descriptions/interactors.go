@@ -34,12 +34,20 @@ func (i *interactor) Add(name string) (*Description, error) {
 	return d, nil
 }
 
-func (i *interactor) GetAll() ([]*Description, error) {
+// GetAll returns all the descriptions available in the system
+func (i *interactor) GetAll() ([]entities.Entity, error) {
 
-	descriptions := []*Description{}
+	descriptions := []entities.Entity{}
 	if i.repository == nil {
 		return descriptions, entities.ErrRepositoryUndefined
 	}
 
-	return []*Description{}, nil
+	d, err := i.repository.GetAll()
+	if err != nil {
+		return descriptions, &entities.ErrRepository{Msg: err.Error()}
+	}
+
+	descriptions = append(descriptions, d...)
+
+	return descriptions, nil
 }

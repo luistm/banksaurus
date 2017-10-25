@@ -85,6 +85,8 @@ func TestUnitInteractorAdd(t *testing.T) {
 
 func TestUnitInteractorGetAll(t *testing.T) {
 
+	// testCategory := &Category{name: "Test Category "}
+
 	testCases := []struct {
 		name       string
 		output     []interface{}
@@ -93,13 +95,35 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]*Description{}, entities.ErrRepositoryUndefined},
+			output:     []interface{}{[]entities.Entity{}, entities.ErrRepositoryUndefined},
 			withMock:   false,
 			mockOutput: nil,
+		},
+		{
+			name:     "Returns error on respository error",
+			output:   []interface{}{[]entities.Entity{}, &entities.ErrRepository{Msg: "Test Error"}},
+			withMock: true,
+			mockOutput: []interface{}{
+				[]entities.Entity{},
+				errors.New("Test Error"),
+			},
+		},
+		{
+			name: "Returns description entities",
+			output: []interface{}{
+				[]entities.Entity{&Description{}, &Description{}},
+				nil,
+			},
+			withMock: true,
+			mockOutput: []interface{}{
+				[]entities.Entity{&Description{}, &Description{}},
+				nil,
+			},
 		},
 	}
 
 	for _, tc := range testCases {
+		t.Log(tc.name)
 		i := interactor{}
 		var m *entities.RepositoryMock
 		if tc.withMock {
