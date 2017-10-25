@@ -4,14 +4,22 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/bank/accounts/transactions"
-	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/shopspring/decimal"
 )
 
-// ParseAccountMovements imports data from a data source
-func ParseAccountMovements(filePath string) error {
+// CSVHandler to handle csv files
+type CSVHandler interface {
+	GetAll() ([][]string, error)
+}
 
-	fileRecords, err := csv.OpenFile(filePath)
+type repository struct {
+	storage CSVHandler
+}
+
+// ParseAccountMovements imports data from a data source
+func (r *repository) GetAll() error {
+
+	fileRecords, err := r.storage.GetAll()
 	if err != nil {
 		return err
 	}

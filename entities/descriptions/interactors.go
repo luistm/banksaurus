@@ -1,10 +1,9 @@
 package descriptions
 
 import "github.com/luistm/go-bank-cli/entities"
-import "github.com/luistm/go-bank-cli/infrastructure"
 
 // NewInteractor creates a new interactor object for descriptions
-func NewInteractor(storage infrastructure.SQLStorage) *interactor {
+func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
 	return &interactor{
 		repository: &repository{SQLStorage: storage},
 	}

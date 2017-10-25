@@ -1,13 +1,11 @@
 package categories
 
 import (
-	"github.com/luistm/go-bank-cli/infrastructure"
-
 	"github.com/luistm/go-bank-cli/entities"
 )
 
 // NewInteractor creates an interactor for categories
-func NewInteractor(storage infrastructure.SQLStorage) *interactor {
+func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
 	cr := repository{SQLStorage: storage}
 
 	return &interactor{repository: &cr}

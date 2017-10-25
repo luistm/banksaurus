@@ -6,6 +6,7 @@ import (
 	"github.com/luistm/go-bank-cli/bank/reports"
 	"github.com/luistm/go-bank-cli/entities/categories"
 	"github.com/luistm/go-bank-cli/entities/descriptions"
+	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 )
 
@@ -93,10 +94,18 @@ func showDescriptionsHandler() (string, error) {
 // showReportHandler handles report commands
 func showReportHandler(inputFilePath string) (string, error) {
 
-	err := reports.LoadReport(inputFilePath)
+	var out string
+	CSVStorage, err := csv.New(inputFilePath)
 	if err != nil {
-		return "", err
+		return out, err
+	}
+	defer CSVStorage.Close()
+
+	reportsInteractor := reports.NewInteractor(CSVStorage)
+	_, err = reportsInteractor.Monthly()
+	if err != nil {
+		return out, err
 	}
 
-	return "", nil
+	return out, nil
 }

@@ -38,8 +38,15 @@ func (c *csvfile) Close() error {
 }
 
 // GetAll returns all lines in the file
-func (c *csvfile) GetAll() {
+func (c *csvfile) GetAll() ([][]string, error) {
 	reader := csv.NewReader(c.file)
 	reader.Comma = ';'
 	reader.FieldsPerRecord = -1
+
+	lines, err := reader.ReadAll()
+	if err != nil {
+		return [][]string{}, err
+	}
+
+	return lines, nil
 }
