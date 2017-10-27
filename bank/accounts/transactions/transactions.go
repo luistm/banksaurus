@@ -11,15 +11,6 @@ import (
 var isCREDIT = "Credit"
 var isDEBT = "Debt"
 
-// Transaction is a money movement
-// TODO: Make all attributes private
-type Transaction struct {
-	value           string
-	Description     string
-	TransactionType string
-	date            string
-}
-
 // New creates a record with some parsed data
 func (t *Transaction) New(record Record) *Transaction {
 
