@@ -17,7 +17,7 @@ func (m *mockRepository) AllTransactions() ([]*Transaction, error) {
 	return args.Get(0).([]*Transaction), args.Error(1)
 }
 
-func TestUnitInteractorReportMonthly(t *testing.T) {
+func TestUnitInteractorReportCurrentMonth(t *testing.T) {
 
 	testCases := []struct {
 		name           string
@@ -51,7 +51,7 @@ func TestUnitInteractorReportMonthly(t *testing.T) {
 				i.repository = tc.mockRepository
 			}
 
-			r, err := i.MonthlyReport()
+			r, err := i.CurrentMonthReport()
 
 			if tc.mockRepository != nil {
 				tc.mockRepository.AssertExpectations(t)

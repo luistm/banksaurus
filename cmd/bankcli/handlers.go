@@ -102,7 +102,7 @@ func showReportHandler(inputFilePath string) (string, error) {
 	defer CSVStorage.Close()
 
 	reportsInteractor := reports.NewInteractor(CSVStorage)
-	_, err = reportsInteractor.Monthly()
+	_, err = reportsInteractor.CurrentMonth()
 	if err != nil {
 		return out, err
 	}

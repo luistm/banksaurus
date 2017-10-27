@@ -14,8 +14,8 @@ type interactor struct {
 	repository *repository
 }
 
-// Monthly produces a report for the current month
-func (i *interactor) Monthly() (*Report, error) {
+// CurrentMonth produces a report for the current month
+func (i *interactor) CurrentMonth() (*Report, error) {
 
 	if i.repository == nil {
 		return &Report{}, errors.New("repository is not defined")
