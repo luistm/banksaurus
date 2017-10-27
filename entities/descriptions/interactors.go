@@ -12,7 +12,7 @@ func NewInteractor(storage infrastructure.SQLStorage) *interactor {
 
 // interactor ...
 type interactor struct {
-	repository entities.IRepository
+	repository entities.Repository
 }
 
 // Add adds a new description

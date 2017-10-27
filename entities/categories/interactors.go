@@ -15,7 +15,7 @@ func NewInteractor(storage infrastructure.SQLStorage) *interactor {
 
 // interactor for categories
 type interactor struct {
-	repository entities.IRepository
+	repository entities.Repository
 }
 
 // Add allows the creation of a new category

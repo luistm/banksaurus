@@ -13,7 +13,8 @@ type SQLDatabaseHandler interface {
 	Query(statement string) (Row, error)
 }
 
-type IRepository interface {
+// Repository for entities
+type Repository interface {
 	Save(Entity) error
 	Get(string) (Entity, error)
 	GetAll() ([]Entity, error)
