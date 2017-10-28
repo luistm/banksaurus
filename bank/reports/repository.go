@@ -3,7 +3,6 @@ package reports
 import (
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/bank/accounts/transactions"
 	"github.com/shopspring/decimal"
 )
 

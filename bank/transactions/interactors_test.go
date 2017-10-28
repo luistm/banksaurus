@@ -6,8 +6,10 @@ import "reflect"
 func TestUnitInteractorTransactionsLoad(t *testing.T) {
 
 	testCases := []struct {
-		name   string
-		output error
+		name       string
+		output     error
+		withMock   bool
+		mockOutput []*record
 	}{}
 
 	for _, tc := range testCases {
