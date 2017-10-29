@@ -233,7 +233,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			i.repository = m
 		}
 
-		c, err := i.Add(categoryNameName)
+		c, err := i.Create(categoryNameName)
 
 		if tc.withMock {
 			m.AssertExpectations(t)

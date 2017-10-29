@@ -16,8 +16,8 @@ type interactor struct {
 	repository entities.Repository
 }
 
-// Add allows the creation of a new category
-func (i *interactor) Add(name string) ([]entities.Entity, error) {
+// Create allows the creation of a new category
+func (i *interactor) Create(name string) ([]entities.Entity, error) {
 
 	cs := []entities.Entity{}
 

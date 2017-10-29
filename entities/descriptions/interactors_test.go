@@ -70,7 +70,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			i.repository = m
 		}
 
-		d, err := i.Add(tc.input)
+		d, err := i.Create(tc.input)
 
 		if tc.withMock {
 			m.AssertExpectations(t)

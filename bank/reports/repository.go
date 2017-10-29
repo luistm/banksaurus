@@ -37,11 +37,11 @@ func (r *repository) GetAll() error {
 	// 	// descriptions.New(transaction.Description)
 
 	// 	if transaction.IsFromThisMonth() {
-	// 		report[transaction.Description] = report[transaction.Description].Add(transaction.Value())
+	// 		report[transaction.Description] = report[transaction.Description].Create(transaction.Value())
 	// 		if transaction.IsDebt() {
-	// 			expense = expense.Add(transaction.Value())
+	// 			expense = expense.Create(transaction.Value())
 	// 		} else {
-	// 			credit = credit.Add(transaction.Value())
+	// 			credit = credit.Create(transaction.Value())
 	// 		}
 	// 	}
 

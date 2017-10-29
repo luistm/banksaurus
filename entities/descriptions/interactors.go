@@ -14,8 +14,8 @@ type interactor struct {
 	repository entities.Repository
 }
 
-// Add adds a new description
-func (i *interactor) Add(name string) (*Description, error) {
+// Create adds a new description
+func (i *interactor) Create(name string) (*Description, error) {
 
 	if name == "" {
 		return &Description{}, entities.ErrBadInput

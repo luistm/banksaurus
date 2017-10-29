@@ -38,9 +38,6 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			withMock:   true,
 			mockOutput: []interface{}{[]*record{}, errors.New("Test Error")},
 		},
-		// {
-		// 	name: "Creates description",
-		// }
 	}
 
 	for _, tc := range testCases {

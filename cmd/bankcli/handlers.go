@@ -23,7 +23,7 @@ func createCategoryHandler(name string) (string, error) {
 	defer SQLStorage.Close()
 
 	categoriesInteractor := categories.NewInteractor(SQLStorage)
-	cats, err := categoriesInteractor.Add(name)
+	cats, err := categoriesInteractor.Create(name)
 	if err != nil {
 		return "", err
 	}
@@ -62,7 +62,7 @@ func createDescriptionHandler(name string) (string, error) {
 	defer SQLStorage.Close()
 
 	descriptionsInteractor := descriptions.NewInteractor(SQLStorage)
-	d, err := descriptionsInteractor.Add(name)
+	d, err := descriptionsInteractor.Create(name)
 	if err != nil {
 		return out, err
 	}
