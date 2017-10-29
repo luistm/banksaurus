@@ -1,16 +1,20 @@
 package infrastructure
 
-import "github.com/luistm/go-bank-cli/entities"
-import "github.com/luistm/go-bank-cli/bank/reports"
+import (
+	"io"
+
+	"github.com/luistm/go-bank-cli/bank/reports"
+	"github.com/luistm/go-bank-cli/entities"
+)
 
 // SQLStorage for handling SQL databases
 type SQLStorage interface {
 	entities.SQLDatabaseHandler
-	Close() error
+	io.Closer
 }
 
 // CSVStorage for handling CSV files
 type CSVStorage interface {
 	reports.CSVHandler
-	Close() error
+	io.Closer
 }
