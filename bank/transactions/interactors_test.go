@@ -1,7 +1,12 @@
 package transactions
 
-import "testing"
-import "reflect"
+import (
+	"errors"
+	"reflect"
+	"testing"
+
+	"github.com/luistm/go-bank-cli/entities"
+)
 
 func TestUnitInteractorTransactionsLoad(t *testing.T) {
 
@@ -9,8 +14,18 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		name       string
 		output     error
 		withMock   bool
-		mockOutput []*record
-	}{}
+		mockOutput []interface{}
+	}{
+		{
+			name:       "Returns error on repository error",
+			output:     &entities.ErrRepository{Msg: "Test Error"},
+			withMock:   true,
+			mockOutput: []interface{}{[]*record{}, errors.New("Test Error")},
+		},
+		// {
+		// 	name: "Creates description",
+		// }
+	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
