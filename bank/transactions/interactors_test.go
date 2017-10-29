@@ -13,9 +13,9 @@ type repositoryMock struct {
 	mock.Mock
 }
 
-func (m *repositoryMock) GetAll() ([]*record, error) {
+func (m *repositoryMock) GetAll() ([]*Transaction, error) {
 	args := m.Called()
-	return args.Get(0).([]*record), args.Error(1)
+	return args.Get(0).([]*Transaction), args.Error(1)
 }
 
 func TestUnitInteractorTransactionsLoad(t *testing.T) {
@@ -36,7 +36,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			name:       "Returns error on repository error",
 			output:     &entities.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]*record{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[]*Transaction{}, errors.New("Test Error")},
 		},
 	}
 

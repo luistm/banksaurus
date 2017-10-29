@@ -7,7 +7,7 @@ import (
 )
 
 type iRepository interface {
-	GetAll() ([]*record, error)
+	GetAll() ([]*Transaction, error)
 }
 
 // New creates a record with some parsed data
