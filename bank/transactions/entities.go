@@ -6,6 +6,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type iRepository interface {
+	GetAll() ([]*record, error)
+}
+
 // New creates a record with some parsed data
 func New(r record) *Transaction {
 
