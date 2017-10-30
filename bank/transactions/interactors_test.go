@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/lib/categories"
+
 	"github.com/luistm/go-bank-cli/lib"
 
 	"github.com/luistm/go-bank-cli/lib/customerrors"
@@ -68,8 +70,9 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		}
 	}
 
-	t1 := &Transaction{s: sellers.New("d1", "d1")}
-	t2 := &Transaction{s: sellers.New("d2", "d2")}
+	c := categories.New("Test Category")
+	t1 := &Transaction{s: sellers.New("d1", "d1"), c: c}
+	t2 := &Transaction{s: sellers.New("d2", "d2"), c: c}
 	i := interactor{}
 	m := new(testMock)
 	i.repository = m
@@ -105,6 +108,55 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			im = new(testMock)
 			im.On("Create", tc.mockInput).Return(tc.mockOutput...)
 			i.sellerInteractor = im
+		}
+
+		err := i.Load()
+
+		if tc.withMock {
+			im.AssertExpectations(t)
+		}
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
+	}
+
+	var sim *testMock
+	sim = new(testMock)
+	sim.On("Create", t1.s.String()).Return(t1.s, nil).
+		On("Create", t2.s.String()).Return(t2.s, nil)
+	i.sellerInteractor = sim
+
+	testCasesEntityCreator = []struct {
+		name       string
+		output     error
+		withMock   bool
+		mockInput  string
+		mockOutput []interface{}
+	}{
+		{
+			name:       "Returns error if category interactor undefined",
+			output:     customerrors.ErrInteractorUndefined,
+			withMock:   false,
+			mockInput:  "",
+			mockOutput: nil,
+		},
+		{
+			name:       "Returns error if category interactor fails",
+			output:     &customerrors.ErrInteractor{Msg: "Test Error"},
+			withMock:   true,
+			mockInput:  t1.c.String(),
+			mockOutput: []interface{}{&categories.Category{}, errors.New("Test Error")},
+		},
+	}
+
+	// use the code above
+	for _, tc := range testCasesEntityCreator {
+		t.Log(tc.name)
+		var im *testMock
+		if tc.withMock {
+			im = new(testMock)
+			im.On("Create", tc.mockInput).Return(tc.mockOutput...)
+			i.categoryInteractor = im
 		}
 
 		err := i.Load()

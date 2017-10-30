@@ -6,8 +6,9 @@ import (
 )
 
 type interactor struct {
-	repository       iRepository
-	sellerInteractor lib.Creator
+	repository         iRepository
+	sellerInteractor   lib.Creator
+	categoryInteractor lib.Creator
 }
 
 // Load fetches raw data from a repository and processes it into objects
@@ -29,6 +30,17 @@ func (i *interactor) Load() error {
 
 	for _, t := range transactions {
 		_, err = i.sellerInteractor.Create(t.s.String())
+		if err != nil {
+			return &customerrors.ErrInteractor{Msg: err.Error()}
+		}
+	}
+
+	if i.categoryInteractor == nil {
+		return customerrors.ErrInteractorUndefined
+	}
+
+	for _, t := range transactions {
+		_, err = i.categoryInteractor.Create(t.c.String())
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}
