@@ -25,7 +25,7 @@ func (i *interactor) Create(name string) (*Description, error) {
 		return &Description{}, entities.ErrRepositoryUndefined
 	}
 
-	d := &Description{rawName: name}
+	d := &Description{slug: name}
 	if err := i.repository.Save(d); err != nil {
 		return &Description{}, &entities.ErrRepository{Msg: err.Error()}
 	}

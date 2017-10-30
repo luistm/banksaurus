@@ -19,7 +19,7 @@ func (r *repository) Save(ent entities.Entity) error {
 	}
 
 	d := ent.(*Description)
-	err := r.SQLStorage.Execute(saveStatement, d.rawName, d.friendlyName)
+	err := r.SQLStorage.Execute(saveStatement, d.slug, d.friendlyName)
 	if err != nil {
 		return &entities.ErrInfrastructure{Msg: err.Error()}
 	}
@@ -42,9 +42,9 @@ func (r *repository) GetAll() ([]entities.Entity, error) {
 	descriptions := []entities.Entity{}
 
 	for rows.Next() {
-		var rawName int
+		var slug int
 		var friendlyName string
-		err := rows.Scan(&rawName, &friendlyName)
+		err := rows.Scan(&slug, &friendlyName)
 		if err != nil {
 			return nil, err
 		}

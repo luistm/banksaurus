@@ -10,7 +10,7 @@ import (
 
 func TestUnitRepositorySave(t *testing.T) {
 
-	description := &Description{rawName: "Raw name", friendlyName: "Friendly name"}
+	description := &Description{slug: "Raw name", friendlyName: "Friendly name"}
 
 	testCases := []struct {
 		name       string
@@ -35,7 +35,7 @@ func TestUnitRepositorySave(t *testing.T) {
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,
-				description.rawName,
+				description.slug,
 				description.friendlyName,
 			},
 			mockOutput: errors.New("Test error"),
@@ -47,7 +47,7 @@ func TestUnitRepositorySave(t *testing.T) {
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,
-				description.rawName,
+				description.slug,
 				description.friendlyName,
 			},
 			mockOutput: nil,

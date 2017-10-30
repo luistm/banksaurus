@@ -44,18 +44,18 @@ func TestUnitInteractorAdd(t *testing.T) {
 				&entities.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
-			mockInput:  &Description{rawName: description},
+			mockInput:  &Description{slug: description},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
 			name:  "Returns description entity created",
 			input: description,
 			output: []interface{}{
-				&Description{rawName: description},
+				&Description{slug: description},
 				nil,
 			},
 			withMock:   true,
-			mockInput:  &Description{rawName: description},
+			mockInput:  &Description{slug: description},
 			mockOutput: nil,
 		},
 	}
