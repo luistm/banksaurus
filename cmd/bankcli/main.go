@@ -22,8 +22,8 @@ var usage = `Usage:
 	bank report --input <file>
 	bank category new <name>
 	bank category show
-	bank description new <name>
-	bank description show`
+	bank seller new <name>
+	bank seller show`
 
 var options = `
 Options:
@@ -43,12 +43,12 @@ func main() {
 	if arguments["category"].(bool) && arguments["show"].(bool) {
 		out, err = showCategoriesHandler()
 	}
-	if arguments["description"].(bool) && arguments["new"].(bool) {
-		out, err = createDescriptionHandler(arguments["<name>"].(string))
+	if arguments["seller"].(bool) && arguments["new"].(bool) {
+		out, err = createSellerHandler(arguments["<name>"].(string))
 	}
 
-	if arguments["description"].(bool) && arguments["show"].(bool) {
-		out, err = showDescriptionsHandler()
+	if arguments["seller"].(bool) && arguments["show"].(bool) {
+		out, err = showSellersHandler()
 	}
 
 	if arguments["report"].(bool) {

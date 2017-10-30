@@ -1,4 +1,4 @@
-package descriptions
+package sellers
 
 import (
 	"errors"
@@ -10,52 +10,52 @@ import (
 
 func TestUnitInteractorAdd(t *testing.T) {
 
-	var description = "TestDescrition"
+	var seller = "TestDescrition"
 
 	testCases := []struct {
 		name       string
 		input      string
 		output     []interface{}
 		withMock   bool
-		mockInput  *Description
+		mockInput  *Seller
 		mockOutput error
 	}{
 		{
 			name:       "Returns error if repository is not defined",
-			input:      description,
-			output:     []interface{}{&Description{}, entities.ErrRepositoryUndefined},
+			input:      seller,
+			output:     []interface{}{&Seller{}, entities.ErrRepositoryUndefined},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
 		},
 		{
-			name:       "Returns error if description is empty string",
+			name:       "Returns error if seller is empty string",
 			input:      "",
-			output:     []interface{}{&Description{}, entities.ErrBadInput},
+			output:     []interface{}{&Seller{}, entities.ErrBadInput},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
 		},
 		{
 			name:  "Returns error on repository error",
-			input: description,
+			input: seller,
 			output: []interface{}{
-				&Description{},
+				&Seller{},
 				&entities.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
-			mockInput:  &Description{slug: description},
+			mockInput:  &Seller{slug: seller},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
-			name:  "Returns description entity created",
-			input: description,
+			name:  "Returns seller entity created",
+			input: seller,
 			output: []interface{}{
-				&Description{slug: description},
+				&Seller{slug: seller},
 				nil,
 			},
 			withMock:   true,
-			mockInput:  &Description{slug: description},
+			mockInput:  &Seller{slug: seller},
 			mockOutput: nil,
 		},
 	}
@@ -70,12 +70,12 @@ func TestUnitInteractorAdd(t *testing.T) {
 			i.repository = m
 		}
 
-		d, err := i.Create(tc.input)
+		s, err := i.Create(tc.input)
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		got := []interface{}{d, err}
+		got := []interface{}{s, err}
 		if !reflect.DeepEqual(tc.output, got) {
 			t.Errorf("Expected %v, got %v", tc.output, got)
 		}
@@ -109,14 +109,14 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			},
 		},
 		{
-			name: "Returns description entities",
+			name: "Returns seller entities",
 			output: []interface{}{
-				[]entities.Entity{&Description{}, &Description{}},
+				[]entities.Entity{&Seller{}, &Seller{}},
 				nil,
 			},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]entities.Entity{&Description{}, &Description{}},
+				[]entities.Entity{&Seller{}, &Seller{}},
 				nil,
 			},
 		},
@@ -132,12 +132,12 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			i.repository = m
 		}
 
-		descriptions, err := i.GetAll()
+		sellers, err := i.GetAll()
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		got := []interface{}{descriptions, err}
+		got := []interface{}{sellers, err}
 		if !reflect.DeepEqual(tc.output, got) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, got)
 		}

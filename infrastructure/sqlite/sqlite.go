@@ -41,7 +41,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS categories
 	(id INTEGER NOT NULL PRIMARY KEY, name TEXT);
-	CREATE TABLE IF NOT EXISTS descriptions
+	CREATE TABLE IF NOT EXISTS sellers
 	(slug TEXT, name TEXT);
 	`
 	_, err = db.Exec(sqlStmt)

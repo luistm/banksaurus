@@ -3,7 +3,7 @@ package transactions
 import (
 	"time"
 
-	"github.com/luistm/go-bank-cli/entities/descriptions"
+	"github.com/luistm/go-bank-cli/entities/sellers"
 	"github.com/shopspring/decimal"
 )
 
@@ -18,7 +18,7 @@ func New(r record) *Transaction {
 
 	// for i := 0; i < len(r); i++ {
 	// 	t.value = r[i]
-	// 	t.Description = r[2]
+	// 	t.Seller = r[2]
 
 	// 	// Expense
 	// 	if i == 3 && r[i] != "" {
@@ -44,7 +44,7 @@ func New(r record) *Transaction {
 // Transaction is a money movement
 type Transaction struct {
 	value decimal.Decimal
-	d     *descriptions.Description
+	s     *sellers.Seller
 	// c        *categories.Category
 	isCredit bool
 	date     time.Time

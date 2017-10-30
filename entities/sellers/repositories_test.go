@@ -1,4 +1,4 @@
-package descriptions
+package sellers
 
 import (
 	"errors"
@@ -10,11 +10,11 @@ import (
 
 func TestUnitRepositorySave(t *testing.T) {
 
-	description := &Description{slug: "Raw name", name: "Friendly name"}
+	seller := &Seller{slug: "Raw name", name: "Friendly name"}
 
 	testCases := []struct {
 		name       string
-		input      *Description
+		input      *Seller
 		output     error
 		withMock   bool
 		mockInput  []interface{}
@@ -22,7 +22,7 @@ func TestUnitRepositorySave(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if infrastructure is not defined",
-			input:      &Description{},
+			input:      &Seller{},
 			output:     entities.ErrInfrastructureUndefined,
 			withMock:   false,
 			mockInput:  nil,
@@ -30,25 +30,25 @@ func TestUnitRepositorySave(t *testing.T) {
 		},
 		{
 			name:     "Returns error if infrastructure returns error",
-			input:    description,
+			input:    seller,
 			output:   &entities.ErrInfrastructure{Msg: "Test error"},
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,
-				description.slug,
-				description.name,
+				seller.slug,
+				seller.name,
 			},
 			mockOutput: errors.New("Test error"),
 		},
 		{
-			name:     "Saves description",
-			input:    description,
+			name:     "Saves seller",
+			input:    seller,
 			output:   nil,
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,
-				description.slug,
-				description.name,
+				seller.slug,
+				seller.name,
 			},
 			mockOutput: nil,
 		},

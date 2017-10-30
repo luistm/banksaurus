@@ -56,7 +56,7 @@ func TestSystem(t *testing.T) {
 	}
 }
 
-func TestSystemDescriptions(t *testing.T) {
+func TestSystemSellers(t *testing.T) {
 
 	name := "Shows report from file"
 	command := []string{"report", "--input", "./tests/fixtures/test_file.csv"}
@@ -68,8 +68,8 @@ func TestSystemDescriptions(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, string(stdoutStderr), name)
 
-	name = "Shows descriptions loaded by the run report"
-	command = []string{"description", "show"}
+	name = "Shows sellers loaded by the run report"
+	command = []string{"seller", "show"}
 	expected = "COMPRA CONTINENTE MAI\nLEVANTAMENTO Est Circ\nCOMPRA MODELO BONJOUR\nCOMPRA LIDL   CIA  LJ\nBX VALOR 03 TRANSACCO\n"
 
 	cmd = exec.Command("../../bankcli", command...)

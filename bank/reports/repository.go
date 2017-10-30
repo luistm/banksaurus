@@ -34,10 +34,10 @@ func (r *repository) GetAll() error {
 	// 	t := transactions.Transaction{}
 	// 	transaction := t.New(r)
 
-	// 	// descriptions.New(transaction.Description)
+	// 	// sellers.New(transaction.Seller)
 
 	// 	if transaction.IsFromThisMonth() {
-	// 		report[transaction.Description] = report[transaction.Description].Create(transaction.Value())
+	// 		report[transaction.Seller] = report[transaction.Seller].Create(transaction.Value())
 	// 		if transaction.IsDebt() {
 	// 			expense = expense.Create(transaction.Value())
 	// 		} else {
@@ -47,8 +47,8 @@ func (r *repository) GetAll() error {
 
 	// }
 
-	// for transactionDescription, transactionValue := range report {
-	// 	fmt.Printf("%24s %8s \n", transactionDescription, transactionValue.String())
+	// for transactionSeller, transactionValue := range report {
+	// 	fmt.Printf("%24s %8s \n", transactionSeller, transactionValue.String())
 	// }
 
 	// fmt.Println("Expense is ", expense.String())

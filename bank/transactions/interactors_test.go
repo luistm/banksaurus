@@ -5,9 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/entities/descriptions"
-
 	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/entities/sellers"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -62,8 +61,8 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		}
 	}
 
-	t1 := &Transaction{d: descriptions.New("d1", "")}
-	t2 := &Transaction{d: descriptions.New("d2", "")}
+	t1 := &Transaction{s: sellers.New("d1", "")}
+	t2 := &Transaction{s: sellers.New("d2", "")}
 	i := interactor{}
 	m := new(repositoryMock)
 	i.repository = m

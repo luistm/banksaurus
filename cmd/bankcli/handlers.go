@@ -5,7 +5,7 @@ import (
 
 	"github.com/luistm/go-bank-cli/bank/reports"
 	"github.com/luistm/go-bank-cli/entities/categories"
-	"github.com/luistm/go-bank-cli/entities/descriptions"
+	"github.com/luistm/go-bank-cli/entities/sellers"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 )
@@ -53,7 +53,7 @@ func showCategoriesHandler() (string, error) {
 	return out, nil
 }
 
-func createDescriptionHandler(name string) (string, error) {
+func createSellerHandler(name string) (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -61,16 +61,16 @@ func createDescriptionHandler(name string) (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	descriptionsInteractor := descriptions.NewInteractor(SQLStorage)
-	d, err := descriptionsInteractor.Create(name)
+	sellersInteractor := sellers.NewInteractor(SQLStorage)
+	s, err := sellersInteractor.Create(name)
 	if err != nil {
 		return out, err
 	}
 
-	return d.String(), nil
+	return s.String(), nil
 }
 
-func showDescriptionsHandler() (string, error) {
+func showSellersHandler() (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -78,14 +78,14 @@ func showDescriptionsHandler() (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	descriptionsInteractor := descriptions.NewInteractor(SQLStorage)
-	descriptions, err := descriptionsInteractor.GetAll()
+	sellersInteractor := sellers.NewInteractor(SQLStorage)
+	sellers, err := sellersInteractor.GetAll()
 	if err != nil {
 		return out, err
 	}
 
-	for _, d := range descriptions {
-		out += fmt.Sprintf("%s\n", d.String())
+	for _, s := range sellers {
+		out += fmt.Sprintf("%s\n", s.String())
 	}
 
 	return out, nil
