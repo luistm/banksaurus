@@ -14,7 +14,7 @@ type interactor struct {
 	repository entities.Repository
 }
 
-// Create adds a new description
+// Create adds a new description and persists it
 func (i *interactor) Create(name string) (*Description, error) {
 
 	if name == "" {

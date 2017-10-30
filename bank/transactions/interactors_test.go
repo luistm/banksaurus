@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/entities/descriptions"
+
 	"github.com/luistm/go-bank-cli/entities"
 	"github.com/stretchr/testify/mock"
 )
@@ -59,4 +61,22 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
 		}
 	}
+
+	t1 := &Transaction{d: descriptions.New("d1", "")}
+	t2 := &Transaction{d: descriptions.New("d2", "")}
+	i := interactor{}
+	m := new(repositoryMock)
+	i.repository = m
+	m.On("GetAll").Return([]*Transaction{t1, t2})
+
+	// testCases = []struct {
+	// 	name       string
+	// 	output     error
+	// 	withMock   bool
+	// 	mockOutput []interface{}
+	// }{
+	// 	name: "Returns error if entity creator returns fails",
+	// 	output:
+	// }
+
 }
