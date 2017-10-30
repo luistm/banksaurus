@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 func TestUnitRepositorySave(t *testing.T) {
@@ -23,7 +23,7 @@ func TestUnitRepositorySave(t *testing.T) {
 		{
 			name:       "Returns error if infrastructure is not defined",
 			input:      &Seller{},
-			output:     entities.ErrInfrastructureUndefined,
+			output:     lib.ErrInfrastructureUndefined,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -31,7 +31,7 @@ func TestUnitRepositorySave(t *testing.T) {
 		{
 			name:     "Returns error if infrastructure returns error",
 			input:    seller,
-			output:   &entities.ErrInfrastructure{Msg: "Test error"},
+			output:   &lib.ErrInfrastructure{Msg: "Test error"},
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,
@@ -57,9 +57,9 @@ func TestUnitRepositorySave(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := &repository{}
-		var m *entities.MockSQLStorage
+		var m *lib.MockSQLStorage
 		if tc.withMock {
-			m = new(entities.MockSQLStorage)
+			m = new(lib.MockSQLStorage)
 			m.On("Execute", tc.mockInput...).Return(tc.mockOutput)
 			r.SQLStorage = m
 		}

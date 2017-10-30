@@ -1,9 +1,9 @@
 package sellers
 
-import "github.com/luistm/go-bank-cli/entities"
+import "github.com/luistm/go-bank-cli/lib"
 
 // NewInteractor creates a new interactor object for sellers
-func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
+func NewInteractor(storage lib.SQLDatabaseHandler) *interactor {
 	return &interactor{
 		repository: &repository{SQLStorage: storage},
 	}
@@ -11,39 +11,39 @@ func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
 
 // interactor ...
 type interactor struct {
-	repository entities.Repository
+	repository lib.Repository
 }
 
 // Create adds a new seller and persists it
 func (i *interactor) Create(name string) (*Seller, error) {
 
 	if name == "" {
-		return &Seller{}, entities.ErrBadInput
+		return &Seller{}, lib.ErrBadInput
 	}
 
 	if i.repository == nil {
-		return &Seller{}, entities.ErrRepositoryUndefined
+		return &Seller{}, lib.ErrRepositoryUndefined
 	}
 
 	s := &Seller{slug: name}
 	if err := i.repository.Save(s); err != nil {
-		return &Seller{}, &entities.ErrRepository{Msg: err.Error()}
+		return &Seller{}, &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	return s, nil
 }
 
 // GetAll returns all the sellers available in the system
-func (i *interactor) GetAll() ([]entities.Entity, error) {
+func (i *interactor) GetAll() ([]lib.Entity, error) {
 
-	sellers := []entities.Entity{}
+	sellers := []lib.Entity{}
 	if i.repository == nil {
-		return sellers, entities.ErrRepositoryUndefined
+		return sellers, lib.ErrRepositoryUndefined
 	}
 
 	s, err := i.repository.GetAll()
 	if err != nil {
-		return sellers, &entities.ErrRepository{Msg: err.Error()}
+		return sellers, &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	sellers = append(sellers, s...)

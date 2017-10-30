@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/entities"
-	"github.com/luistm/go-bank-cli/entities/sellers"
+	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/sellers"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -29,13 +29,13 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is not defined",
-			output:     entities.ErrRepositoryUndefined,
+			output:     lib.ErrRepositoryUndefined,
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error on repository error",
-			output:     &entities.ErrRepository{Msg: "Test Error"},
+			output:     &lib.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockOutput: []interface{}{[]*Transaction{}, errors.New("Test Error")},
 		},
@@ -75,7 +75,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	}{
 		{
 			name:   "Returns error if entity creator returns fails",
-			output: &entities.ErrInteractor{Msg: "Test Error"},
+			output: &lib.ErrInteractor{Msg: "Test Error"},
 			// withMock: true
 			mockOutput: []interface{}{t1.s, errors.New("Test Error")},
 		},

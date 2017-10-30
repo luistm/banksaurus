@@ -1,11 +1,11 @@
 package categories
 
 import (
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 // NewInteractor creates an interactor for categories
-func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
+func NewInteractor(storage lib.SQLDatabaseHandler) *interactor {
 	cr := repository{SQLStorage: storage}
 
 	return &interactor{repository: &cr}
@@ -13,25 +13,25 @@ func NewInteractor(storage entities.SQLDatabaseHandler) *interactor {
 
 // interactor for categories
 type interactor struct {
-	repository entities.Repository
+	repository lib.Repository
 }
 
 // Create allows the creation of a new category
-func (i *interactor) Create(name string) ([]entities.Entity, error) {
+func (i *interactor) Create(name string) ([]lib.Entity, error) {
 
-	cs := []entities.Entity{}
+	cs := []lib.Entity{}
 
 	if name == "" {
 		return cs, nil
 	}
 
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryUndefined
+		return cs, lib.ErrRepositoryUndefined
 	}
 
 	c := Category{name: name}
 	if err := i.repository.Save(&c); err != nil {
-		return cs, &entities.ErrRepository{Msg: err.Error()}
+		return cs, &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, &c)
@@ -39,37 +39,37 @@ func (i *interactor) Create(name string) ([]entities.Entity, error) {
 }
 
 // GetAll fetches all categories
-func (i *interactor) GetAll() ([]entities.Entity, error) {
+func (i *interactor) GetAll() ([]lib.Entity, error) {
 
-	cs := []entities.Entity{}
+	cs := []lib.Entity{}
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryUndefined
+		return cs, lib.ErrRepositoryUndefined
 	}
 
 	cs, err := i.repository.GetAll()
 	if err != nil {
-		return cs, &entities.ErrRepository{Msg: err.Error()}
+		return cs, &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	return cs, nil
 }
 
 // GetCategory returns a category by name
-func (i *interactor) GetCategory(name string) ([]entities.Entity, error) {
+func (i *interactor) GetCategory(name string) ([]lib.Entity, error) {
 
-	cs := []entities.Entity{}
+	cs := []lib.Entity{}
 
 	if name == "" {
 		return cs, nil
 	}
 
 	if i.repository == nil {
-		return cs, entities.ErrRepositoryUndefined
+		return cs, lib.ErrRepositoryUndefined
 	}
 
 	c, err := i.repository.Get(name)
 	if err != nil {
-		return cs, &entities.ErrRepository{Msg: err.Error()}
+		return cs, &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, c)

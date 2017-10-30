@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/bank/reports"
-	"github.com/luistm/go-bank-cli/entities/categories"
-	"github.com/luistm/go-bank-cli/entities/sellers"
+	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/go-bank-cli/lib/sellers"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 )

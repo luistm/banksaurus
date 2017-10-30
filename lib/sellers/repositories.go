@@ -3,43 +3,43 @@ package sellers
 import (
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 var saveStatement = "INSERT INTO sellers(slug, name ) VALUES (?, ?)"
 
 type repository struct {
-	SQLStorage entities.SQLDatabaseHandler
+	SQLStorage lib.SQLDatabaseHandler
 }
 
-func (r *repository) Save(ent entities.Entity) error {
+func (r *repository) Save(ent lib.Entity) error {
 
 	if r.SQLStorage == nil {
-		return entities.ErrInfrastructureUndefined
+		return lib.ErrInfrastructureUndefined
 	}
 
 	s := ent.(*Seller)
 	err := r.SQLStorage.Execute(saveStatement, s.slug, s.name)
 	if err != nil {
-		return &entities.ErrInfrastructure{Msg: err.Error()}
+		return &lib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return nil
 }
 
-func (r *repository) Get(s string) (entities.Entity, error) {
+func (r *repository) Get(s string) (lib.Entity, error) {
 	return &Seller{}, nil
 }
 
 // GetAll fetches all sellers
-func (r *repository) GetAll() ([]entities.Entity, error) {
+func (r *repository) GetAll() ([]lib.Entity, error) {
 	statement := "SELECT * FROM sellers"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []entities.Entity{}, fmt.Errorf("Database failure: %s", err)
+		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
 	}
 
-	sellers := []entities.Entity{}
+	sellers := []lib.Entity{}
 
 	for rows.Next() {
 		var slug int

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 func TestUnitInteractorAdd(t *testing.T) {
@@ -23,7 +23,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		{
 			name:       "Returns error if repository is not defined",
 			input:      seller,
-			output:     []interface{}{&Seller{}, entities.ErrRepositoryUndefined},
+			output:     []interface{}{&Seller{}, lib.ErrRepositoryUndefined},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -31,7 +31,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		{
 			name:       "Returns error if seller is empty string",
 			input:      "",
-			output:     []interface{}{&Seller{}, entities.ErrBadInput},
+			output:     []interface{}{&Seller{}, lib.ErrBadInput},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -41,7 +41,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			input: seller,
 			output: []interface{}{
 				&Seller{},
-				&entities.ErrRepository{Msg: "Test Error"},
+				&lib.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
 			mockInput:  &Seller{slug: seller},
@@ -63,9 +63,9 @@ func TestUnitInteractorAdd(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &interactor{}
-		var m *entities.RepositoryMock
+		var m *lib.RepositoryMock
 		if tc.withMock {
-			m = new(entities.RepositoryMock)
+			m = new(lib.RepositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
 			i.repository = m
 		}
@@ -95,28 +95,28 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]entities.Entity{}, entities.ErrRepositoryUndefined},
+			output:     []interface{}{[]lib.Entity{}, lib.ErrRepositoryUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:     "Returns error on respository error",
-			output:   []interface{}{[]entities.Entity{}, &entities.ErrRepository{Msg: "Test Error"}},
+			output:   []interface{}{[]lib.Entity{}, &lib.ErrRepository{Msg: "Test Error"}},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]entities.Entity{},
+				[]lib.Entity{},
 				errors.New("Test Error"),
 			},
 		},
 		{
 			name: "Returns seller entities",
 			output: []interface{}{
-				[]entities.Entity{&Seller{}, &Seller{}},
+				[]lib.Entity{&Seller{}, &Seller{}},
 				nil,
 			},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]entities.Entity{&Seller{}, &Seller{}},
+				[]lib.Entity{&Seller{}, &Seller{}},
 				nil,
 			},
 		},
@@ -125,9 +125,9 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := interactor{}
-		var m *entities.RepositoryMock
+		var m *lib.RepositoryMock
 		if tc.withMock {
-			m = new(entities.RepositoryMock)
+			m = new(lib.RepositoryMock)
 			m.On("GetAll").Return(tc.mockOutput...)
 			i.repository = m
 		}

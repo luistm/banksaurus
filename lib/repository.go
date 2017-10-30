@@ -1,4 +1,4 @@
-package entities
+package lib
 
 // Row is the interface SQL infrastructure rows must implement
 type Row interface {

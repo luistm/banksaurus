@@ -1,4 +1,4 @@
-package entities
+package lib
 
 import "errors"
 import "fmt"

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +16,7 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 	}{}
 
 	for _, tc := range testCases {
-		m := new(entities.MockSQLStorage)
+		m := new(lib.MockSQLStorage)
 		cr := repository{SQLStorage: m}
 		_, err := cr.GetAll()
 		assert.Error(t, err, tc.name)
@@ -37,7 +37,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 		{
 			name:      "Returns error if infrastructure not defined",
 			input:     category,
-			output:    entities.ErrInfrastructureUndefined,
+			output:    lib.ErrInfrastructureUndefined,
 			withMock:  false,
 			mockInput: nil,
 			mockOuput: nil,
@@ -45,7 +45,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 		{
 			name:     "Returns error if infrastructure fails",
 			input:    category,
-			output:   &entities.ErrInfrastructure{Msg: "Test Error"},
+			output:   &lib.ErrInfrastructure{Msg: "Test Error"},
 			withMock: true,
 			mockInput: []interface{}{
 				insertStatement,
@@ -68,9 +68,9 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := repository{}
-		var m *entities.MockSQLStorage
+		var m *lib.MockSQLStorage
 		if tc.withMock {
-			m = new(entities.MockSQLStorage)
+			m = new(lib.MockSQLStorage)
 			m.On("Execute", tc.mockInput...).Return(tc.mockOuput)
 			r.SQLStorage = m
 		}

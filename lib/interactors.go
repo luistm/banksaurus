@@ -1,4 +1,4 @@
-package entities
+package lib
 
 // Creator interface to create entities
 type Creator interface {

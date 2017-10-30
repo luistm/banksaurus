@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 var errInvalidCategory = errors.New("Invalid category")
@@ -13,11 +13,11 @@ const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
 // repository allows us the save a read categories from a repository
 type repository struct {
-	SQLStorage entities.SQLDatabaseHandler
+	SQLStorage lib.SQLDatabaseHandler
 }
 
 // Save to persist a category
-func (r *repository) Save(ent entities.Entity) error {
+func (r *repository) Save(ent lib.Entity) error {
 
 	c := ent.(*Category)
 	if c == nil || c.name == "" {
@@ -25,18 +25,18 @@ func (r *repository) Save(ent entities.Entity) error {
 	}
 
 	if r.SQLStorage == nil {
-		return entities.ErrInfrastructureUndefined
+		return lib.ErrInfrastructureUndefined
 	}
 
 	if err := r.SQLStorage.Execute(insertStatement, c.name); err != nil {
-		return &entities.ErrInfrastructure{Msg: err.Error()}
+		return &lib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return nil
 }
 
 // Get fetches a category by name
-func (r *repository) Get(name string) (entities.Entity, error) {
+func (r *repository) Get(name string) (lib.Entity, error) {
 	statement := "SELECT * FROM categories WHERE name=?"
 	_, err := r.SQLStorage.Query(statement)
 	if err != nil {
@@ -47,14 +47,14 @@ func (r *repository) Get(name string) (entities.Entity, error) {
 }
 
 // GetAll fetches all categories
-func (r *repository) GetAll() ([]entities.Entity, error) {
+func (r *repository) GetAll() ([]lib.Entity, error) {
 	statement := "SELECT * FROM categories"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []entities.Entity{}, fmt.Errorf("Database failure: %s", err)
+		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
 	}
 
-	categories := []entities.Entity{}
+	categories := []lib.Entity{}
 
 	for rows.Next() {
 		var id int

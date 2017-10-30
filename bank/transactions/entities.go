@@ -3,7 +3,7 @@ package transactions
 import (
 	"time"
 
-	"github.com/luistm/go-bank-cli/entities/sellers"
+	"github.com/luistm/go-bank-cli/lib/sellers"
 	"github.com/shopspring/decimal"
 )
 

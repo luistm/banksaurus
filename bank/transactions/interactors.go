@@ -1,7 +1,7 @@
 package transactions
 
 import (
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 type interactor struct {
@@ -13,12 +13,12 @@ type interactor struct {
 func (i *interactor) Load() error {
 
 	if i.repository == nil {
-		return entities.ErrRepositoryUndefined
+		return lib.ErrRepositoryUndefined
 	}
 
 	_, err := i.repository.GetAll()
 	if err != nil {
-		return &entities.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil

@@ -4,12 +4,12 @@ import (
 	"io"
 
 	"github.com/luistm/go-bank-cli/bank/reports"
-	"github.com/luistm/go-bank-cli/entities"
+	"github.com/luistm/go-bank-cli/lib"
 )
 
 // SQLStorage for handling SQL databases
 type SQLStorage interface {
-	entities.SQLDatabaseHandler
+	lib.SQLDatabaseHandler
 	io.Closer
 }
 
