@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
 var errInvalidCategory = errors.New("Invalid category")
@@ -25,11 +26,11 @@ func (r *repository) Save(ent lib.Entity) error {
 	}
 
 	if r.SQLStorage == nil {
-		return lib.ErrInfrastructureUndefined
+		return customerrors.ErrInfrastructureUndefined
 	}
 
 	if err := r.SQLStorage.Execute(insertStatement, c.name); err != nil {
-		return &lib.ErrInfrastructure{Msg: err.Error()}
+		return &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return nil

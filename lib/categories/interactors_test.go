@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/luistm/go-bank-cli/lib"
-
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -102,7 +102,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			input: categoryName,
 			output: []interface{}{
 				[]lib.Entity{},
-				lib.ErrRepositoryUndefined,
+				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
 			mockInput:  "",
@@ -124,7 +124,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			input: categoryName,
 			output: []interface{}{
 				[]lib.Entity{},
-				&lib.ErrRepository{Msg: "Test Error"},
+				&customerrors.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
 			mockInput:  "",
@@ -182,7 +182,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			input: categoryNameName,
 			output: []interface{}{
 				[]lib.Entity{},
-				lib.ErrRepositoryUndefined,
+				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
 			mockInput:  nil,
@@ -193,7 +193,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			input: "",
 			output: []interface{}{
 				[]lib.Entity{},
-				lib.ErrRepositoryUndefined,
+				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
 			mockInput:  nil,
@@ -204,7 +204,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			input: categoryNameName,
 			output: []interface{}{
 				[]lib.Entity{},
-				&lib.ErrRepository{Msg: "Test Error"},
+				&customerrors.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
 			mockInput:  &Category{name: categoryNameName},

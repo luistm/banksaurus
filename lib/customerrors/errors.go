@@ -1,4 +1,4 @@
-package lib
+package customerrors
 
 import "errors"
 import "fmt"

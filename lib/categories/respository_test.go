@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,7 +38,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 		{
 			name:      "Returns error if infrastructure not defined",
 			input:     category,
-			output:    lib.ErrInfrastructureUndefined,
+			output:    customerrors.ErrInfrastructureUndefined,
 			withMock:  false,
 			mockInput: nil,
 			mockOuput: nil,
@@ -45,7 +46,7 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 		{
 			name:     "Returns error if infrastructure fails",
 			input:    category,
-			output:   &lib.ErrInfrastructure{Msg: "Test Error"},
+			output:   &customerrors.ErrInfrastructure{Msg: "Test Error"},
 			withMock: true,
 			mockInput: []interface{}{
 				insertStatement,

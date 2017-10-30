@@ -1,8 +1,6 @@
 package transactions
 
-import (
-	"github.com/luistm/go-bank-cli/lib"
-)
+import "github.com/luistm/go-bank-cli/lib/customerrors"
 
 type interactor struct {
 	repository iRepository
@@ -13,12 +11,12 @@ type interactor struct {
 func (i *interactor) Load() error {
 
 	if i.repository == nil {
-		return lib.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
 	_, err := i.repository.GetAll()
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil

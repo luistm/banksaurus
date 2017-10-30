@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
 var saveStatement = "INSERT INTO sellers(slug, name ) VALUES (?, ?)"
@@ -15,13 +16,13 @@ type repository struct {
 func (r *repository) Save(ent lib.Entity) error {
 
 	if r.SQLStorage == nil {
-		return lib.ErrInfrastructureUndefined
+		return customerrors.ErrInfrastructureUndefined
 	}
 
 	s := ent.(*Seller)
 	err := r.SQLStorage.Execute(saveStatement, s.slug, s.name)
 	if err != nil {
-		return &lib.ErrInfrastructure{Msg: err.Error()}
+		return &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return nil

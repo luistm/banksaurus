@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
 func TestUnitInteractorAdd(t *testing.T) {
@@ -23,7 +24,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		{
 			name:       "Returns error if repository is not defined",
 			input:      seller,
-			output:     []interface{}{&Seller{}, lib.ErrRepositoryUndefined},
+			output:     []interface{}{&Seller{}, customerrors.ErrRepositoryUndefined},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -31,7 +32,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 		{
 			name:       "Returns error if seller is empty string",
 			input:      "",
-			output:     []interface{}{&Seller{}, lib.ErrBadInput},
+			output:     []interface{}{&Seller{}, customerrors.ErrBadInput},
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -41,7 +42,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			input: seller,
 			output: []interface{}{
 				&Seller{},
-				&lib.ErrRepository{Msg: "Test Error"},
+				&customerrors.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
 			mockInput:  &Seller{slug: seller},
@@ -95,13 +96,13 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]lib.Entity{}, lib.ErrRepositoryUndefined},
+			output:     []interface{}{[]lib.Entity{}, customerrors.ErrRepositoryUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:     "Returns error on respository error",
-			output:   []interface{}{[]lib.Entity{}, &lib.ErrRepository{Msg: "Test Error"}},
+			output:   []interface{}{[]lib.Entity{}, &customerrors.ErrRepository{Msg: "Test Error"}},
 			withMock: true,
 			mockOutput: []interface{}{
 				[]lib.Entity{},

@@ -2,6 +2,7 @@ package categories
 
 import (
 	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
 // NewInteractor creates an interactor for categories
@@ -26,12 +27,12 @@ func (i *interactor) Create(name string) ([]lib.Entity, error) {
 	}
 
 	if i.repository == nil {
-		return cs, lib.ErrRepositoryUndefined
+		return cs, customerrors.ErrRepositoryUndefined
 	}
 
 	c := Category{name: name}
 	if err := i.repository.Save(&c); err != nil {
-		return cs, &lib.ErrRepository{Msg: err.Error()}
+		return cs, &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, &c)
@@ -43,12 +44,12 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 
 	cs := []lib.Entity{}
 	if i.repository == nil {
-		return cs, lib.ErrRepositoryUndefined
+		return cs, customerrors.ErrRepositoryUndefined
 	}
 
 	cs, err := i.repository.GetAll()
 	if err != nil {
-		return cs, &lib.ErrRepository{Msg: err.Error()}
+		return cs, &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	return cs, nil
@@ -64,12 +65,12 @@ func (i *interactor) GetCategory(name string) ([]lib.Entity, error) {
 	}
 
 	if i.repository == nil {
-		return cs, lib.ErrRepositoryUndefined
+		return cs, customerrors.ErrRepositoryUndefined
 	}
 
 	c, err := i.repository.Get(name)
 	if err != nil {
-		return cs, &lib.ErrRepository{Msg: err.Error()}
+		return cs, &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	cs = append(cs, c)
