@@ -30,3 +30,12 @@ type ErrInfrastructure struct {
 func (e *ErrInfrastructure) Error() string {
 	return fmt.Sprintf("infrastructure error, %s", e.Msg)
 }
+
+// ErrInteractor for errors returned by interactors
+type ErrInteractor struct {
+	Msg string
+}
+
+func (e *ErrInteractor) Error() string {
+	return fmt.Sprintf("interactor error, %s", e.Msg)
+}

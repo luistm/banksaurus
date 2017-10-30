@@ -21,7 +21,7 @@ func (m *repositoryMock) GetAll() ([]*Transaction, error) {
 
 func TestUnitInteractorTransactionsLoad(t *testing.T) {
 
-	testCases := []struct {
+	testCasesRepository := []struct {
 		name       string
 		output     error
 		withMock   bool
@@ -41,7 +41,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
+	for _, tc := range testCasesRepository {
 		t.Log(tc.name)
 		i := interactor{}
 		var m *repositoryMock
@@ -68,14 +68,26 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	i.repository = m
 	m.On("GetAll").Return([]*Transaction{t1, t2})
 
-	// testCases = []struct {
-	// 	name       string
-	// 	output     error
-	// 	withMock   bool
-	// 	mockOutput []interface{}
-	// }{
-	// 	name: "Returns error if entity creator returns fails",
-	// 	output:
-	// }
+	testCasesEntityCreator := []struct {
+		name       string
+		output     error
+		mockOutput []interface{}
+	}{
+		{
+			name:   "Returns error if entity creator returns fails",
+			output: &entities.ErrInteractor{Msg: "Test Error"},
+			// withMock: true
+			mockOutput: []interface{}{t1.s, errors.New("Test Error")},
+		},
+	}
+
+	for _, tc := range testCasesEntityCreator {
+
+		err := i.Load()
+
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
+	}
 
 }
