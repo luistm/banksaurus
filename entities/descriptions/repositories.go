@@ -6,7 +6,7 @@ import (
 	"github.com/luistm/go-bank-cli/entities"
 )
 
-var saveStatement = "INSERT INTO descriptions(slug, friendlyName ) VALUES (?, ?)"
+var saveStatement = "INSERT INTO descriptions(slug, name ) VALUES (?, ?)"
 
 type repository struct {
 	SQLStorage entities.SQLDatabaseHandler
@@ -19,7 +19,7 @@ func (r *repository) Save(ent entities.Entity) error {
 	}
 
 	d := ent.(*Description)
-	err := r.SQLStorage.Execute(saveStatement, d.slug, d.friendlyName)
+	err := r.SQLStorage.Execute(saveStatement, d.slug, d.name)
 	if err != nil {
 		return &entities.ErrInfrastructure{Msg: err.Error()}
 	}
@@ -43,8 +43,8 @@ func (r *repository) GetAll() ([]entities.Entity, error) {
 
 	for rows.Next() {
 		var slug int
-		var friendlyName string
-		err := rows.Scan(&slug, &friendlyName)
+		var name string
+		err := rows.Scan(&slug, &name)
 		if err != nil {
 			return nil, err
 		}
