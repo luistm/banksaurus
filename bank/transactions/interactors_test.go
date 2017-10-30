@@ -5,18 +5,25 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/lib"
+
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/luistm/go-bank-cli/lib/sellers"
 	"github.com/stretchr/testify/mock"
 )
 
-type repositoryMock struct {
+type testMock struct {
 	mock.Mock
 }
 
-func (m *repositoryMock) GetAll() ([]*Transaction, error) {
+func (m *testMock) GetAll() ([]*Transaction, error) {
 	args := m.Called()
 	return args.Get(0).([]*Transaction), args.Error(1)
+}
+
+func (m *testMock) Create(s string) (lib.Entity, error) {
+	args := m.Called(s)
+	return args.Get(0).(lib.Entity), args.Error(1)
 }
 
 func TestUnitInteractorTransactionsLoad(t *testing.T) {
@@ -44,9 +51,9 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	for _, tc := range testCasesRepository {
 		t.Log(tc.name)
 		i := interactor{}
-		var m *repositoryMock
+		var m *testMock
 		if tc.withMock {
-			m = new(repositoryMock)
+			m = new(testMock)
 			i.repository = m
 			m.On("GetAll").Return(tc.mockOutput...)
 		}
@@ -61,30 +68,50 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		}
 	}
 
-	t1 := &Transaction{s: sellers.New("d1", "")}
-	t2 := &Transaction{s: sellers.New("d2", "")}
+	t1 := &Transaction{s: sellers.New("d1", "d1")}
+	t2 := &Transaction{s: sellers.New("d2", "d2")}
 	i := interactor{}
-	m := new(repositoryMock)
+	m := new(testMock)
 	i.repository = m
-	m.On("GetAll").Return([]*Transaction{t1, t2})
+	m.On("GetAll").Return([]*Transaction{t1, t2}, nil)
 
 	testCasesEntityCreator := []struct {
 		name       string
 		output     error
+		withMock   bool
+		mockInput  string
 		mockOutput []interface{}
 	}{
 		{
-			name:   "Returns error if entity creator returns fails",
-			output: &customerrors.ErrInteractor{Msg: "Test Error"},
-			// withMock: true
-			mockOutput: []interface{}{t1.s, errors.New("Test Error")},
+			name:       "Returns error if entity creator is not defined",
+			output:     customerrors.ErrInteractorUndefined,
+			withMock:   false,
+			mockInput:  "",
+			mockOutput: nil,
+		},
+		{
+			name:       "Returns error if entity creator returns fails",
+			output:     &customerrors.ErrInteractor{Msg: "Test Error"},
+			withMock:   true,
+			mockInput:  t1.s.String(),
+			mockOutput: []interface{}{&sellers.Seller{}, errors.New("Test Error")},
 		},
 	}
 
 	for _, tc := range testCasesEntityCreator {
+		t.Log(tc.name)
+		var im *testMock
+		if tc.withMock {
+			im = new(testMock)
+			im.On("Create", tc.mockInput).Return(tc.mockOutput...)
+			i.sellerInteractor = im
+		}
 
 		err := i.Load()
 
+		if tc.withMock {
+			im.AssertExpectations(t)
+		}
 		if !reflect.DeepEqual(tc.output, err) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
 		}
