@@ -20,7 +20,6 @@ func New(inputFilePath string) (infrastructure.CSVStorage, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
 
 	f := &csvfile{file: file}
 
