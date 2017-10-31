@@ -17,7 +17,7 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 		return []*Transaction{}, customerrors.ErrInfrastructureUndefined
 	}
 
-	_, err := r.storage.Lines()
+	lines, err := r.storage.Lines()
 	if err != nil {
 		return []*Transaction{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
@@ -25,13 +25,14 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 	// TODO: Validate if Lines() output is the expected one
 	// r.validateLines(lines)
 	// if err != nil{}
-	// TODO: r.buildTransactions(lines)
-	// if err != nil{}
+	r.buildTransactions(lines[5 : len(lines)-2])
+	// log.Println(len(r.transactions))
 
-	return []*Transaction{}, nil
+	return r.transactions, nil
 }
 
 func (r *repository) buildTransactions(lines [][]string) error {
+
 	for _, l := range lines {
 		t := &Transaction{
 			s: sellers.New(l[2], l[2]),

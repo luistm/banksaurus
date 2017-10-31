@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/luistm/go-bank-cli/bank/reports"
+	"github.com/luistm/go-bank-cli/bank/transactions"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
@@ -85,7 +86,7 @@ func showSellersHandler() (string, error) {
 	}
 
 	for _, s := range sellers {
-		out += fmt.Sprintf("%s\n", s.String())
+		out += fmt.Sprintf("%s\n", s)
 	}
 
 	return out, nil
@@ -108,4 +109,22 @@ func showReportHandler(inputFilePath string) (string, error) {
 	}
 
 	return out, nil
+}
+
+// loadHandler loads a file
+func loadHandler(inputFilePath string) (string, error) {
+	var out string
+	CSVStorage, err := csv.New(inputFilePath)
+	if err != nil {
+		return out, err
+	}
+	defer CSVStorage.Close()
+
+	transactionsInteractor := transactions.NewInteractor(CSVStorage)
+	err = transactionsInteractor.Load()
+	if err != nil {
+		return out, err
+	}
+
+	return "", nil
 }

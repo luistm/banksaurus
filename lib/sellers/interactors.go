@@ -18,7 +18,7 @@ type interactor struct {
 }
 
 // Create adds a new seller and persists it
-func (i *interactor) Create(name string) (*Seller, error) {
+func (i *interactor) Create(name string) (lib.Entity, error) {
 
 	if name == "" {
 		return &Seller{}, customerrors.ErrBadInput
@@ -49,7 +49,5 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 		return sellers, &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	sellers = append(sellers, s...)
-
-	return sellers, nil
+	return s, nil
 }

@@ -43,13 +43,13 @@ func (r *repository) GetAll() ([]lib.Entity, error) {
 	sellers := []lib.Entity{}
 
 	for rows.Next() {
-		var slug int
+		var slug string
 		var name string
 		err := rows.Scan(&slug, &name)
 		if err != nil {
 			return nil, err
 		}
-		sellers = append(sellers, &Seller{})
+		sellers = append(sellers, &Seller{slug: slug, name: name})
 	}
 
 	return sellers, nil

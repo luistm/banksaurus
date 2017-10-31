@@ -52,7 +52,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 
 	for _, tc := range testCasesRepository {
 		t.Log(tc.name)
-		i := interactor{}
+		i := Interactor{}
 		var m *testMock
 		if tc.withMock {
 			m = new(testMock)
@@ -73,7 +73,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	c := categories.New("Test Category")
 	t1 := &Transaction{s: sellers.New("d1", "d1"), c: c}
 	t2 := &Transaction{s: sellers.New("d2", "d2"), c: c}
-	i := interactor{}
+	i := Interactor{}
 	m := new(testMock)
 	i.repository = m
 	m.On("GetAll").Return([]*Transaction{t1, t2}, nil)
@@ -134,14 +134,14 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 	// 	mockOutput []interface{}
 	// }{
 	// 	{
-	// 		name:       "Returns error if category interactor undefined",
+	// 		name:       "Returns error if category Interactor undefined",
 	// 		output:     customerrors.ErrInteractorUndefined,
 	// 		withMock:   false,
 	// 		mockInput:  "",
 	// 		mockOutput: nil,
 	// 	},
 	// 	{
-	// 		name:       "Returns error if category interactor fails",
+	// 		name:       "Returns error if category Interactor fails",
 	// 		output:     &customerrors.ErrInteractor{Msg: "Test Error"},
 	// 		withMock:   true,
 	// 		mockInput:  t1.c.String(),

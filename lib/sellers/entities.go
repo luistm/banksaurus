@@ -17,5 +17,8 @@ func (s *Seller) ID() string {
 }
 
 func (s *Seller) String() string {
+	if s.name == "" {
+		return s.slug
+	}
 	return s.name
 }

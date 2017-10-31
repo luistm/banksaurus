@@ -28,12 +28,12 @@ func TestSystem(t *testing.T) {
 			expected:      intro + usage + options + "\n",
 			errorExpected: false,
 		},
-		{
-			name:          "Shows report from file",
-			command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
-			expected:      "Expense is  0\nCredit is  0\n",
-			errorExpected: false,
-		},
+		// {
+		// 	name:          "Shows report from file",
+		// 	command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
+		// 	expected:      "Expense is  0\nCredit is  0\n",
+		// 	errorExpected: false,
+		// },
 	}
 
 	for _, tc := range testCases {
@@ -58,9 +58,9 @@ func TestSystem(t *testing.T) {
 
 func TestSystemSellers(t *testing.T) {
 
-	name := "Shows report from file"
-	command := []string{"report", "--input", "./tests/fixtures/test_file.csv"}
-	expected := "Expense is  0\nCredit is  0\n"
+	name := "Loads records from file"
+	command := []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"}
+	expected := ""
 
 	cmd := exec.Command("../../bankcli", command...)
 	stdoutStderr, err := cmd.CombinedOutput()
@@ -70,7 +70,7 @@ func TestSystemSellers(t *testing.T) {
 
 	name = "Shows sellers loaded by the run report"
 	command = []string{"seller", "show"}
-	expected = "COMPRA CONTINENTE MAI\nLEVANTAMENTO Est Circ\nCOMPRA MODELO BONJOUR\nCOMPRA LIDL   CIA  LJ\nBX VALOR 03 TRANSACCO\n"
+	expected = "COMPRA CONTINENTE MAI \nCOMPRA FARMACIA SAO J \n"
 
 	cmd = exec.Command("../../bankcli", command...)
 	stdoutStderr, err = cmd.CombinedOutput()

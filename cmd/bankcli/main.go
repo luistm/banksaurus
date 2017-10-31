@@ -20,6 +20,7 @@ var intro = "Your command line finance manager.\n"
 var usage = `Usage:
 	bank -h | --help
 	bank report --input <file>
+	bank load --input <file>
 	bank category new <name>
 	bank category show
 	bank seller new <name>
@@ -27,7 +28,7 @@ var usage = `Usage:
 
 var options = `
 Options:
-	--input       The path to the transactions list.
+	--input       The path to the records list.
 	-h --help     Show this screen.`
 
 func main() {
@@ -53,6 +54,10 @@ func main() {
 
 	if arguments["report"].(bool) {
 		out, err = showReportHandler(arguments["<file>"].(string))
+	}
+
+	if arguments["load"].(bool) {
+		out, err = loadHandler(arguments["<file>"].(string))
 	}
 
 	if err != nil {
