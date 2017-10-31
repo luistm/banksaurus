@@ -2,10 +2,12 @@ package reports
 
 import (
 	"errors"
+
+	"github.com/luistm/go-bank-cli/bank"
 )
 
 // NewInteractor creates an interactor for reports
-func NewInteractor(storage CSVHandler) *interactor {
+func NewInteractor(storage bank.CSVHandler) *interactor {
 	r := &repository{storage: storage}
 	return &interactor{repository: r}
 }

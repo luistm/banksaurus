@@ -1,12 +1,11 @@
 package reports
 
-// CSVHandler to handle csv files
-type CSVHandler interface {
-	GetAll() ([][]string, error)
-}
+import (
+	"github.com/luistm/go-bank-cli/bank"
+)
 
 type repository struct {
-	storage CSVHandler
+	storage bank.CSVHandler
 }
 
 // ParseAccountMovements imports data from a data source

@@ -13,7 +13,7 @@ type iRepository interface {
 }
 
 // New creates a record with some parsed data
-func New(r record) *Transaction {
+func New() *Transaction {
 
 	t := &Transaction{}
 
@@ -83,8 +83,3 @@ func (t *Transaction) IsFromThisMonth() bool {
 	// }
 	return false
 }
-
-// Record represents a single line of an importend transaction.
-// Data will be imported most likely from a text base format.
-// Therefore a record will be the representation of each one of those lines.
-type record string
