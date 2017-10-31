@@ -35,16 +35,16 @@ func (i *interactor) Load() error {
 		}
 	}
 
-	if i.categoryInteractor == nil {
-		return customerrors.ErrInteractorUndefined
-	}
+	// if i.categoryInteractor == nil {
+	// 	return customerrors.ErrInteractorUndefined
+	// }
 
-	for _, t := range transactions {
-		_, err = i.categoryInteractor.Create(t.c.String())
-		if err != nil {
-			return &customerrors.ErrInteractor{Msg: err.Error()}
-		}
-	}
+	// for _, t := range transactions {
+	// 	_, err = i.categoryInteractor.Create(t.c.String())
+	// 	if err != nil {
+	// 		return &customerrors.ErrInteractor{Msg: err.Error()}
+	// 	}
+	// }
 
 	return nil
 }
