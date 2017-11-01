@@ -88,43 +88,57 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 	testCases := []struct {
 		name       string
-		id         string
+		slug       string
 		sellerName string
 		output     error
+		withMock   bool
+		mockInput  *Seller
+		mockOutput error
 	}{
 		{
 			name:       "Returns error if seller ID is null",
-			id:         "",
+			slug:       "",
 			sellerName: "Seller Name",
 			output:     customerrors.ErrBadInput,
 		},
 		{
 			name:       "Returns error if seller name is null",
-			id:         "Seller ID",
+			slug:       "Seller Slug",
 			sellerName: "",
 			output:     customerrors.ErrBadInput,
 		},
 		{
 			name:       "Returns error if repository undefined",
-			id:         "sellerSlug",
-			sellerName: "sellerName",
+			slug:       "Seller Slug",
+			sellerName: "Seller Name",
 			output:     customerrors.ErrRepositoryUndefined,
 		},
-		// {
-		// 	name: "Returns error if repository fails",
-		// },
-
+		{
+			name:       "Returns error if repository fails",
+			slug:       "Seller Slug",
+			sellerName: "Seller Name",
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
+			withMock:   true,
+			mockInput:  &Seller{"Seller Slug", "Seller Name"},
+			mockOutput: errors.New("Test Error"),
+		},
 	}
-
-	// Seller does not exist
-	// Seller already exists
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &interactor{}
+		var m *lib.RepositoryMock
+		if tc.withMock {
+			m = new(lib.RepositoryMock)
+			m.On("Save", tc.mockInput).Return(tc.mockOutput)
+			i.repository = m
+		}
 
-		err := i.Update(tc.id, tc.sellerName)
+		err := i.Update(tc.slug, tc.sellerName)
 
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
 		if !reflect.DeepEqual(tc.output, err) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
 		}

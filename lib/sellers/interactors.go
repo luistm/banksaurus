@@ -52,14 +52,20 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 	return s, nil
 }
 
-// Updates a seller given i'ts ID
-func (i *interactor) Update(ID string, name string) error {
+// Updates a seller given i'ts slug
+func (i *interactor) Update(slug string, name string) error {
 
-	if ID == "" || name == "" {
+	if slug == "" || name == "" {
 		return customerrors.ErrBadInput
 	}
 	if i.repository == nil {
 		return customerrors.ErrRepositoryUndefined
+	}
+
+	s := &Seller{slug, name}
+	err := i.repository.Save(s)
+	if err != nil {
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil
