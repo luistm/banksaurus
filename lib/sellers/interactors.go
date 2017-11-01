@@ -55,6 +55,9 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 // Updates a seller given i'ts ID
 func (i *interactor) Update(ID string, name string) error {
 
+	if ID == "" || name == "" {
+		return customerrors.ErrBadInput
+	}
 	if i.repository == nil {
 		return customerrors.ErrRepositoryUndefined
 	}

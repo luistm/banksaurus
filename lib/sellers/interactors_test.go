@@ -87,17 +87,33 @@ func TestUnitInteractorCreate(t *testing.T) {
 func TestUnitInteractorUpdate(t *testing.T) {
 
 	testCases := []struct {
-		name      string
-		inputID   string
-		inputNAME string
-		output    error
+		name       string
+		id         string
+		sellerName string
+		output     error
 	}{
 		{
-			name:      "Returns error if repository fails",
-			inputID:   "sellerSlug",
-			inputNAME: "sellerName",
-			output:    customerrors.ErrRepositoryUndefined,
+			name:       "Returns error if seller ID is null",
+			id:         "",
+			sellerName: "Seller Name",
+			output:     customerrors.ErrBadInput,
 		},
+		{
+			name:       "Returns error if seller name is null",
+			id:         "Seller ID",
+			sellerName: "",
+			output:     customerrors.ErrBadInput,
+		},
+		{
+			name:       "Returns error if repository undefined",
+			id:         "sellerSlug",
+			sellerName: "sellerName",
+			output:     customerrors.ErrRepositoryUndefined,
+		},
+		// {
+		// 	name: "Returns error if repository fails",
+		// },
+
 	}
 
 	// Seller does not exist
@@ -107,7 +123,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 		t.Log(tc.name)
 		i := &interactor{}
 
-		err := i.Update(tc.inputID, tc.inputNAME)
+		err := i.Update(tc.id, tc.sellerName)
 
 		if !reflect.DeepEqual(tc.output, err) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
