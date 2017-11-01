@@ -79,7 +79,13 @@ func TestSystemSellers(t *testing.T) {
 	assert.Equal(t, expected, string(stdoutStderr), name)
 
 	name = "Adds pretty name to seller"
-	command = []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"}
+	command = []string{"seller", "change", "COMPRA CONTINENTE MAI ", "--pretty", "Continente"}
+
+	cmd = exec.Command("../../bankcli", command...)
+	stdoutStderr, err = cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	command = []string{"seller", "show"}
 	expected = "Continente\nCOMPRA FARMACIA SAO J \n"
 
 	cmd = exec.Command("../../bankcli", command...)
