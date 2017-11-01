@@ -23,12 +23,14 @@ var usage = `Usage:
 	bank load --input <file>
 	bank category new <name>
 	bank category show
+	bank seller change <id> --pretty <name>
 	bank seller new <name>
 	bank seller show`
 
 var options = `
 Options:
 	--input       The path to the records list.
+	--name        Specifies the name.
 	-h --help     Show this screen.`
 
 func main() {
@@ -50,6 +52,13 @@ func main() {
 
 	if arguments["seller"].(bool) && arguments["show"].(bool) {
 		out, err = showSellersHandler()
+	}
+
+	if arguments["seller"].(bool) && arguments["change"].(bool) {
+		out, err = sellerChangePrettyName(
+			arguments["<id>"].(string),
+			arguments["<name>"].(string),
+		)
 	}
 
 	if arguments["report"].(bool) {

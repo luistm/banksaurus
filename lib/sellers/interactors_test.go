@@ -9,7 +9,7 @@ import (
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
-func TestUnitInteractorAdd(t *testing.T) {
+func TestUnitInteractorCreate(t *testing.T) {
 
 	var seller = "TestDescrition"
 
@@ -84,9 +84,38 @@ func TestUnitInteractorAdd(t *testing.T) {
 	}
 }
 
-func TestUnitInteractorGetAll(t *testing.T) {
+func TestUnitInteractorUpdate(t *testing.T) {
 
-	// testCategory := &Category{name: "Test Category "}
+	testCases := []struct {
+		name      string
+		inputID   string
+		inputNAME string
+		output    error
+	}{
+		{
+			name:      "Returns error if repository fails",
+			inputID:   "sellerSlug",
+			inputNAME: "sellerName",
+			output:    customerrors.ErrRepositoryUndefined,
+		},
+	}
+
+	// Seller does not exist
+	// Seller already exists
+
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		i := &interactor{}
+
+		err := i.Update(tc.inputID, tc.inputNAME)
+
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
+	}
+}
+
+func TestUnitInteractorGetAll(t *testing.T) {
 
 	testCases := []struct {
 		name       string

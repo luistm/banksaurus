@@ -78,6 +78,16 @@ func TestSystemSellers(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expected, string(stdoutStderr), name)
 
+	name = "Adds pretty name to seller"
+	command = []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"}
+	expected = "Continente\nCOMPRA FARMACIA SAO J \n"
+
+	cmd = exec.Command("../../bankcli", command...)
+	stdoutStderr, err = cmd.CombinedOutput()
+
+	assert.NoError(t, err)
+	assert.Equal(t, expected, string(stdoutStderr), name)
+
 	// Remove any test files
 	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
 		t.Error(err)

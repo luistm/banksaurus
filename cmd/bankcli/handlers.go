@@ -92,6 +92,23 @@ func showSellersHandler() (string, error) {
 	return out, nil
 }
 
+func sellerChangePrettyName(sellerID string, name string) (string, error) {
+	var out string
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	if err != nil {
+		return out, err
+	}
+	defer SQLStorage.Close()
+
+	sellersInteractor := sellers.NewInteractor(SQLStorage)
+	err = sellersInteractor.Update(sellerID, name)
+	if err != nil {
+		return out, err
+	}
+
+	return out, nil
+}
+
 // showReportHandler handles report commands
 func showReportHandler(inputFilePath string) (string, error) {
 

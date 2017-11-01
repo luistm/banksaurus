@@ -51,3 +51,13 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 
 	return s, nil
 }
+
+// Updates a seller given i'ts ID
+func (i *interactor) Update(ID string, name string) error {
+
+	if i.repository == nil {
+		return customerrors.ErrRepositoryUndefined
+	}
+
+	return nil
+}
