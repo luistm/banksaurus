@@ -69,10 +69,10 @@ func TestUnitRepositorySave(t *testing.T) {
 			},
 			mockInputUpdate: []interface{}{
 				updateStatement,
-				seller.slug,
 				seller.name,
+				seller.slug,
 			},
-			mockOutput: sqlite3.ErrConstraint,
+			mockOutput: sqlite3.Error{Code: sqlite3.ErrNo(19)},
 		},
 	}
 
