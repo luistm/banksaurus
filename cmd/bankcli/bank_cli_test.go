@@ -28,12 +28,12 @@ func TestSystem(t *testing.T) {
 			expected:      intro + usage + options + "\n",
 			errorExpected: false,
 		},
-		// {
-		// 	name:          "Shows report from file",
-		// 	command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
-		// 	expected:      "Expense is  0\nCredit is  0\n",
-		// 	errorExpected: false,
-		// },
+		{
+			name:          "Shows report from bank records file",
+			command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
+			expected:      "Expense is  0\nCredit is  0\n",
+			errorExpected: false,
+		},
 	}
 
 	for _, tc := range testCases {
