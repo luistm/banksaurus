@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/mattn/go-sqlite3"
+
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 
 	"github.com/stretchr/testify/assert"
@@ -55,17 +57,14 @@ func TestUnitsqliteExecute(t *testing.T) {
 	name = "Returns error if database returns error"
 	dbConnMock, mock, err := sqlmock.New()
 	assert.NoError(t, err)
-
-	e := &ErrDataBase{"testError"}
-
 	mock.ExpectBegin()
-	mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnError(e)
+	mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnError(sqlite3.ErrError)
 	dbh = &sqlite{dbConnMock}
 
 	err = dbh.Execute("SELECT * FROM testTable")
 
 	assert.NoError(t, mock.ExpectationsWereMet(), name)
-	assert.EqualError(t, err, e.Error(), name)
+	assert.EqualError(t, err, sqlite3.ErrError.Error(), name)
 
 	// TODO: Test an insert with values
 	// TODO: Test transaction begin error
@@ -105,8 +104,7 @@ func TestUnitsqliteQuery(t *testing.T) {
 			dbConnMock, mock, err = sqlmock.New()
 			assert.NoError(t, err)
 
-			e := &ErrDataBase{"testError"}
-			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(e)
+			mock.ExpectQuery("^SELECT (.+) FROM testTable").WillReturnError(sqlite3.ErrError)
 
 			dbh = &sqlite{db: dbConnMock}
 

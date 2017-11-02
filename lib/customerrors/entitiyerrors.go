@@ -3,10 +3,6 @@ package customerrors
 import "errors"
 import "fmt"
 
-
-
-
-
 // ErrInfrastructureUndefined to use when infrastructure is not defined
 var ErrInfrastructureUndefined = errors.New("infrastructure is not defined")
 
@@ -18,4 +14,3 @@ type ErrInfrastructure struct {
 func (e *ErrInfrastructure) Error() string {
 	return fmt.Sprintf("infrastructure error, %s", e.Msg)
 }
-

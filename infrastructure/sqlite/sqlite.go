@@ -98,8 +98,10 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 	tx, _ := s.db.Begin()
 	_, err := tx.Exec(statement, values...)
 	if err != nil {
-		// TODO: tx.Rollback
-		return &ErrDataBase{err.Error()}
+		if errTx := tx.Rollback(); errTx != nil {
+			return errTx
+		}
+		return err
 	}
 	tx.Commit()
 
@@ -114,20 +116,8 @@ func (s *sqlite) Query(statement string) (lib.Row, error) {
 
 	rows, err := s.db.Query(statement)
 	if err != nil {
-		return nil, &ErrDataBase{err.Error()}
+		return nil, err
 	}
 
 	return rows, nil
-}
-
-// LEGACY ---------------------------------------------------------------------
-
-// ErrDataBase to be used when the infrastructure
-// database returns error
-type ErrDataBase struct {
-	s string
-}
-
-func (e *ErrDataBase) Error() string {
-	return e.s
 }

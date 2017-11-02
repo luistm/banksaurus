@@ -7,6 +7,7 @@ import (
 
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
+	sqlite3 "github.com/mattn/go-sqlite3"
 )
 
 func TestUnitRepositorySave(t *testing.T) {
@@ -14,12 +15,14 @@ func TestUnitRepositorySave(t *testing.T) {
 	seller := &Seller{slug: "Raw name", name: "Friendly name"}
 
 	testCases := []struct {
-		name       string
-		input      *Seller
-		output     error
-		withMock   bool
-		mockInput  []interface{}
-		mockOutput error
+		name            string
+		input           *Seller
+		output          error
+		withMock        bool
+		mockInput       []interface{}
+		mockOutput      error
+		withUpdateMock  bool
+		mockInputUpdate []interface{}
 	}{
 		{
 			name:       "Returns error if infrastructure is not defined",
@@ -53,15 +56,39 @@ func TestUnitRepositorySave(t *testing.T) {
 			},
 			mockOutput: nil,
 		},
+		{
+			name:           "Updates seller if error is UNIQUE constraint",
+			input:          seller,
+			output:         nil,
+			withMock:       true,
+			withUpdateMock: true,
+			mockInput: []interface{}{
+				saveStatement,
+				seller.slug,
+				seller.name,
+			},
+			mockInputUpdate: []interface{}{
+				updateStatement,
+				seller.slug,
+				seller.name,
+			},
+			mockOutput: sqlite3.ErrConstraint,
+		},
 	}
 
+	// TODO: To much logic in this test, maybe it's an oportunity to refactor
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := &repository{}
 		var m *lib.MockSQLStorage
 		if tc.withMock {
 			m = new(lib.MockSQLStorage)
-			m.On("Execute", tc.mockInput...).Return(tc.mockOutput)
+			if tc.withUpdateMock {
+				m.On("Execute", tc.mockInput...).Return(tc.mockOutput).
+					On("Execute", tc.mockInputUpdate...).Return(nil)
+			} else {
+				m.On("Execute", tc.mockInput...).Return(tc.mockOutput)
+			}
 			r.SQLStorage = m
 		}
 
@@ -69,6 +96,9 @@ func TestUnitRepositorySave(t *testing.T) {
 
 		if tc.withMock {
 			m.AssertExpectations(t)
+			if tc.withUpdateMock {
+				m.AssertNumberOfCalls(t, "Execute", 2)
+			}
 		}
 		if !reflect.DeepEqual(tc.output, err) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
