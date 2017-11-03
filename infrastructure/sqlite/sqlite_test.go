@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"errors"
 	"reflect"
 	"testing"
 
@@ -47,28 +48,89 @@ func TestUnitNewSqlite(t *testing.T) {
 
 }
 
-func TestUnitsqliteExecute(t *testing.T) {
+func TestUnitSqliteExecute(t *testing.T) {
 
-	name := "Returns error if sql database is not defined"
-	dbh := &sqlite{}
-	err := dbh.Execute("SELECT * FROM testTable")
-	assert.EqualError(t, err, errConnectionIsNil.Error(), name)
+	testCases := []struct {
+		name      string
+		statement string
+		arguments []interface{}
+		output    error
+		withMock  bool
+	}{
+		{
+			name:      "Returns error if DB is undefined",
+			statement: "This is a statment",
+			arguments: []interface{}{},
+			output:    ErrUndefinedDataBase,
+		},
+		{
+			name:      "Returns error if statement is empty",
+			statement: "",
+			arguments: []interface{}{},
+			output:    ErrStatementUndefined,
+			withMock:  true,
+		},
+	}
 
-	name = "Returns error if database returns error"
-	dbConnMock, mock, err := sqlmock.New()
-	assert.NoError(t, err)
-	mock.ExpectBegin()
-	mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnError(sqlite3.ErrError)
-	dbh = &sqlite{dbConnMock}
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		s := &sqlite{}
+		db, mock, err := sqlmock.New()
+		if tc.withMock {
+			assert.NoError(t, err)
+			s.db = db
+		}
 
-	err = dbh.Execute("SELECT * FROM testTable")
+		err = s.Execute(tc.statement, tc.arguments...)
 
-	assert.NoError(t, mock.ExpectationsWereMet(), name)
-	assert.EqualError(t, err, sqlite3.ErrError.Error(), name)
+		if tc.withMock {
+			mock.ExpectationsWereMet()
+		}
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
+		db.Close()
+	}
 
-	// TODO: Test an insert with values
-	// TODO: Test transaction begin error
-	// TODO: Test transaction commit error
+	testCasesForBegin := []struct {
+		name      string
+		statement string
+		output    error
+	}{
+		{
+			name:      "Returns error if Begin fails",
+			statement: "SELECT * FROM testTable",
+			output:    errors.New("Test Error"),
+		},
+		{
+			name:      "Returns no error",
+			statement: "SELECT * FROM testTable",
+			output:    nil,
+		},
+	}
+
+	for _, tc := range testCasesForBegin {
+		t.Log(tc.name)
+		db, mock, err := sqlmock.New()
+		assert.NoError(t, err)
+		s := &sqlite{db}
+
+		if tc.output != nil {
+			mock.ExpectBegin().WillReturnError(tc.output)
+		} else {
+			mock.ExpectBegin()
+			mock.ExpectExec("^SELECT (.+) FROM testTable").WillReturnResult(sqlmock.NewResult(1, 1))
+			mock.ExpectCommit()
+		}
+
+		err = s.Execute(tc.statement)
+
+		mock.ExpectationsWereMet()
+		if !reflect.DeepEqual(tc.output, err) {
+			t.Errorf("Expected '%v', got '%v'", tc.output, err)
+		}
+		db.Close()
+	}
 }
 
 func TestUnitsqliteQuery(t *testing.T) {

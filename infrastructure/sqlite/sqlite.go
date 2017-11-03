@@ -7,11 +7,16 @@ import (
 
 	"github.com/luistm/go-bank-cli/infrastructure"
 	"github.com/luistm/go-bank-cli/lib"
+
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var errConnectionIsNil = errors.New("sqlite database is <nil>")
+// ErrUndefinedDataBase ...
+var ErrUndefinedDataBase = errors.New("database is not defined")
+
+// ErrStatementUndefined ...
+var ErrStatementUndefined = errors.New("statement is undefined")
 var errInvalidConfiguration = errors.New("sqlite configuration parameters are invalid")
 var errFailedToCreatedDB = errors.New("failed to create database")
 
@@ -83,7 +88,7 @@ type sqlite struct {
 // Close closes the connection with the sqlite database
 func (s *sqlite) Close() error {
 	if s.db == nil {
-		return errConnectionIsNil
+		return ErrUndefinedDataBase
 	}
 
 	return s.db.Close()
@@ -92,18 +97,31 @@ func (s *sqlite) Close() error {
 // Execute is to execute an sql statement
 func (s *sqlite) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
-		return errConnectionIsNil
+		return ErrUndefinedDataBase
 	}
 
-	tx, _ := s.db.Begin()
-	_, err := tx.Exec(statement, values...)
+	if statement == "" {
+		return ErrStatementUndefined
+	}
+
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(statement, values...)
+	// TODO: this section is missing unit tests ----------------------------------
 	if err != nil {
 		if errTx := tx.Rollback(); errTx != nil {
 			return errTx
 		}
 		return err
 	}
-	tx.Commit()
+	// ---------------------------------------------------------------------------
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -111,7 +129,7 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 // Query fetches data from the database
 func (s *sqlite) Query(statement string) (lib.Row, error) {
 	if s.db == nil {
-		return nil, errConnectionIsNil
+		return nil, ErrUndefinedDataBase
 	}
 
 	rows, err := s.db.Query(statement)
