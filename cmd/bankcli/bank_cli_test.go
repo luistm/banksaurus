@@ -35,6 +35,11 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
+			name:     "No sellers should be available here",
+			command:  []string{"seller", "show"},
+			expected: "",
+		},
+		{
 			name:          "Create category",
 			command:       []string{"category", "new", "ThisIsACategoryNameForTesting"},
 			expected:      "Created category 'ThisIsACategoryNameForTesting'",
