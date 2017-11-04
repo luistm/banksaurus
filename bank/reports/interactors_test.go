@@ -1,6 +1,7 @@
 package reports
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/luistm/go-bank-cli/bank/transactions"
@@ -22,18 +23,29 @@ func (m *repositoryMock) GetAll() ([]*transactions.Transaction, error) {
 func TestUnitReport(t *testing.T) {
 
 	testCases := []struct {
-		name     string
-		output   []interface{}
-		withMock bool
+		name       string
+		output     []interface{}
+		withMock   bool
+		mockOutput []interface{}
 	}{
 		{
 			name:   "Returns error if repository is indefined",
 			output: []interface{}{&Report{}, customerrors.ErrRepositoryUndefined},
 		},
 		{
-			name:     "Returns report",
-			output:   []interface{}{&Report{}, nil},
-			withMock: true,
+			name:       "Returns error if repository returns error",
+			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test Error"}},
+			withMock:   true,
+			mockOutput: []interface{}{[]*transactions.Transaction{}, errors.New("Test Error")},
+		},
+		{
+			name: "Report has transactions",
+			output: []interface{}{
+				&Report{transactions: []*transactions.Transaction{&transactions.Transaction{}}},
+				nil,
+			},
+			withMock:   true,
+			mockOutput: []interface{}{[]*transactions.Transaction{&transactions.Transaction{}}, nil},
 		},
 	}
 
@@ -43,6 +55,7 @@ func TestUnitReport(t *testing.T) {
 		var m *repositoryMock
 		if tc.withMock {
 			m = new(repositoryMock)
+			m.On("GetAll").Return(tc.mockOutput...)
 			i.repository = m
 		}
 

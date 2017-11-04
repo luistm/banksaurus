@@ -20,5 +20,14 @@ func (i *interactor) Report() (*Report, error) {
 	if i.repository == nil {
 		return &Report{}, customerrors.ErrRepositoryUndefined
 	}
-	return &Report{}, nil
+
+	r := &Report{}
+	ts, err := i.repository.GetAll()
+	if err != nil {
+		return r, &customerrors.ErrRepository{Msg: err.Error()}
+	}
+
+	r.transactions = ts
+
+	return r, nil
 }
