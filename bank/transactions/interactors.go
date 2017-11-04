@@ -59,16 +59,5 @@ func (i *Interactor) Load() error {
 		}
 	}
 
-	// if i.categoryInteractor == nil {
-	// 	return customerrors.ErrInteractorUndefined
-	// }
-
-	// for _, t := range transactions {
-	// 	_, err = i.categoryInteractor.Create(t.c.String())
-	// 	if err != nil {
-	// 		return &customerrors.ErrInteractor{Msg: err.Error()}
-	// 	}
-	// }
-
 	return nil
 }

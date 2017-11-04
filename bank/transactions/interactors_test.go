@@ -126,47 +126,4 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 		On("Create", t2.s.String()).Return(t2.s, nil)
 	i.sellerInteractor = sim
 
-	// testCasesEntityCreator = []struct {
-	// 	name       string
-	// 	output     error
-	// 	withMock   bool
-	// 	mockInput  string
-	// 	mockOutput []interface{}
-	// }{
-	// 	{
-	// 		name:       "Returns error if category Interactor undefined",
-	// 		output:     customerrors.ErrInteractorUndefined,
-	// 		withMock:   false,
-	// 		mockInput:  "",
-	// 		mockOutput: nil,
-	// 	},
-	// 	{
-	// 		name:       "Returns error if category Interactor fails",
-	// 		output:     &customerrors.ErrInteractor{Msg: "Test Error"},
-	// 		withMock:   true,
-	// 		mockInput:  t1.c.String(),
-	// 		mockOutput: []interface{}{&categories.Category{}, errors.New("Test Error")},
-	// 	},
-	// }
-
-	// // use the code above
-	// for _, tc := range testCasesEntityCreator {
-	// 	t.Log(tc.name)
-	// 	var im *testMock
-	// 	if tc.withMock {
-	// 		im = new(testMock)
-	// 		im.On("Create", tc.mockInput).Return(tc.mockOutput...)
-	// 		i.categoryInteractor = im
-	// 	}
-
-	// 	err := i.Load()
-
-	// 	if tc.withMock {
-	// 		im.AssertExpectations(t)
-	// 	}
-	// 	if !reflect.DeepEqual(tc.output, err) {
-	// 		t.Errorf("Expected '%v', got '%v'", tc.output, err)
-	// 	}
-	// }
-
 }
