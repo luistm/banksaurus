@@ -65,6 +65,12 @@ func TestSystem(t *testing.T) {
 			command:  []string{"seller", "show"},
 			expected: "Continente\nCOMPRA FARMACIA SAO J \n",
 		},
+		{
+			name:          "Shows report from bank records file, with sellers name instead of slug",
+			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
+			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J ",
+			errorExpected: false,
+		},
 	}
 
 	for _, tc := range testCases {
