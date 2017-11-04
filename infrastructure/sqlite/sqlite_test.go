@@ -59,7 +59,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 	}{
 		{
 			name:      "Returns error if DB is undefined",
-			statement: "This is a statment",
+			statement: "This is a statement",
 			arguments: []interface{}{},
 			output:    ErrUndefinedDataBase,
 		},

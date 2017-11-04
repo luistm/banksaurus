@@ -76,7 +76,7 @@ func TestUnitRepositorySave(t *testing.T) {
 		},
 	}
 
-	// TODO: To much logic in this test, maybe it's an oportunity to refactor
+	// TODO: To much logic in this test, maybe it's an opportunity to refactor
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := &repository{}

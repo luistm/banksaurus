@@ -160,7 +160,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			mockOutput: nil,
 		},
 		{
-			name:     "Returns error on respository error",
+			name:     "Returns error on repository error",
 			output:   []interface{}{[]lib.Entity{}, &customerrors.ErrRepository{Msg: "Test Error"}},
 			withMock: true,
 			mockOutput: []interface{}{

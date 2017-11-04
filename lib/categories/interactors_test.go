@@ -120,7 +120,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			mockOutput: nil,
 		},
 		{
-			name:  "Returns error on respository error",
+			name:  "Returns error on repository error",
 			input: categoryName,
 			output: []interface{}{
 				[]lib.Entity{},
