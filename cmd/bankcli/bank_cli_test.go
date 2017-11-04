@@ -51,7 +51,7 @@ func TestSystem(t *testing.T) {
 			expected: "ThisIsACategoryNameForTesting\n",
 		},
 		{
-			name:     "Loads records from file",
+			name:     "LoadDataFromRecordss records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected: "",
 		},

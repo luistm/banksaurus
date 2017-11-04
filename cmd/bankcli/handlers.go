@@ -120,7 +120,7 @@ func showReportHandler(inputFilePath string) (string, error) {
 	defer CSVStorage.Close()
 
 	reportsInteractor := reports.NewInteractor(CSVStorage)
-	r, err := reportsInteractor.Report()
+	r, err := reportsInteractor.ReportFromRecords()
 	if err != nil {
 		return out, err
 	}
@@ -138,7 +138,7 @@ func loadHandler(inputFilePath string) (string, error) {
 	defer CSVStorage.Close()
 
 	transactionsInteractor := transactions.NewInteractor(CSVStorage)
-	err = transactionsInteractor.Load()
+	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
 		return out, err
 	}

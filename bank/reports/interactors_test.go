@@ -59,7 +59,7 @@ func TestUnitReport(t *testing.T) {
 			i.repository = m
 		}
 
-		r, err := i.Report()
+		r, err := i.ReportFromRecords()
 
 		if tc.withMock {
 			m.AssertExpectations(t)

@@ -28,7 +28,7 @@ func (m *testMock) Create(s string) (lib.Entity, error) {
 	return args.Get(0).(lib.Entity), args.Error(1)
 }
 
-func TestUnitInteractorTransactionsLoad(t *testing.T) {
+func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 	testCasesRepository := []struct {
 		name       string
@@ -60,7 +60,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			m.On("GetAll").Return(tc.mockOutput...)
 		}
 
-		err := i.Load()
+		err := i.LoadDataFromRecords()
 
 		if tc.withMock {
 			m.AssertExpectations(t)
@@ -110,7 +110,7 @@ func TestUnitInteractorTransactionsLoad(t *testing.T) {
 			i.sellerInteractor = im
 		}
 
-		err := i.Load()
+		err := i.LoadDataFromRecords()
 
 		if tc.withMock {
 			im.AssertExpectations(t)

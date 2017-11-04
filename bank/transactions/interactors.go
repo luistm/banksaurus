@@ -35,9 +35,9 @@ type Interactor struct {
 	categoryInteractor lib.Creator
 }
 
-// Load fetches raw data from a repository and processes it into objects
+// LoadDataFromRecords fetches raw data from a repository and processes it into objects
 // to be persisted in storage.
-func (i *Interactor) Load() error {
+func (i *Interactor) LoadDataFromRecords() error {
 
 	if i.repository == nil {
 		return customerrors.ErrRepositoryUndefined

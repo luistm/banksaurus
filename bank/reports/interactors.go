@@ -16,7 +16,7 @@ type interactor struct {
 	repository transactions.Repository
 }
 
-func (i *interactor) Report() (*Report, error) {
+func (i *interactor) ReportFromRecords() (*Report, error) {
 	if i.repository == nil {
 		return &Report{}, customerrors.ErrRepositoryUndefined
 	}
