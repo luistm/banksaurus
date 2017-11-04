@@ -34,25 +34,34 @@ func TestSystem(t *testing.T) {
 			expected:      "77.52 COMPRA CONTINENTE MAI \n95.09 COMPRA FARMACIA SAO J ",
 			errorExpected: false,
 		},
+		{
+			name:          "Create category",
+			command:       []string{"category", "new", "ThisIsACategoryNameForTesting"},
+			expected:      "Created category 'ThisIsACategoryNameForTesting'",
+			errorExpected: false,
+		},
+		{
+			name:     "Show Category",
+			command:  []string{"category", "show"},
+			expected: "ThisIsACategoryNameForTesting\n",
+		},
 	}
 
 	for _, tc := range testCases {
 		cmd := exec.Command("../../bankcli", tc.command...)
-
 		stdoutStderr, err := cmd.CombinedOutput()
 
 		if tc.errorExpected {
 			assert.Error(t, err)
 		} else {
 			assert.NoError(t, err)
-
-			// Remove any test files
-			if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
-				t.Error(err)
-			}
-
 		}
 		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
+	}
+
+	// Remove any test files
+	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
+		t.Error(err)
 	}
 }
 
@@ -99,33 +108,4 @@ func TestSystemSellers(t *testing.T) {
 		t.Error(err)
 	}
 
-}
-
-func TestSystemCategories(t *testing.T) {
-
-	categoryName := "ThisIsACategoryNameForTesting"
-
-	name := "Create category"
-	command := []string{"category", "new", categoryName}
-	expected := "Created category '" + categoryName + "'"
-
-	cmd := exec.Command("../../bankcli", command...)
-	stdoutStderr, err := cmd.CombinedOutput()
-
-	assert.NoError(t, err)
-	assert.Equal(t, expected, string(stdoutStderr), name)
-
-	name = "Show category"
-	command = []string{"category", "show"}
-	expected = categoryName + "\n"
-
-	cmd = exec.Command("../../bankcli", command...)
-	stdoutStderr, err = cmd.CombinedOutput()
-
-	assert.NoError(t, err)
-	assert.Equal(t, expected, string(stdoutStderr), name)
-
-	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
-		t.Error(err)
-	}
 }
