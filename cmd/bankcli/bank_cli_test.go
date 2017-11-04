@@ -30,8 +30,8 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:          "Shows report from bank records file",
-			command:       []string{"report", "--input", "./tests/fixtures/test_file.csv"},
-			expected:      "Expense is  0\nCredit is  0\n",
+			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
+			expected:      "77.52 COMPRA CONTINENTE MAI \n95.09 COMPRA FARMACIA SAO J ",
 			errorExpected: false,
 		},
 	}

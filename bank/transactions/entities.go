@@ -1,6 +1,8 @@
 package transactions
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/luistm/go-bank-cli/lib/categories"
@@ -45,11 +47,15 @@ func New() *Transaction {
 
 // Transaction is a money movement
 type Transaction struct {
-	value    decimal.Decimal
+	value    string
 	s        *sellers.Seller
 	c        *categories.Category
 	isCredit bool
 	date     time.Time
+}
+
+func (t *Transaction) String() string {
+	return fmt.Sprintf("%s %s", t.Value(), t.s)
 }
 
 // IsDebt returns true if a transaction is a debt
@@ -62,12 +68,12 @@ func (t *Transaction) IsDebt() bool {
 
 // Value returns the field value parsed for money
 func (t *Transaction) Value() *decimal.Decimal {
-	// parsedField := strings.Replace(t.value, ".", "", -1)
-	// parsedField = strings.Replace(parsedField, ",", ".", -1)
+	parsedField := strings.Replace(t.value, ".", "", -1)
+	parsedField = strings.Replace(parsedField, ",", ".", -1)
 
-	// retValue, _ := decimal.NewFromString(parsedField)
+	retValue, _ := decimal.NewFromString(parsedField)
 
-	return nil
+	return &retValue
 }
 
 // IsFromThisMonth checks if a transaction is from the current month

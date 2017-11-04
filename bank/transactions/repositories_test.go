@@ -77,7 +77,8 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 			output: nil,
 			expectedTransactions: []*Transaction{
 				&Transaction{
-					s: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
+					value: "4,30",
+					s:     sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
 				},
 			},
 		},

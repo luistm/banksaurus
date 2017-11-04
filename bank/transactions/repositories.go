@@ -39,9 +39,12 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 
 func (r *repository) buildTransactions(lines [][]string) error {
 
+	// TODO: use New()
+
 	for _, l := range lines {
 		t := &Transaction{
-			s: sellers.New(l[2], l[2]),
+			value: l[3],
+			s:     sellers.New(l[2], l[2]),
 		}
 		r.transactions = append(r.transactions, t)
 	}

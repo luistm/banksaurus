@@ -120,12 +120,12 @@ func showReportHandler(inputFilePath string) (string, error) {
 	defer CSVStorage.Close()
 
 	reportsInteractor := reports.NewInteractor(CSVStorage)
-	_, err = reportsInteractor.Report()
+	r, err := reportsInteractor.Report()
 	if err != nil {
 		return out, err
 	}
 
-	return out, nil
+	return r.String(), nil
 }
 
 // loadHandler loads a file
