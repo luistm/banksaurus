@@ -2,9 +2,15 @@ package transactions
 
 import (
 	"github.com/luistm/go-bank-cli/bank"
+	"github.com/luistm/go-bank-cli/infrastructure"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
+
+// NewRepository creates a repository for transactions
+func NewRepository(storage infrastructure.CSVStorage) *repository {
+	return &repository{storage: storage}
+}
 
 type repository struct {
 	storage      bank.CSVHandler

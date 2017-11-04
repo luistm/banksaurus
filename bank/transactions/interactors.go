@@ -30,7 +30,7 @@ func NewInteractor(s bank.CSVHandler) *Interactor {
 }
 
 type Interactor struct {
-	repository         iRepository
+	repository         Repository
 	sellerInteractor   lib.Creator
 	categoryInteractor lib.Creator
 }

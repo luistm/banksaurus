@@ -8,7 +8,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type iRepository interface {
+// Repository for transactions
+type Repository interface {
 	GetAll() ([]*Transaction, error)
 }
 
