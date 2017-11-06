@@ -53,7 +53,10 @@ func (i *Interactor) LoadDataFromRecords() error {
 	}
 
 	for _, t := range transactions {
+		// TODO: Following Clean Architecture, dependencies should point inward
+		//       Replace with a call to the sellers interactor
 		_, err = i.sellerInteractor.Create(t.s.String())
+		// --------------------------------------------------------------------
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}
