@@ -35,4 +35,4 @@ Feedback is greatly appreciated.
 
 ## Contributing
 
-Altough this is mainly a way of me to learn Go, contributions are greatly appreciated.
+Although this is mainly a way of me to learn Go, contributions are greatly appreciated.
