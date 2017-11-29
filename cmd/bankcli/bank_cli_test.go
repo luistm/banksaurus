@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -79,6 +81,8 @@ func TestSystem(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+		t.Log(tc.name)
+		t.Log(fmt.Sprintf("$ bankcli %s", strings.Join(tc.command, " ")))
 		cmd := exec.Command("../../bankcli", tc.command...)
 		stdoutStderr, err := cmd.CombinedOutput()
 
