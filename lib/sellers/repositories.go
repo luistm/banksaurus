@@ -45,7 +45,24 @@ func (r *repository) Save(ent lib.Entity) error {
 	return nil
 }
 
-func (r *repository) Get(s string) (lib.Entity, error) {
+func (r *repository) Get(sellerSlug string) (lib.Entity, error) {
+	// statement := "SELECT * FROM sellers WHERE slug=?"
+	// rows, err := r.SQLStorage.Query(statement, sellerSlug)
+	// if err != nil {
+	// 	return &Seller{}, fmt.Errorf("Database failure: %s", err)
+	// }
+
+	// var slug string
+	// var name string
+	// for rows.Next() {
+	// 	err := rows.Scan(&slug, &name)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	break
+	// }
+
+	// return &Seller{slug: slug, name: name}, nil
 	return &Seller{}, nil
 }
 

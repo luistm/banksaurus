@@ -1,8 +1,11 @@
 package transactions
 
 import (
+	"fmt"
+
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
+	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
 // NewInteractor creates a new transactions Interactor
@@ -52,16 +55,35 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 	}
 
 	r := &Report{}
-	ts, err := i.transactionsRepository.GetAll()
+	transactions, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return r, &customerrors.ErrRepository{Msg: err.Error()}
+	}
+
+	for _, transaction := range transactions {
+		// log.Println(transaction.s)
+
+		slls, err := i.sellersRepository.GetAll()
+		if err != nil {
+			return r, &customerrors.ErrRepository{
+				Msg: fmt.Sprintf("failed to fetch seller, %s", err.Error()),
+			}
+		}
+
+		for _, s := range slls {
+			if s.ID() == transaction.s.ID() {
+				transaction.s = s.(*sellers.Seller)
+				break
+			}
+		}
+
 	}
 
 	// If a Seller has a pretty name, that name will be used.
 	// sellerRepository.GetAll()
 	// For each seller in repository, get the pretty name
 
-	r.transactions = ts
+	r.transactions = transactions
 
 	return r, nil
 }
