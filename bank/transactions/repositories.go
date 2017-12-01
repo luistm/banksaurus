@@ -1,6 +1,8 @@
 package transactions
 
 import (
+	"strings"
+
 	"github.com/luistm/go-bank-cli/bank"
 	"github.com/luistm/go-bank-cli/infrastructure"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
@@ -39,12 +41,11 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 
 func (r *repository) buildTransactions(lines [][]string) error {
 
-	// TODO: use New()
-
-	for _, l := range lines {
+	for _, line := range lines {
+		slug := strings.TrimSuffix(line[2], " ")
 		t := &Transaction{
-			value: l[3],
-			s:     sellers.New(l[2], l[2]),
+			value: line[3],
+			s:     sellers.New(slug, slug),
 		}
 		r.transactions = append(r.transactions, t)
 	}

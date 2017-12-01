@@ -33,7 +33,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
-			expected:      "77.52 COMPRA CONTINENTE MAI \n95.09 COMPRA FARMACIA SAO J ",
+			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J",
 			errorExpected: false,
 		},
 		{
@@ -53,29 +53,29 @@ func TestSystem(t *testing.T) {
 			expected: "ThisIsACategoryNameForTesting\n",
 		},
 		{
-			name:     "LoadDataFromRecordss records from file",
+			name:     "LoadDataFromRecords records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected: "",
 		},
 		{
 			name:     "Shows sellers loaded by the run report",
 			command:  []string{"seller", "show"},
-			expected: "COMPRA CONTINENTE MAI \nCOMPRA FARMACIA SAO J \n",
+			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:     "Adds pretty name to seller",
-			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI ", "--pretty", "Continente"},
+			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
 			expected: "",
 		},
 		{
 			name:     "Show seller changed",
 			command:  []string{"seller", "show"},
-			expected: "Continente\nCOMPRA FARMACIA SAO J \n",
+			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:          "Shows report from bank records file, with sellers name instead of slug",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
-			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J ",
+			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J",
 			errorExpected: false,
 		},
 	}
