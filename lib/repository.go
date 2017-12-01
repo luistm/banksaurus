@@ -13,9 +13,19 @@ type SQLDatabaseHandler interface {
 	Query(statement string) (Row, error)
 }
 
-// Repository for entities
-type Repository interface {
-	Save(Entity) error
+// RepositoryFetcher for entities
+type RepositoryFetcher interface {
 	Get(string) (Entity, error)
 	GetAll() ([]Entity, error)
+}
+
+// RepositoryCreator interface to create entities
+type RepositoryCreator interface {
+	Save(Entity) error
+}
+
+// Repository for entities
+type Repository interface {
+	RepositoryCreator
+	RepositoryFetcher
 }

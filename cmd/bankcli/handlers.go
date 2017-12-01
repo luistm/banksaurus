@@ -118,8 +118,14 @@ func showReportHandler(inputFilePath string) (string, error) {
 	}
 	defer CSVStorage.Close()
 
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	if err != nil {
+		return out, err
+	}
+
 	transactionRepository := transactions.NewRepository(CSVStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository)
+	sellersRepository := sellers.NewRepository(SQLStorage)
+	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
 	r, err := transactionsInteractor.ReportFromRecords()
 	if err != nil {
 		return out, err
@@ -137,8 +143,14 @@ func loadHandler(inputFilePath string) (string, error) {
 	}
 	defer CSVStorage.Close()
 
+	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	if err != nil {
+		return out, err
+	}
+
 	transactionRepository := transactions.NewRepository(CSVStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository)
+	sellersRepository := sellers.NewRepository(SQLStorage)
+	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
 	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
 		return out, err

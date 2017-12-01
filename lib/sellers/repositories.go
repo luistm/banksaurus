@@ -12,6 +12,11 @@ import (
 var saveStatement = "INSERT INTO sellers(slug, name ) VALUES (?, ?)"
 var updateStatement = "UPDATE sellers SET name=? WHERE slug=?"
 
+// NewRepository creates a repository ofr sellers
+func NewRepository(db lib.SQLDatabaseHandler) lib.Repository {
+	return &repository{SQLStorage: db}
+}
+
 type repository struct {
 	SQLStorage lib.SQLDatabaseHandler
 }

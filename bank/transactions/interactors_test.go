@@ -57,7 +57,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		var m *testMock
 		if tc.withMock {
 			m = new(testMock)
-			i.repository = m
+			i.transactionsRepository = m
 			m.On("GetAll").Return(tc.mockOutput...)
 		}
 
@@ -75,40 +75,40 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 	t1 := &Transaction{s: sellers.New("d1", "d1"), c: c}
 	t2 := &Transaction{s: sellers.New("d2", "d2"), c: c}
 	i := Interactor{}
-	m := new(testMock)
-	i.repository = m
-	m.On("GetAll").Return([]*Transaction{t1, t2}, nil)
+	tm := new(testMock)
+	i.transactionsRepository = tm
+	tm.On("GetAll").Return([]*Transaction{t1, t2}, nil)
 
-	testCasesEntityCreator := []struct {
+	testCasesEntityRepositorySave := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  string
-		mockOutput []interface{}
+		mockInput  lib.Entity
+		mockOutput error
 	}{
 		{
-			name:       "Returns error if entity creator is not defined",
+			name:       "Returns error if entity repository is not defined",
 			output:     customerrors.ErrInteractorUndefined,
 			withMock:   false,
-			mockInput:  "",
+			mockInput:  nil,
 			mockOutput: nil,
 		},
 		{
-			name:       "Returns error if entity creator returns fails",
+			name:       "Returns error if entity save method returns fail",
 			output:     &customerrors.ErrInteractor{Msg: "Test Error"},
 			withMock:   true,
-			mockInput:  t1.s.String(),
-			mockOutput: []interface{}{&sellers.Seller{}, errors.New("Test Error")},
+			mockInput:  t1.s,
+			mockOutput: errors.New("Test Error"),
 		},
 	}
 
-	for _, tc := range testCasesEntityCreator {
+	for _, tc := range testCasesEntityRepositorySave {
 		t.Log(tc.name)
-		var im *testMock
+		var im *lib.RepositoryMock
 		if tc.withMock {
-			im = new(testMock)
-			im.On("Create", tc.mockInput).Return(tc.mockOutput...)
-			i.sellerInteractor = im
+			im = new(lib.RepositoryMock)
+			im.On("Save", tc.mockInput).Return(tc.mockOutput)
+			i.sellersRepository = im
 		}
 
 		err := i.LoadDataFromRecords()
@@ -120,12 +120,6 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
 		}
 	}
-
-	var sim *testMock
-	sim = new(testMock)
-	sim.On("Create", t1.s.String()).Return(t1.s, nil).
-		On("Create", t2.s.String()).Return(t2.s, nil)
-	i.sellerInteractor = sim
 
 }
 
@@ -174,7 +168,7 @@ func TestUnitReport(t *testing.T) {
 		if tc.withMock {
 			m = new(repositoryMock)
 			m.On("GetAll").Return(tc.mockOutput...)
-			i.repository = m
+			i.transactionsRepository = m
 		}
 
 		r, err := i.ReportFromRecords()
