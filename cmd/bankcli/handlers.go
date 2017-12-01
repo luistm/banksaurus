@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/bank/reports"
 	"github.com/luistm/go-bank-cli/bank/transactions"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
@@ -120,8 +119,8 @@ func showReportHandler(inputFilePath string) (string, error) {
 	defer CSVStorage.Close()
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
-	reportsInteractor := reports.NewInteractor(transactionRepository)
-	r, err := reportsInteractor.ReportFromRecords()
+	transactionsInteractor := transactions.NewInteractor(transactionRepository)
+	r, err := transactionsInteractor.ReportFromRecords()
 	if err != nil {
 		return out, err
 	}
@@ -138,7 +137,8 @@ func loadHandler(inputFilePath string) (string, error) {
 	}
 	defer CSVStorage.Close()
 
-	transactionsInteractor := transactions.NewInteractor(CSVStorage)
+	transactionRepository := transactions.NewRepository(CSVStorage)
+	transactionsInteractor := transactions.NewInteractor(transactionRepository)
 	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
 		return out, err

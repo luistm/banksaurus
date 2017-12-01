@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/elib/testkit"
 	"github.com/luistm/go-bank-cli/lib/categories"
 
 	"github.com/luistm/go-bank-cli/lib"
@@ -126,4 +127,61 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		On("Create", t2.s.String()).Return(t2.s, nil)
 	i.sellerInteractor = sim
 
+}
+
+type repositoryMock struct {
+	mock.Mock
+}
+
+func (m *repositoryMock) GetAll() ([]*Transaction, error) {
+	args := m.Called()
+	return args.Get(0).([]*Transaction), args.Error(1)
+}
+
+func TestUnitReport(t *testing.T) {
+
+	testCases := []struct {
+		name       string
+		output     []interface{}
+		withMock   bool
+		mockOutput []interface{}
+	}{
+		{
+			name:   "Returns error if repository is indefined",
+			output: []interface{}{&Report{}, customerrors.ErrRepositoryUndefined},
+		},
+		{
+			name:       "Returns error if repository returns error",
+			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test Error"}},
+			withMock:   true,
+			mockOutput: []interface{}{[]*Transaction{}, errors.New("Test Error")},
+		},
+		{
+			name: "Report has transactions",
+			output: []interface{}{
+				&Report{transactions: []*Transaction{&Transaction{}}},
+				nil,
+			},
+			withMock:   true,
+			mockOutput: []interface{}{[]*Transaction{&Transaction{}}, nil},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		i := Interactor{}
+		var m *repositoryMock
+		if tc.withMock {
+			m = new(repositoryMock)
+			m.On("GetAll").Return(tc.mockOutput...)
+			i.repository = m
+		}
+
+		r, err := i.ReportFromRecords()
+
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
+	}
 }

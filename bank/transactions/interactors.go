@@ -1,7 +1,6 @@
 package transactions
 
 import (
-	"github.com/luistm/go-bank-cli/bank"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
@@ -9,7 +8,7 @@ import (
 )
 
 // NewInteractor creates a new transactions Interactor
-func NewInteractor(s bank.CSVHandler) *Interactor {
+func NewInteractor(r *repository) *Interactor {
 
 	var DatabaseName = "bank.db"
 	var DatabasePath = "/tmp"
@@ -22,13 +21,12 @@ func NewInteractor(s bank.CSVHandler) *Interactor {
 	sellersInteractor := sellers.NewInteractor(db)
 
 	return &Interactor{
-		repository: &repository{
-			storage: s,
-		},
+		repository:       r,
 		sellerInteractor: sellersInteractor,
 	}
 }
 
+// Interactor for transactions ...
 type Interactor struct {
 	repository         Fetcher
 	sellerInteractor   lib.Creator
@@ -63,4 +61,23 @@ func (i *Interactor) LoadDataFromRecords() error {
 	}
 
 	return nil
+}
+
+// ReportFromRecords makes a report from an input file.
+// TODO: If a Seller has a pretty name, that name will be used.
+func (i *Interactor) ReportFromRecords() (*Report, error) {
+
+	if i.repository == nil {
+		return &Report{}, customerrors.ErrRepositoryUndefined
+	}
+
+	r := &Report{}
+	ts, err := i.repository.GetAll()
+	if err != nil {
+		return r, &customerrors.ErrRepository{Msg: err.Error()}
+	}
+
+	r.transactions = ts
+
+	return r, nil
 }
