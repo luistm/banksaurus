@@ -13,7 +13,7 @@ func NewInteractor(storage infrastructure.CSVStorage) *interactor {
 }
 
 type interactor struct {
-	repository transactions.Repository
+	repository transactions.Fetcher
 }
 
 func (i *interactor) ReportFromRecords() (*Report, error) {

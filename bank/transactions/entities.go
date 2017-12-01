@@ -10,8 +10,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Repository for transactions
-type Repository interface {
+// Fetcher to fetch transactions
+type Fetcher interface {
 	GetAll() ([]*Transaction, error)
 }
 
