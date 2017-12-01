@@ -63,7 +63,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &interactor{}
+		i := &Interactor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -126,7 +126,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &interactor{}
+		i := &Interactor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -184,7 +184,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := interactor{}
+		i := Interactor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)

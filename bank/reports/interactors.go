@@ -6,17 +6,17 @@ import (
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
-// NewInteractor creates an interactor for reports
-func NewInteractor(storage infrastructure.CSVStorage) *interactor {
+// NewInteractor creates an Interactor for reports
+func NewInteractor(storage infrastructure.CSVStorage) *Interactor {
 	r := transactions.NewRepository(storage)
-	return &interactor{repository: r}
+	return &Interactor{repository: r}
 }
 
-type interactor struct {
+type Interactor struct {
 	repository transactions.Fetcher
 }
 
-func (i *interactor) ReportFromRecords() (*Report, error) {
+func (i *Interactor) ReportFromRecords() (*Report, error) {
 	if i.repository == nil {
 		return &Report{}, customerrors.ErrRepositoryUndefined
 	}

@@ -51,7 +51,7 @@ func TestUnitReport(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := interactor{}
+		i := Interactor{}
 		var m *repositoryMock
 		if tc.withMock {
 			m = new(repositoryMock)

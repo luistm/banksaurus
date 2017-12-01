@@ -8,7 +8,7 @@ import (
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
-// NewInteractor creates a new transactions interactor
+// NewInteractor creates a new transactions Interactor
 func NewInteractor(s bank.CSVHandler) *Interactor {
 
 	var DatabaseName = "bank.db"
@@ -54,7 +54,7 @@ func (i *Interactor) LoadDataFromRecords() error {
 
 	for _, t := range transactions {
 		// TODO: Following Clean Architecture, dependencies should point inward
-		//       Replace with a call to the sellers interactor
+		//       Replace with a call to the sellers Interactor
 		_, err = i.sellerInteractor.Create(t.s.String())
 		// --------------------------------------------------------------------
 		if err != nil {

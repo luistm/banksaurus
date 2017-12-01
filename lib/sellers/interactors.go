@@ -5,20 +5,20 @@ import (
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
-// NewInteractor creates a new interactor object for sellers
-func NewInteractor(storage lib.SQLDatabaseHandler) *interactor {
-	return &interactor{
+// NewInteractor creates a new Interactor object for sellers
+func NewInteractor(storage lib.SQLDatabaseHandler) *Interactor {
+	return &Interactor{
 		repository: &repository{SQLStorage: storage},
 	}
 }
 
-// interactor ...
-type interactor struct {
+// Interactor ...
+type Interactor struct {
 	repository lib.Repository
 }
 
 // Create adds a new seller and persists it
-func (i *interactor) Create(name string) (lib.Entity, error) {
+func (i *Interactor) Create(name string) (lib.Entity, error) {
 
 	if name == "" {
 		return &Seller{}, customerrors.ErrBadInput
@@ -37,7 +37,7 @@ func (i *interactor) Create(name string) (lib.Entity, error) {
 }
 
 // GetAll returns all the sellers available in the system
-func (i *interactor) GetAll() ([]lib.Entity, error) {
+func (i *Interactor) GetAll() ([]lib.Entity, error) {
 
 	sellers := []lib.Entity{}
 	if i.repository == nil {
@@ -53,7 +53,7 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 }
 
 // Updates a seller given i'ts slug
-func (i *interactor) Update(slug string, name string) error {
+func (i *Interactor) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
 		return customerrors.ErrBadInput

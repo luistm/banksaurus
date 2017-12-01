@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-// ErrInteractor for errors returned by interactors
+// ErrInteractor for errors returned by Interactors
 type ErrInteractor struct {
 	Msg string
 }
 
 func (e *ErrInteractor) Error() string {
-	return fmt.Sprintf("interactor error, %s", e.Msg)
+	return fmt.Sprintf("Interactor error, %s", e.Msg)
 }
 
-// ErrInteractorUndefined to use when the interactor is not defined
-var ErrInteractorUndefined = errors.New("interactor is not defined")
+// ErrInteractorUndefined to use when the Interactor is not defined
+var ErrInteractorUndefined = errors.New("Interactor is not defined")

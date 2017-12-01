@@ -5,20 +5,20 @@ import (
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
-// NewInteractor creates an interactor for categories
-func NewInteractor(storage lib.SQLDatabaseHandler) *interactor {
+// NewInteractor creates an Interactor for categories
+func NewInteractor(storage lib.SQLDatabaseHandler) *Interactor {
 	cr := repository{SQLStorage: storage}
 
-	return &interactor{repository: &cr}
+	return &Interactor{repository: &cr}
 }
 
-// interactor for categories
-type interactor struct {
+// Interactor for categories
+type Interactor struct {
 	repository lib.Repository
 }
 
 // Create allows the creation of a new category
-func (i *interactor) Create(name string) ([]lib.Entity, error) {
+func (i *Interactor) Create(name string) ([]lib.Entity, error) {
 
 	cs := []lib.Entity{}
 
@@ -40,7 +40,7 @@ func (i *interactor) Create(name string) ([]lib.Entity, error) {
 }
 
 // GetAll fetches all categories
-func (i *interactor) GetAll() ([]lib.Entity, error) {
+func (i *Interactor) GetAll() ([]lib.Entity, error) {
 
 	cs := []lib.Entity{}
 	if i.repository == nil {
@@ -56,7 +56,7 @@ func (i *interactor) GetAll() ([]lib.Entity, error) {
 }
 
 // GetCategory returns a category by name
-func (i *interactor) GetCategory(name string) ([]lib.Entity, error) {
+func (i *Interactor) GetCategory(name string) ([]lib.Entity, error) {
 
 	cs := []lib.Entity{}
 

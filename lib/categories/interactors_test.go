@@ -64,7 +64,7 @@ func TestUnitGetAll(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		i := new(interactor)
+		i := new(Interactor)
 		if tc.mock != nil {
 			i.repository = tc.mock
 			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
@@ -145,7 +145,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &interactor{}
+		i := &Interactor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -225,7 +225,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &interactor{}
+		i := &Interactor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
