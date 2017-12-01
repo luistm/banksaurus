@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/elib/testkit"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -91,7 +92,7 @@ func TestSystem(t *testing.T) {
 		} else {
 			assert.NoError(t, err)
 		}
-		assert.Equal(t, tc.expected, string(stdoutStderr), tc.name)
+		testkit.AssertEqual(t, tc.expected, string(stdoutStderr))
 	}
 
 	// Remove any test files
