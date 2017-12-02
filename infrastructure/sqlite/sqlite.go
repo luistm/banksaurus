@@ -137,24 +137,29 @@ func (s *sqlite) Query(statement string, args ...interface{}) (lib.Rows, error) 
 		return nil, ErrStatementUndefined
 	}
 
-	tx, err := s.db.Begin()
-	if err != nil {
-		return nil, err
-	}
+	// TODO: why i can't fetch results here? Must read!
+	//
+	// I'm looking into transaction here, because i don't understand why Query does't return results.
+	// Must read more stuff about this.
+
+	// tx, err := s.db.Begin()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	rows, err := s.db.Query(statement)
-	// rows, err := tx.Query(statement) // TODO: why i can't fetch results here? Must read!
+	// rows, err := tx.Query(statement)
 	if err != nil {
-		if errTx := tx.Rollback(); errTx != nil {
-			return nil, errTx
-		}
+		// if errTx := tx.Rollback(); errTx != nil {
+		// 	return nil, errTx
+		// }
 		return nil, err
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return nil, err
-	}
+	// err = tx.Commit()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return rows, nil
 }
