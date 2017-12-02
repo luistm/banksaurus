@@ -1,8 +1,6 @@
 package transactions
 
 import (
-	"fmt"
-
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -60,13 +58,15 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 		return r, &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
+	if i.sellersRepository == nil {
+		return &Report{}, customerrors.ErrRepositoryUndefined
+	}
+
 	for _, transaction := range transactions {
 		// TODO: Fetch only the needed sellers, not all the sellers
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
-			return r, &customerrors.ErrRepository{
-				Msg: fmt.Sprintf("failed to fetch seller, %s", err.Error()),
-			}
+			return r, &customerrors.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
 			if s.ID() == transaction.s.ID() {

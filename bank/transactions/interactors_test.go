@@ -182,4 +182,57 @@ func TestUnitReport(t *testing.T) {
 		}
 		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
 	}
+
+	trMock := new(repositoryMock)
+	trMock.On("GetAll").Return([]*Transaction{&Transaction{s: sellers.New("sellerSlug", "")}}, nil)
+
+	testCasesSellerWithPrettyName := []struct {
+		name       string
+		output     []interface{}
+		withMock   bool
+		mockOutput []interface{}
+	}{
+		{
+			name:   "Returns error if repository is indefined",
+			output: []interface{}{&Report{}, customerrors.ErrRepositoryUndefined},
+		},
+		{
+			name:       "Seller repository returns error",
+			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test error"}},
+			withMock:   true,
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test error")},
+		},
+		{
+			name: "Seller from transaction has no pretty name",
+			output: []interface{}{
+				&Report{[]*Transaction{&Transaction{s: sellers.New("sellerSlug", "sellerName")}}},
+				nil,
+			},
+			withMock: true,
+			mockOutput: []interface{}{
+				[]lib.Entity{sellers.New("sellerSlug", "sellerName")},
+				nil,
+			},
+		},
+	}
+
+	for _, tc := range testCasesSellerWithPrettyName {
+		t.Log(tc.name)
+		i := Interactor{}
+		i.transactionsRepository = trMock
+		var m *lib.RepositoryMock
+		if tc.withMock {
+			m = new(lib.RepositoryMock)
+			m.On("GetAll").Return(tc.mockOutput...)
+			i.sellersRepository = m
+		}
+
+		r, err := i.ReportFromRecords()
+
+		if tc.withMock {
+			m.AssertExpectations(t)
+		}
+		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
+	}
+
 }
