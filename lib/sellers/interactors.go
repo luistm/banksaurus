@@ -52,7 +52,7 @@ func (i *Interactor) GetAll() ([]lib.Entity, error) {
 	return s, nil
 }
 
-// Updates a seller given i'ts slug
+// Update a seller given it's slug
 func (i *Interactor) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
