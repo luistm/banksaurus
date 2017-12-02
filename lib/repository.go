@@ -7,9 +7,9 @@ type Rows interface {
 	Close() error
 }
 
-// SQLDatabaseHandler is the interface SQL infrastructure must implement to
+// SQLInfrastructer is the interface SQL infrastructure must implement to
 // be used by entity repositories
-type SQLDatabaseHandler interface {
+type SQLInfrastructer interface {
 	Execute(statement string, values ...interface{}) error
 	Query(statement string, args ...interface{}) (Rows, error)
 }

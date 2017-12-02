@@ -17,7 +17,7 @@ func TestCategoryRepositoryGetAll(t *testing.T) {
 	}{}
 
 	for _, tc := range testCases {
-		m := new(lib.MockSQLStorage)
+		m := new(lib.SQLStorageMock)
 		cr := repository{SQLStorage: m}
 		_, err := cr.GetAll()
 		assert.Error(t, err, tc.name)
@@ -69,9 +69,9 @@ func TestUnitCategoryRepositorySave(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := repository{}
-		var m *lib.MockSQLStorage
+		var m *lib.SQLStorageMock
 		if tc.withMock {
-			m = new(lib.MockSQLStorage)
+			m = new(lib.SQLStorageMock)
 			m.On("Execute", tc.mockInput...).Return(tc.mockOuput)
 			r.SQLStorage = m
 		}

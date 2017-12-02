@@ -14,7 +14,7 @@ const insertStatement string = "INSERT INTO categories(name) VALUES(?)"
 
 // repository allows us the save a read categories from a repository
 type repository struct {
-	SQLStorage lib.SQLDatabaseHandler
+	SQLStorage lib.SQLInfrastructer
 }
 
 // Save to persist a category

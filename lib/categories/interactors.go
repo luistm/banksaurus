@@ -6,7 +6,7 @@ import (
 )
 
 // NewInteractor creates an Interactor for categories
-func NewInteractor(storage lib.SQLDatabaseHandler) *Interactor {
+func NewInteractor(storage lib.SQLInfrastructer) *Interactor {
 	cr := repository{SQLStorage: storage}
 
 	return &Interactor{repository: &cr}

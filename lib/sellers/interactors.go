@@ -6,7 +6,7 @@ import (
 )
 
 // NewInteractor creates a new Interactor object for sellers
-func NewInteractor(storage lib.SQLDatabaseHandler) *Interactor {
+func NewInteractor(storage lib.SQLInfrastructer) *Interactor {
 	return &Interactor{
 		repository: &repository{SQLStorage: storage},
 	}

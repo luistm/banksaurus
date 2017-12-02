@@ -80,9 +80,9 @@ func TestUnitRepositorySave(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		r := &repository{}
-		var m *lib.MockSQLStorage
+		var m *lib.SQLStorageMock
 		if tc.withMock {
-			m = new(lib.MockSQLStorage)
+			m = new(lib.SQLStorageMock)
 			if tc.withUpdateMock {
 				m.On("Execute", tc.mockInput...).Return(tc.mockOutput).
 					On("Execute", tc.mockInputUpdate...).Return(nil)

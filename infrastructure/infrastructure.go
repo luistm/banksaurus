@@ -9,7 +9,7 @@ import (
 
 // SQLStorage for handling SQL databases
 type SQLStorage interface {
-	lib.SQLDatabaseHandler
+	lib.SQLInfrastructer
 	io.Closer
 }
 

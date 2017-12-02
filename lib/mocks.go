@@ -4,13 +4,13 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockSQLStorage to use in tests which need an SQLDatabaseHandler
-type MockSQLStorage struct {
+// SQLStorageMock to use in tests which need an SQLInfrastructer
+type SQLStorageMock struct {
 	mock.Mock
 }
 
 // Execute method mock
-func (m *MockSQLStorage) Execute(statement string, values ...interface{}) error {
+func (m *SQLStorageMock) Execute(statement string, values ...interface{}) error {
 	arguments := []interface{}{statement}
 	arguments = append(arguments, values...)
 	args := m.Called(arguments...)
@@ -18,7 +18,7 @@ func (m *MockSQLStorage) Execute(statement string, values ...interface{}) error 
 }
 
 // Query method mock
-func (m *MockSQLStorage) Query(statement string, a ...interface{}) (Rows, error) {
+func (m *SQLStorageMock) Query(statement string, a ...interface{}) (Rows, error) {
 	args := m.Called(statement, a)
 	return args.Get(0).(Rows), args.Error(1)
 }
