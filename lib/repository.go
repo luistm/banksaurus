@@ -10,7 +10,7 @@ type Row interface {
 // be used by entity repositories
 type SQLDatabaseHandler interface {
 	Execute(statement string, values ...interface{}) error
-	Query(statement string) (Row, error)
+	Query(statement string, args ...interface{}) (Row, error)
 }
 
 // RepositoryFetcher for entities

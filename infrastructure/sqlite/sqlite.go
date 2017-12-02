@@ -12,8 +12,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// ErrUndefinedDataBase ...
-var ErrUndefinedDataBase = errors.New("database is not defined")
+var errUndefinedDataBase = errors.New("database is not defined")
 
 // ErrStatementUndefined ...
 var ErrStatementUndefined = errors.New("statement is undefined")
@@ -88,7 +87,7 @@ type sqlite struct {
 // Close closes the connection with the sqlite database
 func (s *sqlite) Close() error {
 	if s.db == nil {
-		return ErrUndefinedDataBase
+		return errUndefinedDataBase
 	}
 
 	return s.db.Close()
@@ -97,7 +96,7 @@ func (s *sqlite) Close() error {
 // Execute is to execute an sql statement
 func (s *sqlite) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
-		return ErrUndefinedDataBase
+		return errUndefinedDataBase
 	}
 
 	if statement == "" {
@@ -126,13 +125,32 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 	return nil
 }
 
+// TODO: Make sure rows are being closed across the code
+
 // Query fetches data from the database
-func (s *sqlite) Query(statement string) (lib.Row, error) {
+func (s *sqlite) Query(statement string, args ...interface{}) (lib.Row, error) {
 	if s.db == nil {
-		return nil, ErrUndefinedDataBase
+		return nil, errUndefinedDataBase
 	}
 
-	rows, err := s.db.Query(statement)
+	if statement == "" {
+		return nil, ErrStatementUndefined
+	}
+
+	tx, err := s.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := tx.Query(statement)
+	if err != nil {
+		if errTx := tx.Rollback(); errTx != nil {
+			return nil, errTx
+		}
+		return nil, err
+	}
+
+	err = tx.Commit()
 	if err != nil {
 		return nil, err
 	}
