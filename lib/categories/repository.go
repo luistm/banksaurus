@@ -38,11 +38,12 @@ func (r *repository) Save(ent lib.Entity) error {
 
 // Get fetches a category by name
 func (r *repository) Get(name string) (lib.Entity, error) {
-	statement := "SELECT * FROM categories WHERE name=?"
-	_, err := r.SQLStorage.Query(statement)
-	if err != nil {
-		return &Category{}, fmt.Errorf("Database failure: %s", err)
-	}
+	// TODO: This method is not finished
+	// statement := "SELECT * FROM categories WHERE name=?"
+	// _, err := r.SQLStorage.Query(statement)
+	// if err != nil {
+	// 	return &Category{}, fmt.Errorf("Database failure: %s", err)
+	// }
 
 	return &Category{}, nil
 }

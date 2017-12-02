@@ -10,10 +10,12 @@ type Category struct {
 	name string
 }
 
+// ID returns the ID of the category
 func (c *Category) ID() string {
 	return c.name
 }
 
+// String returns a string representing a Category instance
 func (c *Category) String() string {
 	return c.name
 }

@@ -5,7 +5,7 @@ func New(slug string, name string) *Seller {
 	return &Seller{slug: slug, name: name}
 }
 
-// Seller describes a single entity of many, which an account interacts with
+// Seller ...
 type Seller struct {
 	slug string
 	name string
@@ -16,6 +16,7 @@ func (s *Seller) ID() string {
 	return s.slug
 }
 
+// String returns a string representing a Seller
 func (s *Seller) String() string {
 	if s.name == "" {
 		return s.slug
