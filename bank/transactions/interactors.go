@@ -47,7 +47,7 @@ func (i *Interactor) LoadDataFromRecords() error {
 }
 
 // ReportFromRecords makes a report from an input file.
-// TODO: If a Seller has a pretty name, that name will be used.
+// If a Seller has a pretty name, that name will be used.
 func (i *Interactor) ReportFromRecords() (*Report, error) {
 
 	if i.transactionsRepository == nil {
@@ -61,27 +61,20 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 	}
 
 	for _, transaction := range transactions {
-		// log.Println(transaction.s)
-
-		slls, err := i.sellersRepository.GetAll()
+		// TODO: Fetch only the needed sellers, not all the sellers
+		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
 			return r, &customerrors.ErrRepository{
 				Msg: fmt.Sprintf("failed to fetch seller, %s", err.Error()),
 			}
 		}
-
-		for _, s := range slls {
+		for _, s := range allSellers {
 			if s.ID() == transaction.s.ID() {
 				transaction.s = s.(*sellers.Seller)
 				break
 			}
 		}
-
 	}
-
-	// If a Seller has a pretty name, that name will be used.
-	// sellerRepository.GetAll()
-	// For each seller in repository, get the pretty name
 
 	r.transactions = transactions
 
