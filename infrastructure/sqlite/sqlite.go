@@ -142,7 +142,8 @@ func (s *sqlite) Query(statement string, args ...interface{}) (lib.Row, error) {
 		return nil, err
 	}
 
-	rows, err := tx.Query(statement)
+	rows, err := s.db.Query(statement)
+	// rows, err := tx.Query(statement) // TODO: why i can't fetch results here? Must read!
 	if err != nil {
 		if errTx := tx.Rollback(); errTx != nil {
 			return nil, errTx
