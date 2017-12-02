@@ -128,7 +128,7 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 // TODO: Make sure rows are being closed across the code
 
 // Query fetches data from the database
-func (s *sqlite) Query(statement string, args ...interface{}) (lib.Row, error) {
+func (s *sqlite) Query(statement string, args ...interface{}) (lib.Rows, error) {
 	if s.db == nil {
 		return nil, errUndefinedDataBase
 	}

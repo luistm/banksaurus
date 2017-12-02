@@ -54,6 +54,7 @@ func (r *repository) GetAll() ([]lib.Entity, error) {
 	if err != nil {
 		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
 	}
+	defer rows.Close()
 
 	categories := []lib.Entity{}
 

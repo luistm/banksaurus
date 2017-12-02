@@ -18,9 +18,9 @@ func (m *MockSQLStorage) Execute(statement string, values ...interface{}) error 
 }
 
 // Query method mock
-func (m *MockSQLStorage) Query(statement string, a ...interface{}) (Row, error) {
+func (m *MockSQLStorage) Query(statement string, a ...interface{}) (Rows, error) {
 	args := m.Called(statement, a)
-	return args.Get(0).(Row), args.Error(1)
+	return args.Get(0).(Rows), args.Error(1)
 }
 
 // RepositoryMock to use in tests which require a Repository
