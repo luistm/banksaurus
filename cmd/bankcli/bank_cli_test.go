@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/luistm/go-bank-cli/elib/testkit"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSystem(t *testing.T) {
@@ -87,10 +86,8 @@ func TestSystem(t *testing.T) {
 		cmd := exec.Command("../../bankcli", tc.command...)
 		stdoutStderr, err := cmd.CombinedOutput()
 
-		if tc.errorExpected {
-			assert.Error(t, err)
-		} else {
-			assert.NoError(t, err)
+		if !tc.errorExpected && err != nil {
+			t.Fatalf("System test command failed: %s", err)
 		}
 		testkit.AssertEqual(t, tc.expected, string(stdoutStderr))
 	}
