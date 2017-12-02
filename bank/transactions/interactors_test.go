@@ -169,6 +169,10 @@ func TestUnitReport(t *testing.T) {
 			m = new(repositoryMock)
 			m.On("GetAll").Return(tc.mockOutput...)
 			i.transactionsRepository = m
+
+			sellersMock := new(lib.RepositoryMock)
+			sellersMock.On("GetAll").Return([]lib.Entity{}, nil)
+			i.sellersRepository = sellersMock
 		}
 
 		r, err := i.ReportFromRecords()
