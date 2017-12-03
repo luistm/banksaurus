@@ -86,10 +86,10 @@ func TestSystem(t *testing.T) {
 		cmd := exec.Command("../../bankcli", tc.command...)
 		stdoutStderr, err := cmd.CombinedOutput()
 
+		testkit.AssertEqual(t, tc.expected, string(stdoutStderr))
 		if !tc.errorExpected && err != nil {
 			t.Fatalf("System test command failed: %s", err)
 		}
-		testkit.AssertEqual(t, tc.expected, string(stdoutStderr))
 	}
 
 	// Remove any test files
