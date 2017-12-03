@@ -83,7 +83,7 @@ func TestSystem(t *testing.T) {
 			command: []string{
 				"report",
 				"--input", "./tests/fixtures/sample_records_load.csv",
-				"--grouped", "seller",
+				"--grouped",
 			},
 			expected:      "77.52 Continente\n190.18 COMPRA FARMACIA SAO J",
 			errorExpected: false,

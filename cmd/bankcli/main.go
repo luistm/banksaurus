@@ -19,7 +19,7 @@ var intro = "Your command line finance manager.\n"
 
 var usage = `Usage:
 	bank -h | --help
-	bank report --input <file>
+	bank report --input <file> [ --grouped ]
 	bank load --input <file>
 	bank category new <name>
 	bank category show
@@ -29,6 +29,7 @@ var usage = `Usage:
 
 var options = `
 Options:
+	--grouped     The report is present grouped by seller
 	--input       The path to the records list.
 	--name        Specifies the name.
 	-h --help     Show this screen.`
