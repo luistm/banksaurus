@@ -35,7 +35,7 @@ func (i *Interactor) LoadDataFromRecords() error {
 	}
 
 	for _, t := range transactions {
-		err := i.sellersRepository.Save(t.s)
+		err := i.sellersRepository.Save(t.seller)
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}
@@ -69,8 +69,8 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 			return r, &customerrors.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
-			if s.ID() == transaction.s.ID() {
-				transaction.s = s.(*sellers.Seller)
+			if s.ID() == transaction.seller.ID() {
+				transaction.seller = s.(*sellers.Seller)
 				break
 			}
 		}

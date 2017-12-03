@@ -44,8 +44,8 @@ func (r *repository) buildTransactions(lines [][]string) error {
 	for _, line := range lines {
 		slug := strings.TrimSuffix(line[2], " ")
 		t := &Transaction{
-			value: line[3],
-			s:     sellers.New(slug, slug),
+			value:  line[3],
+			seller: sellers.New(slug, slug),
 		}
 		r.transactions = append(r.transactions, t)
 	}

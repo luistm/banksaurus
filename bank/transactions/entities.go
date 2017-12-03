@@ -48,14 +48,14 @@ func New() *Transaction {
 // Transaction is a money movement
 type Transaction struct {
 	value    string
-	s        *sellers.Seller
+	seller   *sellers.Seller
 	c        *categories.Category
 	isCredit bool
 	date     time.Time
 }
 
 func (t *Transaction) String() string {
-	return fmt.Sprintf("%s %s", t.Value(), t.s)
+	return fmt.Sprintf("%s %s", t.Value(), t.seller)
 }
 
 // IsDebt returns true if a transaction is a debt

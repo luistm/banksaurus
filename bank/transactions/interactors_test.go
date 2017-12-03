@@ -72,8 +72,8 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 	}
 
 	c := categories.New("Test Category")
-	t1 := &Transaction{s: sellers.New("d1", "d1"), c: c}
-	t2 := &Transaction{s: sellers.New("d2", "d2"), c: c}
+	t1 := &Transaction{seller: sellers.New("d1", "d1"), c: c}
+	t2 := &Transaction{seller: sellers.New("d2", "d2"), c: c}
 	i := Interactor{}
 	tm := new(testMock)
 	i.transactionsRepository = tm
@@ -97,7 +97,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 			name:       "Returns error if entity save method returns fail",
 			output:     &customerrors.ErrInteractor{Msg: "Test Error"},
 			withMock:   true,
-			mockInput:  t1.s,
+			mockInput:  t1.seller,
 			mockOutput: errors.New("Test Error"),
 		},
 	}
@@ -184,7 +184,7 @@ func TestUnitReport(t *testing.T) {
 	}
 
 	trMock := new(repositoryMock)
-	trMock.On("GetAll").Return([]*Transaction{&Transaction{s: sellers.New("sellerSlug", "")}}, nil)
+	trMock.On("GetAll").Return([]*Transaction{&Transaction{seller: sellers.New("sellerSlug", "")}}, nil)
 
 	testCasesSellerWithPrettyName := []struct {
 		name       string
@@ -205,7 +205,7 @@ func TestUnitReport(t *testing.T) {
 		{
 			name: "Seller from transaction has no pretty name",
 			output: []interface{}{
-				&Report{[]*Transaction{&Transaction{s: sellers.New("sellerSlug", "sellerName")}}},
+				&Report{[]*Transaction{&Transaction{seller: sellers.New("sellerSlug", "sellerName")}}},
 				nil,
 			},
 			withMock: true,
