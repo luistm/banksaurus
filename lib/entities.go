@@ -4,8 +4,9 @@ import (
 	"fmt"
 )
 
-// Entity generic type for domain entities
-type Entity interface {
+// Identifier is the interface each an object must implement in
+// order to be identified
+type Identifier interface {
 	fmt.Stringer
 	ID() string
 }

@@ -18,7 +18,7 @@ type Interactor struct {
 }
 
 // Create adds a new seller and persists it
-func (i *Interactor) Create(name string) (lib.Entity, error) {
+func (i *Interactor) Create(name string) (lib.Identifier, error) {
 
 	if name == "" {
 		return &Seller{}, customerrors.ErrBadInput
@@ -37,9 +37,9 @@ func (i *Interactor) Create(name string) (lib.Entity, error) {
 }
 
 // GetAll returns all the sellers available in the system
-func (i *Interactor) GetAll() ([]lib.Entity, error) {
+func (i *Interactor) GetAll() ([]lib.Identifier, error) {
 
-	sellers := []lib.Entity{}
+	sellers := []lib.Identifier{}
 	if i.repository == nil {
 		return sellers, customerrors.ErrRepositoryUndefined
 	}

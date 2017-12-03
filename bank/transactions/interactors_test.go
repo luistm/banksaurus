@@ -24,9 +24,9 @@ func (m *testMock) GetAll() ([]*Transaction, error) {
 	return args.Get(0).([]*Transaction), args.Error(1)
 }
 
-func (m *testMock) Create(s string) (lib.Entity, error) {
+func (m *testMock) Create(s string) (lib.Identifier, error) {
 	args := m.Called(s)
-	return args.Get(0).(lib.Entity), args.Error(1)
+	return args.Get(0).(lib.Identifier), args.Error(1)
 }
 
 func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
@@ -79,11 +79,11 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 	i.transactionsRepository = tm
 	tm.On("GetAll").Return([]*Transaction{t1, t2}, nil)
 
-	testCasesEntityRepositorySave := []struct {
+	testCasesIdentifierRepositorySave := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  lib.Entity
+		mockInput  lib.Identifier
 		mockOutput error
 	}{
 		{
@@ -102,7 +102,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCasesEntityRepositorySave {
+	for _, tc := range testCasesIdentifierRepositorySave {
 		t.Log(tc.name)
 		var im *lib.RepositoryMock
 		if tc.withMock {
@@ -171,7 +171,7 @@ func TestUnitReport(t *testing.T) {
 			i.transactionsRepository = m
 
 			sellersMock := new(lib.RepositoryMock)
-			sellersMock.On("GetAll").Return([]lib.Entity{}, nil)
+			sellersMock.On("GetAll").Return([]lib.Identifier{}, nil)
 			i.sellersRepository = sellersMock
 		}
 
@@ -200,7 +200,7 @@ func TestUnitReport(t *testing.T) {
 			name:       "Seller repository returns error",
 			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test error"}},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test error")},
+			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test error")},
 		},
 		{
 			name: "Seller from transaction has no pretty name",
@@ -210,7 +210,7 @@ func TestUnitReport(t *testing.T) {
 			},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]lib.Entity{sellers.New("sellerSlug", "sellerName")},
+				[]lib.Identifier{sellers.New("sellerSlug", "sellerName")},
 				nil,
 			},
 		},

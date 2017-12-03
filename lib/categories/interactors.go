@@ -18,9 +18,9 @@ type Interactor struct {
 }
 
 // Create allows the creation of a new category
-func (i *Interactor) Create(name string) ([]lib.Entity, error) {
+func (i *Interactor) Create(name string) ([]lib.Identifier, error) {
 
-	cs := []lib.Entity{}
+	cs := []lib.Identifier{}
 
 	if name == "" {
 		return cs, nil
@@ -40,9 +40,9 @@ func (i *Interactor) Create(name string) ([]lib.Entity, error) {
 }
 
 // GetAll fetches all categories
-func (i *Interactor) GetAll() ([]lib.Entity, error) {
+func (i *Interactor) GetAll() ([]lib.Identifier, error) {
 
-	cs := []lib.Entity{}
+	cs := []lib.Identifier{}
 	if i.repository == nil {
 		return cs, customerrors.ErrRepositoryUndefined
 	}
@@ -56,9 +56,9 @@ func (i *Interactor) GetAll() ([]lib.Entity, error) {
 }
 
 // GetCategory returns a category by name
-func (i *Interactor) GetCategory(name string) ([]lib.Entity, error) {
+func (i *Interactor) GetCategory(name string) ([]lib.Identifier, error) {
 
-	cs := []lib.Entity{}
+	cs := []lib.Identifier{}
 
 	if name == "" {
 		return cs, nil

@@ -18,7 +18,7 @@ type repository struct {
 }
 
 // Save to persist a category
-func (r *repository) Save(ent lib.Entity) error {
+func (r *repository) Save(ent lib.Identifier) error {
 
 	c := ent.(*Category)
 	if c == nil || c.name == "" {
@@ -37,7 +37,7 @@ func (r *repository) Save(ent lib.Entity) error {
 }
 
 // Get fetches a category by name
-func (r *repository) Get(name string) (lib.Entity, error) {
+func (r *repository) Get(name string) (lib.Identifier, error) {
 	// TODO: This method is not finished
 	// statement := "SELECT * FROM categories WHERE name=?"
 	// _, err := r.SQLStorage.Query(statement)
@@ -49,15 +49,15 @@ func (r *repository) Get(name string) (lib.Entity, error) {
 }
 
 // GetAll fetches all categories
-func (r *repository) GetAll() ([]lib.Entity, error) {
+func (r *repository) GetAll() ([]lib.Identifier, error) {
 	statement := "SELECT * FROM categories"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
+		return []lib.Identifier{}, fmt.Errorf("Database failure: %s", err)
 	}
 	defer rows.Close()
 
-	categories := []lib.Entity{}
+	categories := []lib.Identifier{}
 
 	for rows.Next() {
 		var id int

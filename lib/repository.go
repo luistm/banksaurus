@@ -16,13 +16,13 @@ type SQLInfrastructer interface {
 
 // RepositoryFetcher for entities
 type RepositoryFetcher interface {
-	Get(string) (Entity, error)
-	GetAll() ([]Entity, error)
+	Get(string) (Identifier, error)
+	GetAll() ([]Identifier, error)
 }
 
 // RepositoryCreator interface to create entities
 type RepositoryCreator interface {
-	Save(Entity) error
+	Save(Identifier) error
 }
 
 // Repository for entities

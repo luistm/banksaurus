@@ -155,28 +155,28 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]lib.Entity{}, customerrors.ErrRepositoryUndefined},
+			output:     []interface{}{[]lib.Identifier{}, customerrors.ErrRepositoryUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:     "Returns error on repository error",
-			output:   []interface{}{[]lib.Entity{}, &customerrors.ErrRepository{Msg: "Test Error"}},
+			output:   []interface{}{[]lib.Identifier{}, &customerrors.ErrRepository{Msg: "Test Error"}},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				errors.New("Test Error"),
 			},
 		},
 		{
 			name: "Returns seller entities",
 			output: []interface{}{
-				[]lib.Entity{&Seller{}, &Seller{}},
+				[]lib.Identifier{&Seller{}, &Seller{}},
 				nil,
 			},
 			withMock: true,
 			mockOutput: []interface{}{
-				[]lib.Entity{&Seller{}, &Seller{}},
+				[]lib.Identifier{&Seller{}, &Seller{}},
 				nil,
 			},
 		},

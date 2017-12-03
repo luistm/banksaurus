@@ -40,7 +40,7 @@ func TestUnitGetAll(t *testing.T) {
 			}{
 				method: "GetAll",
 				returnArguments: []interface{}{
-					[]lib.Entity{},
+					[]lib.Identifier{},
 					errors.New("repository mock error"),
 				},
 			},
@@ -56,7 +56,7 @@ func TestUnitGetAll(t *testing.T) {
 			}{
 				method: "GetAll",
 				returnArguments: []interface{}{
-					[]lib.Entity{&Category{name: "ThisIsATestCategory"}},
+					[]lib.Identifier{&Category{name: "ThisIsATestCategory"}},
 					nil,
 				},
 			},
@@ -101,7 +101,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns error if repository is undefined",
 			input: categoryName,
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -112,7 +112,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns empty result if categoryName name is not defined",
 			input: "",
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				nil,
 			},
 			withMock:   false,
@@ -123,7 +123,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns error on repository error",
 			input: categoryName,
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				&customerrors.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
@@ -134,7 +134,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			name:  "Returns list of categories with one categoryName",
 			input: categoryName,
 			output: []interface{}{
-				[]lib.Entity{&Category{name: categoryName}},
+				[]lib.Identifier{&Category{name: categoryName}},
 				nil,
 			},
 			withMock:   true,
@@ -181,7 +181,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns error if repository is not defined",
 			input: categoryNameName,
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -192,7 +192,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns empty list if input is empty",
 			input: "",
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				customerrors.ErrRepositoryUndefined,
 			},
 			withMock:   false,
@@ -203,7 +203,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Returns error on repository error",
 			input: categoryNameName,
 			output: []interface{}{
-				[]lib.Entity{},
+				[]lib.Identifier{},
 				&customerrors.ErrRepository{Msg: "Test Error"},
 			},
 			withMock:   true,
@@ -214,7 +214,7 @@ func TestUnitInteractorAdd(t *testing.T) {
 			name:  "Adds categoryName to repository",
 			input: categoryNameName,
 			output: []interface{}{
-				[]lib.Entity{&Category{name: categoryNameName}},
+				[]lib.Identifier{&Category{name: categoryNameName}},
 				nil,
 			},
 			withMock:   true,
