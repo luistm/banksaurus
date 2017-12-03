@@ -1,6 +1,9 @@
 package transactions
 
 import (
+	"errors"
+	"log"
+
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -79,4 +82,48 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 	r.transactions = transactions
 
 	return r, nil
+}
+
+func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
+	transactionsMap := map[string]*Transaction{}
+	returnTransactions := []*Transaction{}
+
+	log.Printf("Len %d\n", len(transactions))
+	for _, t := range transactions {
+		if t.seller == nil {
+			return []*Transaction{}, errors.New("cannot merge transaction whitout seller")
+		}
+
+		log.Printf("Key is %s\n", t.seller.ID())
+		if _, ok := transactionsMap[t.seller.ID()]; ok {
+			log.Printf("Adding to %s\n", t.seller.ID())
+			tmpValue := transactionsMap[t.seller.ID()].value.Add(*t.Value())
+			transactionsMap[t.seller.ID()].value = &tmpValue
+		} else {
+			log.Printf("First add %s\n", t.seller.ID())
+			transactionsMap[t.seller.ID()] = t
+		}
+	}
+
+	for _, v := range transactionsMap {
+		returnTransactions = append(returnTransactions, v)
+	}
+
+	return returnTransactions, nil
+}
+
+// ReportFromRecordsGroupedBySeller products a report which ggroups
+func (i *Interactor) ReportFromRecordsGroupedBySeller() (*Report, error) {
+	report, err := i.ReportFromRecords()
+	if err != nil {
+		return &Report{}, err
+	}
+
+	transactions, err := mergeTransactions(report.transactions)
+	if err != nil {
+		return &Report{}, err
+	}
+	report.transactions = transactions
+
+	return report, nil
 }

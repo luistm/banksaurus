@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/shopspring/decimal"
+
 	"github.com/luistm/go-bank-cli/elib/testkit"
 	"github.com/luistm/go-bank-cli/lib/categories"
 
@@ -235,4 +237,48 @@ func TestUnitReport(t *testing.T) {
 		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
 	}
 
+}
+
+func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
+
+	decimalOne, _ := decimal.NewFromString("1")
+	decimalTwo, _ := decimal.NewFromString("2")
+
+	testCases := []struct {
+		name   string
+		input  []*Transaction
+		output []*Transaction
+	}{
+		{
+			name:   "Input slice is empty",
+			input:  []*Transaction{},
+			output: []*Transaction{},
+		},
+		{
+			name:   "Input slice has one item, whitout seller",
+			input:  []*Transaction{&Transaction{}},
+			output: []*Transaction{},
+		},
+		{
+			name:   "Input slice has one item, with seller",
+			input:  []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
+		},
+		{
+			name: "Input slice has two items, same seller",
+			input: []*Transaction{
+				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
+				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
+			},
+			output: []*Transaction{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Log(tc.name)
+
+		got, _ := mergeTransactions(tc.input)
+
+		testkit.AssertEqual(t, tc.output, got)
+	}
 }

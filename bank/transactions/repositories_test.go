@@ -65,6 +65,8 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 
 func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 
+	value, _ := decimalFromStringWithComma("4,30")
+
 	testCases := []struct {
 		name                 string
 		input                [][]string
@@ -77,7 +79,7 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 			output: nil,
 			expectedTransactions: []*Transaction{
 				&Transaction{
-					value:  "4,30",
+					value:  &value,
 					seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
 				},
 			},

@@ -47,7 +47,8 @@ func New() *Transaction {
 
 // Transaction is a money movement
 type Transaction struct {
-	value    string
+	id       uint64
+	value    *decimal.Decimal
 	seller   *sellers.Seller
 	category *categories.Category
 	isCredit bool
@@ -68,12 +69,7 @@ func (t *Transaction) IsDebt() bool {
 
 // Value returns the field value parsed for money
 func (t *Transaction) Value() *decimal.Decimal {
-	parsedField := strings.Replace(t.value, ".", "", -1)
-	parsedField = strings.Replace(parsedField, ",", ".", -1)
-
-	retValue, _ := decimal.NewFromString(parsedField)
-
-	return &retValue
+	return t.value
 }
 
 // IsFromThisMonth checks if a transaction is from the current month

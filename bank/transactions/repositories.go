@@ -1,7 +1,10 @@
 package transactions
 
 import (
+	"fmt"
 	"strings"
+
+	"github.com/shopspring/decimal"
 
 	"github.com/luistm/go-bank-cli/bank"
 	"github.com/luistm/go-bank-cli/infrastructure"
@@ -39,12 +42,24 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 	return r.transactions, nil
 }
 
+func decimalFromStringWithComma(stringWithComa string) (decimal.Decimal, error) {
+	parsedField := strings.Replace(stringWithComa, ".", "", -1)
+	parsedField = strings.Replace(parsedField, ",", ".", -1)
+	return decimal.NewFromString(parsedField)
+}
+
 func (r *repository) buildTransactions(lines [][]string) error {
 
-	for _, line := range lines {
+	for i, line := range lines {
+		value, err := decimalFromStringWithComma(line[3])
+		if err != nil {
+			return fmt.Errorf("failed to create decimal from string: %s", err.Error())
+		}
+
 		slug := strings.TrimSuffix(line[2], " ")
 		t := &Transaction{
-			value:  line[3],
+			id:     uint64(i),
+			value:  &value,
 			seller: sellers.New(slug, slug),
 		}
 		r.transactions = append(r.transactions, t)
