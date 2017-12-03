@@ -49,7 +49,7 @@ func New() *Transaction {
 type Transaction struct {
 	value    string
 	seller   *sellers.Seller
-	c        *categories.Category
+	category *categories.Category
 	isCredit bool
 	date     time.Time
 }

@@ -72,8 +72,8 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 	}
 
 	c := categories.New("Test Category")
-	t1 := &Transaction{seller: sellers.New("d1", "d1"), c: c}
-	t2 := &Transaction{seller: sellers.New("d2", "d2"), c: c}
+	t1 := &Transaction{seller: sellers.New("d1", "d1"), category: c}
+	t2 := &Transaction{seller: sellers.New("d2", "d2"), category: c}
 	i := Interactor{}
 	tm := new(testMock)
 	i.transactionsRepository = tm
