@@ -8,9 +8,7 @@ import (
 )
 
 // Load command to load input from a file
-type Load struct {
-	commandType string
-}
+type Load struct{}
 
 // Execute the Load command
 func (l *Load) Execute(arguments map[string]interface{}) *Response {

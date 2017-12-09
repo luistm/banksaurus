@@ -37,9 +37,9 @@ func New(cliRequest cliRequest) (CommandHandler, error) {
 	command := cliRequest[0]
 	switch command {
 	case "report":
-		return &Report{commandType: command}, nil
+		return &Report{}, nil
 	case "load":
-		return &Load{commandType: command}, nil
+		return &Load{}, nil
 	default:
 		return nil, errCommandNotFound
 	}

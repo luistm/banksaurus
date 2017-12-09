@@ -8,9 +8,7 @@ import (
 )
 
 // Report handles reports
-type Report struct {
-	commandType string
-}
+type Report struct{}
 
 // Execute the report command
 func (rc *Report) Execute(arguments map[string]interface{}) *Response {
