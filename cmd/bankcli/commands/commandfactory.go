@@ -31,14 +31,16 @@ type CommandHandler interface {
 func New(cliRequest cliRequest) (CommandHandler, error) {
 
 	if len(cliRequest) == 0 {
-		return &ReportCommand{}, errCommandIsUndefined
+		return nil, errCommandIsUndefined
 	}
 
 	command := cliRequest[0]
 	switch command {
 	case "report":
-		return &ReportCommand{commandType: command}, nil
+		return &Report{commandType: command}, nil
+	case "load":
+		return &Load{commandType: command}, nil
 	default:
-		return &ReportCommand{}, errCommandNotFound
+		return nil, errCommandNotFound
 	}
 }

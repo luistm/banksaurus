@@ -7,19 +7,18 @@ import (
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
-// Report handles reports
-type Report struct {
+// Load command to load input from a file
+type Load struct {
 	commandType string
 }
 
-// Execute the report command
-func (rc *Report) Execute(arguments map[string]interface{}) *Response {
-	out, err := rc.showReportHandler(arguments["<file>"].(string))
+// Execute the Load command
+func (l *Load) Execute(arguments map[string]interface{}) *Response {
+	out, err := l.loadFile(arguments["<file>"].(string))
 	return &Response{err: err, output: out}
 }
 
-func (rc *Report) showReportHandler(inputFilePath string) (string, error) {
-
+func (l *Load) loadFile(inputFilePath string) (string, error) {
 	var out string
 	CSVStorage, err := csv.New(inputFilePath)
 	if err != nil {
@@ -35,10 +34,10 @@ func (rc *Report) showReportHandler(inputFilePath string) (string, error) {
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
 	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
-	r, err := transactionsInteractor.ReportFromRecords()
+	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
 		return out, err
 	}
 
-	return r.String(), nil
+	return "", nil
 }

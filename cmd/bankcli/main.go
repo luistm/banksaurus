@@ -63,10 +63,6 @@ func main() {
 		)
 	}
 
-	if arguments["load"].(bool) {
-		out, err = commands.LoadHandler(arguments["<file>"].(string))
-	}
-
 	if err != nil {
 		errorf("Error:", err)
 	}

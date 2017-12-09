@@ -3,8 +3,6 @@ package commands
 import (
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/bank/transactions"
-	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -106,28 +104,4 @@ func SellerChangePrettyName(sellerID string, name string) (string, error) {
 	}
 
 	return out, nil
-}
-
-func LoadHandler(inputFilePath string) (string, error) {
-	var out string
-	CSVStorage, err := csv.New(inputFilePath)
-	if err != nil {
-		return out, err
-	}
-	defer CSVStorage.Close()
-
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
-	if err != nil {
-		return out, err
-	}
-
-	transactionRepository := transactions.NewRepository(CSVStorage)
-	sellersRepository := sellers.NewRepository(SQLStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
-	err = transactionsInteractor.LoadDataFromRecords()
-	if err != nil {
-		return out, err
-	}
-
-	return "", nil
 }

@@ -16,17 +16,17 @@ func TestUnitNewCommand(t *testing.T) {
 		{
 			name:   "Returns error if command not found",
 			input:  []string{"thisCommandDoesNotExist"},
-			output: []interface{}{&ReportCommand{}, errCommandNotFound},
+			output: []interface{}{nil, errCommandNotFound},
 		},
 		{
 			name:   "Returns error if empty slice received",
 			input:  []string{},
-			output: []interface{}{&ReportCommand{}, errCommandIsUndefined},
+			output: []interface{}{nil, errCommandIsUndefined},
 		},
 		{
 			name:   "Returns command instance if cli input matches",
 			input:  []string{"report"},
-			output: []interface{}{&ReportCommand{commandType: "report"}, nil},
+			output: []interface{}{&Report{commandType: "report"}, nil},
 		},
 	}
 
