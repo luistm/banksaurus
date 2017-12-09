@@ -54,6 +54,12 @@ func decimalFromStringWithComma(stringWithComa string) (decimal.Decimal, error) 
 func (r *repository) buildTransactions(lines [][]string) error {
 
 	for i, line := range lines {
+
+		// TODO: Handle credit
+		if line[3] == "" {
+			continue
+		}
+
 		value, err := decimalFromStringWithComma(line[3])
 		if err != nil {
 			return fmt.Errorf("failed to create decimal from string: %s", err.Error())
