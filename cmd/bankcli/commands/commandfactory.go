@@ -1,4 +1,4 @@
-package main
+package commands
 
 import "errors"
 
@@ -24,10 +24,11 @@ func (res *Response) String() string {
 
 // CommandHandler executes a request from the command line
 type CommandHandler interface {
-	execute(map[string]interface{}) *Response
+	Execute(map[string]interface{}) *Response
 }
 
-func newCommand(cliRequest cliRequest) (CommandHandler, error) {
+// New creates a new command handler
+func New(cliRequest cliRequest) (CommandHandler, error) {
 
 	if len(cliRequest) == 0 {
 		return &ReportCommand{}, errCommandIsUndefined

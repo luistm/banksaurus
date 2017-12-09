@@ -8,6 +8,7 @@ import (
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
+	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
 )
 
 func errorf(format string, args ...interface{}) {
@@ -41,38 +42,38 @@ func main() {
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
 	if arguments["category"].(bool) && arguments["new"].(bool) {
-		out, err = createCategoryHandler(arguments["<name>"].(string))
+		out, err = commands.CreateCategoryHandler(arguments["<name>"].(string))
 	}
 
 	if arguments["category"].(bool) && arguments["show"].(bool) {
-		out, err = showCategoriesHandler()
+		out, err = commands.ShowCategoriesHandler()
 	}
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
-		out, err = createSellerHandler(arguments["<name>"].(string))
+		out, err = commands.CreateSellerHandler(arguments["<name>"].(string))
 	}
 
 	if arguments["seller"].(bool) && arguments["show"].(bool) {
-		out, err = showSellersHandler()
+		out, err = commands.ShowSellersHandler()
 	}
 
 	if arguments["seller"].(bool) && arguments["change"].(bool) {
-		out, err = sellerChangePrettyName(
+		out, err = commands.SellerChangePrettyName(
 			arguments["<id>"].(string),
 			arguments["<name>"].(string),
 		)
 	}
 
 	if arguments["load"].(bool) {
-		out, err = loadHandler(arguments["<file>"].(string))
+		out, err = commands.LoadHandler(arguments["<file>"].(string))
 	}
 
 	if err != nil {
 		errorf("Error:", err)
 	}
 
-	command, err := newCommand(os.Args[1:])
+	command, err := commands.New(os.Args[1:])
 	if err == nil {
-		out = command.execute(arguments).String()
+		out = command.Execute(arguments).String()
 	}
 	fmt.Printf(out)
 }

@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ var DatabaseName = "bank.db"
 var DatabasePath = "/tmp"
 
 // createCategoryHandler handles category creation command
-func createCategoryHandler(name string) (string, error) {
+func CreateCategoryHandler(name string) (string, error) {
 
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -32,7 +32,7 @@ func createCategoryHandler(name string) (string, error) {
 	return msg, nil
 }
 
-func showCategoriesHandler() (string, error) {
+func ShowCategoriesHandler() (string, error) {
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
 		return "", err
@@ -53,7 +53,7 @@ func showCategoriesHandler() (string, error) {
 	return out, nil
 }
 
-func createSellerHandler(name string) (string, error) {
+func CreateSellerHandler(name string) (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -70,7 +70,7 @@ func createSellerHandler(name string) (string, error) {
 	return s.String(), nil
 }
 
-func showSellersHandler() (string, error) {
+func ShowSellersHandler() (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -91,7 +91,7 @@ func showSellersHandler() (string, error) {
 	return out, nil
 }
 
-func sellerChangePrettyName(sellerID string, name string) (string, error) {
+func SellerChangePrettyName(sellerID string, name string) (string, error) {
 	var out string
 	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
 	if err != nil {
@@ -108,7 +108,7 @@ func sellerChangePrettyName(sellerID string, name string) (string, error) {
 	return out, nil
 }
 
-func loadHandler(inputFilePath string) (string, error) {
+func LoadHandler(inputFilePath string) (string, error) {
 	var out string
 	CSVStorage, err := csv.New(inputFilePath)
 	if err != nil {
@@ -130,39 +130,4 @@ func loadHandler(inputFilePath string) (string, error) {
 	}
 
 	return "", nil
-}
-
-// ReportCommand handles reports
-type ReportCommand struct {
-	commandType string
-}
-
-func (rc *ReportCommand) execute(arguments map[string]interface{}) *Response {
-	out, err := rc.showReportHandler(arguments["<file>"].(string))
-	return &Response{err: err, output: out}
-}
-
-func (rc *ReportCommand) showReportHandler(inputFilePath string) (string, error) {
-
-	var out string
-	CSVStorage, err := csv.New(inputFilePath)
-	if err != nil {
-		return out, err
-	}
-	defer CSVStorage.Close()
-
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
-	if err != nil {
-		return out, err
-	}
-
-	transactionRepository := transactions.NewRepository(CSVStorage)
-	sellersRepository := sellers.NewRepository(SQLStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
-	r, err := transactionsInteractor.ReportFromRecords()
-	if err != nil {
-		return out, err
-	}
-
-	return r.String(), nil
 }

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
 	"github.com/luistm/go-bank-cli/elib/testkit"
 )
 
@@ -103,41 +104,7 @@ func TestSystem(t *testing.T) {
 	}
 
 	// Remove any test files
-	if err := os.RemoveAll(DatabasePath + "/" + DatabaseName + ".db"); err != nil {
+	if err := os.RemoveAll(commands.DatabasePath + "/" + commands.DatabaseName + ".db"); err != nil {
 		t.Error(err)
-	}
-}
-
-func TestUnitNewCommand(t *testing.T) {
-
-	testCases := []struct {
-		name   string
-		input  []string
-		output []interface{}
-	}{
-		{
-			name:   "Returns error if command not found",
-			input:  []string{"thisCommandDoesNotExist"},
-			output: []interface{}{&ReportCommand{}, errCommandNotFound},
-		},
-		{
-			name:   "Returns error if empty slice received",
-			input:  []string{},
-			output: []interface{}{&ReportCommand{}, errCommandIsUndefined},
-		},
-		{
-			name:   "Returns command instance if cli input matches",
-			input:  []string{"report"},
-			output: []interface{}{&ReportCommand{commandType: "report"}, nil},
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Log(tc.name)
-
-		command, err := newCommand(tc.input)
-
-		got := []interface{}{command, err}
-		testkit.AssertEqual(t, tc.output, got)
 	}
 }
