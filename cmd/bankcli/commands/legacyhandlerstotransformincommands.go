@@ -3,18 +3,17 @@ package commands
 import (
 	"fmt"
 
+	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
-var DatabaseName = "bank.db"
-var DatabasePath = "/tmp"
-
-// createCategoryHandler handles category creation command
+// CreateCategoryHandler handles category creation command
 func CreateCategoryHandler(name string) (string, error) {
 
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +30,9 @@ func CreateCategoryHandler(name string) (string, error) {
 }
 
 func ShowCategoriesHandler() (string, error) {
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return "", err
 	}
@@ -53,7 +54,8 @@ func ShowCategoriesHandler() (string, error) {
 
 func CreateSellerHandler(name string) (string, error) {
 	var out string
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return out, err
 	}
@@ -70,7 +72,8 @@ func CreateSellerHandler(name string) (string, error) {
 
 func ShowSellersHandler() (string, error) {
 	var out string
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return out, err
 	}
@@ -91,7 +94,8 @@ func ShowSellersHandler() (string, error) {
 
 func SellerChangePrettyName(sellerID string, name string) (string, error) {
 	var out string
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return out, err
 	}

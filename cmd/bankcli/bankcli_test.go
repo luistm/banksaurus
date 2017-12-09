@@ -4,14 +4,26 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
+	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/elib/testkit"
 )
 
+func deleteTestFiles(t *testing.T) {
+	dbName, dbPath := configurations.GetDatabasePath()
+	if err := os.RemoveAll(path.Join(dbPath, dbName) + ".db"); err != nil {
+		t.Error(err)
+	}
+}
+
 func TestSystem(t *testing.T) {
+
+	os.Setenv("GO_BANK_CLI_DEV", "true")
+	defer os.Setenv("GO_BANK_CLI_DEV", "")
+	defer deleteTestFiles(t)
 
 	testCases := []struct {
 		name          string
@@ -101,10 +113,5 @@ func TestSystem(t *testing.T) {
 		if !tc.errorExpected && err != nil {
 			t.Fatalf("System test command failed: %s", err)
 		}
-	}
-
-	// Remove any test files
-	if err := os.RemoveAll(commands.DatabasePath + "/" + commands.DatabaseName + ".db"); err != nil {
-		t.Error(err)
 	}
 }

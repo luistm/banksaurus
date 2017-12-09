@@ -2,6 +2,7 @@ package commands
 
 import (
 	"github.com/luistm/go-bank-cli/bank/transactions"
+	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -24,7 +25,8 @@ func (l *Load) loadFile(inputFilePath string) (string, error) {
 	}
 	defer CSVStorage.Close()
 
-	SQLStorage, err := sqlite.New(DatabasePath, DatabaseName, false)
+	dbName, dbPath := configurations.GetDatabasePath()
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return out, err
 	}
