@@ -12,11 +12,16 @@ type Report struct{}
 
 // Execute the report command
 func (rc *Report) Execute(arguments map[string]interface{}) *Response {
-	out, err := rc.showReportHandler(arguments["<file>"].(string))
+
+	grouped := false
+	if arguments["--grouped"].(bool) {
+		grouped = true
+	}
+	out, err := rc.showReport(arguments["<file>"].(string), grouped)
 	return &Response{err: err, output: out}
 }
 
-func (rc *Report) showReportHandler(inputFilePath string) (string, error) {
+func (rc *Report) showReport(inputFilePath string, grouped bool) (string, error) {
 
 	var out string
 	CSVStorage, err := csv.New(inputFilePath)
@@ -33,10 +38,15 @@ func (rc *Report) showReportHandler(inputFilePath string) (string, error) {
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
 	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
-	r, err := transactionsInteractor.ReportFromRecords()
+	var report *transactions.Report
+	if grouped {
+		report, err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
+	} else {
+		report, err = transactionsInteractor.ReportFromRecords()
+	}
 	if err != nil {
 		return out, err
 	}
 
-	return r.String(), nil
+	return report.String(), nil
 }

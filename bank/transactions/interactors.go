@@ -2,7 +2,6 @@ package transactions
 
 import (
 	"errors"
-	"log"
 
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
@@ -88,19 +87,15 @@ func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
 	transactionsMap := map[string]*Transaction{}
 	returnTransactions := []*Transaction{}
 
-	log.Printf("Len %d\n", len(transactions))
 	for _, t := range transactions {
 		if t.seller == nil {
 			return []*Transaction{}, errors.New("cannot merge transaction whitout seller")
 		}
 
-		log.Printf("Key is %s\n", t.seller.ID())
 		if _, ok := transactionsMap[t.seller.ID()]; ok {
-			log.Printf("Adding to %s\n", t.seller.ID())
 			tmpValue := transactionsMap[t.seller.ID()].value.Add(*t.Value())
 			transactionsMap[t.seller.ID()].value = &tmpValue
 		} else {
-			log.Printf("First add %s\n", t.seller.ID())
 			transactionsMap[t.seller.ID()] = t
 		}
 	}
