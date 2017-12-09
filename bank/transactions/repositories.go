@@ -36,7 +36,10 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 	// TODO: Validate if Lines() output is the expected one
 	// r.validateLines(lines)
 	// if err != nil{}
-	r.buildTransactions(lines[5 : len(lines)-2])
+	err = r.buildTransactions(lines[5 : len(lines)-2])
+	if err != nil {
+		return []*Transaction{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+	}
 	// log.Println(len(r.transactions))
 
 	return r.transactions, nil
