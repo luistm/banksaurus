@@ -62,16 +62,17 @@ func main() {
 		)
 	}
 
-	if arguments["report"].(bool) {
-		out, err = showReportHandler(arguments["<file>"].(string))
-	}
-
 	if arguments["load"].(bool) {
 		out, err = loadHandler(arguments["<file>"].(string))
 	}
 
 	if err != nil {
 		errorf("Error:", err)
+	}
+
+	command, err := newCommand(os.Args[1:])
+	if err == nil {
+		out = command.execute(arguments).String()
 	}
 	fmt.Printf(out)
 }
