@@ -92,11 +92,11 @@ func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
 			return []*Transaction{}, errors.New("cannot merge transaction whitout seller")
 		}
 
-		if _, ok := transactionsMap[t.seller.ID()]; ok {
-			tmpValue := transactionsMap[t.seller.ID()].value.Add(*t.Value())
-			transactionsMap[t.seller.ID()].value = &tmpValue
+		if _, ok := transactionsMap[t.seller.String()]; ok {
+			tmpValue := transactionsMap[t.seller.String()].value.Add(*t.Value())
+			transactionsMap[t.seller.String()].value = &tmpValue
 		} else {
-			transactionsMap[t.seller.ID()] = t
+			transactionsMap[t.seller.String()] = t
 		}
 	}
 
