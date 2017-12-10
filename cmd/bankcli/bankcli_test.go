@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -107,11 +108,21 @@ func TestSystem(t *testing.T) {
 		t.Log(tc.name)
 		t.Log(fmt.Sprintf("$ bankcli %s", strings.Join(tc.command, " ")))
 		cmd := exec.Command("../../bankcli", tc.command...)
-		stdoutStderr, err := cmd.CombinedOutput()
+		var outBuffer, errBuffer bytes.Buffer
+		cmd.Stdout = &outBuffer
+		cmd.Stderr = &errBuffer
 
-		testkit.AssertEqual(t, tc.expected, string(stdoutStderr))
+		err := cmd.Run()
+
 		if !tc.errorExpected && err != nil {
-			t.Fatalf("System test command failed: %s", err)
+			t.Fatalf("Test failed due to command error: %s", err.Error())
+		}
+		if tc.errorExpected {
+			testkit.AssertEqual(t, tc.expected, errBuffer.String())
+			testkit.AssertEqual(t, "", outBuffer.String())
+		} else {
+			testkit.AssertEqual(t, "", errBuffer.String())
+			testkit.AssertEqual(t, tc.expected, outBuffer.String())
 		}
 	}
 }
