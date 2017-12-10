@@ -22,8 +22,8 @@
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
   packages = ["."]
-  revision = "ca5e3819723d8eeaf170ad510e7da1d6d2e94a08"
-  version = "v1.2.0"
+  revision = "ed69081a91fd053f17672236b0dd52ba7485e1a3"
+  version = "v1.4.0"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "ad668bb36961e1e1ac005e514b610e41573603bf"
+  revision = "9ca7f51822d222ae4e246f070f9aad863599bd1a"
 
 [[projects]]
   branch = "master"
@@ -53,7 +53,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "a04bdaca5b32abe1c069418fb7088ae607de5bd0"
+  revision = "dc871a5d77e227f5bbf6545176ef3eeebf87e76e"
 
 [solve-meta]
   analyzer-name = "dep"
