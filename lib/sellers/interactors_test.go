@@ -5,13 +5,15 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/elib/testkit"
+
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 )
 
 func TestUnitInteractorCreate(t *testing.T) {
 
-	var seller = "TestDescrition"
+	var seller = "TestDescription"
 
 	testCases := []struct {
 		name       string
@@ -147,59 +149,97 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 func TestUnitInteractorGetAll(t *testing.T) {
 
+	presenterMock := new(lib.PresenterMock)
+	presenterMock.On("Present", []lib.Identifier{&Seller{}, &Seller{}}).Return(nil)
+
 	testCases := []struct {
 		name       string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockOutput []interface{}
 	}{
 		{
 			name:       "Returns error if repository is undefined",
-			output:     []interface{}{[]lib.Identifier{}, customerrors.ErrRepositoryUndefined},
+			output:     customerrors.ErrRepositoryUndefined,
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
-			name:     "Returns error on repository error",
-			output:   []interface{}{[]lib.Identifier{}, &customerrors.ErrRepository{Msg: "Test Error"}},
-			withMock: true,
-			mockOutput: []interface{}{
-				[]lib.Identifier{},
-				errors.New("Test Error"),
-			},
+			name:       "Returns error on repository error",
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
+			withMock:   true,
+			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test Error")},
 		},
 		{
-			name: "Returns seller entities",
-			output: []interface{}{
-				[]lib.Identifier{&Seller{}, &Seller{}},
-				nil,
-			},
-			withMock: true,
-			mockOutput: []interface{}{
-				[]lib.Identifier{&Seller{}, &Seller{}},
-				nil,
-			},
+			name:       "Returns seller entities",
+			output:     nil,
+			withMock:   true,
+			mockOutput: []interface{}{[]lib.Identifier{&Seller{}, &Seller{}}, nil},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := Interactor{}
-		var m *lib.RepositoryMock
+		i := Interactor{presenter: presenterMock}
+		var repositoryMock *lib.RepositoryMock
 		if tc.withMock {
-			m = new(lib.RepositoryMock)
-			m.On("GetAll").Return(tc.mockOutput...)
-			i.repository = m
+			repositoryMock = new(lib.RepositoryMock)
+			repositoryMock.On("GetAll").Return(tc.mockOutput...)
+			i.repository = repositoryMock
 		}
 
-		sellers, err := i.GetAll()
+		err := i.GetAll()
 
 		if tc.withMock {
-			m.AssertExpectations(t)
+			repositoryMock.AssertExpectations(t)
 		}
-		got := []interface{}{sellers, err}
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Errorf("Expected '%v', got '%v'", tc.output, got)
+		testkit.AssertEqual(t, tc.output, err)
+	}
+
+	repositoryMock := new(lib.RepositoryMock)
+	repositoryMock.On("GetAll").Return([]lib.Identifier{&Seller{}, &Seller{}}, nil)
+	testCasesPresenter := []struct {
+		name       string
+		output     error
+		withMock   bool
+		mockInput  []lib.Identifier
+		mockOutput error
+	}{
+		{
+			name:   "Returns error if presenter is not defined",
+			output: customerrors.ErrPresenterUndefined,
+		},
+		{
+			name:       "Handles presenter error",
+			output:     &customerrors.ErrPresenter{Msg: "test error"},
+			withMock:   true,
+			mockInput:  []lib.Identifier{&Seller{}, &Seller{}},
+			mockOutput: errors.New("test error"),
+		},
+		{
+			name:       "Handles presenter success",
+			output:     nil,
+			withMock:   true,
+			mockInput:  []lib.Identifier{&Seller{}, &Seller{}},
+			mockOutput: nil,
+		},
+	}
+
+	for _, tc := range testCasesPresenter {
+		t.Log(tc.name)
+		i := Interactor{repository: repositoryMock}
+		var presenterMock *lib.PresenterMock
+		if tc.withMock {
+			presenterMock = new(lib.PresenterMock)
+			presenterMock.On("Present", tc.mockInput).Return(tc.mockOutput)
+			i.presenter = presenterMock
 		}
+
+		err := i.GetAll()
+
+		if tc.withMock {
+			presenterMock.AssertExpectations(t)
+		}
+		testkit.AssertEqual(t, tc.output, err)
 	}
 }

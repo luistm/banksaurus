@@ -45,3 +45,14 @@ func (m *RepositoryMock) GetAll() ([]Identifier, error) {
 	args := m.Called()
 	return args.Get(0).([]Identifier), args.Error(1)
 }
+
+// PresenterMock to use in tests which need a presenter
+type PresenterMock struct {
+	mock.Mock
+}
+
+// Present ...
+func (m *PresenterMock) Present(entities []Identifier) error {
+	args := m.Called(entities)
+	return args.Error(0)
+}

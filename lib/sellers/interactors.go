@@ -6,15 +6,17 @@ import (
 )
 
 // NewInteractor creates a new Interactor object for sellers
-func NewInteractor(storage lib.SQLInfrastructer) *Interactor {
+func NewInteractor(storage lib.SQLInfrastructer, presenter lib.Presenter) *Interactor {
 	return &Interactor{
 		repository: &repository{SQLStorage: storage},
+		presenter:  presenter,
 	}
 }
 
 // Interactor ...
 type Interactor struct {
 	repository lib.Repository
+	presenter  lib.Presenter
 }
 
 // Create adds a new seller and persists it
@@ -37,19 +39,26 @@ func (i *Interactor) Create(name string) (lib.Identifier, error) {
 }
 
 // GetAll returns all the sellers available in the system
-func (i *Interactor) GetAll() ([]lib.Identifier, error) {
+func (i *Interactor) GetAll() error {
 
-	sellers := []lib.Identifier{}
 	if i.repository == nil {
-		return sellers, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
-	s, err := i.repository.GetAll()
+	sellers, err := i.repository.GetAll()
 	if err != nil {
-		return sellers, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	return s, nil
+	if i.presenter == nil {
+		return customerrors.ErrPresenterUndefined
+	}
+
+	if err := i.presenter.Present(sellers); err != nil {
+		return &customerrors.ErrPresenter{Msg: err.Error()}
+	}
+
+	return nil
 }
 
 // Update a seller given it's slug

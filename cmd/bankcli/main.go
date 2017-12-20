@@ -53,7 +53,12 @@ func main() {
 	}
 
 	if arguments["seller"].(bool) && arguments["show"].(bool) {
-		out, err = commands.ShowSellersHandler()
+		err = commands.ShowSellersHandler()
+		// TODO: Remove this workaround after moving this a command
+		if err != nil {
+			errorf("Error:", err)
+		}
+		os.Exit(0)
 	}
 
 	if arguments["seller"].(bool) && arguments["change"].(bool) {

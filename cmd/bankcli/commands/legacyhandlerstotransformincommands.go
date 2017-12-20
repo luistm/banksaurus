@@ -61,7 +61,7 @@ func CreateSellerHandler(name string) (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	sellersInteractor := sellers.NewInteractor(SQLStorage)
+	sellersInteractor := sellers.NewInteractor(SQLStorage, nil)
 	s, err := sellersInteractor.Create(name)
 	if err != nil {
 		return out, err
@@ -70,26 +70,23 @@ func CreateSellerHandler(name string) (string, error) {
 	return s.String(), nil
 }
 
-func ShowSellersHandler() (string, error) {
-	var out string
+func ShowSellersHandler() error {
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return out, err
+		return err
 	}
 	defer SQLStorage.Close()
 
-	sellersInteractor := sellers.NewInteractor(SQLStorage)
-	sellers, err := sellersInteractor.GetAll()
+	presenter := &CLIPresenter{}
+
+	sellersInteractor := sellers.NewInteractor(SQLStorage, presenter)
+	err = sellersInteractor.GetAll()
 	if err != nil {
-		return out, err
+		return err
 	}
 
-	for _, s := range sellers {
-		out += fmt.Sprintf("%s\n", s)
-	}
-
-	return out, nil
+	return nil
 }
 
 func SellerChangePrettyName(sellerID string, name string) (string, error) {
@@ -101,7 +98,7 @@ func SellerChangePrettyName(sellerID string, name string) (string, error) {
 	}
 	defer SQLStorage.Close()
 
-	sellersInteractor := sellers.NewInteractor(SQLStorage)
+	sellersInteractor := sellers.NewInteractor(SQLStorage, nil)
 	err = sellersInteractor.Update(sellerID, name)
 	if err != nil {
 		return out, err
