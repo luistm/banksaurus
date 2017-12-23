@@ -10,15 +10,16 @@ This is a work in progress.
 
 ```bash
 bankcli
+
 Usage:
-	bank -h | --help
-	bank report --input <file> [ --grouped ]
-	bank load --input <file>
-	bank category new <name>
-	bank category show
-	bank seller change <id> --pretty <name>
-	bank seller new <name>
-	bank seller show
+  bankcli -h | --help
+  bankcli report --input <file> [ --grouped ]
+  bankcli load --input <file>
+  bankcli category new <name>
+  bankcli category show
+  bankcli seller change <id> --pretty <name>
+  bankcli seller new <name>
+  bankcli seller show
 ```
 
 ## Setup
