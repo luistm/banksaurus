@@ -6,6 +6,21 @@ Command line personal finance manager.
 
 This is a work in progress.
 
+### Available commands
+
+```bash
+bankcli
+Usage:
+	bank -h | --help
+	bank report --input <file> [ --grouped ]
+	bank load --input <file>
+	bank category new <name>
+	bank category show
+	bank seller change <id> --pretty <name>
+	bank seller new <name>
+	bank seller show
+```
+
 ## Setup
 
 On macOS install the latest [dep](https://github.com/golang/dep) version with Homebrew:
