@@ -41,13 +41,6 @@ func main() {
 
 	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 
-	if arguments["category"].(bool) && arguments["new"].(bool) {
-		out, err = commands.CreateCategoryHandler(arguments["<name>"].(string))
-	}
-
-	if arguments["category"].(bool) && arguments["show"].(bool) {
-		out, err = commands.ShowCategoriesHandler()
-	}
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
 		out, err = commands.CreateSellerHandler(arguments["<name>"].(string))
 	}

@@ -40,6 +40,8 @@ func New(cliRequest cliRequest) (CommandHandler, error) {
 		return &Report{}, nil
 	case "load":
 		return &Load{}, nil
+	case "category":
+		return &Category{}, nil
 	default:
 		return nil, errCommandNotFound
 	}
