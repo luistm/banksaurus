@@ -1,8 +1,5 @@
 package main
 
-// This software is an expense tracker i made to read the transactions exported from
-// my bank account.
-
 import (
 	"fmt"
 	"os"
