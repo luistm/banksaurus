@@ -6,8 +6,35 @@ import (
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
-func CreateSellerHandler(name string) (string, error) {
+// Seller commands
+type Seller struct{}
+
+// Execute the seller command with arguments
+func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 	var out string
+	var err error
+
+	if arguments["seller"].(bool) && arguments["new"].(bool) {
+		out, err = s.createSellerHandler(arguments["<name>"].(string))
+	}
+
+	if arguments["seller"].(bool) && arguments["show"].(bool) {
+		err = s.showSellersHandler()
+	}
+
+	if arguments["seller"].(bool) && arguments["change"].(bool) {
+		out, err = s.sellerChangePrettyName(
+			arguments["<id>"].(string),
+			arguments["<name>"].(string),
+		)
+	}
+
+	return &Response{err: err, output: out}
+}
+
+func (s *Seller) createSellerHandler(name string) (string, error) {
+	var out string
+
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
@@ -16,15 +43,15 @@ func CreateSellerHandler(name string) (string, error) {
 	defer SQLStorage.Close()
 
 	sellersInteractor := sellers.NewInteractor(SQLStorage, nil)
-	s, err := sellersInteractor.Create(name)
+	_, err = sellersInteractor.Create(name)
 	if err != nil {
 		return out, err
 	}
 
-	return s.String(), nil
+	return out, nil
 }
 
-func ShowSellersHandler() error {
+func (s *Seller) showSellersHandler() error {
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
@@ -43,7 +70,7 @@ func ShowSellersHandler() error {
 	return nil
 }
 
-func SellerChangePrettyName(sellerID string, name string) (string, error) {
+func (s *Seller) sellerChangePrettyName(sellerID string, name string) (string, error) {
 	var out string
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)

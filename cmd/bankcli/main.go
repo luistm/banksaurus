@@ -11,11 +11,6 @@ import (
 	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
 )
 
-func errorf(format string, args ...interface{}) {
-	fmt.Fprintln(os.Stderr, format, args)
-	os.Exit(2)
-}
-
 var intro = "Your command line finance manager.\n"
 
 var usage = `Usage:
@@ -39,30 +34,10 @@ func main() {
 	var out string
 	var err error
 
-	arguments, _ := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
-
-	if arguments["seller"].(bool) && arguments["new"].(bool) {
-		out, err = commands.CreateSellerHandler(arguments["<name>"].(string))
-	}
-
-	if arguments["seller"].(bool) && arguments["show"].(bool) {
-		err = commands.ShowSellersHandler()
-		// TODO: Remove this workaround after moving this a command
-		if err != nil {
-			errorf("Error:", err)
-		}
-		os.Exit(0)
-	}
-
-	if arguments["seller"].(bool) && arguments["change"].(bool) {
-		out, err = commands.SellerChangePrettyName(
-			arguments["<id>"].(string),
-			arguments["<name>"].(string),
-		)
-	}
-
+	arguments, err := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
 	if err != nil {
-		errorf("Error:", err)
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(2)
 	}
 
 	command, err := commands.New(os.Args[1:])

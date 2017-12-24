@@ -19,7 +19,6 @@ func (res *Response) String() string {
 	}
 
 	return res.output
-
 }
 
 // CommandHandler executes a request from the command line
@@ -42,6 +41,8 @@ func New(cliRequest cliRequest) (CommandHandler, error) {
 		return &Load{}, nil
 	case "category":
 		return &Category{}, nil
+	case "seller":
+		return &Seller{}, nil
 	default:
 		return nil, errCommandNotFound
 	}
