@@ -27,11 +27,13 @@ Options:
 	--name        Specifies the name.
 	-h --help     Show this screen.`
 
+var version = "1.0.0"
+
 func main() {
 	var out string
 	var err error
 
-	arguments, err := docopt.Parse(intro+usage+options, nil, true, "Go CLI Bank 0.0.1", false)
+	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(2)
