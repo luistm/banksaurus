@@ -20,22 +20,22 @@ type Interactor struct {
 }
 
 // Create adds a new seller and persists it
-func (i *Interactor) Create(name string) (lib.Identifier, error) {
+func (i *Interactor) Create(name string) error {
 
 	if name == "" {
-		return &Seller{}, customerrors.ErrBadInput
+		return customerrors.ErrBadInput
 	}
 
 	if i.repository == nil {
-		return &Seller{}, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
 	s := &Seller{slug: name}
 	if err := i.repository.Save(s); err != nil {
-		return &Seller{}, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	return s, nil
+	return nil
 }
 
 // GetAll returns all the sellers available in the system

@@ -25,7 +25,7 @@ func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 	sellersInteractor := sellers.NewInteractor(SQLStorage, presenter)
 
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
-		_, err = sellersInteractor.Create(arguments["<name>"].(string))
+		err = sellersInteractor.Create(arguments["<name>"].(string))
 	}
 
 	if arguments["seller"].(bool) && arguments["show"].(bool) {

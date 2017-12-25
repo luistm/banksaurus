@@ -18,7 +18,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 	testCases := []struct {
 		name       string
 		input      string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockInput  *Seller
 		mockOutput error
@@ -26,7 +26,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error if repository is not defined",
 			input:      seller,
-			output:     []interface{}{&Seller{}, customerrors.ErrRepositoryUndefined},
+			output:     customerrors.ErrRepositoryUndefined,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -34,29 +34,23 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error if seller is empty string",
 			input:      "",
-			output:     []interface{}{&Seller{}, customerrors.ErrBadInput},
+			output:     customerrors.ErrBadInput,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
 		},
 		{
-			name:  "Returns error on repository error",
-			input: seller,
-			output: []interface{}{
-				&Seller{},
-				&customerrors.ErrRepository{Msg: "Test Error"},
-			},
+			name:       "Returns error on repository error",
+			input:      seller,
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockInput:  &Seller{slug: seller},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
-			name:  "Returns seller entity created",
-			input: seller,
-			output: []interface{}{
-				&Seller{slug: seller},
-				nil,
-			},
+			name:       "Returns seller entity created",
+			input:      seller,
+			output:     nil,
 			withMock:   true,
 			mockInput:  &Seller{slug: seller},
 			mockOutput: nil,
@@ -73,16 +67,12 @@ func TestUnitInteractorCreate(t *testing.T) {
 			i.repository = m
 		}
 
-		s, err := i.Create(tc.input)
+		err := i.Create(tc.input)
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		got := []interface{}{s, err}
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Errorf("Expected %v, got %v", tc.output, got)
-		}
-
+		testkit.AssertEqual(t, tc.output, err)
 	}
 }
 
