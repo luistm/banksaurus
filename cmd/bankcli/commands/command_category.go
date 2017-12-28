@@ -1,10 +1,6 @@
 package commands
 
 import (
-	"fmt"
-
-	"github.com/luistm/go-bank-cli/lib"
-
 	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
@@ -17,7 +13,6 @@ type Category struct{}
 func (c *Category) Execute(arguments map[string]interface{}) *Response {
 	var out string
 	var err error
-	var cats []lib.Identifier
 
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
@@ -26,17 +21,13 @@ func (c *Category) Execute(arguments map[string]interface{}) *Response {
 	}
 	defer SQLStorage.Close()
 
-	categoriesInteractor := categories.NewInteractor(SQLStorage)
+	categoriesInteractor := categories.NewInteractor(SQLStorage, &CLIPresenter{})
 
 	if arguments["category"].(bool) && arguments["new"].(bool) {
-		cats, err = categoriesInteractor.Create(arguments["<name>"].(string))
+		err = categoriesInteractor.Create(arguments["<name>"].(string))
 	}
 	if arguments["category"].(bool) && arguments["show"].(bool) {
-		cats, err = categoriesInteractor.GetAll()
-	}
-
-	for _, c := range cats {
-		out += fmt.Sprintf("%s\n", c)
+		err = categoriesInteractor.GetAll()
 	}
 
 	return &Response{err: err, output: out}

@@ -6,73 +6,65 @@ import (
 )
 
 // NewInteractor creates an Interactor for categories
-func NewInteractor(storage lib.SQLInfrastructer) *Interactor {
+func NewInteractor(storage lib.SQLInfrastructer, presenter lib.Presenter) *Interactor {
 	cr := repository{SQLStorage: storage}
-
-	return &Interactor{repository: &cr}
+	return &Interactor{repository: &cr, presenter: presenter}
 }
 
 // Interactor for categories
 type Interactor struct {
 	repository lib.Repository
+	presenter  lib.Presenter
 }
 
 // Create allows the creation of a new category
-func (i *Interactor) Create(name string) ([]lib.Identifier, error) {
-
-	cs := []lib.Identifier{}
+func (i *Interactor) Create(name string) error {
 
 	if name == "" {
-		return cs, nil
+		return customerrors.ErrBadInput
 	}
-
 	if i.repository == nil {
-		return cs, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
 	c := Category{name: name}
 	if err := i.repository.Save(&c); err != nil {
-		return cs, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	cs = append(cs, &c)
-	return cs, nil
+	return nil
 }
 
 // GetAll fetches all categories
-func (i *Interactor) GetAll() ([]lib.Identifier, error) {
+func (i *Interactor) GetAll() error {
 
-	cs := []lib.Identifier{}
 	if i.repository == nil {
-		return cs, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
-	cs, err := i.repository.GetAll()
+	_, err := i.repository.GetAll()
 	if err != nil {
-		return cs, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	return cs, nil
+	return nil
 }
 
 // GetCategory returns a category by name
-func (i *Interactor) GetCategory(name string) ([]lib.Identifier, error) {
-
-	cs := []lib.Identifier{}
+func (i *Interactor) GetCategory(name string) error {
 
 	if name == "" {
-		return cs, nil
+		return customerrors.ErrBadInput
 	}
 
 	if i.repository == nil {
-		return cs, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
-	c, err := i.repository.Get(name)
+	_, err := i.repository.Get(name)
 	if err != nil {
-		return cs, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	cs = append(cs, c)
-	return cs, nil
+	return nil
 }

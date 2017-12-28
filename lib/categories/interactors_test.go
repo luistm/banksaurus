@@ -2,63 +2,39 @@ package categories
 
 import (
 	"errors"
-	"reflect"
 	"testing"
+
+	"github.com/luistm/go-bank-cli/elib/testkit"
 
 	"github.com/luistm/go-bank-cli/lib"
 	"github.com/luistm/go-bank-cli/lib/customerrors"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestUnitGetAll(t *testing.T) {
 
 	testCases := []struct {
-		name          string
-		expectedLen   int
-		errorExpected bool
-		mock          *lib.RepositoryMock
-		mInput        *struct {
-			method          string
-			returnArguments []interface{}
-		}
+		name       string
+		expected   error
+		mock       *lib.RepositoryMock
+		mockOutput []interface{}
 	}{
 		{
-			name:          "Fails to get categories if repository is not defined",
-			expectedLen:   0,
-			errorExpected: true,
-			mock:          nil,
-			mInput:        nil,
+			name:     "Returns error if repository is not defined",
+			expected: customerrors.ErrRepositoryUndefined,
 		},
 		{
-			name:          "Fails to get categories on repository error",
-			expectedLen:   0,
-			errorExpected: true,
-			mock:          new(lib.RepositoryMock),
-			mInput: &struct {
-				method          string
-				returnArguments []interface{}
-			}{
-				method: "GetAll",
-				returnArguments: []interface{}{
-					[]lib.Identifier{},
-					errors.New("repository mock error"),
-				},
-			},
+			name:       "Returns error if repository returns error",
+			expected:   &customerrors.ErrRepository{Msg: "repository mock error"},
+			mock:       new(lib.RepositoryMock),
+			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("repository mock error")},
 		},
 		{
-			name:          "Returns slice of categories",
-			expectedLen:   1,
-			errorExpected: false,
-			mock:          new(lib.RepositoryMock),
-			mInput: &struct {
-				method          string
-				returnArguments []interface{}
-			}{
-				method: "GetAll",
-				returnArguments: []interface{}{
-					[]lib.Identifier{&Category{name: "ThisIsATestCategory"}},
-					nil,
-				},
+			name:     "Returns not error on success",
+			expected: nil,
+			mock:     new(lib.RepositoryMock),
+			mockOutput: []interface{}{
+				[]lib.Identifier{&Category{name: "ThisIsATestCategory"}},
+				nil,
 			},
 		},
 	}
@@ -67,20 +43,15 @@ func TestUnitGetAll(t *testing.T) {
 		i := new(Interactor)
 		if tc.mock != nil {
 			i.repository = tc.mock
-			tc.mock.On(tc.mInput.method).Return(tc.mInput.returnArguments...)
+			tc.mock.On("GetAll").Return(tc.mockOutput...)
 		}
 
-		cats, err := i.GetAll()
+		err := i.GetAll()
 
 		if tc.mock != nil {
 			tc.mock.AssertExpectations(t)
 		}
-		if tc.errorExpected {
-			assert.Error(t, err)
-		} else {
-			assert.NoError(t, err)
-			assert.Equal(t, len(cats), tc.expectedLen, tc.name)
-		}
+		testkit.AssertEqual(t, tc.expected, err)
 	}
 
 }
@@ -92,54 +63,31 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 	testCases := []struct {
 		name       string
 		input      string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockInput  string
 		mockOutput []interface{}
 	}{
 		{
-			name:  "Returns error if repository is undefined",
-			input: categoryName,
-			output: []interface{}{
-				[]lib.Identifier{},
-				customerrors.ErrRepositoryUndefined,
-			},
+			name:       "Returns error if repository is undefined",
+			input:      categoryName,
+			output:     customerrors.ErrRepositoryUndefined,
 			withMock:   false,
 			mockInput:  "",
 			mockOutput: nil,
 		},
 		{
-			name:  "Returns empty result if categoryName name is not defined",
-			input: "",
-			output: []interface{}{
-				[]lib.Identifier{},
-				nil,
-			},
-			withMock:   false,
-			mockInput:  "",
-			mockOutput: nil,
+			name:     "Returns error if category name is not defined",
+			output:   customerrors.ErrBadInput,
+			withMock: false,
 		},
 		{
-			name:  "Returns error on repository error",
-			input: categoryName,
-			output: []interface{}{
-				[]lib.Identifier{},
-				&customerrors.ErrRepository{Msg: "Test Error"},
-			},
+			name:       "Returns error on repository error",
+			input:      categoryName,
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockInput:  "",
 			mockOutput: []interface{}{&Category{}, errors.New("Test Error")},
-		},
-		{
-			name:  "Returns list of categories with one categoryName",
-			input: categoryName,
-			output: []interface{}{
-				[]lib.Identifier{&Category{name: categoryName}},
-				nil,
-			},
-			withMock:   true,
-			mockInput:  categoryName,
-			mockOutput: []interface{}{&Category{name: categoryName}, nil},
 		},
 	}
 
@@ -153,15 +101,12 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 			i.repository = m
 		}
 
-		c, err := i.GetCategory(tc.input)
+		err := i.GetCategory(tc.input)
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		got := []interface{}{c, err}
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Errorf("Expected '%v', got '%v'", tc.output, got)
-		}
+		testkit.AssertEqual(t, tc.output, err)
 	}
 }
 
@@ -172,54 +117,33 @@ func TestUnitInteractorAdd(t *testing.T) {
 	testCases := []struct {
 		name       string
 		input      string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockInput  *Category
 		mockOutput error
 	}{
 		{
-			name:  "Returns error if repository is not defined",
-			input: categoryNameName,
-			output: []interface{}{
-				[]lib.Identifier{},
-				customerrors.ErrRepositoryUndefined,
-			},
-			withMock:   false,
-			mockInput:  nil,
-			mockOutput: nil,
+			name:   "Returns error if input is empty",
+			output: customerrors.ErrBadInput,
 		},
 		{
-			name:  "Returns empty list if input is empty",
-			input: "",
-			output: []interface{}{
-				[]lib.Identifier{},
-				customerrors.ErrRepositoryUndefined,
-			},
-			withMock:   false,
-			mockInput:  nil,
-			mockOutput: nil,
+			name:   "Returns error if repository is not defined",
+			input:  categoryNameName,
+			output: customerrors.ErrRepositoryUndefined,
 		},
 		{
-			name:  "Returns error on repository error",
-			input: categoryNameName,
-			output: []interface{}{
-				[]lib.Identifier{},
-				&customerrors.ErrRepository{Msg: "Test Error"},
-			},
+			name:       "Returns error on repository error",
+			input:      categoryNameName,
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockInput:  &Category{name: categoryNameName},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
-			name:  "Adds categoryName to repository",
-			input: categoryNameName,
-			output: []interface{}{
-				[]lib.Identifier{&Category{name: categoryNameName}},
-				nil,
-			},
-			withMock:   true,
-			mockInput:  &Category{name: categoryNameName},
-			mockOutput: nil,
+			name:      "Adds categoryName to repository",
+			input:     categoryNameName,
+			withMock:  true,
+			mockInput: &Category{name: categoryNameName},
 		},
 	}
 
@@ -233,14 +157,11 @@ func TestUnitInteractorAdd(t *testing.T) {
 			i.repository = m
 		}
 
-		c, err := i.Create(categoryNameName)
+		err := i.Create(tc.input)
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		got := []interface{}{c, err}
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Errorf("Expected '%v', got '%v'", tc.output, got)
-		}
+		testkit.AssertEqual(t, tc.output, err)
 	}
 }
