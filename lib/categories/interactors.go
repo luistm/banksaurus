@@ -42,9 +42,18 @@ func (i *Interactor) GetAll() error {
 		return customerrors.ErrRepositoryUndefined
 	}
 
-	_, err := i.repository.GetAll()
+	if i.presenter == nil {
+		return customerrors.ErrPresenterUndefined
+	}
+
+	categories, err := i.repository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
+	}
+
+	err = i.presenter.Present(categories)
+	if err != nil {
+		return &customerrors.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil

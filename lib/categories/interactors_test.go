@@ -29,7 +29,7 @@ func TestUnitGetAll(t *testing.T) {
 			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("repository mock error")},
 		},
 		{
-			name:     "Returns not error on success",
+			name:     "Returns no error on success",
 			expected: nil,
 			mock:     new(lib.RepositoryMock),
 			mockOutput: []interface{}{
@@ -39,8 +39,12 @@ func TestUnitGetAll(t *testing.T) {
 		},
 	}
 
+	presenterMock := new(lib.PresenterMock)
+	presenterMock.On("Present", []lib.Identifier{&Category{name: "ThisIsATestCategory"}}).Return(nil)
+
 	for _, tc := range testCases {
-		i := new(Interactor)
+		t.Log(tc.name)
+		i := &Interactor{presenter: presenterMock}
 		if tc.mock != nil {
 			i.repository = tc.mock
 			tc.mock.On("GetAll").Return(tc.mockOutput...)
@@ -54,6 +58,46 @@ func TestUnitGetAll(t *testing.T) {
 		testkit.AssertEqual(t, tc.expected, err)
 	}
 
+	testCasesPresenter := []struct {
+		name       string
+		output     error
+		withMock   bool
+		mockInput  []lib.Identifier
+		mockOutput error
+	}{
+		{
+			name:   "Returns error if presenter is not defined",
+			output: customerrors.ErrPresenterUndefined,
+		},
+		{
+			name:       "Returns error if presenter returns error",
+			output:     &customerrors.ErrPresenter{Msg: "test error"},
+			withMock:   true,
+			mockInput:  []lib.Identifier{&Category{name: "ThisIsATestCategory"}},
+			mockOutput: errors.New("test error"),
+		},
+	}
+
+	repositoryMock := new(lib.RepositoryMock)
+	repositoryMock.On("GetAll").Return([]lib.Identifier{&Category{name: "ThisIsATestCategory"}}, nil)
+
+	for _, tc := range testCasesPresenter {
+		t.Log(tc.name)
+		i := &Interactor{repository: repositoryMock}
+		var presenterMock *lib.PresenterMock
+		if tc.withMock {
+			presenterMock = new(lib.PresenterMock)
+			presenterMock.On("Present", tc.mockInput).Return(tc.mockOutput)
+			i.presenter = presenterMock
+		}
+
+		err := i.GetAll()
+
+		if tc.withMock {
+			presenterMock.AssertExpectations(t)
+		}
+		testkit.AssertEqual(t, tc.output, err)
+	}
 }
 
 func TestUnitInteractorGetCategory(t *testing.T) {
@@ -91,20 +135,23 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 		},
 	}
 
+	presenterMock := new(lib.PresenterMock)
+	presenterMock.On("Present", []lib.Identifier{}).Return(nil)
+
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &Interactor{}
-		var m *lib.RepositoryMock
+		i := &Interactor{presenter: presenterMock}
+		var repositoryMock *lib.RepositoryMock
 		if tc.withMock {
-			m = new(lib.RepositoryMock)
-			m.On("Get", tc.input).Return(tc.mockOutput...)
-			i.repository = m
+			repositoryMock = new(lib.RepositoryMock)
+			repositoryMock.On("Get", tc.input).Return(tc.mockOutput...)
+			i.repository = repositoryMock
 		}
 
 		err := i.GetCategory(tc.input)
 
 		if tc.withMock {
-			m.AssertExpectations(t)
+			repositoryMock.AssertExpectations(t)
 		}
 		testkit.AssertEqual(t, tc.output, err)
 	}
@@ -150,17 +197,17 @@ func TestUnitInteractorAdd(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &Interactor{}
-		var m *lib.RepositoryMock
+		var repositoryMock *lib.RepositoryMock
 		if tc.withMock {
-			m = new(lib.RepositoryMock)
-			m.On("Save", tc.mockInput).Return(tc.mockOutput)
-			i.repository = m
+			repositoryMock = new(lib.RepositoryMock)
+			repositoryMock.On("Save", tc.mockInput).Return(tc.mockOutput)
+			i.repository = repositoryMock
 		}
 
 		err := i.Create(tc.input)
 
 		if tc.withMock {
-			m.AssertExpectations(t)
+			repositoryMock.AssertExpectations(t)
 		}
 		testkit.AssertEqual(t, tc.output, err)
 	}

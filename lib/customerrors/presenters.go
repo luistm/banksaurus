@@ -14,5 +14,5 @@ type ErrPresenter struct {
 }
 
 func (e *ErrPresenter) Error() string {
-	return fmt.Sprintf("Interactor error, %s", e.Msg)
+	return fmt.Sprintf("presenter error, %s", e.Msg)
 }
