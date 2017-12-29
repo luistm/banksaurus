@@ -24,14 +24,14 @@ Usage:
 
 ## Setup
 
-On macOS install the latest [dep](https://github.com/golang/dep) version with Homebrew:
+On macOS install the latest [dep](https://github.com/golang/dep) version with [Homebrew](https://brew.sh):
 
 ```bash
 brew install dep
 brew upgrade dep
 ```
 
-If you're interested in hacking on `go-bank-cli`, you can install via `go get`:
+If you're interested in hacking or trying `go-bank-cli`, you can install via `go get`:
 
 ```bash
 go get -u github.com/luistm/go-cli-bank
