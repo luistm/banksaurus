@@ -26,11 +26,6 @@ func (m *testMock) GetAll() ([]*Transaction, error) {
 	return args.Get(0).([]*Transaction), args.Error(1)
 }
 
-func (m *testMock) Create(s string) (lib.Identifier, error) {
-	args := m.Called(s)
-	return args.Get(0).(lib.Identifier), args.Error(1)
-}
-
 func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 	testCasesRepository := []struct {
