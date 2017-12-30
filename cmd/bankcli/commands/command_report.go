@@ -13,42 +13,34 @@ type Report struct{}
 
 // Execute the report command
 func (rc *Report) Execute(arguments map[string]interface{}) *Response {
+	var out string
+	var grouped bool
 
-	grouped := false
 	if arguments["--grouped"].(bool) {
 		grouped = true
 	}
-	out, err := rc.showReport(arguments["<file>"].(string), grouped)
-	return &Response{err: err, output: out}
-}
 
-func (rc *Report) showReport(inputFilePath string, grouped bool) (string, error) {
-
-	var out string
-	CSVStorage, err := csv.New(inputFilePath)
+	CSVStorage, err := csv.New(arguments["<file>"].(string))
 	if err != nil {
-		return out, err
+		return &Response{err: err, output: out}
 	}
 	defer CSVStorage.Close()
 
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return out, err
+		return &Response{err: err, output: out}
 	}
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
-	var report *transactions.Report
+
+	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository, &CLIPresenter{})
 	if grouped {
-		report, err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
+		err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
 	} else {
-		report, err = transactionsInteractor.ReportFromRecords()
-	}
-	if err != nil {
-		return out, err
+		err = transactionsInteractor.ReportFromRecords()
 	}
 
-	return report.String(), nil
+	return &Response{err: err, output: out}
 }

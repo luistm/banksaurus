@@ -138,26 +138,23 @@ func TestUnitReport(t *testing.T) {
 
 	testCases := []struct {
 		name       string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockOutput []interface{}
 	}{
 		{
-			name:   "Returns error if repository is indefined",
-			output: []interface{}{&Report{}, customerrors.ErrRepositoryUndefined},
+			name:   "Returns error if repository is undefined",
+			output: customerrors.ErrRepositoryUndefined,
 		},
 		{
 			name:       "Returns error if repository returns error",
-			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test Error"}},
+			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockOutput: []interface{}{[]*Transaction{}, errors.New("Test Error")},
 		},
 		{
-			name: "Report has transactions",
-			output: []interface{}{
-				&Report{transactions: []*Transaction{&Transaction{}}},
-				nil,
-			},
+			name:       "Returns nil if success",
+			output:     nil,
 			withMock:   true,
 			mockOutput: []interface{}{[]*Transaction{&Transaction{}}, nil},
 		},
@@ -177,12 +174,12 @@ func TestUnitReport(t *testing.T) {
 			i.sellersRepository = sellersMock
 		}
 
-		r, err := i.ReportFromRecords()
+		err := i.ReportFromRecords()
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
+		testkit.AssertEqual(t, tc.output, err)
 	}
 
 	trMock := new(repositoryMock)
@@ -190,26 +187,23 @@ func TestUnitReport(t *testing.T) {
 
 	testCasesSellerWithPrettyName := []struct {
 		name       string
-		output     []interface{}
+		output     error
 		withMock   bool
 		mockOutput []interface{}
 	}{
 		{
-			name:   "Returns error if repository is indefined",
-			output: []interface{}{&Report{}, customerrors.ErrRepositoryUndefined},
+			name:   "Returns error if repository is undefined",
+			output: customerrors.ErrRepositoryUndefined,
 		},
 		{
 			name:       "Seller repository returns error",
-			output:     []interface{}{&Report{}, &customerrors.ErrRepository{Msg: "Test error"}},
+			output:     &customerrors.ErrRepository{Msg: "Test error"},
 			withMock:   true,
 			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test error")},
 		},
 		{
-			name: "Seller from transaction has no pretty name",
-			output: []interface{}{
-				&Report{[]*Transaction{&Transaction{seller: sellers.New("sellerSlug", "sellerName")}}},
-				nil,
-			},
+			name:     "Seller from transaction has no pretty name",
+			output:   nil,
 			withMock: true,
 			mockOutput: []interface{}{
 				[]lib.Identifier{sellers.New("sellerSlug", "sellerName")},
@@ -229,12 +223,12 @@ func TestUnitReport(t *testing.T) {
 			i.sellersRepository = m
 		}
 
-		r, err := i.ReportFromRecords()
+		err := i.ReportFromRecords()
 
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		testkit.AssertEqual(t, tc.output, []interface{}{r, err})
+		testkit.AssertEqual(t, tc.output, err)
 	}
 
 }

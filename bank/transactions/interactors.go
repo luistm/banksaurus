@@ -9,14 +9,20 @@ import (
 )
 
 // NewInteractor creates a new transactions Interactor
-func NewInteractor(r *repository, sellerRepository lib.Repository) *Interactor {
-	return &Interactor{transactionsRepository: r, sellersRepository: sellerRepository}
+func NewInteractor(r *repository, sellerRepository lib.Repository, presenter lib.Presenter) *Interactor {
+	return &Interactor{
+		transactionsRepository: r,
+		sellersRepository:      sellerRepository,
+		presenter:              presenter,
+	}
 }
 
 // Interactor for transactions ...
 type Interactor struct {
 	transactionsRepository Fetcher
 	sellersRepository      lib.Repository
+	presenter              lib.Presenter
+	report                 *Report
 }
 
 // LoadDataFromRecords fetches raw data from a repository and processes it into objects
@@ -48,27 +54,27 @@ func (i *Interactor) LoadDataFromRecords() error {
 
 // ReportFromRecords makes a report from an input file.
 // If a Seller has a pretty name, that name will be used.
-func (i *Interactor) ReportFromRecords() (*Report, error) {
+func (i *Interactor) ReportFromRecords() error {
 
 	if i.transactionsRepository == nil {
-		return &Report{}, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
 	r := &Report{}
 	transactions, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return r, &customerrors.ErrRepository{Msg: err.Error()}
+		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
 	if i.sellersRepository == nil {
-		return &Report{}, customerrors.ErrRepositoryUndefined
+		return customerrors.ErrRepositoryUndefined
 	}
 
 	for _, transaction := range transactions {
 		// TODO: Fetch only the needed sellers, not all the sellers
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
-			return r, &customerrors.ErrRepository{Msg: err.Error()}
+			return &customerrors.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
 			if s.ID() == transaction.seller.ID() {
@@ -80,7 +86,7 @@ func (i *Interactor) ReportFromRecords() (*Report, error) {
 
 	r.transactions = transactions
 
-	return r, nil
+	return nil
 }
 
 func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
@@ -108,17 +114,17 @@ func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
 }
 
 // ReportFromRecordsGroupedBySeller products a report which ggroups
-func (i *Interactor) ReportFromRecordsGroupedBySeller() (*Report, error) {
-	report, err := i.ReportFromRecords()
+func (i *Interactor) ReportFromRecordsGroupedBySeller() error {
+	err := i.ReportFromRecords()
 	if err != nil {
-		return &Report{}, err
+		return err
 	}
 
-	transactions, err := mergeTransactions(report.transactions)
+	transactions, err := mergeTransactions(i.report.transactions)
 	if err != nil {
-		return &Report{}, err
+		return err
 	}
-	report.transactions = transactions
+	i.report.transactions = transactions
 
-	return report, nil
+	return nil
 }

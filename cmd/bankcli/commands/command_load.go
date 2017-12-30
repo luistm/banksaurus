@@ -33,7 +33,7 @@ func (l *Load) loadFile(inputFilePath string) (string, error) {
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository)
+	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository, nil)
 	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
 		return out, err
