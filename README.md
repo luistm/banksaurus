@@ -6,9 +6,14 @@ Personal finance manager driven mainly by fun.
 
 This is a work in progress and is mainly a way to learn software stuff.
 
-A command line interface is available, but may be broken from time to time. A stable 1.0.0 version will be available in the near future.
+
+A command line interface is available, but may be broken from time to time.
+
+A stable 1.0.0 version will be available in the near future.
+
 
 A web interface will also be available in the future.
+
 
 Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file.
 
