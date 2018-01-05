@@ -129,7 +129,9 @@ func (m *repositoryMock) GetAll() ([]*Transaction, error) {
 	return args.Get(0).([]*Transaction), args.Error(1)
 }
 
-func TestUnitReport(t *testing.T) {
+func TestUnitReportFromRecords(t *testing.T) {
+
+	presenterMock := new(lib.PresenterMock)
 
 	testCases := []struct {
 		name       string
@@ -158,6 +160,7 @@ func TestUnitReport(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := Interactor{}
+		i.presenter = presenterMock
 		var m *repositoryMock
 		if tc.withMock {
 			m = new(repositoryMock)
@@ -211,6 +214,7 @@ func TestUnitReport(t *testing.T) {
 		t.Log(tc.name)
 		i := Interactor{}
 		i.transactionsRepository = trMock
+		i.presenter = presenterMock
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -226,6 +230,33 @@ func TestUnitReport(t *testing.T) {
 		testkit.AssertEqual(t, tc.output, err)
 	}
 
+	// Define seller repository mock
+	sellersMock := new(lib.RepositoryMock)
+	sellersMock.On("GetAll").Return([]lib.Identifier{sellers.New("sellerSlug", "sellerName")}, nil)
+
+	testCasesPresenter := []struct {
+		name       string
+		output     error
+		withMock   bool
+		mockInput  *lib.Identifier
+		mockOutput error
+	}{
+		{
+			name:   "Returns error if presenter is not defined",
+			output: customerrors.ErrPresenterUndefined,
+		},
+	}
+
+	for _, tc := range testCasesPresenter {
+		t.Log(tc.name)
+		i := &Interactor{}
+		i.transactionsRepository = trMock
+		i.sellersRepository = sellersMock
+
+		err := i.ReportFromRecords()
+
+		testkit.AssertEqual(t, tc.output, err)
+	}
 }
 
 func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {

@@ -84,6 +84,10 @@ func (i *Interactor) ReportFromRecords() error {
 		}
 	}
 
+	if i.presenter == nil {
+		return customerrors.ErrPresenterUndefined
+	}
+
 	r.transactions = transactions
 
 	return nil
