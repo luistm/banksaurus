@@ -9,9 +9,13 @@ import (
 )
 
 // NewInteractor creates a new transactions Interactor
-func NewInteractor(r *repository, sellerRepository lib.Repository, presenter lib.Presenter) *Interactor {
+func NewInteractor(
+	transactionsRepository Fetcher,
+	sellerRepository lib.Repository,
+	presenter lib.Presenter,
+) *Interactor {
 	return &Interactor{
-		transactionsRepository: r,
+		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellerRepository,
 		presenter:              presenter,
 	}

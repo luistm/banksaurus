@@ -159,7 +159,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := Interactor{}
+		i := NewInteractor(nil, nil, presenterMock)
 		i.presenter = presenterMock
 		var m *repositoryMock
 		if tc.withMock {
@@ -212,9 +212,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 
 	for _, tc := range testCasesSellerWithPrettyName {
 		t.Log(tc.name)
-		i := Interactor{}
-		i.transactionsRepository = trMock
-		i.presenter = presenterMock
+		i := NewInteractor(trMock, nil, presenterMock)
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -249,9 +247,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
-		i := &Interactor{}
-		i.transactionsRepository = trMock
-		i.sellersRepository = sellersMock
+		i := NewInteractor(trMock, sellersMock, nil)
 
 		err := i.ReportFromRecords()
 
