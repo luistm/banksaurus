@@ -6,16 +6,17 @@ Personal finance manager driven mainly by fun.
 
 This is a work in progress and is mainly a way to learn software stuff.
 
-
 A command line interface is available, but may be broken from time to time.
 
 A stable 1.0.0 version will be available in the near future.
 
-
 A web interface will also be available in the future.
 
-
 Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file.
+
+## How to use
+
+Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the csv file with your account movements.
 
 ### Available commands
 
@@ -35,6 +36,12 @@ Usage:
 
 ## Setup
 
+If you're interested in hacking or trying `go-bank-cli`, you can install via `go get`:
+
+```bash
+go get -u github.com/luistm/go-cli-bank
+```
+
 On macOS install the latest [dep](https://github.com/golang/dep) version with [Homebrew](https://brew.sh):
 
 ```bash
@@ -42,10 +49,10 @@ brew install dep
 brew upgrade dep
 ```
 
-If you're interested in hacking or trying `go-bank-cli`, you can install via `go get`:
+Change directory to your go path:
 
 ```bash
-go get -u github.com/luistm/go-cli-bank
+cd $GOPATH/src/github.com/luistm/go-bank-cli
 ```
 
 To setup, run the following in the project root directory:
