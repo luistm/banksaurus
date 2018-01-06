@@ -2,8 +2,11 @@ package transactions
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/luistm/go-bank-cli/lib"
 
 	"github.com/luistm/go-bank-cli/lib/categories"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -12,7 +15,7 @@ import (
 
 // Fetcher to fetch transactions
 type Fetcher interface {
-	GetAll() ([]*Transaction, error)
+	GetAll() ([]lib.Identifier, error)
 }
 
 // New creates a record with some parsed data
@@ -53,6 +56,11 @@ type Transaction struct {
 	category *categories.Category
 	isCredit bool
 	date     time.Time
+}
+
+// ID ...
+func (t *Transaction) ID() string {
+	return strconv.FormatUint(t.id, 10)
 }
 
 func (t *Transaction) String() string {

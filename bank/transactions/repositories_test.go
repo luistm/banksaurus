@@ -5,6 +5,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/luistm/go-bank-cli/elib/testkit"
+
+	"github.com/luistm/go-bank-cli/lib"
+
 	"github.com/luistm/go-bank-cli/lib/customerrors"
 	"github.com/luistm/go-bank-cli/lib/sellers"
 	"github.com/stretchr/testify/mock"
@@ -29,13 +33,13 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if storage is not defined",
-			output:     []interface{}{[]*Transaction{}, customerrors.ErrInfrastructureUndefined},
+			output:     []interface{}{[]lib.Identifier{}, customerrors.ErrInfrastructureUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error if infrastructure fails",
-			output:     []interface{}{[]*Transaction{}, &customerrors.ErrInfrastructure{Msg: "Test Error"}},
+			output:     []interface{}{[]lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: "Test Error"}},
 			withMock:   true,
 			mockOutput: []interface{}{[][]string{}, errors.New("Test Error")},
 		},
@@ -57,9 +61,7 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 		if tc.withMock {
 			m.AssertExpectations(t)
 		}
-		if !reflect.DeepEqual(tc.output, got) {
-			t.Errorf("Expected '%v', got '%v'", tc.output, got)
-		}
+		testkit.AssertEqual(t, tc.output, got)
 	}
 }
 
@@ -71,13 +73,13 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 		name                 string
 		input                [][]string
 		output               error
-		expectedTransactions []*Transaction
+		expectedTransactions []lib.Identifier
 	}{
 		{
 			name:   "Parses a single line",
 			input:  [][]string{[]string{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
 			output: nil,
-			expectedTransactions: []*Transaction{
+			expectedTransactions: []lib.Identifier{
 				&Transaction{
 					value:  &value,
 					seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
@@ -91,6 +93,7 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 
 		err := r.buildTransactions(tc.input)
 
+		// Use testkit
 		if !reflect.DeepEqual(tc.output, err) {
 			t.Errorf("Expected '%v', got '%v'", tc.output, err)
 		}

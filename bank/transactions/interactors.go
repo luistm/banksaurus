@@ -47,7 +47,7 @@ func (i *Interactor) LoadDataFromRecords() error {
 	}
 
 	for _, t := range transactions {
-		err := i.sellersRepository.Save(t.seller)
+		err := i.sellersRepository.Save(t.(*Transaction).seller)
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}
@@ -65,7 +65,7 @@ func (i *Interactor) ReportFromRecords() error {
 	}
 
 	r := &Report{}
-	transactions, err := i.transactionsRepository.GetAll()
+	transactionsList, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
@@ -74,25 +74,27 @@ func (i *Interactor) ReportFromRecords() error {
 		return customerrors.ErrRepositoryUndefined
 	}
 
-	for _, transaction := range transactions {
-		// TODO: Fetch only the needed sellers, not all the sellers
+	for _, t := range transactionsList {
+		// FIXME: For each transaction,
+		//        fetch only the needed sellers,
+		//        not all the sellers
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
 			return &customerrors.ErrRepository{Msg: err.Error()}
 		}
+
 		for _, s := range allSellers {
-			if s.ID() == transaction.seller.ID() {
-				transaction.seller = s.(*sellers.Seller)
+			if s.ID() == t.(*Transaction).seller.ID() {
+				t.(*Transaction).seller = s.(*sellers.Seller)
 				break
 			}
 		}
+		r.transactions = append(r.transactions, t.(*Transaction))
 	}
 
 	if i.presenter == nil {
 		return customerrors.ErrPresenterUndefined
 	}
-
-	r.transactions = transactions
 
 	return nil
 }

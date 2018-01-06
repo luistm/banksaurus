@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/luistm/go-bank-cli/lib"
+
 	"github.com/shopspring/decimal"
 
 	"github.com/luistm/go-bank-cli/bank"
@@ -19,18 +21,18 @@ func NewRepository(storage infrastructure.CSVStorage) *repository {
 
 type repository struct {
 	storage      bank.CSVHandler
-	transactions []*Transaction
+	transactions []lib.Identifier
 }
 
-func (r *repository) GetAll() ([]*Transaction, error) {
+func (r *repository) GetAll() ([]lib.Identifier, error) {
 
 	if r.storage == nil {
-		return []*Transaction{}, customerrors.ErrInfrastructureUndefined
+		return []lib.Identifier{}, customerrors.ErrInfrastructureUndefined
 	}
 
 	lines, err := r.storage.Lines()
 	if err != nil {
-		return []*Transaction{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	// TODO: Validate if Lines() output is the expected one
@@ -38,7 +40,7 @@ func (r *repository) GetAll() ([]*Transaction, error) {
 	// if err != nil{}
 	err = r.buildTransactions(lines[5 : len(lines)-2])
 	if err != nil {
-		return []*Transaction{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 	// log.Println(len(r.transactions))
 
