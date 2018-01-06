@@ -14,8 +14,6 @@ var usage = `Usage:
 	bankcli -h | --help
 	bankcli report --input <file> [ --grouped ]
 	bankcli load --input <file>
-	bankcli category new <name>
-	bankcli category show
 	bankcli seller change <id> --pretty <name>
 	bankcli seller new <name>
 	bankcli seller show`
