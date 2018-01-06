@@ -3,7 +3,6 @@ package transactions
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/luistm/go-bank-cli/lib"
@@ -93,19 +92,4 @@ func (t *Transaction) IsFromThisMonth() bool {
 	// 	return true
 	// }
 	return false
-}
-
-// Report is a set of transactions
-// TODO: A report can have a time range
-type Report struct {
-	transactions []*Transaction
-}
-
-func (r *Report) String() string {
-	s := []string{}
-	for _, t := range r.transactions {
-		s = append(s, t.String())
-	}
-
-	return strings.Join(s, "\n")
 }

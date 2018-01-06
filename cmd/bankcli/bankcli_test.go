@@ -47,7 +47,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
-			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J",
+			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
@@ -89,7 +89,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows report from bank records file, with sellers name instead of slug",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
-			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J",
+			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
@@ -99,7 +99,7 @@ func TestSystem(t *testing.T) {
 				"--input", "./tests/fixtures/sample_records_load.csv",
 				"--grouped",
 			},
-			expected:      "77.52 Continente\n190.18 COMPRA FARMACIA SAO J",
+			expected:      "77.52 Continente\n190.18 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 	}
@@ -115,6 +115,8 @@ func TestSystem(t *testing.T) {
 		err := cmd.Run()
 
 		if !tc.errorExpected && err != nil {
+			t.Log(outBuffer.String())
+			t.Log(errBuffer.String())
 			t.Fatalf("Test failed due to command error: %s", err.Error())
 		}
 		if tc.errorExpected {

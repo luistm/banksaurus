@@ -16,15 +16,6 @@ import (
 	"github.com/luistm/go-bank-cli/lib/sellers"
 )
 
-// type testMock struct {
-// 	mock.Mock
-// }
-
-// func (m *testMock) GetAll() ([]lib.Identifier, error) {
-// 	args := m.Called()
-// 	return args.Get(0).([]lib.Identifier), args.Error(1)
-// }
-
 func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 	testCasesRepository := []struct {
@@ -271,22 +262,22 @@ func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 	testCases := []struct {
 		name   string
 		input  []*Transaction
-		output []*Transaction
+		output []lib.Identifier
 	}{
 		{
 			name:   "Input slice is empty",
 			input:  []*Transaction{},
-			output: []*Transaction{},
+			output: []lib.Identifier{},
 		},
 		{
 			name:   "Input slice has one item, whitout seller",
 			input:  []*Transaction{&Transaction{}},
-			output: []*Transaction{},
+			output: []lib.Identifier{},
 		},
 		{
 			name:   "Input slice has one item, with seller",
 			input:  []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
-			output: []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []lib.Identifier{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
 		},
 		{
 			name: "Input slice has two items, same seller",
@@ -294,7 +285,7 @@ func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
 				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
 			},
-			output: []*Transaction{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []lib.Identifier{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
 		},
 	}
 

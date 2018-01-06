@@ -26,7 +26,8 @@ type Interactor struct {
 	transactionsRepository Fetcher
 	sellersRepository      lib.Repository
 	presenter              lib.Presenter
-	report                 *Report
+	transactions           []*Transaction
+	donUsePresenter        bool
 }
 
 // LoadDataFromRecords fetches raw data from a repository and processes it into objects
@@ -64,7 +65,6 @@ func (i *Interactor) ReportFromRecords() error {
 		return customerrors.ErrRepositoryUndefined
 	}
 
-	r := &Report{}
 	transactionsList, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
@@ -89,27 +89,29 @@ func (i *Interactor) ReportFromRecords() error {
 				break
 			}
 		}
-		r.transactions = append(r.transactions, t.(*Transaction))
+		i.transactions = append(i.transactions, t.(*Transaction))
 	}
 
 	if i.presenter == nil {
 		return customerrors.ErrPresenterUndefined
 	}
 
-	if err := i.presenter.Present(transactionsList); err != nil {
-		return &customerrors.ErrPresenter{Msg: err.Error()}
+	if !i.donUsePresenter {
+		if err := i.presenter.Present(transactionsList); err != nil {
+			return &customerrors.ErrPresenter{Msg: err.Error()}
+		}
 	}
 
 	return nil
 }
 
-func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
+func mergeTransactions(transactions []*Transaction) ([]lib.Identifier, error) {
 	transactionsMap := map[string]*Transaction{}
-	returnTransactions := []*Transaction{}
+	returnTransactions := []lib.Identifier{}
 
 	for _, t := range transactions {
 		if t.seller == nil {
-			return []*Transaction{}, errors.New("cannot merge transaction whitout seller")
+			return []lib.Identifier{}, errors.New("cannot merge transaction whitout seller")
 		}
 
 		if _, ok := transactionsMap[t.seller.String()]; ok {
@@ -129,16 +131,26 @@ func mergeTransactions(transactions []*Transaction) ([]*Transaction, error) {
 
 // ReportFromRecordsGroupedBySeller products a report which ggroups
 func (i *Interactor) ReportFromRecordsGroupedBySeller() error {
+	// TODO: This should have some unit tests
+
+	i.donUsePresenter = true
 	err := i.ReportFromRecords()
 	if err != nil {
 		return err
 	}
 
-	transactions, err := mergeTransactions(i.report.transactions)
+	transactions, err := mergeTransactions(i.transactions)
 	if err != nil {
 		return err
 	}
-	i.report.transactions = transactions
+
+	if i.presenter == nil {
+		return customerrors.ErrPresenterUndefined
+	}
+
+	if err := i.presenter.Present(transactions); err != nil {
+		return &customerrors.ErrPresenter{Msg: err.Error()}
+	}
 
 	return nil
 }
