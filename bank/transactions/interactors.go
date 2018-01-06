@@ -96,6 +96,10 @@ func (i *Interactor) ReportFromRecords() error {
 		return customerrors.ErrPresenterUndefined
 	}
 
+	if err := i.presenter.Present(transactionsList); err != nil {
+		return &customerrors.ErrPresenter{Msg: err.Error()}
+	}
+
 	return nil
 }
 

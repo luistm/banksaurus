@@ -119,18 +119,15 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 }
 
-// type repositoryMock struct {
-// 	mock.Mock
-// }
-
-// func (m *repositoryMock) GetAll() ([]*Transaction, error) {
-// 	args := m.Called()
-// 	return args.Get(0).([]*Transaction), args.Error(1)
-// }
-
 func TestUnitReportFromRecords(t *testing.T) {
 
+	seller := sellers.New("sellerSlug", "sellerName")
+	transactions := []lib.Identifier{&Transaction{seller: seller}}
 	presenterMock := new(lib.PresenterMock)
+	presenterMock.On("Present", transactions).Return(nil)
+
+	sellersMock := new(lib.RepositoryMock)
+	sellersMock.On("GetAll").Return([]lib.Identifier{seller}, nil)
 
 	testCases := []struct {
 		name       string
@@ -152,23 +149,18 @@ func TestUnitReportFromRecords(t *testing.T) {
 			name:       "Returns nil if success",
 			output:     nil,
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{&Transaction{}}, nil},
+			mockOutput: []interface{}{transactions, nil},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := NewInteractor(nil, nil, presenterMock)
-		i.presenter = presenterMock
+		i := NewInteractor(nil, sellersMock, presenterMock)
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
 			m.On("GetAll").Return(tc.mockOutput...)
 			i.transactionsRepository = m
-
-			sellersMock := new(lib.RepositoryMock)
-			sellersMock.On("GetAll").Return([]lib.Identifier{}, nil)
-			i.sellersRepository = sellersMock
 		}
 
 		err := i.ReportFromRecords()
@@ -227,29 +219,46 @@ func TestUnitReportFromRecords(t *testing.T) {
 		testkit.AssertEqual(t, tc.output, err)
 	}
 
-	// Define seller repository mock
-	sellersMock := new(lib.RepositoryMock)
-	sellersMock.On("GetAll").Return([]lib.Identifier{sellers.New("sellerSlug", "sellerName")}, nil)
-
 	testCasesPresenter := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  *lib.Identifier
+		mockInput  []lib.Identifier
 		mockOutput error
 	}{
 		{
 			name:   "Returns error if presenter is not defined",
 			output: customerrors.ErrPresenterUndefined,
 		},
+		{
+			name:       "Returns error if presenter returns error",
+			output:     &customerrors.ErrPresenter{Msg: "test error"},
+			withMock:   true,
+			mockInput:  transactions,
+			mockOutput: errors.New("test error"),
+		},
+		{
+			name:      "Returns nil on presenter success",
+			withMock:  true,
+			mockInput: transactions,
+		},
 	}
 
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
 		i := NewInteractor(trMock, sellersMock, nil)
+		var pm *lib.PresenterMock
+		if tc.withMock {
+			pm = new(lib.PresenterMock)
+			pm.On("Present", tc.mockInput).Return(tc.mockOutput)
+			i.presenter = pm
+		}
 
 		err := i.ReportFromRecords()
 
+		if tc.withMock {
+			pm.AssertExpectations(t)
+		}
 		testkit.AssertEqual(t, tc.output, err)
 	}
 }

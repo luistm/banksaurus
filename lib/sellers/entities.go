@@ -2,6 +2,7 @@ package sellers
 
 // New creates a new seller instance but does not persist it
 func New(slug string, name string) *Seller {
+	// Humm, should i be allowed to create this using undefined strings?
 	return &Seller{slug: slug, name: name}
 }
 
