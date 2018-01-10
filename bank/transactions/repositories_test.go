@@ -33,13 +33,13 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if storage is not defined",
-			output:     []interface{}{[]lib.Identifier{}, customerrors.ErrInfrastructureUndefined},
+			output:     []interface{}{[]lib.Entity{}, customerrors.ErrInfrastructureUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error if infrastructure fails",
-			output:     []interface{}{[]lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: "Test Error"}},
+			output:     []interface{}{[]lib.Entity{}, &customerrors.ErrInfrastructure{Msg: "Test Error"}},
 			withMock:   true,
 			mockOutput: []interface{}{[][]string{}, errors.New("Test Error")},
 		},
@@ -73,13 +73,13 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 		name                 string
 		input                [][]string
 		output               error
-		expectedTransactions []lib.Identifier
+		expectedTransactions []lib.Entity
 	}{
 		{
 			name:   "Parses a single line",
 			input:  [][]string{[]string{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
 			output: nil,
-			expectedTransactions: []lib.Identifier{
+			expectedTransactions: []lib.Entity{
 				&Transaction{
 					value:  &value,
 					seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),

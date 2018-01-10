@@ -105,13 +105,13 @@ func (i *Interactor) ReportFromRecords() error {
 	return nil
 }
 
-func mergeTransactions(transactions []*Transaction) ([]lib.Identifier, error) {
+func mergeTransactions(transactions []*Transaction) ([]lib.Entity, error) {
 	transactionsMap := map[string]*Transaction{}
-	returnTransactions := []lib.Identifier{}
+	returnTransactions := []lib.Entity{}
 
 	for _, t := range transactions {
 		if t.seller == nil {
-			return []lib.Identifier{}, errors.New("cannot merge transaction whitout seller")
+			return []lib.Entity{}, errors.New("cannot merge transaction whitout seller")
 		}
 
 		if _, ok := transactionsMap[t.seller.String()]; ok {

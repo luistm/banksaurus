@@ -140,7 +140,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 func TestUnitInteractorGetAll(t *testing.T) {
 
 	presenterMock := new(lib.PresenterMock)
-	presenterMock.On("Present", []lib.Identifier{&Seller{}, &Seller{}}).Return(nil)
+	presenterMock.On("Present", []lib.Entity{&Seller{}, &Seller{}}).Return(nil)
 
 	testCases := []struct {
 		name       string
@@ -158,13 +158,13 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			name:       "Returns error on repository error",
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},
 		},
 		{
 			name:       "Returns seller entities",
 			output:     nil,
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{&Seller{}, &Seller{}}, nil},
+			mockOutput: []interface{}{[]lib.Entity{&Seller{}, &Seller{}}, nil},
 		},
 	}
 
@@ -187,12 +187,12 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}
 
 	repositoryMock := new(lib.RepositoryMock)
-	repositoryMock.On("GetAll").Return([]lib.Identifier{&Seller{}, &Seller{}}, nil)
+	repositoryMock.On("GetAll").Return([]lib.Entity{&Seller{}, &Seller{}}, nil)
 	testCasesPresenter := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  []lib.Identifier
+		mockInput  []lib.Entity
 		mockOutput error
 	}{
 		{
@@ -203,14 +203,14 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			name:       "Handles presenter error",
 			output:     &customerrors.ErrPresenter{Msg: "test error"},
 			withMock:   true,
-			mockInput:  []lib.Identifier{&Seller{}, &Seller{}},
+			mockInput:  []lib.Entity{&Seller{}, &Seller{}},
 			mockOutput: errors.New("test error"),
 		},
 		{
 			name:       "Handles presenter success",
 			output:     nil,
 			withMock:   true,
-			mockInput:  []lib.Identifier{&Seller{}, &Seller{}},
+			mockInput:  []lib.Entity{&Seller{}, &Seller{}},
 			mockOutput: nil,
 		},
 	}

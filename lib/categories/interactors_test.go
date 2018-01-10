@@ -26,21 +26,21 @@ func TestUnitGetAll(t *testing.T) {
 			name:       "Returns error if repository returns error",
 			expected:   &customerrors.ErrRepository{Msg: "repository mock error"},
 			mock:       new(lib.RepositoryMock),
-			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("repository mock error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("repository mock error")},
 		},
 		{
 			name:     "Returns no error on success",
 			expected: nil,
 			mock:     new(lib.RepositoryMock),
 			mockOutput: []interface{}{
-				[]lib.Identifier{&Category{name: "ThisIsATestCategory"}},
+				[]lib.Entity{&Category{name: "ThisIsATestCategory"}},
 				nil,
 			},
 		},
 	}
 
 	presenterMock := new(lib.PresenterMock)
-	presenterMock.On("Present", []lib.Identifier{&Category{name: "ThisIsATestCategory"}}).Return(nil)
+	presenterMock.On("Present", []lib.Entity{&Category{name: "ThisIsATestCategory"}}).Return(nil)
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
@@ -62,7 +62,7 @@ func TestUnitGetAll(t *testing.T) {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  []lib.Identifier
+		mockInput  []lib.Entity
 		mockOutput error
 	}{
 		{
@@ -73,13 +73,13 @@ func TestUnitGetAll(t *testing.T) {
 			name:       "Returns error if presenter returns error",
 			output:     &customerrors.ErrPresenter{Msg: "test error"},
 			withMock:   true,
-			mockInput:  []lib.Identifier{&Category{name: "ThisIsATestCategory"}},
+			mockInput:  []lib.Entity{&Category{name: "ThisIsATestCategory"}},
 			mockOutput: errors.New("test error"),
 		},
 	}
 
 	repositoryMock := new(lib.RepositoryMock)
-	repositoryMock.On("GetAll").Return([]lib.Identifier{&Category{name: "ThisIsATestCategory"}}, nil)
+	repositoryMock.On("GetAll").Return([]lib.Entity{&Category{name: "ThisIsATestCategory"}}, nil)
 
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
@@ -136,7 +136,7 @@ func TestUnitInteractorGetCategory(t *testing.T) {
 	}
 
 	presenterMock := new(lib.PresenterMock)
-	presenterMock.On("Present", []lib.Identifier{}).Return(nil)
+	presenterMock.On("Present", []lib.Entity{}).Return(nil)
 
 	for _, tc := range testCases {
 		t.Log(tc.name)

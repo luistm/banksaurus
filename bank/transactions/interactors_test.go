@@ -34,7 +34,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 			name:       "Returns error on repository error",
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},
 		},
 	}
 
@@ -64,13 +64,13 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 	i := Interactor{}
 	tm := new(lib.RepositoryMock)
 	i.transactionsRepository = tm
-	tm.On("GetAll").Return([]lib.Identifier{t1, t2}, nil)
+	tm.On("GetAll").Return([]lib.Entity{t1, t2}, nil)
 
-	testCasesIdentifierRepositorySave := []struct {
+	testCasesEntityRepositorySave := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  lib.Identifier
+		mockInput  lib.Entity
 		mockOutput error
 	}{
 		{
@@ -89,7 +89,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCasesIdentifierRepositorySave {
+	for _, tc := range testCasesEntityRepositorySave {
 		t.Log(tc.name)
 		var im *lib.RepositoryMock
 		if tc.withMock {
@@ -113,12 +113,12 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 func TestUnitReportFromRecords(t *testing.T) {
 
 	seller := sellers.New("sellerSlug", "sellerName")
-	transactions := []lib.Identifier{&Transaction{seller: seller}}
+	transactions := []lib.Entity{&Transaction{seller: seller}}
 	presenterMock := new(lib.PresenterMock)
 	presenterMock.On("Present", transactions).Return(nil)
 
 	sellersMock := new(lib.RepositoryMock)
-	sellersMock.On("GetAll").Return([]lib.Identifier{seller}, nil)
+	sellersMock.On("GetAll").Return([]lib.Entity{seller}, nil)
 
 	testCases := []struct {
 		name       string
@@ -134,7 +134,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 			name:       "Returns error if repository returns error",
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},
 		},
 		{
 			name:       "Returns nil if success",
@@ -163,7 +163,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 	}
 
 	trMock := new(lib.RepositoryMock)
-	trMock.On("GetAll").Return([]lib.Identifier{&Transaction{seller: sellers.New("sellerSlug", "")}}, nil)
+	trMock.On("GetAll").Return([]lib.Entity{&Transaction{seller: sellers.New("sellerSlug", "")}}, nil)
 
 	testCasesSellerWithPrettyName := []struct {
 		name       string
@@ -179,14 +179,14 @@ func TestUnitReportFromRecords(t *testing.T) {
 			name:       "Seller repository returns error",
 			output:     &customerrors.ErrRepository{Msg: "Test error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Identifier{}, errors.New("Test error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test error")},
 		},
 		{
 			name:     "Seller from transaction has no pretty name",
 			output:   nil,
 			withMock: true,
 			mockOutput: []interface{}{
-				[]lib.Identifier{sellers.New("sellerSlug", "sellerName")},
+				[]lib.Entity{sellers.New("sellerSlug", "sellerName")},
 				nil,
 			},
 		},
@@ -214,7 +214,7 @@ func TestUnitReportFromRecords(t *testing.T) {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  []lib.Identifier
+		mockInput  []lib.Entity
 		mockOutput error
 	}{
 		{
@@ -262,22 +262,22 @@ func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 	testCases := []struct {
 		name   string
 		input  []*Transaction
-		output []lib.Identifier
+		output []lib.Entity
 	}{
 		{
 			name:   "Input slice is empty",
 			input:  []*Transaction{},
-			output: []lib.Identifier{},
+			output: []lib.Entity{},
 		},
 		{
 			name:   "Input slice has one item, whitout seller",
 			input:  []*Transaction{&Transaction{}},
-			output: []lib.Identifier{},
+			output: []lib.Entity{},
 		},
 		{
 			name:   "Input slice has one item, with seller",
 			input:  []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
-			output: []lib.Identifier{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []lib.Entity{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
 		},
 		{
 			name: "Input slice has two items, same seller",
@@ -285,7 +285,7 @@ func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
 				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
 			},
-			output: []lib.Identifier{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []lib.Entity{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
 		},
 	}
 

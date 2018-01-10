@@ -21,18 +21,18 @@ func NewRepository(storage infrastructure.CSVStorage) *repository {
 
 type repository struct {
 	storage      bank.CSVHandler
-	transactions []lib.Identifier
+	transactions []lib.Entity
 }
 
-func (r *repository) GetAll() ([]lib.Identifier, error) {
+func (r *repository) GetAll() ([]lib.Entity, error) {
 
 	if r.storage == nil {
-		return []lib.Identifier{}, customerrors.ErrInfrastructureUndefined
+		return []lib.Entity{}, customerrors.ErrInfrastructureUndefined
 	}
 
 	lines, err := r.storage.Lines()
 	if err != nil {
-		return []lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Entity{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	// TODO: Validate if Lines() output is the expected one
@@ -40,7 +40,7 @@ func (r *repository) GetAll() ([]lib.Identifier, error) {
 	// if err != nil{}
 	err = r.buildTransactions(lines[5 : len(lines)-2])
 	if err != nil {
-		return []lib.Identifier{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Entity{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
 	}
 	// log.Println(len(r.transactions))
 

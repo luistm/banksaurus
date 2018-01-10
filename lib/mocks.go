@@ -29,21 +29,21 @@ type RepositoryMock struct {
 }
 
 // Save method mock
-func (m *RepositoryMock) Save(c Identifier) error {
+func (m *RepositoryMock) Save(c Entity) error {
 	args := m.Called(c)
 	return args.Error(0)
 }
 
 // Get method mock
-func (m *RepositoryMock) Get(s string) (Identifier, error) {
+func (m *RepositoryMock) Get(s string) (Entity, error) {
 	args := m.Called(s)
-	return args.Get(0).(Identifier), args.Error(1)
+	return args.Get(0).(Entity), args.Error(1)
 }
 
 // GetAll method mock
-func (m *RepositoryMock) GetAll() ([]Identifier, error) {
+func (m *RepositoryMock) GetAll() ([]Entity, error) {
 	args := m.Called()
-	return args.Get(0).([]Identifier), args.Error(1)
+	return args.Get(0).([]Entity), args.Error(1)
 }
 
 // PresenterMock to use in tests which need a presenter
@@ -52,7 +52,7 @@ type PresenterMock struct {
 }
 
 // Present ...
-func (m *PresenterMock) Present(entities []Identifier) error {
+func (m *PresenterMock) Present(entities []Entity) error {
 	args := m.Called(entities)
 	return args.Error(0)
 }

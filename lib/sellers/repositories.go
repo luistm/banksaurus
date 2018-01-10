@@ -21,7 +21,7 @@ type repository struct {
 	SQLStorage lib.SQLInfrastructer
 }
 
-func (r *repository) Save(ent lib.Identifier) error {
+func (r *repository) Save(ent lib.Entity) error {
 
 	if r.SQLStorage == nil {
 		return customerrors.ErrInfrastructureUndefined
@@ -45,7 +45,7 @@ func (r *repository) Save(ent lib.Identifier) error {
 	return nil
 }
 
-func (r *repository) Get(sellerSlug string) (lib.Identifier, error) {
+func (r *repository) Get(sellerSlug string) (lib.Entity, error) {
 	// statement := "SELECT * FROM sellers WHERE slug=?"
 	// rows, err := r.SQLStorage.Query(statement, sellerSlug)
 	// if err != nil {
@@ -67,15 +67,15 @@ func (r *repository) Get(sellerSlug string) (lib.Identifier, error) {
 }
 
 // GetAll fetches all sellers
-func (r *repository) GetAll() ([]lib.Identifier, error) {
+func (r *repository) GetAll() ([]lib.Entity, error) {
 	statement := "SELECT * FROM sellers"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []lib.Identifier{}, fmt.Errorf("Database failure: %s", err)
+		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
 	}
 	defer rows.Close()
 
-	sellers := []lib.Identifier{}
+	sellers := []lib.Entity{}
 
 	for rows.Next() {
 		var slug string

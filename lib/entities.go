@@ -4,9 +4,9 @@ import (
 	"fmt"
 )
 
-// Identifier is the interface each an object must implement in
+// Entity is the interface each an object must implement in
 // order to be identified
-type Identifier interface {
+type Entity interface {
 	fmt.Stringer
 	ID() string
 }

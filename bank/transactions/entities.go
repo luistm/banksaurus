@@ -14,7 +14,7 @@ import (
 
 // Fetcher to fetch transactions
 type Fetcher interface {
-	GetAll() ([]lib.Identifier, error)
+	GetAll() ([]lib.Entity, error)
 }
 
 // New creates a record with some parsed data
