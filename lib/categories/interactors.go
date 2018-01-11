@@ -51,7 +51,7 @@ func (i *Interactor) GetAll() error {
 		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
 
-	err = i.presenter.Present(categories)
+	err = i.presenter.Present(categories...)
 	if err != nil {
 		return &customerrors.ErrPresenter{Msg: err.Error()}
 	}

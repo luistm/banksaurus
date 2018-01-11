@@ -10,12 +10,10 @@ import (
 type CLIPresenter struct{}
 
 // Present receives the data to be shown
-func (c *CLIPresenter) Present(identifiers []lib.Entity) error {
-	var out string
+func (c *CLIPresenter) Present(identifiers ...lib.Entity) error {
 	for _, s := range identifiers {
-		out += fmt.Sprintf("%s\n", s)
+		fmt.Println(s.String())
 	}
 
-	fmt.Print(out)
 	return nil
 }

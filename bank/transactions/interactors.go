@@ -97,7 +97,7 @@ func (i *Interactor) ReportFromRecords() error {
 	}
 
 	if !i.donUsePresenter {
-		if err := i.presenter.Present(transactionsList); err != nil {
+		if err := i.presenter.Present(transactionsList...); err != nil {
 			return &customerrors.ErrPresenter{Msg: err.Error()}
 		}
 	}
@@ -148,7 +148,7 @@ func (i *Interactor) ReportFromRecordsGroupedBySeller() error {
 		return customerrors.ErrPresenterUndefined
 	}
 
-	if err := i.presenter.Present(transactions); err != nil {
+	if err := i.presenter.Present(transactions...); err != nil {
 		return &customerrors.ErrPresenter{Msg: err.Error()}
 	}
 

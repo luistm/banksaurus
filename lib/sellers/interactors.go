@@ -54,7 +54,7 @@ func (i *Interactor) GetAll() error {
 		return customerrors.ErrPresenterUndefined
 	}
 
-	if err := i.presenter.Present(sellers); err != nil {
+	if err := i.presenter.Present(sellers...); err != nil {
 		return &customerrors.ErrPresenter{Msg: err.Error()}
 	}
 

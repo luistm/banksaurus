@@ -52,7 +52,7 @@ type PresenterMock struct {
 }
 
 // Present ...
-func (m *PresenterMock) Present(entities []Entity) error {
+func (m *PresenterMock) Present(entities ...Entity) error {
 	args := m.Called(entities)
 	return args.Error(0)
 }
