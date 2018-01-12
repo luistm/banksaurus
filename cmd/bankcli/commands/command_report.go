@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"os"
+
 	"github.com/luistm/go-bank-cli/bank/transactions"
 	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/csv"
@@ -34,8 +36,12 @@ func (rc *Report) Execute(arguments map[string]interface{}) *Response {
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
+	transactionsInteractor := transactions.NewInteractor(
+		transactionRepository,
+		sellersRepository,
+		NewPresenter(os.Stdout),
+	)
 
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository, &CLIPresenter{})
 	if grouped {
 		err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
 	} else {

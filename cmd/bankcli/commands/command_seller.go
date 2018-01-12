@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"os"
+
 	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/sellers"
@@ -20,9 +22,8 @@ func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 		return &Response{err: err, output: out}
 	}
 	defer SQLStorage.Close()
-	presenter := &CLIPresenter{}
 
-	sellersInteractor := sellers.NewInteractor(SQLStorage, presenter)
+	sellersInteractor := sellers.NewInteractor(SQLStorage, NewPresenter(os.Stdout))
 
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
 		err = sellersInteractor.Create(arguments["<name>"].(string))

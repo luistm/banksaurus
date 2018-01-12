@@ -56,3 +56,20 @@ func (m *PresenterMock) Present(entities ...Entity) error {
 	args := m.Called(entities)
 	return args.Error(0)
 }
+
+// EntityMock ...
+type EntityMock struct {
+	mock.Mock
+}
+
+// String ...
+func (em *EntityMock) String() string {
+	args := em.Called()
+	return args.String(0)
+}
+
+// ID ...
+func (em *EntityMock) ID() string {
+	args := em.Called()
+	return args.String(0)
+}

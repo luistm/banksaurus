@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"os"
+
 	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
 	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
 	"github.com/luistm/go-bank-cli/lib/categories"
@@ -21,7 +23,7 @@ func (c *Category) Execute(arguments map[string]interface{}) *Response {
 	}
 	defer SQLStorage.Close()
 
-	categoriesInteractor := categories.NewInteractor(SQLStorage, &CLIPresenter{})
+	categoriesInteractor := categories.NewInteractor(SQLStorage, NewPresenter(os.Stdout))
 
 	if arguments["category"].(bool) && arguments["new"].(bool) {
 		err = categoriesInteractor.Create(arguments["<name>"].(string))
