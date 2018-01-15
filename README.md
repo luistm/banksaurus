@@ -21,9 +21,10 @@ Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the cs
 ### Available commands
 
 ```bash
-$ bankcli--help
+$ bankcli --help
 
-Your command line finance manager.
+    Your command line finance manager.
+
 Usage:
 	bankcli -h | --help
 	bankcli report --input <file> [ --grouped ]
@@ -31,6 +32,7 @@ Usage:
 	bankcli seller change <id> --pretty <name>
 	bankcli seller new <name>
 	bankcli seller show
+
 Options:
 	--grouped     The report is present grouped by seller
 	--input       The path to the records list.

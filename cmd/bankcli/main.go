@@ -8,7 +8,7 @@ import (
 	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
 )
 
-var intro = "Your command line finance manager.\n"
+var intro = "    \n    Your command line finance manager.\n\n"
 
 var usage = `Usage:
 	bankcli -h | --help
@@ -19,6 +19,7 @@ var usage = `Usage:
 	bankcli seller show`
 
 var options = `
+
 Options:
 	--grouped     The report is present grouped by seller
 	--input       The path to the records list.
