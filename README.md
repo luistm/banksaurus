@@ -21,15 +21,21 @@ Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the cs
 ### Available commands
 
 ```bash
-bankcli
+$ bankcli--help
 
+Your command line finance manager.
 Usage:
-  bankcli -h | --help
-  bankcli report --input <file> [ --grouped ]
-  bankcli load --input <file>
-  bankcli seller change <id> --pretty <name>
-  bankcli seller new <name>
-  bankcli seller show
+	bankcli -h | --help
+	bankcli report --input <file> [ --grouped ]
+	bankcli load --input <file>
+	bankcli seller change <id> --pretty <name>
+	bankcli seller new <name>
+	bankcli seller show
+Options:
+	--grouped     The report is present grouped by seller
+	--input       The path to the records list.
+	--name        Specifies the name.
+	-h --help     Show this screen.
 ```
 
 ## Setup
