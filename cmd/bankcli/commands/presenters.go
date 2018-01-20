@@ -4,7 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 	"text/tabwriter"
+
+	"github.com/luistm/go-bank-cli/bank/transactions"
 
 	"github.com/luistm/go-bank-cli/lib"
 )
@@ -22,17 +25,24 @@ type CLIPresenter struct {
 }
 
 // Present receives the data to be shown
-func (c *CLIPresenter) Present(identifiers ...lib.Entity) error {
+func (c *CLIPresenter) Present(entities ...lib.Entity) error {
 
 	if c.output == nil {
 		return errOutputPipeUndefined
 	}
 
-	const padding = 2
-	w := tabwriter.NewWriter(c.output, 0, 0, padding, ' ', tabwriter.Debug)
+	const padding = 1
+	w := tabwriter.NewWriter(c.output, 0, 0, padding, ' ', 0)
 
-	for _, s := range identifiers {
-		fmt.Fprintf(w, "%s\n", s)
+	for _, entity := range entities {
+		switch entity.(type) {
+		case *transactions.Transaction:
+			stringArray := strings.Fields(entity.String())
+			price := stringArray[0]
+			fmt.Fprintf(w, "%s\t%s\n", price, strings.Join(stringArray[1:], " "))
+		default:
+			fmt.Fprintf(w, "%s\n", entity)
+		}
 	}
 	w.Flush()
 

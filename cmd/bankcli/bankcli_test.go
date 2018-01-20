@@ -99,7 +99,7 @@ func TestSystem(t *testing.T) {
 				"--input", "./tests/fixtures/sample_records_load.csv",
 				"--grouped",
 			},
-			expected:      "77.52 Continente\n190.18 COMPRA FARMACIA SAO J\n",
+			expected:      "77.52  Continente\n190.18 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 	}
