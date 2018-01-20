@@ -45,6 +45,12 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
+			name:          "Shows version if option is '--version'",
+			command:       []string{"--version"},
+			expected:      "bankcli 1.0.0\n",
+			errorExpected: false,
+		},
+		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
