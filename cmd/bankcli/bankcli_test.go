@@ -99,6 +99,12 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
+			name:          "Shows report from bank records file, with sellers name instead of slug",
+			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
+			expected:      "Unknown error",
+			errorExpected: true,
+		},
+		{
 			name: "Shows report from bank records file, grouped by seller",
 			command: []string{
 				"report",
