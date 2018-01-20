@@ -20,7 +20,7 @@ func deleteTestFiles(t *testing.T) {
 	}
 }
 
-func TestSystem(t *testing.T) {
+func TestSystemUsage(t *testing.T) {
 
 	os.Setenv("GO_BANK_CLI_DEV", "true")
 	defer os.Setenv("GO_BANK_CLI_DEV", "")
@@ -38,6 +38,40 @@ func TestSystem(t *testing.T) {
 			expected:      usage + "\n",
 			errorExpected: true,
 		},
+	}
+
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		t.Log(fmt.Sprintf("$ bankcli %s", strings.Join(tc.command, " ")))
+		cmd := exec.Command("../../bankcli", tc.command...)
+		var outBuffer, errBuffer bytes.Buffer
+		cmd.Stdout = &outBuffer
+		cmd.Stderr = &errBuffer
+
+		err := cmd.Run()
+
+		if !tc.errorExpected && err != nil {
+			t.Log(outBuffer.String())
+			t.Log(errBuffer.String())
+			t.Fatalf("Test failed due to command error: %s", err.Error())
+		}
+		testkit.AssertEqual(t, tc.expected, errBuffer.String())
+		testkit.AssertEqual(t, "", outBuffer.String())
+	}
+}
+
+func TestSystem(t *testing.T) {
+
+	os.Setenv("GO_BANK_CLI_DEV", "true")
+	defer os.Setenv("GO_BANK_CLI_DEV", "")
+	defer deleteTestFiles(t)
+
+	testCases := []struct {
+		name          string
+		command       []string
+		expected      string
+		errorExpected bool
+	}{
 		{
 			name:          "Shows usage if option is '-h'",
 			command:       []string{"-h"},
@@ -101,7 +135,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows report from bank records file, with sellers name instead of slug",
 			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
-			expected:      "Unknown error",
+			expected:      "Error while performing operation\n",
 			errorExpected: true,
 		},
 		{
@@ -130,10 +164,6 @@ func TestSystem(t *testing.T) {
 			t.Log(outBuffer.String())
 			t.Log(errBuffer.String())
 			t.Fatalf("Test failed due to command error: %s", err.Error())
-		}
-		if tc.errorExpected {
-			testkit.AssertEqual(t, tc.expected, errBuffer.String())
-			testkit.AssertEqual(t, "", outBuffer.String())
 		} else {
 			testkit.AssertEqual(t, "", errBuffer.String())
 			testkit.AssertEqual(t, tc.expected, outBuffer.String())

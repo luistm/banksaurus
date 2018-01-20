@@ -13,13 +13,12 @@ type Category struct{}
 
 // Execute the report command
 func (c *Category) Execute(arguments map[string]interface{}) *Response {
-	var out string
 	var err error
 
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err, output: out}
+		return &Response{err: err}
 	}
 	defer SQLStorage.Close()
 
@@ -32,5 +31,5 @@ func (c *Category) Execute(arguments map[string]interface{}) *Response {
 		err = categoriesInteractor.GetAll()
 	}
 
-	return &Response{err: err, output: out}
+	return &Response{err: err}
 }

@@ -13,22 +13,21 @@ type Load struct{}
 
 // Execute the Load command
 func (l *Load) Execute(arguments map[string]interface{}) *Response {
-	out, err := l.loadFile(arguments["<file>"].(string))
-	return &Response{err: err, output: out}
+	err := l.loadFile(arguments["<file>"].(string))
+	return &Response{err: err}
 }
 
-func (l *Load) loadFile(inputFilePath string) (string, error) {
-	var out string
+func (l *Load) loadFile(inputFilePath string) error {
 	CSVStorage, err := csv.New(inputFilePath)
 	if err != nil {
-		return out, err
+		return err
 	}
 	defer CSVStorage.Close()
 
 	dbName, dbPath := configurations.GetDatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return out, err
+		return err
 	}
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
@@ -36,8 +35,8 @@ func (l *Load) loadFile(inputFilePath string) (string, error) {
 	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository, nil)
 	err = transactionsInteractor.LoadDataFromRecords()
 	if err != nil {
-		return out, err
+		return err
 	}
 
-	return "", nil
+	return nil
 }

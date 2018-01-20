@@ -15,7 +15,8 @@ type Response struct {
 
 func (res *Response) String() string {
 	if res.err != nil {
-		return res.err.Error()
+		// return res.err.Error()
+		return "Error while performing operation"
 	}
 
 	return res.output

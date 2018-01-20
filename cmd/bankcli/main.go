@@ -29,18 +29,16 @@ Options:
 var version = "bankcli 1.0.0"
 
 func main() {
-	var out string
-	var err error
-
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(2)
 	}
 
-	command, err := commands.New(os.Args[1:])
-	if err == nil {
-		out = command.Execute(arguments).String()
+	command, _ := commands.New(os.Args[1:])
+	response := command.Execute(arguments)
+	if response.String() != "" {
+		fmt.Println(response.String())
+		os.Exit(2)
 	}
-	fmt.Printf(out)
 }
