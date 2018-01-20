@@ -6,7 +6,7 @@ Personal finance manager driven mainly by fun.
 
 This is a work in progress and is mainly a way to learn software stuff.
 
-For now, it offers only a command line interface is available.
+For now, it offers only a command line interface.
 
 Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file.
 
