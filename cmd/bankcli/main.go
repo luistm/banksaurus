@@ -26,7 +26,7 @@ Options:
 	--name        Specifies the name.
 	-h --help     Show this screen.`
 
-var version = "bankcli 1.0.0"
+var version = "bankcli 1.1.0"
 
 func main() {
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
