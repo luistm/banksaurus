@@ -25,7 +25,7 @@ func (l *Load) loadFile(inputFilePath string) error {
 	defer CSVStorage.Close()
 
 	dbName, dbPath := configurations.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName)
+	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return err
 	}
