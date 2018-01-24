@@ -47,6 +47,9 @@ func main() {
 		os.Exit(2)
 	}
 
+	// TODO: Make the setup of the application here. What happens if this is first execution
+	//       When running tests, does this create the log files ?
+	//       Maybe in dev i should print the logs and not send it to the file.
 	configureLog()
 
 	command, _ := commands.New(os.Args[1:])
