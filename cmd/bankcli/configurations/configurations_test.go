@@ -18,7 +18,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	expectedDbName := "bank"
 	expectedDbPath := path.Join(usr.HomeDir, ".bank")
 
-	dbName, dbPath := GetDatabasePath()
+	dbName, dbPath := DatabasePath()
 
 	testkit.AssertEqual(t, expectedDbName, dbName)
 	testkit.AssertEqual(t, expectedDbPath, dbPath)
@@ -29,7 +29,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	expectedDbName = "bank"
 	expectedDbPath = "/tmp"
 
-	dbName, dbPath = GetDatabasePath()
+	dbName, dbPath = DatabasePath()
 
 	testkit.AssertEqual(t, expectedDbName, dbName)
 	testkit.AssertEqual(t, expectedDbPath, dbPath)

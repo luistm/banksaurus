@@ -15,7 +15,7 @@ type Seller struct{}
 func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 	var err error
 
-	dbName, dbPath := configurations.GetDatabasePath()
+	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return &Response{err: err}

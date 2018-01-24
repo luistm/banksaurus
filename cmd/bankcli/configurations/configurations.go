@@ -13,9 +13,9 @@ func isDev() bool {
 	return false
 }
 
-// GetDatabasePath returns the path nad name for the database
+// DatabasePath returns the path nad name for the database
 // taking into account the type of environment
-func GetDatabasePath() (string, string) {
+func DatabasePath() (string, string) {
 	if isDev() {
 		return "bank", "/tmp"
 	}

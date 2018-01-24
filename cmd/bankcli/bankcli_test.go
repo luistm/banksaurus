@@ -14,7 +14,7 @@ import (
 )
 
 func deleteTestFiles(t *testing.T) {
-	dbName, dbPath := configurations.GetDatabasePath()
+	dbName, dbPath := configurations.DatabasePath()
 	if err := os.RemoveAll(path.Join(dbPath, dbName) + ".db"); err != nil {
 		t.Error(err)
 	}
