@@ -81,7 +81,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows version if option is '--version'",
 			command:       []string{"--version"},
-			expected:      "bankcli 1.0.0\n",
+			expected:      version + "\n",
 			errorExpected: false,
 		},
 		{
