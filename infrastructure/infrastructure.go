@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"io"
 
-	"github.com/luistm/go-bank-cli/bank"
+	"github.com/luistm/go-bank-cli/bank/transactions"
 	"github.com/luistm/go-bank-cli/lib"
 )
 
@@ -15,6 +15,6 @@ type SQLStorage interface {
 
 // CSVStorage for handling CSV files
 type CSVStorage interface {
-	bank.CSVHandler
+	transactions.CSVHandler
 	io.Closer
 }
