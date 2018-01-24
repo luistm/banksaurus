@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
@@ -28,12 +29,25 @@ Options:
 
 var version = "bankcli 1.1.0"
 
+func configureLog() {
+	f, err := os.OpenFile("filename", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		// TODO: What to do here? I don't want to Fatal
+		log.Fatal(err)
+	}
+	defer f.Close()
+	log.SetOutput(f)
+}
+
 func main() {
+
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(2)
 	}
+
+	configureLog()
 
 	command, _ := commands.New(os.Args[1:])
 	response := command.Execute(arguments)
