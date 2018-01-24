@@ -20,7 +20,7 @@ var errInvalidConfiguration = errors.New("sqlite configuration parameters are in
 var errFailedToCreatedDB = errors.New("failed to create database")
 
 // New creates a new instance of sqlite
-func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
+func New(path string, name string) (infrastructure.SQLStorage, error) {
 
 	if name == "" || path == "" {
 		return &sqlite{}, errInvalidConfiguration
@@ -29,14 +29,11 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	var db *sql.DB
 	var err error
 
-	if memory {
-		db, err = sql.Open("sqlite3", ":memory:")
-	} else {
-		if err := validatePath(path); err != nil {
-			return &sqlite{}, errInvalidConfiguration
-		}
-		db, err = sql.Open("sqlite3", path+"/"+name+".db")
+	if err := validatePath(path); err != nil {
+		return &sqlite{}, errInvalidConfiguration
 	}
+	db, err = sql.Open("sqlite3", path+"/"+name+".db")
+
 	if err != nil {
 		return nil, err
 	}

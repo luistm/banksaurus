@@ -16,7 +16,7 @@ func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 	var err error
 
 	dbName, dbPath := configurations.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
+	SQLStorage, err := sqlite.New(dbPath, dbName)
 	if err != nil {
 		return &Response{err: err}
 	}

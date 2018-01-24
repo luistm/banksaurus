@@ -28,7 +28,7 @@ func (rc *Report) Execute(arguments map[string]interface{}) *Response {
 	defer CSVStorage.Close()
 
 	dbName, dbPath := configurations.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
+	SQLStorage, err := sqlite.New(dbPath, dbName)
 	if err != nil {
 		return &Response{err: err}
 	}
