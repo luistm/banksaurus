@@ -27,7 +27,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	defer os.Setenv("GO_BANK_CLI_DEV", "")
 
 	expectedDbName = "bank"
-	expectedDbPath = "/tmp"
+	expectedDbPath = os.TempDir()
 
 	dbName, dbPath = DatabasePath()
 
