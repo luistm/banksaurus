@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/go-bank-cli/infrastructure"
+	"github.com/luistm/banksaurus/infrastructure"
 )
 
 // New opens and returns a file handler for a CSV file

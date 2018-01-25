@@ -5,8 +5,8 @@ import (
 
 	"github.com/mattn/go-sqlite3"
 
-	"github.com/luistm/go-bank-cli/lib"
-	"github.com/luistm/go-bank-cli/lib/customerrors"
+	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
 var saveStatement = "INSERT INTO sellers(slug, name ) VALUES (?, ?)"

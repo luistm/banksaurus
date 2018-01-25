@@ -3,14 +3,14 @@
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-local: deps ## Installs bankcli locally
-	go install -ldflags '-s -w' ./cmd/bankcli
+local: deps ## Installs banksaurus locally
+	go install -ldflags '-s -w' ./cmd/banksaurus
 
 build: clean ## Builds the project
-	go build -i -o bankcli ./cmd/bankcli
+	go build -i -o banksaurus ./cmd/banksaurus
 
 clean: ## Cleans binary created by make build
-	- rm bankcli
+	- rm banksaurus
 
 test: unit-tests system-tests coverage-unit ## Runs all tests
 
@@ -22,7 +22,7 @@ coverage-unit: ## Runs coverage for unit tests
 
 system-tests: build ## Runs system tests
 	- go test ./... -run System
-	- rm bankcli
+	- rm banksaurus
 
 coverage-package: ## Runs coverage for package $PACKAGE
 	go test $(PACKAGE)  -run Unit -cover -covermode=count -coverprofile=count.out

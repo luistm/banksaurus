@@ -3,9 +3,9 @@ package commands
 import (
 	"os"
 
-	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
-	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
-	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/infrastructure/sqlite"
+	"github.com/luistm/banksaurus/lib/categories"
 )
 
 // Category command

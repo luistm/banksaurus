@@ -3,9 +3,9 @@ package transactions
 import (
 	"errors"
 
-	"github.com/luistm/go-bank-cli/lib"
-	"github.com/luistm/go-bank-cli/lib/customerrors"
-	"github.com/luistm/go-bank-cli/lib/sellers"
+	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/luistm/banksaurus/lib/sellers"
 )
 
 // NewInteractor creates a new transactions Interactor

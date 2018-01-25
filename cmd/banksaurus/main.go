@@ -6,18 +6,18 @@ import (
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
-	"github.com/luistm/go-bank-cli/cmd/bankcli/commands"
+	"github.com/luistm/banksaurus/cmd/banksaurus/commands"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
 
 var usage = `Usage:
-	bankcli -h | --help
-	bankcli report --input <file> [ --grouped ]
-	bankcli load --input <file>
-	bankcli seller change <id> --pretty <name>
-	bankcli seller new <name>
-	bankcli seller show`
+	banksaurus -h | --help
+	banksaurus report --input <file> [ --grouped ]
+	banksaurus load --input <file>
+	banksaurus seller change <id> --pretty <name>
+	banksaurus seller new <name>
+	banksaurus seller show`
 
 var options = `
 
@@ -27,7 +27,7 @@ Options:
 	--name        Specifies the name.
 	-h --help     Show this screen.`
 
-var version = "bankcli 1.1.0"
+var version = "banksaurus 1.1.0"
 
 func configureLog() {
 	f, err := os.OpenFile("filename", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)

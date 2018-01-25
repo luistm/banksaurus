@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/luistm/go-bank-cli/infrastructure"
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/infrastructure"
+	"github.com/luistm/banksaurus/lib"
 
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"

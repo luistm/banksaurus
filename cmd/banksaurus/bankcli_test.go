@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
-	"github.com/luistm/go-bank-cli/elib/testkit"
+	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func deleteTestFiles(t *testing.T) {
@@ -42,8 +42,8 @@ func TestSystemUsage(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		t.Log(fmt.Sprintf("$ bankcli %s", strings.Join(tc.command, " ")))
-		cmd := exec.Command("../../bankcli", tc.command...)
+		t.Log(fmt.Sprintf("$ banksaurus %s", strings.Join(tc.command, " ")))
+		cmd := exec.Command("../../banksaurus", tc.command...)
 		var outBuffer, errBuffer bytes.Buffer
 		cmd.Stdout = &outBuffer
 		cmd.Stderr = &errBuffer
@@ -152,8 +152,8 @@ func TestSystem(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		t.Log(fmt.Sprintf("$ bankcli %s", strings.Join(tc.command, " ")))
-		cmd := exec.Command("../../bankcli", tc.command...)
+		t.Log(fmt.Sprintf("$ banksaurus %s", strings.Join(tc.command, " ")))
+		cmd := exec.Command("../../banksaurus", tc.command...)
 		var outBuffer, errBuffer bytes.Buffer
 		cmd.Stdout = &outBuffer
 		cmd.Stderr = &errBuffer

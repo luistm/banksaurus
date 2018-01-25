@@ -7,13 +7,13 @@ import (
 
 	"github.com/shopspring/decimal"
 
-	"github.com/luistm/go-bank-cli/elib/testkit"
-	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/banksaurus/lib/categories"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/go-bank-cli/lib/customerrors"
-	"github.com/luistm/go-bank-cli/lib/sellers"
+	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/luistm/banksaurus/lib/sellers"
 )
 
 func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {

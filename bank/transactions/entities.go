@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/go-bank-cli/lib/categories"
-	"github.com/luistm/go-bank-cli/lib/sellers"
+	"github.com/luistm/banksaurus/lib/categories"
+	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/shopspring/decimal"
 )
 

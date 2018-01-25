@@ -7,9 +7,9 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/luistm/go-bank-cli/bank/transactions"
+	"github.com/luistm/banksaurus/bank/transactions"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 )
 
 var errOutputPipeUndefined = errors.New("Output pipe is undefined")

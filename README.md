@@ -1,4 +1,4 @@
-# go-bank-cli
+# banksaurus
 
 Personal finance manager driven mainly by fun.
 
@@ -17,17 +17,17 @@ Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the cs
 ### Available commands
 
 ```bash
-$ bankcli --help
+$ banksaurus --help
 
     Your command line finance manager.
 
 Usage:
-	bankcli -h | --help
-	bankcli report --input <file> [ --grouped ]
-	bankcli load --input <file>
-	bankcli seller change <id> --pretty <name>
-	bankcli seller new <name>
-	bankcli seller show
+	banksaurus -h | --help
+	banksaurus report --input <file> [ --grouped ]
+	banksaurus load --input <file>
+	banksaurus seller change <id> --pretty <name>
+	banksaurus seller new <name>
+	banksaurus seller show
 
 Options:
 	--grouped     The report is present grouped by seller
@@ -38,7 +38,7 @@ Options:
 
 ## Setup
 
-If you're interested in hacking or trying `go-bank-cli`, you can install via `go get`:
+If you're interested in hacking or trying `banksaurus`, you can install via `go get`:
 
 ```bash
 go get -u github.com/luistm/go-cli-bank
@@ -54,7 +54,7 @@ brew upgrade dep
 Change directory to your go path:
 
 ```bash
-cd $GOPATH/src/github.com/luistm/go-bank-cli
+cd $GOPATH/src/github.com/luistm/banksaurus
 ```
 
 To setup, run the following in the project root directory:

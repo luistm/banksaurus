@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 
 	"github.com/shopspring/decimal"
 
-	"github.com/luistm/go-bank-cli/lib/customerrors"
-	"github.com/luistm/go-bank-cli/lib/sellers"
+	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/luistm/banksaurus/lib/sellers"
 )
 
 // NewRepository creates a repository for transactions

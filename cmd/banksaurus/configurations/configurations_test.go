@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/elib/testkit"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitGetDataBasePath(t *testing.T) {
