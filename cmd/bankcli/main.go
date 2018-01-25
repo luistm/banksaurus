@@ -39,6 +39,14 @@ func configureLog() {
 	log.SetOutput(f)
 }
 
+// func setup(){
+// 	// this is the only place where i do this!!
+// 	if dev
+// 	this
+// 	else
+// 	that
+// }
+
 func main() {
 
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
@@ -48,6 +56,7 @@ func main() {
 	}
 
 	// TODO: Make the setup of the application here. What happens if this is first execution
+	// setup()
 	//       When running tests, does this create the log files ?
 	//       Maybe in dev i should print the logs and not send it to the file.
 	configureLog()
