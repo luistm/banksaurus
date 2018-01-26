@@ -135,7 +135,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows report from bank records file, with sellers name instead of slug",
 			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
-			expected:      "Error while performing operation\n",
+			expected:      errGeneric.Error() + "\n",
 			errorExpected: true,
 		},
 		{
@@ -165,8 +165,13 @@ func TestSystem(t *testing.T) {
 			t.Log(errBuffer.String())
 			t.Fatalf("Test failed due to command error: %s", err.Error())
 		} else {
-			testkit.AssertEqual(t, "", errBuffer.String())
-			testkit.AssertEqual(t, tc.expected, outBuffer.String())
+			if tc.errorExpected {
+				testkit.AssertEqual(t, tc.expected, errBuffer.String())
+				testkit.AssertEqual(t, "", outBuffer.String())
+			} else {
+				testkit.AssertEqual(t, "", errBuffer.String())
+				testkit.AssertEqual(t, tc.expected, outBuffer.String())
+			}
 		}
 	}
 }

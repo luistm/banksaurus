@@ -12,13 +12,13 @@ import (
 type Category struct{}
 
 // Execute the report command
-func (c *Category) Execute(arguments map[string]interface{}) *Response {
+func (c *Category) Execute(arguments map[string]interface{}) error {
 	var err error
 
 	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err}
+		return err
 	}
 	defer SQLStorage.Close()
 
@@ -31,5 +31,9 @@ func (c *Category) Execute(arguments map[string]interface{}) *Response {
 		err = categoriesInteractor.GetAll()
 	}
 
-	return &Response{err: err}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

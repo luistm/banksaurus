@@ -14,7 +14,7 @@ import (
 type Report struct{}
 
 // Execute the report command
-func (rc *Report) Execute(arguments map[string]interface{}) *Response {
+func (rc *Report) Execute(arguments map[string]interface{}) error {
 	var grouped bool
 
 	if arguments["--grouped"].(bool) {
@@ -23,14 +23,14 @@ func (rc *Report) Execute(arguments map[string]interface{}) *Response {
 
 	CSVStorage, err := csv.New(arguments["<file>"].(string))
 	if err != nil {
-		return &Response{err: err}
+		return err
 	}
 	defer CSVStorage.Close()
 
 	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err}
+		return err
 	}
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
@@ -47,5 +47,9 @@ func (rc *Report) Execute(arguments map[string]interface{}) *Response {
 		err = transactionsInteractor.ReportFromRecords()
 	}
 
-	return &Response{err: err}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

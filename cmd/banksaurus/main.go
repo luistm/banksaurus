@@ -1,12 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/cmd/banksaurus/commands"
+	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
@@ -29,25 +31,44 @@ Options:
 
 var version = "banksaurus 1.1.0"
 
-func configureLog() {
-	f, err := os.OpenFile("filename", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+func setup() error {
+	if configurations.IsDev() {
+		return nil
+	}
+
+	// Create home dir if not exists
+	_, err := os.Stat(configurations.ApplicationHomePath())
 	if err != nil {
-		// TODO: What to do here? I don't want to Fatal
-		log.Fatal(err)
+		if os.IsNotExist(err) {
+			err = os.Mkdir(configurations.ApplicationHomePath(), 0700)
+			if err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+
+	// Configure logging
+	f, err := os.OpenFile(configurations.LogPath(), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0700)
+	if err != nil {
+		return err
 	}
 	defer f.Close()
+
 	log.SetOutput(f)
+
+	return nil
 }
 
-// func setup(){
-// 	// this is the only place where i do this!!
-// 	if dev
-// 	this
-// 	else
-// 	that
-// }
+var errGeneric = errors.New("Error while performing operation")
 
 func main() {
+	err := setup()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to setup application")
+		os.Exit(2)
+	}
 
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
 	if err != nil {
@@ -55,16 +76,15 @@ func main() {
 		os.Exit(2)
 	}
 
-	// TODO: Make the setup of the application here. What happens if this is first execution
-	// setup()
-	//       When running tests, does this create the log files ?
-	//       Maybe in dev i should print the logs and not send it to the file.
-	configureLog()
+	command, err := commands.New(os.Args[1:])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, errGeneric.Error())
+		os.Exit(2)
+	}
 
-	command, _ := commands.New(os.Args[1:])
-	response := command.Execute(arguments)
-	if response.String() != "" {
-		fmt.Println(response.String())
+	err = command.Execute(arguments)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, errGeneric.Error()+"\n")
 		os.Exit(2)
 	}
 }

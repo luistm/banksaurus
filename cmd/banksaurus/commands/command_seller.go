@@ -12,13 +12,13 @@ import (
 type Seller struct{}
 
 // Execute the seller command with arguments
-func (s *Seller) Execute(arguments map[string]interface{}) *Response {
+func (s *Seller) Execute(arguments map[string]interface{}) error {
 	var err error
 
 	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err}
+		return err
 	}
 	defer SQLStorage.Close()
 
@@ -36,5 +36,9 @@ func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 		err = sellersInteractor.Update(arguments["<id>"].(string), arguments["<name>"].(string))
 	}
 
-	return &Response{err: err}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

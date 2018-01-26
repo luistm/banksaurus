@@ -12,9 +12,13 @@ import (
 type Load struct{}
 
 // Execute the Load command
-func (l *Load) Execute(arguments map[string]interface{}) *Response {
+func (l *Load) Execute(arguments map[string]interface{}) error {
 	err := l.loadFile(arguments["<file>"].(string))
-	return &Response{err: err}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }
 
 func (l *Load) loadFile(inputFilePath string) error {

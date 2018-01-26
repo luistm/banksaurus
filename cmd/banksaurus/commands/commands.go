@@ -7,23 +7,9 @@ var errCommandIsUndefined = errors.New("command is undefined")
 
 type cliRequest []string
 
-//Response has the result of a command execution
-type Response struct {
-	err    error
-	output string
-}
-
-func (res *Response) String() string {
-	if res.err != nil {
-		return "Error while performing operation"
-	}
-
-	return res.output
-}
-
 // CommandHandler executes a request from the command line
 type CommandHandler interface {
-	Execute(map[string]interface{}) *Response
+	Execute(map[string]interface{}) error
 }
 
 // New creates a new command handler
