@@ -95,17 +95,6 @@ func TestSystem(t *testing.T) {
 			command:  []string{"seller", "show"},
 			expected: "",
 		},
-		// {
-		// 	name:          "Create category",
-		// 	command:       []string{"category", "new", "ThisIsACategoryNameForTesting"},
-		// 	expected:      "",
-		// 	errorExpected: false,
-		// },
-		// {
-		// 	name:     "Show Category",
-		// 	command:  []string{"category", "show"},
-		// 	expected: "ThisIsACategoryNameForTesting\n",
-		// },
 		{
 			name:     "LoadDataFromRecords records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},

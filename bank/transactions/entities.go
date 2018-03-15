@@ -7,7 +7,6 @@ import (
 
 	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/banksaurus/lib/categories"
 	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/shopspring/decimal"
 )
@@ -52,7 +51,6 @@ type Transaction struct {
 	id       uint64
 	value    *decimal.Decimal
 	seller   *sellers.Seller
-	category *categories.Category
 	isCredit bool
 	date     time.Time
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/shopspring/decimal"
 
 	"github.com/luistm/banksaurus/elib/testkit"
-	"github.com/luistm/banksaurus/lib/categories"
 
 	"github.com/luistm/banksaurus/lib"
 
@@ -58,9 +57,8 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		}
 	}
 
-	c := categories.New("Test Category")
-	t1 := &Transaction{seller: sellers.New("d1", "d1"), category: c}
-	t2 := &Transaction{seller: sellers.New("d2", "d2"), category: c}
+	t1 := &Transaction{seller: sellers.New("d1", "d1")}
+	t2 := &Transaction{seller: sellers.New("d2", "d2")}
 	i := Interactor{}
 	tm := new(lib.RepositoryMock)
 	i.transactionsRepository = tm

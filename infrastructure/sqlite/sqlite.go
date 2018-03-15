@@ -43,8 +43,6 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 
 	// Create table in order to create the database file
 	sqlStmt := `
-	CREATE TABLE IF NOT EXISTS categories
-	(id INTEGER NOT NULL PRIMARY KEY, name TEXT);
 	CREATE TABLE IF NOT EXISTS sellers
 	(slug TEXT NOT NULL PRIMARY KEY, name TEXT);
 	`
