@@ -41,7 +41,7 @@ Options:
 If you're interested in hacking or trying `banksaurus`, you can install via `go get`:
 
 ```bash
-go get -u github.com/luistm/go-cli-bank
+go get -u github.com/luistm/banksaurus
 ```
 
 On macOS install the latest [dep](https://github.com/golang/dep) version with [Homebrew](https://brew.sh):
