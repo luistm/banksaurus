@@ -12,7 +12,7 @@ build: clean ## Builds the project
 clean: ## Cleans binary created by make build
 	- rm banksaurus
 
-test: unit-tests system-tests coverage-unit ## Runs all tests
+tests: unit-tests system-tests coverage-unit ## Runs all tests
 
 unit-tests: ## Runs unit tests
 	go test ./... -run Unit

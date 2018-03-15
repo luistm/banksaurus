@@ -66,7 +66,7 @@ make deps
 To run tests, execute the following:
 
 ```bash
-make test
+make tests
 ````
 
 For help about make commands just type:
