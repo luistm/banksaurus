@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	docopt "github.com/docopt/docopt-go"
@@ -48,15 +47,6 @@ func setup() error {
 			return err
 		}
 	}
-
-	// Configure logging
-	f, err := os.OpenFile(configurations.LogPath(), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0700)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	log.SetOutput(f)
 
 	return nil
 }
