@@ -3,23 +3,22 @@ package commands
 import (
 	"os"
 
-	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
-	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
-	"github.com/luistm/go-bank-cli/lib/sellers"
+	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/infrastructure/sqlite"
+	"github.com/luistm/banksaurus/lib/sellers"
 )
 
 // Seller commands
 type Seller struct{}
 
 // Execute the seller command with arguments
-func (s *Seller) Execute(arguments map[string]interface{}) *Response {
-	var out string
+func (s *Seller) Execute(arguments map[string]interface{}) error {
 	var err error
 
-	dbName, dbPath := configurations.GetDatabasePath()
+	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err, output: out}
+		return err
 	}
 	defer SQLStorage.Close()
 
@@ -37,5 +36,9 @@ func (s *Seller) Execute(arguments map[string]interface{}) *Response {
 		err = sellersInteractor.Update(arguments["<id>"].(string), arguments["<name>"].(string))
 	}
 
-	return &Response{err: err, output: out}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

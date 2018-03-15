@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/go-bank-cli/elib/testkit"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitCLIPresenterPresent(t *testing.T) {

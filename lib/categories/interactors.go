@@ -1,8 +1,8 @@
 package categories
 
 import (
-	"github.com/luistm/go-bank-cli/lib"
-	"github.com/luistm/go-bank-cli/lib/customerrors"
+	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
 // NewInteractor creates an Interactor for categories

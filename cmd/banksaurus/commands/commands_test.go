@@ -3,7 +3,7 @@ package commands
 import (
 	"testing"
 
-	"github.com/luistm/go-bank-cli/elib/testkit"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitNewCommand(t *testing.T) {

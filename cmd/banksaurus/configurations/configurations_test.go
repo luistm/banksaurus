@@ -6,7 +6,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/luistm/go-bank-cli/elib/testkit"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitGetDataBasePath(t *testing.T) {
@@ -18,7 +18,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	expectedDbName := "bank"
 	expectedDbPath := path.Join(usr.HomeDir, ".bank")
 
-	dbName, dbPath := GetDatabasePath()
+	dbName, dbPath := DatabasePath()
 
 	testkit.AssertEqual(t, expectedDbName, dbName)
 	testkit.AssertEqual(t, expectedDbPath, dbPath)
@@ -27,9 +27,9 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	defer os.Setenv("GO_BANK_CLI_DEV", "")
 
 	expectedDbName = "bank"
-	expectedDbPath = "/tmp"
+	expectedDbPath = os.TempDir()
 
-	dbName, dbPath = GetDatabasePath()
+	dbName, dbPath = DatabasePath()
 
 	testkit.AssertEqual(t, expectedDbName, dbName)
 	testkit.AssertEqual(t, expectedDbPath, dbPath)

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/luistm/go-bank-cli/lib"
-	"github.com/luistm/go-bank-cli/lib/customerrors"
+	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
 var errInvalidCategory = errors.New("Invalid category")

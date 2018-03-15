@@ -3,23 +3,22 @@ package commands
 import (
 	"os"
 
-	"github.com/luistm/go-bank-cli/cmd/bankcli/configurations"
-	"github.com/luistm/go-bank-cli/infrastructure/sqlite"
-	"github.com/luistm/go-bank-cli/lib/categories"
+	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/infrastructure/sqlite"
+	"github.com/luistm/banksaurus/lib/categories"
 )
 
 // Category command
 type Category struct{}
 
 // Execute the report command
-func (c *Category) Execute(arguments map[string]interface{}) *Response {
-	var out string
+func (c *Category) Execute(arguments map[string]interface{}) error {
 	var err error
 
-	dbName, dbPath := configurations.GetDatabasePath()
+	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
-		return &Response{err: err, output: out}
+		return err
 	}
 	defer SQLStorage.Close()
 
@@ -32,5 +31,9 @@ func (c *Category) Execute(arguments map[string]interface{}) *Response {
 		err = categoriesInteractor.GetAll()
 	}
 
-	return &Response{err: err, output: out}
+	if err != nil {
+		return nil
+	}
+
+	return nil
 }

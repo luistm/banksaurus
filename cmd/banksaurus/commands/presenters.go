@@ -7,9 +7,9 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/luistm/go-bank-cli/bank/transactions"
+	"github.com/luistm/banksaurus/bank/transactions"
 
-	"github.com/luistm/go-bank-cli/lib"
+	"github.com/luistm/banksaurus/lib"
 )
 
 var errOutputPipeUndefined = errors.New("Output pipe is undefined")
@@ -38,8 +38,9 @@ func (c *CLIPresenter) Present(entities ...lib.Entity) error {
 		switch entity.(type) {
 		case *transactions.Transaction:
 			stringArray := strings.Fields(entity.String())
-			price := stringArray[0]
-			fmt.Fprintf(w, "%s\t%s\n", price, strings.Join(stringArray[1:], " "))
+			value := stringArray[0]
+			seller := strings.Join(stringArray[1:], " ")
+			fmt.Fprintf(w, "%s\t%s\n", value, seller)
 		default:
 			fmt.Fprintf(w, "%s\n", entity)
 		}
