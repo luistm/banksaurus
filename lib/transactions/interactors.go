@@ -5,7 +5,6 @@ import (
 
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/sellers"
 )
 
 // NewInteractor creates a new transactions Interactor
@@ -48,57 +47,9 @@ func (i *Interactor) LoadDataFromRecords() error {
 	}
 
 	for _, t := range transactions {
-		err := i.sellersRepository.Save(t.(*Transaction).seller)
+		err := i.sellersRepository.Save(t.(*Transaction).Seller)
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
-		}
-	}
-
-	return nil
-}
-
-// ReportFromRecords makes a report from an input file.
-// If a Seller has a pretty name, that name will be used.
-func (i *Interactor) ReportFromRecords() error {
-
-	if i.transactionsRepository == nil {
-		return customerrors.ErrRepositoryUndefined
-	}
-
-	transactionsList, err := i.transactionsRepository.GetAll()
-	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
-	}
-
-	if i.sellersRepository == nil {
-		return customerrors.ErrRepositoryUndefined
-	}
-
-	for _, t := range transactionsList {
-		// FIXME: For each transaction,
-		//        fetch only the needed sellers,
-		//        not all the sellers
-		allSellers, err := i.sellersRepository.GetAll()
-		if err != nil {
-			return &customerrors.ErrRepository{Msg: err.Error()}
-		}
-
-		for _, s := range allSellers {
-			if s.ID() == t.(*Transaction).seller.ID() {
-				t.(*Transaction).seller = s.(*sellers.Seller)
-				break
-			}
-		}
-		i.transactions = append(i.transactions, t.(*Transaction))
-	}
-
-	if i.presenter == nil {
-		return customerrors.ErrPresenterUndefined
-	}
-
-	if !i.donUsePresenter {
-		if err := i.presenter.Present(transactionsList...); err != nil {
-			return &customerrors.ErrPresenter{Msg: err.Error()}
 		}
 	}
 
@@ -110,15 +61,15 @@ func mergeTransactions(transactions []*Transaction) ([]lib.Entity, error) {
 	returnTransactions := []lib.Entity{}
 
 	for _, t := range transactions {
-		if t.seller == nil {
+		if t.Seller == nil {
 			return []lib.Entity{}, errors.New("cannot merge transaction whitout seller")
 		}
 
-		if _, ok := transactionsMap[t.seller.String()]; ok {
-			tmpValue := transactionsMap[t.seller.String()].value.Add(*t.Value())
-			transactionsMap[t.seller.String()].value = &tmpValue
+		if _, ok := transactionsMap[t.Seller.String()]; ok {
+			tmpValue := transactionsMap[t.Seller.String()].value.Add(*t.Value())
+			transactionsMap[t.Seller.String()].value = &tmpValue
 		} else {
-			transactionsMap[t.seller.String()] = t
+			transactionsMap[t.Seller.String()] = t
 		}
 	}
 
@@ -133,11 +84,11 @@ func mergeTransactions(transactions []*Transaction) ([]lib.Entity, error) {
 func (i *Interactor) ReportFromRecordsGroupedBySeller() error {
 	// TODO: This should have some unit tests
 
-	i.donUsePresenter = true
-	err := i.ReportFromRecords()
-	if err != nil {
-		return err
-	}
+	//i.donUsePresenter = true
+	//err := i.ReportFromRecords()
+	//if err != nil {
+	//	return err
+	//}
 
 	transactions, err := mergeTransactions(i.transactions)
 	if err != nil {

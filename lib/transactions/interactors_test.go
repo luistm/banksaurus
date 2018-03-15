@@ -15,6 +15,12 @@ import (
 	"github.com/luistm/banksaurus/lib/sellers"
 )
 
+func TestUnitTransactionsNew(t *testing.T) {
+
+	t.Error("This test fails because is not finished")
+
+}
+
 func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 	testCasesRepository := []struct {
@@ -57,8 +63,8 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 		}
 	}
 
-	t1 := &Transaction{seller: sellers.New("d1", "d1")}
-	t2 := &Transaction{seller: sellers.New("d2", "d2")}
+	t1 := New(sellers.New("d1", "d1"))
+	t2 := New(sellers.New("d2", "d2"))
 	i := Interactor{}
 	tm := new(lib.RepositoryMock)
 	i.transactionsRepository = tm
@@ -82,7 +88,7 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 			name:       "Returns error if entity save method returns fail",
 			output:     &customerrors.ErrInteractor{Msg: "Test Error"},
 			withMock:   true,
-			mockInput:  t1.seller,
+			mockInput:  t1.Seller,
 			mockOutput: errors.New("Test Error"),
 		},
 	}
@@ -108,150 +114,6 @@ func TestUnitInteractorTransactionsLoadDataFromRecords(t *testing.T) {
 
 }
 
-func TestUnitReportFromRecords(t *testing.T) {
-
-	seller := sellers.New("sellerSlug", "sellerName")
-	transactions := []lib.Entity{&Transaction{seller: seller}}
-	presenterMock := new(lib.PresenterMock)
-	presenterMock.On("Present", transactions).Return(nil)
-
-	sellersMock := new(lib.RepositoryMock)
-	sellersMock.On("GetAll").Return([]lib.Entity{seller}, nil)
-
-	testCases := []struct {
-		name       string
-		output     error
-		withMock   bool
-		mockOutput []interface{}
-	}{
-		{
-			name:   "Returns error if repository is undefined",
-			output: customerrors.ErrRepositoryUndefined,
-		},
-		{
-			name:       "Returns error if repository returns error",
-			output:     &customerrors.ErrRepository{Msg: "Test Error"},
-			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},
-		},
-		{
-			name:       "Returns nil if success",
-			output:     nil,
-			withMock:   true,
-			mockOutput: []interface{}{transactions, nil},
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Log(tc.name)
-		i := NewInteractor(nil, sellersMock, presenterMock)
-		var m *lib.RepositoryMock
-		if tc.withMock {
-			m = new(lib.RepositoryMock)
-			m.On("GetAll").Return(tc.mockOutput...)
-			i.transactionsRepository = m
-		}
-
-		err := i.ReportFromRecords()
-
-		if tc.withMock {
-			m.AssertExpectations(t)
-		}
-		testkit.AssertEqual(t, tc.output, err)
-	}
-
-	trMock := new(lib.RepositoryMock)
-	trMock.On("GetAll").Return([]lib.Entity{&Transaction{seller: sellers.New("sellerSlug", "")}}, nil)
-
-	testCasesSellerWithPrettyName := []struct {
-		name       string
-		output     error
-		withMock   bool
-		mockOutput []interface{}
-	}{
-		{
-			name:   "Returns error if repository is undefined",
-			output: customerrors.ErrRepositoryUndefined,
-		},
-		{
-			name:       "Seller repository returns error",
-			output:     &customerrors.ErrRepository{Msg: "Test error"},
-			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test error")},
-		},
-		{
-			name:     "Seller from transaction has no pretty name",
-			output:   nil,
-			withMock: true,
-			mockOutput: []interface{}{
-				[]lib.Entity{sellers.New("sellerSlug", "sellerName")},
-				nil,
-			},
-		},
-	}
-
-	for _, tc := range testCasesSellerWithPrettyName {
-		t.Log(tc.name)
-		i := NewInteractor(trMock, nil, presenterMock)
-		var m *lib.RepositoryMock
-		if tc.withMock {
-			m = new(lib.RepositoryMock)
-			m.On("GetAll").Return(tc.mockOutput...)
-			i.sellersRepository = m
-		}
-
-		err := i.ReportFromRecords()
-
-		if tc.withMock {
-			m.AssertExpectations(t)
-		}
-		testkit.AssertEqual(t, tc.output, err)
-	}
-
-	testCasesPresenter := []struct {
-		name       string
-		output     error
-		withMock   bool
-		mockInput  []lib.Entity
-		mockOutput error
-	}{
-		{
-			name:   "Returns error if presenter is not defined",
-			output: customerrors.ErrPresenterUndefined,
-		},
-		{
-			name:       "Returns error if presenter returns error",
-			output:     &customerrors.ErrPresenter{Msg: "test error"},
-			withMock:   true,
-			mockInput:  transactions,
-			mockOutput: errors.New("test error"),
-		},
-		{
-			name:      "Returns nil on presenter success",
-			withMock:  true,
-			mockInput: transactions,
-		},
-	}
-
-	for _, tc := range testCasesPresenter {
-		t.Log(tc.name)
-		i := NewInteractor(trMock, sellersMock, nil)
-		var pm *lib.PresenterMock
-		if tc.withMock {
-			pm = new(lib.PresenterMock)
-			pm.On("Present", tc.mockInput).Return(tc.mockOutput)
-			i.presenter = pm
-		}
-
-		err := i.ReportFromRecords()
-
-		if tc.withMock {
-			pm.AssertExpectations(t)
-		}
-		testkit.AssertEqual(t, tc.output, err)
-	}
-}
-
 func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 
 	decimalOne, _ := decimal.NewFromString("1")
@@ -274,16 +136,16 @@ func TestUnitMergeTransactionsWithSameSeller(t *testing.T) {
 		},
 		{
 			name:   "Input slice has one item, with seller",
-			input:  []*Transaction{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
-			output: []lib.Entity{&Transaction{seller: sellers.New("SellerSlug", "SellerName")}},
+			input:  []*Transaction{New(sellers.New("SellerSlug", "SellerName"))},
+			output: []lib.Entity{New(sellers.New("SellerSlug", "SellerName"))},
 		},
 		{
 			name: "Input slice has two items, same seller",
 			input: []*Transaction{
-				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
-				&Transaction{value: &decimalOne, seller: sellers.New("SellerSlug", "SellerName")},
+				&Transaction{value: &decimalOne, Seller: sellers.New("SellerSlug", "SellerName")},
+				&Transaction{value: &decimalOne, Seller: sellers.New("SellerSlug", "SellerName")},
 			},
-			output: []lib.Entity{&Transaction{value: &decimalTwo, seller: sellers.New("SellerSlug", "SellerName")}},
+			output: []lib.Entity{&Transaction{value: &decimalTwo, Seller: sellers.New("SellerSlug", "SellerName")}},
 		},
 	}
 

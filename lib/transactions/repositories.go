@@ -10,6 +10,7 @@ import (
 
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
+	"errors"
 )
 
 // NewRepository creates a repository for transactions
@@ -25,6 +26,16 @@ type CSVHandler interface {
 type repository struct {
 	storage      CSVHandler
 	transactions []lib.Entity
+}
+
+func (r *repository) Save(t lib.Entity) error{
+	// TODO: Implement this
+	return errors.New("Not implemented")
+}
+
+func (r *repository) Get(s string)(lib.Entity, error){
+	// TODO: Implement this
+	return &Transaction{}, errors.New("Not implemented")
 }
 
 func (r *repository) GetAll() ([]lib.Entity, error) {
@@ -74,7 +85,7 @@ func (r *repository) buildTransactions(lines [][]string) error {
 		t := &Transaction{
 			id:     uint64(i),
 			value:  &value,
-			seller: sellers.New(slug, slug),
+			Seller: sellers.New(slug, slug),
 		}
 		r.transactions = append(r.transactions, t)
 	}

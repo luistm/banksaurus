@@ -82,7 +82,7 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 			expectedTransactions: []lib.Entity{
 				&Transaction{
 					value:  &value,
-					seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
+					Seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
 				},
 			},
 		},

@@ -1,11 +1,11 @@
 package commands
 
 import (
-	"github.com/luistm/banksaurus/lib/transactions"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/transactions"
 )
 
 // Load command to load input from a file

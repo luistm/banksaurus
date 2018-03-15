@@ -17,9 +17,9 @@ type Fetcher interface {
 }
 
 // New creates a record with some parsed data
-func New() *Transaction {
+func New(s *sellers.Seller) *Transaction {
 
-	t := &Transaction{}
+	t := &Transaction{Seller: s}
 
 	// for i := 0; i < len(r); i++ {
 	// 	t.value = r[i]
@@ -50,7 +50,7 @@ func New() *Transaction {
 type Transaction struct {
 	id       uint64
 	value    *decimal.Decimal
-	seller   *sellers.Seller
+	Seller   *sellers.Seller // TODO: Make private
 	isCredit bool
 	date     time.Time
 }
@@ -61,7 +61,7 @@ func (t *Transaction) ID() string {
 }
 
 func (t *Transaction) String() string {
-	return fmt.Sprintf("%s %s", t.Value(), t.seller)
+	return fmt.Sprintf("%s %s", t.Value(), t.Seller)
 }
 
 // IsDebt returns true if a transaction is a debt
