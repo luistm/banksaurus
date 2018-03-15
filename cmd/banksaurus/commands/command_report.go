@@ -3,7 +3,7 @@ package commands
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/bank/transactions"
+	"github.com/luistm/banksaurus/lib/transactions"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"

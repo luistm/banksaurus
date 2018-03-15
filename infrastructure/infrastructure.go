@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"io"
 
-	"github.com/luistm/banksaurus/bank/transactions"
+	"github.com/luistm/banksaurus/lib/transactions"
 	"github.com/luistm/banksaurus/lib"
 )
 
