@@ -3,8 +3,8 @@ package reportfromrecords
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/transactions"
 	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/transactions"
 )
 
 // New creates a new ReportFromRecords use case

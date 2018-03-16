@@ -1,14 +1,14 @@
 package reportfromrecords_test
 
 import (
+	"errors"
 	"github.com/luistm/banksaurus/bank/reportfromrecords"
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/luistm/banksaurus/lib/transactions"
 	"testing"
-	"errors"
-	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
@@ -45,13 +45,13 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepository:        &lib.RepositoryMock{},
 			transactionRepositoryReturns: []interface{}{transactionsFromRepository, nil},
 			sellersRepository:            &lib.RepositoryMock{},
-			sellersRepositoryReturns:     []interface{}{
+			sellersRepositoryReturns: []interface{}{
 				sellersFromRepository,
 				nil,
 			},
-			presenter:                    &lib.PresenterMock{},
-			presenterReturns:             nil,
-			output:                       nil,
+			presenter:        &lib.PresenterMock{},
+			presenterReturns: nil,
+			output:           nil,
 		},
 		{
 			name: "Returns error if transaction repository returns error",

@@ -3,12 +3,12 @@ package commands
 import (
 	"os"
 
+	"github.com/luistm/banksaurus/bank/reportfromrecords"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/luistm/banksaurus/lib/transactions"
-	"github.com/luistm/banksaurus/bank/reportfromrecords"
 )
 
 // Report handles reports
@@ -45,7 +45,7 @@ func (rc *Report) Execute(arguments map[string]interface{}) error {
 		err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
 	} else {
 		rfr, err := reportfromrecords.New(transactionRepository, sellersRepository, NewPresenter(os.Stdout))
-		if err != nil{
+		if err != nil {
 			return err
 		}
 		rfr.Execute()

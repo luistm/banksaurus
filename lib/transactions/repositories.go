@@ -8,9 +8,9 @@ import (
 
 	"github.com/shopspring/decimal"
 
+	"errors"
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"errors"
 )
 
 // NewRepository creates a repository for transactions
@@ -28,12 +28,12 @@ type repository struct {
 	transactions []lib.Entity
 }
 
-func (r *repository) Save(t lib.Entity) error{
+func (r *repository) Save(t lib.Entity) error {
 	// TODO: Implement this
 	return errors.New("Not implemented")
 }
 
-func (r *repository) Get(s string)(lib.Entity, error){
+func (r *repository) Get(s string) (lib.Entity, error) {
 	// TODO: Implement this
 	return &Transaction{}, errors.New("Not implemented")
 }
