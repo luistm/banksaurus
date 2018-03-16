@@ -38,11 +38,14 @@ type ReportFromRecords struct {
 // Execute ...
 func (i *ReportFromRecords) Execute() error {
 
-	ts := []lib.Entity{}
+	var ts []lib.Entity
 
 	transactionsList, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
+	}
+	if len(transactionsList) == 0 {
+		return nil
 	}
 
 	for _, t := range transactionsList {

@@ -54,6 +54,16 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			output:           nil,
 		},
 		{
+			name: "Handles cases where transactions do not exists",
+			transactionRepository:        &lib.RepositoryMock{},
+			transactionRepositoryReturns: []interface{}{[]lib.Entity{}, nil},
+			sellersRepository:            &lib.RepositoryMock{},
+			sellersRepositoryReturns:     []interface{}{sellersFromRepository, nil},
+			presenter:                    &lib.PresenterMock{},
+			presenterReturns:             nil,
+			output:                       nil,
+		},
+		{
 			name: "Returns error if transaction repository returns error",
 			transactionRepository:        &lib.RepositoryMock{},
 			transactionRepositoryReturns: []interface{}{[]lib.Entity{}, errors.New("test error")},
