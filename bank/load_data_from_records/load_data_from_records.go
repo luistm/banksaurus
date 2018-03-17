@@ -1,17 +1,18 @@
-package transactions
+package load_data_from_records
 
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/luistm/banksaurus/lib/transactions"
 )
 
-// NewInteractor creates a new transactions Interactor
-func NewInteractor(
-	transactionsRepository Fetcher,
+// New creates a new transactions Interactor
+func New(
+	transactionsRepository lib.Repository,
 	sellerRepository lib.Repository,
 	presenter lib.Presenter,
-) *Interactor {
-	return &Interactor{
+) *LoadDataFromRecords {
+	return &LoadDataFromRecords{
 		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellerRepository,
 		presenter:              presenter,
@@ -19,23 +20,23 @@ func NewInteractor(
 }
 
 // Interactor for transactions ...
-type Interactor struct {
-	transactionsRepository Fetcher
+type LoadDataFromRecords struct {
+	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
 	presenter              lib.Presenter
-	transactions           []*Transaction
+	transactions           []*transactions.Transaction
 	donUsePresenter        bool
 }
 
 // LoadDataFromRecords fetches raw data from a repository and processes it into objects
 // to be persisted in storage.
-func (i *Interactor) LoadDataFromRecords() error {
+func (i *LoadDataFromRecords) Execute() error {
 
 	if i.transactionsRepository == nil {
 		return customerrors.ErrRepositoryUndefined
 	}
 
-	transactions, err := i.transactionsRepository.GetAll()
+	ts, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
 	}
@@ -44,8 +45,8 @@ func (i *Interactor) LoadDataFromRecords() error {
 		return customerrors.ErrInteractorUndefined
 	}
 
-	for _, t := range transactions {
-		err := i.sellersRepository.Save(t.(*Transaction).Seller)
+	for _, t := range ts {
+		err := i.sellersRepository.Save(t.(*transactions.Transaction).Seller)
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}
