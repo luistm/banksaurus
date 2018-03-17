@@ -2,23 +2,27 @@ package reportfromrecords_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/luistm/banksaurus/bank/reportfromrecords"
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/luistm/banksaurus/lib/transactions"
-	"testing"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
 
 	sellerForTransaction := sellers.New("sellerSlug", "")
-	transaction := transactions.New(sellerForTransaction)
+	transaction, err := transactions.New(sellerForTransaction, "")
+	testkit.AssertIsNil(t, err)
 	transactionsFromRepository := []lib.Entity{transaction}
 
 	sellersFromRepository := []lib.Entity{sellers.New("sellerSlug", "TheSellerName")}
-	transactionsToPresenter := []lib.Entity{transactions.New(sellersFromRepository[0].(*sellers.Seller))}
+	transactionToPresenter, err := transactions.New(sellersFromRepository[0].(*sellers.Seller), "")
+	testkit.AssertIsNil(t, err)
+	transactionsToPresenter := []lib.Entity{transactionToPresenter}
 
 	testCases := []struct {
 		name                         string

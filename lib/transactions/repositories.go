@@ -9,6 +9,7 @@ import (
 	"github.com/shopspring/decimal"
 
 	"errors"
+
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
 )

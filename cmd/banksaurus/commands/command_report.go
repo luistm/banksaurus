@@ -3,7 +3,9 @@ package commands
 import (
 	"os"
 
+	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/bank/reportfromrecords"
+	"github.com/luistm/banksaurus/bank/reportfromrecordsgrouped"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
@@ -36,22 +38,19 @@ func (rc *Report) Execute(arguments map[string]interface{}) error {
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
+	presenter := NewPresenter(os.Stdout)
+
+	var rfr bank.Interactor
 	if grouped {
-		transactionsInteractor := transactions.NewInteractor(
-			transactionRepository,
-			sellersRepository,
-			NewPresenter(os.Stdout),
-		)
-		err = transactionsInteractor.ReportFromRecordsGroupedBySeller()
+		rfr, err = reportfromrecordsgrouped.New(transactionRepository, sellersRepository, presenter)
 	} else {
-		rfr, err := reportfromrecords.New(transactionRepository, sellersRepository, NewPresenter(os.Stdout))
-		if err != nil {
-			return err
-		}
-		rfr.Execute()
+		rfr, err = reportfromrecords.New(transactionRepository, sellersRepository, presenter)
+	}
+	if err != nil {
+		return err
 	}
 
-	if err != nil {
+	if err := rfr.Execute(); err != nil {
 		return nil
 	}
 
