@@ -98,7 +98,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:     "LoadDataFromRecords records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
-			expected: "",
+			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
 			name:     "Shows sellers loaded by the run report",
@@ -122,7 +122,7 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:          "Shows report from bank records file, with sellers name instead of slug",
+			name:          "Shows report from bank records file, returns error if path does not exist",
 			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
 			expected:      errGeneric.Error() + "\n",
 			errorExpected: true,
