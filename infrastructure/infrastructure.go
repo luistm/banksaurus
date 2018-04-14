@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"io"
 
-	"github.com/luistm/banksaurus/bank/transactions"
 	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/transactions"
 )
 
 // SQLStorage for handling SQL databases

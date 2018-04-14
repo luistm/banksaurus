@@ -1,11 +1,12 @@
 package commands
 
 import (
-	"github.com/luistm/banksaurus/bank/transactions"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/bank/load_data_from_records"
 )
 
 // Load command to load input from a file
@@ -36,8 +37,8 @@ func (l *Load) loadFile(inputFilePath string) error {
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
-	transactionsInteractor := transactions.NewInteractor(transactionRepository, sellersRepository, nil)
-	err = transactionsInteractor.LoadDataFromRecords()
+	transactionsInteractor := load_data_from_records.New(transactionRepository, sellersRepository, nil)
+	err = transactionsInteractor.Execute()
 	if err != nil {
 		return err
 	}

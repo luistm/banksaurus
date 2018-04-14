@@ -7,7 +7,6 @@ import (
 
 	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/banksaurus/lib/categories"
 	"github.com/luistm/banksaurus/lib/sellers"
 	"github.com/shopspring/decimal"
 )
@@ -18,41 +17,25 @@ type Fetcher interface {
 }
 
 // New creates a record with some parsed data
-func New() *Transaction {
+func New(s *sellers.Seller, value string) (*Transaction, error) {
 
-	t := &Transaction{}
+	v := value
+	if v == "" {
+		v = "0"
+	}
+	valueDecimal, err := decimal.NewFromString(v)
+	if err != nil {
+		return &Transaction{}, err
+	}
 
-	// for i := 0; i < len(r); i++ {
-	// 	t.value = r[i]
-	// 	t.Seller = r[2]
-
-	// 	// Expense
-	// 	if i == 3 && r[i] != "" {
-	// 		t.TransactionType = isDEBT
-	// 		return t
-	// 	}
-
-	// 	// Credit
-	// 	if i == 4 && r[i] != "" {
-	// 		t.TransactionType = isCREDIT
-	// 		return t
-	// 	}
-
-	// 	// Transaction Date
-	// 	if i == 0 {
-	// 		t.date = r[i]
-	// 	}
-	// }
-
-	return t
+	return &Transaction{Seller: s, isCredit: false, value: &valueDecimal}, nil
 }
 
 // Transaction is a money movement
 type Transaction struct {
 	id       uint64
 	value    *decimal.Decimal
-	seller   *sellers.Seller
-	category *categories.Category
+	Seller   *sellers.Seller
 	isCredit bool
 	date     time.Time
 }
@@ -63,7 +46,7 @@ func (t *Transaction) ID() string {
 }
 
 func (t *Transaction) String() string {
-	return fmt.Sprintf("%s %s", t.Value(), t.seller)
+	return fmt.Sprintf("%s %s", t.Value(), t.Seller)
 }
 
 // IsDebt returns true if a transaction is a debt

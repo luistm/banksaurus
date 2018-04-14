@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	docopt "github.com/docopt/docopt-go"
+	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/cmd/banksaurus/commands"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 )
@@ -51,12 +51,12 @@ func setup() error {
 	return nil
 }
 
-var errGeneric = errors.New("Error while performing operation")
+var errGeneric = errors.New("error while performing operation")
 
 func main() {
 	err := setup()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to setup application")
+		fmt.Fprint(os.Stderr, "Failed to setup application")
 		os.Exit(2)
 	}
 

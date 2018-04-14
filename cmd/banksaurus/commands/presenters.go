@@ -7,7 +7,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/luistm/banksaurus/bank/transactions"
+	"github.com/luistm/banksaurus/lib/transactions"
 
 	"github.com/luistm/banksaurus/lib"
 )
