@@ -96,14 +96,19 @@ func TestSystem(t *testing.T) {
 			expected: "",
 		},
 		{
-			name:     "LoadDataFromRecords records from file",
+			name:     "Load records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
-			name:     "Shows sellers loaded by the run report",
+			name:     "Shows sellers loaded by the load records from file",
 			command:  []string{"seller", "show"},
 			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
+		},
+		{
+			name:     "Show transactions, from the records file just loaded",
+			command:  []string{"transaction show"},
+			expected: "",
 		},
 		{
 			name:     "Adds pretty name to seller",
