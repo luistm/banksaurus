@@ -18,12 +18,13 @@ var usage = `Usage:
 	banksaurus load --input <file>
 	banksaurus seller change <id> --pretty <name>
 	banksaurus seller new <name>
-	banksaurus seller show`
+	banksaurus seller show
+	banksaurus transaction show`
 
 var options = `
 
 Options:
-	--grouped     The report is present grouped by seller
+	--grouped     The report is present grouped by seller.
 	--input       The path to the records list.
 	--name        Specifies the name.
 	-h --help     Show this screen.`
