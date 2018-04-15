@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/luistm/banksaurus)](https://goreportcard.com/report/github.com/luistm/banksaurus)
+
 # banksaurus
 
 Personal finance manager driven mainly by fun.
