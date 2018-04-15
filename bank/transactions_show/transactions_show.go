@@ -3,7 +3,7 @@ package transactions_show
 import "github.com/luistm/banksaurus/bank"
 
 // New creates a transactions show interactor
-func New() (bank.Interactor, error){
+func New() (bank.Interactor, error) {
 	return &TransactionsShow{}, nil
 }
 
@@ -11,6 +11,6 @@ func New() (bank.Interactor, error){
 type TransactionsShow struct{}
 
 // Execute ...
-func (ts *TransactionsShow) Execute() error{
+func (ts *TransactionsShow) Execute() error {
 	return nil
 }

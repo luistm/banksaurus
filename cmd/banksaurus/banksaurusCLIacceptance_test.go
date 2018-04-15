@@ -107,7 +107,7 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:     "Show transactions, from the records file just loaded",
-			command:  []string{"transaction show"},
+			command:  []string{"transaction", "show"},
 			expected: "",
 		},
 		{

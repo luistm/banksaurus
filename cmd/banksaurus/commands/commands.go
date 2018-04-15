@@ -5,7 +5,8 @@ import "errors"
 var errCommandNotFound = errors.New("command not found")
 var errCommandIsUndefined = errors.New("command is undefined")
 
-type cliRequest []string
+// CLIRequest is the interface to pass information to a command execution
+type CLIRequest []string // TODO: This interface is not very useful. Think about is!
 
 // CommandHandler executes a request from the command line
 type CommandHandler interface {
@@ -13,7 +14,7 @@ type CommandHandler interface {
 }
 
 // New creates a new command handler
-func New(cliRequest cliRequest) (CommandHandler, error) {
+func New(cliRequest CLIRequest) (CommandHandler, error) {
 
 	if len(cliRequest) == 0 {
 		return nil, errCommandIsUndefined
@@ -27,6 +28,8 @@ func New(cliRequest cliRequest) (CommandHandler, error) {
 		return &Load{}, nil
 	case "seller":
 		return &Seller{}, nil
+	case "transaction":
+		return &TransactionCommand{}, nil
 	default:
 		return nil, errCommandNotFound
 	}

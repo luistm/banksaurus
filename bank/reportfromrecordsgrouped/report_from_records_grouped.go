@@ -35,6 +35,7 @@ type ReportFromRecordsGrouped struct {
 	presenter              lib.Presenter
 }
 
+// Execute an instance of ReportFromRecordsGrouped
 func (i *ReportFromRecordsGrouped) Execute() error {
 	var ts []lib.Entity
 

@@ -17,6 +17,10 @@ tests: unit-tests system-tests coverage-unit ## Runs all tests
 unit-tests: ## Runs unit tests
 	go test ./... -run Unit
 
+integration-tests: ## Runs integration tests
+	go test ./... -run Integration
+
+
 coverage-unit: ## Runs coverage for unit tests
 	go test ./... -run Unit -cover
 
@@ -33,5 +37,6 @@ deps: ## Ensures dependencies are met
 
 style: ## Formats the project
 	golint
+	gofmt -s
 	goimports -w .
 	go fmt ./...
