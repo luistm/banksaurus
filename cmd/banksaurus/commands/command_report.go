@@ -35,6 +35,7 @@ func (rc *Report) Execute(arguments map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
+	defer SQLStorage.Close()
 
 	transactionRepository := transactions.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
