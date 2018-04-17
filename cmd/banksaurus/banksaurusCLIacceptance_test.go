@@ -108,7 +108,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:     "Show transactions, from the records file just loaded",
 			command:  []string{"transaction", "show"},
-			expected: "",
+			expected: "COMPRA CONTINENTE MAI 77.52\nCOMPRA FARMACIA SAO J 95.09",
 		},
 		{
 			name:     "Adds pretty name to seller",
