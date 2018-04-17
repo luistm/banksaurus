@@ -4,7 +4,6 @@ import (
 	"github.com/luistm/banksaurus/bank/transactions_show"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"os"
 )
 
 // TransactionCommand handles transactions
@@ -19,9 +18,6 @@ func (tc *TransactionCommand) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 	defer SQLStorage.Close()
-
-	// presenter := NewPresenter(os.Stdout)
-	NewPresenter(os.Stdout)
 
 	i, err := transactions_show.New()
 	if err != nil {

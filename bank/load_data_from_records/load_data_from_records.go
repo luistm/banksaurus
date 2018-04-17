@@ -7,11 +7,7 @@ import (
 )
 
 // New creates a new transactions Interactor
-func New(
-	transactionsRepository lib.Repository,
-	sellerRepository lib.Repository,
-	presenter lib.Presenter,
-) *LoadDataFromRecords {
+func New(transactionsRepository lib.Repository, sellerRepository lib.Repository, presenter lib.Presenter) *LoadDataFromRecords {
 	return &LoadDataFromRecords{
 		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellerRepository,
@@ -19,7 +15,7 @@ func New(
 	}
 }
 
-// Interactor for transactions ...
+// LoadDataFromRecords saves records into transactions
 type LoadDataFromRecords struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
@@ -28,8 +24,7 @@ type LoadDataFromRecords struct {
 	donUsePresenter        bool
 }
 
-// LoadDataFromRecords fetches raw data from a repository and processes it into objects
-// to be persisted in storage.
+// Execute the LoadDataFromRecords interactor
 func (i *LoadDataFromRecords) Execute() error {
 
 	if i.transactionsRepository == nil {
