@@ -1,25 +1,26 @@
-package seller
+package bank
 
 import (
 	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/seller"
 )
 
-// NewInteractor creates a new Interactor object for seller
-func NewInteractor(storage lib.SQLInfrastructer, presenter lib.Presenter) *Interactor {
-	return &Interactor{
-		repository: &Sellers{SQLStorage: storage},
+// NewInteractor creates a new SellerInteractor object for seller
+func NewInteractor(storage lib.SQLInfrastructer, presenter lib.Presenter) *SellerInteractor {
+	return &SellerInteractor{
+		repository: &seller.Sellers{SQLStorage: storage},
 		presenter:  presenter,
 	}
 }
 
-// Interactor ...
-type Interactor struct {
+// SellerInteractor ...
+type SellerInteractor struct {
 	repository lib.Repository
 	presenter  lib.Presenter
 }
 
 // Create adds a new seller and persists it
-func (i *Interactor) Create(name string) error {
+func (i *SellerInteractor) Create(name string) error {
 
 	if name == "" {
 		return lib.ErrBadInput
@@ -29,7 +30,8 @@ func (i *Interactor) Create(name string) error {
 		return lib.ErrRepositoryUndefined
 	}
 
-	s := &Seller{slug: name}
+	//s := &seller.Seller{slug: name}
+	s := seller.New(name, "")
 	if err := i.repository.Save(s); err != nil {
 		return &lib.ErrRepository{Msg: err.Error()}
 	}
@@ -38,7 +40,7 @@ func (i *Interactor) Create(name string) error {
 }
 
 // GetAll returns all the seller available in the system
-func (i *Interactor) GetAll() error {
+func (i *SellerInteractor) GetAll() error {
 
 	if i.repository == nil {
 		return lib.ErrRepositoryUndefined
@@ -61,7 +63,7 @@ func (i *Interactor) GetAll() error {
 }
 
 // Update a seller given it's slug
-func (i *Interactor) Update(slug string, name string) error {
+func (i *SellerInteractor) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
 		return lib.ErrBadInput
@@ -70,7 +72,8 @@ func (i *Interactor) Update(slug string, name string) error {
 		return lib.ErrRepositoryUndefined
 	}
 
-	s := &Seller{slug, name}
+	//s := &Seller{slug, name}
+	s := seller.New(slug, name)
 	err := i.repository.Save(s)
 	if err != nil {
 		return &lib.ErrRepository{Msg: err.Error()}

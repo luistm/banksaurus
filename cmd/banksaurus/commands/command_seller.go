@@ -5,7 +5,7 @@ import (
 
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/luistm/banksaurus/bank"
 )
 
 // Seller commands
@@ -22,7 +22,7 @@ func (s *Seller) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
-	sellersInteractor := seller.NewInteractor(SQLStorage, NewPresenter(os.Stdout))
+	sellersInteractor := bank.NewInteractor(SQLStorage, NewPresenter(os.Stdout))
 
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
 		err = sellersInteractor.Create(arguments["<name>"].(string))

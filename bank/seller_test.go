@@ -1,4 +1,4 @@
-package seller
+package bank
 
 import (
 	"errors"
@@ -8,30 +8,31 @@ import (
 	"github.com/luistm/banksaurus/elib/testkit"
 
 	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/lib/seller"
 )
 
 func TestUnitInteractorCreate(t *testing.T) {
 
-	var seller = "TestDescription"
+	var s = "TestDescription"
 
 	testCases := []struct {
 		name       string
 		input      string
 		output     error
 		withMock   bool
-		mockInput  *Seller
+		mockInput  *seller.Seller
 		mockOutput error
 	}{
 		{
 			name:       "Returns error if Sellers is not defined",
-			input:      seller,
+			input:      s,
 			output:     lib.ErrRepositoryUndefined,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
 		},
 		{
-			name:       "Returns error if seller is empty string",
+			name:       "Returns error if s is empty string",
 			input:      "",
 			output:     lib.ErrBadInput,
 			withMock:   false,
@@ -40,25 +41,25 @@ func TestUnitInteractorCreate(t *testing.T) {
 		},
 		{
 			name:       "Returns error on Sellers error",
-			input:      seller,
+			input:      s,
 			output:     &lib.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
-			mockInput:  &Seller{slug: seller},
+			mockInput:  seller.New(s, ""), // &Seller{slug: s},
 			mockOutput: errors.New("Test Error"),
 		},
 		{
-			name:       "Returns seller entity created",
-			input:      seller,
+			name:       "Returns s entity created",
+			input:      s,
 			output:     nil,
 			withMock:   true,
-			mockInput:  &Seller{slug: seller},
+			mockInput:  seller.New(s, ""), //&Seller{slug: s},
 			mockOutput: nil,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &Interactor{}
+		i := &SellerInteractor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -83,7 +84,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 		sellerName string
 		output     error
 		withMock   bool
-		mockInput  *Seller
+		mockInput  *seller.Seller
 		mockOutput error
 	}{
 		{
@@ -108,16 +109,16 @@ func TestUnitInteractorUpdate(t *testing.T) {
 			name:       "Returns error if Sellers fails",
 			slug:       "Seller Slug",
 			sellerName: "Seller Name",
-			output:     &lib.ErrRepository{Msg: "Test Error"},
+			output:     &lib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
-			mockInput:  &Seller{"Seller Slug", "Seller Name"},
-			mockOutput: errors.New("Test Error"),
+			mockInput:  seller.New("Seller Slug", "Seller Name"),
+			mockOutput: errors.New("test Error"),
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &Interactor{}
+		i := &SellerInteractor{}
 		var m *lib.RepositoryMock
 		if tc.withMock {
 			m = new(lib.RepositoryMock)
@@ -139,7 +140,10 @@ func TestUnitInteractorUpdate(t *testing.T) {
 func TestUnitInteractorGetAll(t *testing.T) {
 
 	presenterMock := new(lib.PresenterMock)
-	presenterMock.On("Present", []lib.Entity{&Seller{}, &Seller{}}).Return(nil)
+	presenterMock.On(
+		"Present",
+		[]lib.Entity{seller.New("", ""), seller.New("","")},
+	).Return(nil)
 
 	testCases := []struct {
 		name       string
@@ -163,13 +167,13 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			name:       "Returns seller entities",
 			output:     nil,
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{&Seller{}, &Seller{}}, nil},
+			mockOutput: []interface{}{[]lib.Entity{seller.New("", ""), seller.New("","")}, nil},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := Interactor{presenter: presenterMock}
+		i := SellerInteractor{presenter: presenterMock}
 		var repositoryMock *lib.RepositoryMock
 		if tc.withMock {
 			repositoryMock = new(lib.RepositoryMock)
@@ -186,7 +190,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}
 
 	repositoryMock := new(lib.RepositoryMock)
-	repositoryMock.On("GetAll").Return([]lib.Entity{&Seller{}, &Seller{}}, nil)
+	repositoryMock.On("GetAll").Return([]lib.Entity{seller.New("", ""), seller.New("","")}, nil)
 	testCasesPresenter := []struct {
 		name       string
 		output     error
@@ -202,21 +206,21 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			name:       "Handles presenter error",
 			output:     &lib.ErrPresenter{Msg: "test error"},
 			withMock:   true,
-			mockInput:  []lib.Entity{&Seller{}, &Seller{}},
+			mockInput:  []lib.Entity{seller.New("", ""), seller.New("","")},
 			mockOutput: errors.New("test error"),
 		},
 		{
 			name:       "Handles presenter success",
 			output:     nil,
 			withMock:   true,
-			mockInput:  []lib.Entity{&Seller{}, &Seller{}},
+			mockInput:  []lib.Entity{seller.New("", ""), seller.New("","")},
 			mockOutput: nil,
 		},
 	}
 
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
-		i := Interactor{repository: repositoryMock}
+		i := SellerInteractor{repository: repositoryMock}
 		var presenterMock *lib.PresenterMock
 		if tc.withMock {
 			presenterMock = new(lib.PresenterMock)
