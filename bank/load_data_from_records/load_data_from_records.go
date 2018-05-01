@@ -15,7 +15,7 @@ func New(transactionsRepository lib.Repository, sellerRepository lib.Repository,
 	}
 }
 
-// LoadDataFromRecords saves records into transaction
+// LoadDataFromRecords saves records into transactions
 type LoadDataFromRecords struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
