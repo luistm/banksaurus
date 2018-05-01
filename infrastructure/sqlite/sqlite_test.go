@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	sqlmock "github.com/DATA-DOG/go-sqlmock"
+	"github.com/DATA-DOG/go-sqlmock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -97,7 +97,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 		{
 			name:      "Returns error if Begin fails",
 			statement: "SELECT * FROM testTable",
-			output:    errors.New("Test Error"),
+			output:    errors.New("test Error"),
 		},
 		{
 			name:      "Returns no error",

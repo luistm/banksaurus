@@ -30,7 +30,6 @@ func (i *SellerInteractor) Create(name string) error {
 		return lib.ErrRepositoryUndefined
 	}
 
-	//s := &seller.Seller{slug: name}
 	s := seller.New(name, "")
 	if err := i.repository.Save(s); err != nil {
 		return &lib.ErrRepository{Msg: err.Error()}
@@ -72,7 +71,6 @@ func (i *SellerInteractor) Update(slug string, name string) error {
 		return lib.ErrRepositoryUndefined
 	}
 
-	//s := &Seller{slug, name}
 	s := seller.New(slug, name)
 	err := i.repository.Save(s)
 	if err != nil {

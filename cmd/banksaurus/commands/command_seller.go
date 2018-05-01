@@ -3,9 +3,9 @@ package commands
 import (
 	"os"
 
+	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/bank"
 )
 
 // Seller commands

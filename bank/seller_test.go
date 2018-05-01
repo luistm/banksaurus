@@ -42,10 +42,10 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error on Sellers error",
 			input:      s,
-			output:     &lib.ErrRepository{Msg: "Test Error"},
+			output:     &lib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
 			mockInput:  seller.New(s, ""), // &Seller{slug: s},
-			mockOutput: errors.New("Test Error"),
+			mockOutput: errors.New("test Error"),
 		},
 		{
 			name:       "Returns s entity created",
@@ -142,7 +142,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	presenterMock := new(lib.PresenterMock)
 	presenterMock.On(
 		"Present",
-		[]lib.Entity{seller.New("", ""), seller.New("","")},
+		[]lib.Entity{seller.New("", ""), seller.New("", "")},
 	).Return(nil)
 
 	testCases := []struct {
@@ -159,15 +159,15 @@ func TestUnitInteractorGetAll(t *testing.T) {
 		},
 		{
 			name:       "Returns error on Sellers error",
-			output:     &lib.ErrRepository{Msg: "Test Error"},
+			output:     &lib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[]lib.Entity{}, errors.New("test Error")},
 		},
 		{
 			name:       "Returns seller entities",
 			output:     nil,
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{seller.New("", ""), seller.New("","")}, nil},
+			mockOutput: []interface{}{[]lib.Entity{seller.New("", ""), seller.New("", "")}, nil},
 		},
 	}
 
@@ -190,7 +190,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}
 
 	repositoryMock := new(lib.RepositoryMock)
-	repositoryMock.On("GetAll").Return([]lib.Entity{seller.New("", ""), seller.New("","")}, nil)
+	repositoryMock.On("GetAll").Return([]lib.Entity{seller.New("", ""), seller.New("", "")}, nil)
 	testCasesPresenter := []struct {
 		name       string
 		output     error
@@ -206,14 +206,14 @@ func TestUnitInteractorGetAll(t *testing.T) {
 			name:       "Handles presenter error",
 			output:     &lib.ErrPresenter{Msg: "test error"},
 			withMock:   true,
-			mockInput:  []lib.Entity{seller.New("", ""), seller.New("","")},
+			mockInput:  []lib.Entity{seller.New("", ""), seller.New("", "")},
 			mockOutput: errors.New("test error"),
 		},
 		{
 			name:       "Handles presenter success",
 			output:     nil,
 			withMock:   true,
-			mockInput:  []lib.Entity{seller.New("", ""), seller.New("","")},
+			mockInput:  []lib.Entity{seller.New("", ""), seller.New("", "")},
 			mockOutput: nil,
 		},
 	}
