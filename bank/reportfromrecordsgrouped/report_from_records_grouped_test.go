@@ -6,7 +6,7 @@ import (
 	"github.com/luistm/banksaurus/bank/reportfromrecordsgrouped"
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
@@ -14,8 +14,8 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 
 	t.Log("Transactions grouped by seller")
 
-	s1 := sellers.New("Seller1Slug", "Seller1Name")
-	s2 := sellers.New("Seller2Slug", "Seller2Name")
+	s1 := seller.New("Seller1Slug", "Seller1Name")
+	s2 := seller.New("Seller2Slug", "Seller2Name")
 	sellersFromRepository := []lib.Entity{s1, s2}
 
 	t1, err := transaction.New(s1, "1")

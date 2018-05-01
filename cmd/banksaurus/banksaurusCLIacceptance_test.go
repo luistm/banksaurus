@@ -91,7 +91,7 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:     "No sellers should be available here",
+			name:     "No seller should be available here",
 			command:  []string{"seller", "show"},
 			expected: "",
 		},
@@ -101,7 +101,7 @@ func TestSystem(t *testing.T) {
 			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
-			name:     "Shows sellers loaded by the load records from file",
+			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
 			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
 		},
@@ -121,7 +121,7 @@ func TestSystem(t *testing.T) {
 			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
-			name:          "Shows report from bank records file, with sellers name instead of slug",
+			name:          "Shows report from bank records file, with seller name instead of slug",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,

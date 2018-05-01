@@ -3,7 +3,7 @@ package reportfromrecordsgrouped
 import "github.com/luistm/banksaurus/lib/customerrors"
 import (
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
@@ -48,16 +48,16 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 		return nil
 	}
 
-	// Populate the sellers with a name if it is available
+	// Populate the seller with a name if it is available
 	for _, t := range allTransactions {
-		allSellers, err := i.sellersRepository.GetAll() // FIXME: For each transaction, fetch only the needed sellers, not all the sellers
+		allSellers, err := i.sellersRepository.GetAll() // FIXME: For each transaction, fetch only the needed seller, not all the seller
 		if err != nil {
 			return &customerrors.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
 			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
 				// TODO: This could a method... Transaction.mergeSeller(s)
-				t.(*transaction.Transaction).Seller = s.(*sellers.Seller)
+				t.(*transaction.Transaction).Seller = s.(*seller.Seller)
 				break
 			}
 		}

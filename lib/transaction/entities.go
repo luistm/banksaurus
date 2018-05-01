@@ -7,11 +7,12 @@ import (
 
 	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/shopspring/decimal"
-	"strings"
 	"errors"
+	"strings"
+
 	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/shopspring/decimal"
 )
 
 // Fetcher to fetch transaction
@@ -20,7 +21,7 @@ type Fetcher interface {
 }
 
 // New creates a record with some parsed data
-func New(s *sellers.Seller, value string) (*Transaction, error) {
+func New(s *seller.Seller, value string) (*Transaction, error) {
 
 	v := value
 	if v == "" {
@@ -38,7 +39,7 @@ func New(s *sellers.Seller, value string) (*Transaction, error) {
 type Transaction struct {
 	id       uint64
 	value    *decimal.Decimal
-	Seller   *sellers.Seller
+	Seller   *seller.Seller
 	isCredit bool
 	date     time.Time
 }
@@ -141,13 +142,10 @@ func (r *Transactions) buildTransactions(lines [][]string) error {
 		t := &Transaction{
 			id:     uint64(i),
 			value:  &value,
-			Seller: sellers.New(slug, slug),
+			Seller: seller.New(slug, slug),
 		}
 		r.transactions = append(r.transactions, t)
 	}
 
 	return nil
 }
-
-
-

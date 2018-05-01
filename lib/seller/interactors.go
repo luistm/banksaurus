@@ -1,14 +1,14 @@
-package sellers
+package seller
 
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
-// NewInteractor creates a new Interactor object for sellers
+// NewInteractor creates a new Interactor object for seller
 func NewInteractor(storage lib.SQLInfrastructer, presenter lib.Presenter) *Interactor {
 	return &Interactor{
-		repository: &repository{SQLStorage: storage},
+		repository: &Sellers{SQLStorage: storage},
 		presenter:  presenter,
 	}
 }
@@ -38,7 +38,7 @@ func (i *Interactor) Create(name string) error {
 	return nil
 }
 
-// GetAll returns all the sellers available in the system
+// GetAll returns all the seller available in the system
 func (i *Interactor) GetAll() error {
 
 	if i.repository == nil {

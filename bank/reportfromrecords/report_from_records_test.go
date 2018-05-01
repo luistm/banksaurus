@@ -8,19 +8,19 @@ import (
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
 
-	sellerForTransaction := sellers.New("sellerSlug", "")
+	sellerForTransaction := seller.New("sellerSlug", "")
 	t1, err := transaction.New(sellerForTransaction, "")
 	testkit.AssertIsNil(t, err)
 	transactionsFromRepository := []lib.Entity{t1}
 
-	sellersFromRepository := []lib.Entity{sellers.New("sellerSlug", "TheSellerName")}
-	transactionToPresenter, err := transaction.New(sellersFromRepository[0].(*sellers.Seller), "")
+	sellersFromRepository := []lib.Entity{seller.New("sellerSlug", "TheSellerName")}
+	transactionToPresenter, err := transaction.New(sellersFromRepository[0].(*seller.Seller), "")
 	testkit.AssertIsNil(t, err)
 	transactionsToPresenter := []lib.Entity{transactionToPresenter}
 

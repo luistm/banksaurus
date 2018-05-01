@@ -1,4 +1,4 @@
-package sellers
+package seller
 
 import (
 	"errors"
@@ -24,7 +24,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 		mockOutput error
 	}{
 		{
-			name:       "Returns error if repository is not defined",
+			name:       "Returns error if Sellers is not defined",
 			input:      seller,
 			output:     customerrors.ErrRepositoryUndefined,
 			withMock:   false,
@@ -40,7 +40,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 			mockOutput: nil,
 		},
 		{
-			name:       "Returns error on repository error",
+			name:       "Returns error on Sellers error",
 			input:      seller,
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
@@ -100,13 +100,13 @@ func TestUnitInteractorUpdate(t *testing.T) {
 			output:     customerrors.ErrBadInput,
 		},
 		{
-			name:       "Returns error if repository undefined",
+			name:       "Returns error if Sellers undefined",
 			slug:       "Seller Slug",
 			sellerName: "Seller Name",
 			output:     customerrors.ErrRepositoryUndefined,
 		},
 		{
-			name:       "Returns error if repository fails",
+			name:       "Returns error if Sellers fails",
 			slug:       "Seller Slug",
 			sellerName: "Seller Name",
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
@@ -149,13 +149,13 @@ func TestUnitInteractorGetAll(t *testing.T) {
 		mockOutput []interface{}
 	}{
 		{
-			name:       "Returns error if repository is undefined",
+			name:       "Returns error if Sellers is undefined",
 			output:     customerrors.ErrRepositoryUndefined,
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
-			name:       "Returns error on repository error",
+			name:       "Returns error on Sellers error",
 			output:     &customerrors.ErrRepository{Msg: "Test Error"},
 			withMock:   true,
 			mockOutput: []interface{}{[]lib.Entity{}, errors.New("Test Error")},

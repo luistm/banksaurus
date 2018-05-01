@@ -3,7 +3,7 @@ package reportfromrecords
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
@@ -49,7 +49,7 @@ func (i *ReportFromRecords) Execute() error {
 	}
 
 	for _, t := range transactionsList {
-		// FIXME: For each transaction, fetch only the needed sellers, not all the sellers
+		// FIXME: For each transaction, fetch only the needed seller, not all the seller
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
 			return &customerrors.ErrRepository{Msg: err.Error()}
@@ -57,7 +57,7 @@ func (i *ReportFromRecords) Execute() error {
 
 		for _, s := range allSellers {
 			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
-				t.(*transaction.Transaction).Seller = s.(*sellers.Seller)
+				t.(*transaction.Transaction).Seller = s.(*seller.Seller)
 				break
 			}
 		}

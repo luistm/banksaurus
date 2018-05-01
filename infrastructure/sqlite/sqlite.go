@@ -43,7 +43,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 
 	// Create table in order to create the database file
 	sqlStmt := `
-	CREATE TABLE IF NOT EXISTS sellers
+	CREATE TABLE IF NOT EXISTS seller
 	(slug TEXT NOT NULL PRIMARY KEY, name TEXT);
 	`
 	_, err = db.Exec(sqlStmt)

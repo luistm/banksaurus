@@ -1,4 +1,4 @@
-package sellers
+package seller
 
 import (
 	"errors"
@@ -79,7 +79,7 @@ func TestUnitRepositorySave(t *testing.T) {
 	// TODO: To much logic in this test, maybe it's an opportunity to refactor
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		r := &repository{}
+		r := &Sellers{}
 		var m *lib.SQLStorageMock
 		if tc.withMock {
 			m = new(lib.SQLStorageMock)

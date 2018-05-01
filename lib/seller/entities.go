@@ -1,27 +1,52 @@
-package sellers
+package seller
 
 import (
-	"fmt"
-
-	"github.com/mattn/go-sqlite3"
-
 	"github.com/luistm/banksaurus/lib"
+	"fmt"
 	"github.com/luistm/banksaurus/lib/customerrors"
+	"github.com/mattn/go-sqlite3"
+	"errors"
 )
 
-var saveStatement = "INSERT INTO sellers(slug, name ) VALUES (?, ?)"
-var updateStatement = "UPDATE sellers SET name=? WHERE slug=?"
-
-// NewRepository creates a repository ofr sellers
-func NewRepository(db lib.SQLInfrastructer) lib.Repository {
-	return &repository{SQLStorage: db}
+// New creates a new seller instance but does not persist it
+func New(slug string, name string) *Seller {
+	return &Seller{slug: slug, name: name}
 }
 
-type repository struct {
+// Seller is the destiny of the money spent in a transaction
+type Seller struct {
+	slug string
+	name string
+}
+
+// ID returns the ID of the seller
+func (s *Seller) ID() string {
+	return s.slug
+}
+
+// String returns a string representing a Seller
+func (s *Seller) String() string {
+	if s.name == "" {
+		return s.slug
+	}
+	return s.name
+}
+
+// NewRepository creates a Sellers ofr seller
+func NewRepository(db lib.SQLInfrastructer) lib.Repository {
+	return &Sellers{SQLStorage: db}
+}
+
+var saveStatement = "INSERT INTO seller(slug, name ) VALUES (?, ?)"
+var updateStatement = "UPDATE seller SET name=? WHERE slug=?"
+
+// Sellers repository
+type Sellers struct {
 	SQLStorage lib.SQLInfrastructer
 }
 
-func (r *repository) Save(ent lib.Entity) error {
+// Save a seller
+func (r *Sellers) Save(ent lib.Entity) error {
 
 	if r.SQLStorage == nil {
 		return customerrors.ErrInfrastructureUndefined
@@ -45,8 +70,9 @@ func (r *repository) Save(ent lib.Entity) error {
 	return nil
 }
 
-func (r *repository) Get(sellerSlug string) (lib.Entity, error) {
-	// statement := "SELECT * FROM sellers WHERE slug=?"
+// Get a seller
+func (r *Sellers) Get(sellerSlug string) (lib.Entity, error) {
+	// statement := "SELECT * FROM seller WHERE slug=?"
 	// rows, err := r.SQLStorage.Query(statement, sellerSlug)
 	// if err != nil {
 	// 	return &Seller{}, fmt.Errorf("Database failure: %s", err)
@@ -63,19 +89,19 @@ func (r *repository) Get(sellerSlug string) (lib.Entity, error) {
 	// }
 
 	// return &Seller{slug: slug, name: name}, nil
-	return &Seller{}, nil
+	return &Seller{}, errors.New("get not implemented")
 }
 
-// GetAll fetches all sellers
-func (r *repository) GetAll() ([]lib.Entity, error) {
-	statement := "SELECT * FROM sellers"
+// GetAll fetches all seller
+func (r *Sellers) GetAll() ([]lib.Entity, error) {
+	statement := "SELECT * FROM seller"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []lib.Entity{}, fmt.Errorf("Database failure: %s", err)
+		return []lib.Entity{}, fmt.Errorf("database failure: %s", err)
 	}
 	defer rows.Close()
 
-	sellers := []lib.Entity{}
+	var sellers []lib.Entity
 
 	for rows.Next() {
 		var slug string
@@ -89,3 +115,4 @@ func (r *repository) GetAll() ([]lib.Entity, error) {
 
 	return sellers, nil
 }
+

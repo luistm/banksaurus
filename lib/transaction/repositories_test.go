@@ -9,7 +9,7 @@ import (
 	"github.com/luistm/banksaurus/lib"
 
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/sellers"
+	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -81,7 +81,7 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 			expectedTransactions: []lib.Entity{
 				&Transaction{
 					value:  &value,
-					Seller: sellers.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
+					Seller: seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
 				},
 			},
 		},
