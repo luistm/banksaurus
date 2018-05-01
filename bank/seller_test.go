@@ -139,7 +139,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 func TestUnitInteractorGetAll(t *testing.T) {
 
-	presenterMock := new(lib.PresenterMock)
+	presenterMock := new(PresenterMock)
 	presenterMock.On(
 		"Present",
 		[]lib.Entity{seller.New("", ""), seller.New("", "")},
@@ -221,9 +221,9 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
 		i := SellerInteractor{repository: repositoryMock}
-		var presenterMock *lib.PresenterMock
+		var presenterMock *PresenterMock
 		if tc.withMock {
-			presenterMock = new(lib.PresenterMock)
+			presenterMock = new(PresenterMock)
 			presenterMock.On("Present", tc.mockInput).Return(tc.mockOutput)
 			i.presenter = presenterMock
 		}

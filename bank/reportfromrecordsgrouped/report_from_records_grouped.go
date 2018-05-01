@@ -4,11 +4,12 @@ import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bank"
 )
 
 // New creates a new ReportFromRecords use case
 func New(
-	transactionsRepository lib.Repository, sellersRepository lib.Repository, presenter lib.Presenter,
+	transactionsRepository lib.Repository, sellersRepository lib.Repository, presenter bank.Presenter,
 ) (*ReportFromRecordsGrouped, error) {
 
 	if transactionsRepository == nil ||
@@ -31,7 +32,7 @@ func New(
 type ReportFromRecordsGrouped struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
-	presenter              lib.Presenter
+	presenter              bank.Presenter
 }
 
 // Execute an instance of ReportFromRecordsGrouped

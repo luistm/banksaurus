@@ -10,12 +10,13 @@ import (
 	"github.com/luistm/banksaurus/lib/transaction"
 
 	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/bank"
 )
 
 var errOutputPipeUndefined = errors.New("Output pipe is undefined")
 
 // NewPresenter creates a new presenter object
-func NewPresenter(output io.Writer) lib.Presenter {
+func NewPresenter(output io.Writer) bank.Presenter {
 	return &CLIPresenter{output: output}
 }
 

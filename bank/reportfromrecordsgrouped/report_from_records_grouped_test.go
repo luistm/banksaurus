@@ -8,6 +8,7 @@ import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bank"
 )
 
 func TestUnitReportFromRecodesGrouped(t *testing.T) {
@@ -34,7 +35,7 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 	transactionRepository.On("GetAll").Return(transactionsFromRepository, nil)
 	sellersRepository := &lib.RepositoryMock{}
 	sellersRepository.On("GetAll").Return(sellersFromRepository, nil)
-	presenter := &lib.PresenterMock{}
+	presenter := &bank.PresenterMock{}
 	presenter.On("Present", transactionsToPresenter).Return(nil)
 	i, err := reportfromrecordsgrouped.New(transactionRepository, sellersRepository, presenter)
 	testkit.AssertIsNil(t, err)

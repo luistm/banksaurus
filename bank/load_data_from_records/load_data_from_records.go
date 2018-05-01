@@ -3,10 +3,11 @@ package load_data_from_records
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bank"
 )
 
 // New creates a new transaction Interactor
-func New(transactionsRepository lib.Repository, sellerRepository lib.Repository, presenter lib.Presenter) *LoadDataFromRecords {
+func New(transactionsRepository lib.Repository, sellerRepository lib.Repository, presenter bank.Presenter) *LoadDataFromRecords {
 	return &LoadDataFromRecords{
 		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellerRepository,
@@ -18,7 +19,7 @@ func New(transactionsRepository lib.Repository, sellerRepository lib.Repository,
 type LoadDataFromRecords struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
-	presenter              lib.Presenter
+	presenter              bank.Presenter
 	transactions           []*transaction.Transaction
 	donUsePresenter        bool
 }

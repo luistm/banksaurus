@@ -9,6 +9,7 @@ import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bank"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
@@ -30,7 +31,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 		transactionRepositoryReturns []interface{}
 		sellersRepository            lib.Repository
 		sellersRepositoryReturns     []interface{}
-		presenter                    lib.Presenter
+		presenter                    bank.Presenter
 		presenterReturns             error
 	}{
 		{
@@ -39,7 +40,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepositoryReturns: []interface{}{transactionsFromRepository, nil},
 			sellersRepository:            &lib.RepositoryMock{},
 			sellersRepositoryReturns:     []interface{}{sellersFromRepository, nil},
-			presenter:                    &lib.PresenterMock{},
+			presenter:                    &bank.PresenterMock{},
 			presenterReturns:             nil,
 			output:                       nil,
 		},
@@ -52,7 +53,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 				sellersFromRepository,
 				nil,
 			},
-			presenter:        &lib.PresenterMock{},
+			presenter:        &bank.PresenterMock{},
 			presenterReturns: nil,
 			output:           nil,
 		},
@@ -62,7 +63,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepositoryReturns: []interface{}{[]lib.Entity{}, nil},
 			sellersRepository:            &lib.RepositoryMock{},
 			sellersRepositoryReturns:     []interface{}{sellersFromRepository, nil},
-			presenter:                    &lib.PresenterMock{},
+			presenter:                    &bank.PresenterMock{},
 			presenterReturns:             nil,
 			output:                       nil,
 		},
@@ -72,7 +73,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepositoryReturns: []interface{}{[]lib.Entity{}, errors.New("test error")},
 			sellersRepository:            &lib.RepositoryMock{},
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, nil},
-			presenter:                    &lib.PresenterMock{},
+			presenter:                    &bank.PresenterMock{},
 			presenterReturns:             nil,
 			output:                       &lib.ErrRepository{Msg: "test error"},
 		},
@@ -82,7 +83,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepositoryReturns: []interface{}{transactionsFromRepository, nil},
 			sellersRepository:            &lib.RepositoryMock{},
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, errors.New("test error")},
-			presenter:                    &lib.PresenterMock{},
+			presenter:                    &bank.PresenterMock{},
 			presenterReturns:             nil,
 			output:                       &lib.ErrRepository{Msg: "test error"},
 		},
@@ -92,7 +93,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			transactionRepositoryReturns: []interface{}{transactionsFromRepository, nil},
 			sellersRepository:            &lib.RepositoryMock{},
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, nil},
-			presenter:                    &lib.PresenterMock{},
+			presenter:                    &bank.PresenterMock{},
 			presenterReturns:             errors.New("test error"),
 			output:                       &lib.ErrPresenter{Msg: "test error"},
 		},
@@ -103,7 +104,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 
 		tc.transactionRepository.(*lib.RepositoryMock).On("GetAll").Return(tc.transactionRepositoryReturns...)
 		tc.sellersRepository.(*lib.RepositoryMock).On("GetAll").Return(tc.sellersRepositoryReturns...).Maybe()
-		tc.presenter.(*lib.PresenterMock).On("Present", transactionsToPresenter).Return(tc.presenterReturns).Maybe()
+		tc.presenter.(*bank.PresenterMock).On("Present", transactionsToPresenter).Return(tc.presenterReturns).Maybe()
 		i, err := reportfromrecords.New(tc.transactionRepository, tc.sellersRepository, tc.presenter)
 		testkit.AssertIsNil(t, err)
 
@@ -111,7 +112,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 
 		tc.transactionRepository.(*lib.RepositoryMock).AssertExpectations(t)
 		tc.sellersRepository.(*lib.RepositoryMock).AssertExpectations(t)
-		tc.presenter.(*lib.PresenterMock).AssertExpectations(t)
+		tc.presenter.(*bank.PresenterMock).AssertExpectations(t)
 
 		testkit.AssertEqual(t, tc.output, err)
 	}
