@@ -6,7 +6,7 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 )
 
-// TransactionCommand handles transactions
+// TransactionCommand handles transaction
 type TransactionCommand struct{}
 
 // Executes the command instance

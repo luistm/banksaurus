@@ -3,10 +3,10 @@ package load_data_from_records
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
-// New creates a new transactions Interactor
+// New creates a new transaction Interactor
 func New(transactionsRepository lib.Repository, sellerRepository lib.Repository, presenter lib.Presenter) *LoadDataFromRecords {
 	return &LoadDataFromRecords{
 		transactionsRepository: transactionsRepository,
@@ -15,12 +15,12 @@ func New(transactionsRepository lib.Repository, sellerRepository lib.Repository,
 	}
 }
 
-// LoadDataFromRecords saves records into transactions
+// LoadDataFromRecords saves records into transaction
 type LoadDataFromRecords struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository
 	presenter              lib.Presenter
-	transactions           []*transactions.Transaction
+	transactions           []*transaction.Transaction
 	donUsePresenter        bool
 }
 
@@ -41,7 +41,7 @@ func (i *LoadDataFromRecords) Execute() error {
 	}
 
 	for _, t := range ts {
-		err := i.sellersRepository.Save(t.(*transactions.Transaction).Seller)
+		err := i.sellersRepository.Save(t.(*transaction.Transaction).Seller)
 		if err != nil {
 			return &customerrors.ErrInteractor{Msg: err.Error()}
 		}

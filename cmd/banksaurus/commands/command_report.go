@@ -10,7 +10,7 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 // Report handles reports
@@ -37,7 +37,7 @@ func (rc *Report) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
-	transactionRepository := transactions.NewRepository(CSVStorage)
+	transactionRepository := transaction.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
 	presenter := NewPresenter(os.Stdout)
 

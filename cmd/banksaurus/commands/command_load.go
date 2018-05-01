@@ -6,7 +6,7 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 // Load command to load input from a file
@@ -36,7 +36,7 @@ func (l *Load) loadFile(inputFilePath string) error {
 	}
 	defer SQLStorage.Close()
 
-	transactionRepository := transactions.NewRepository(CSVStorage)
+	transactionRepository := transaction.NewRepository(CSVStorage)
 	sellersRepository := sellers.NewRepository(SQLStorage)
 	transactionsInteractor := load_data_from_records.New(transactionRepository, sellersRepository, nil)
 	err = transactionsInteractor.Execute()

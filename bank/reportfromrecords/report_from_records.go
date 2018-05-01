@@ -4,7 +4,7 @@ import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 // New creates a new ReportFromRecords use case
@@ -56,12 +56,12 @@ func (i *ReportFromRecords) Execute() error {
 		}
 
 		for _, s := range allSellers {
-			if s.ID() == t.(*transactions.Transaction).Seller.ID() {
-				t.(*transactions.Transaction).Seller = s.(*sellers.Seller)
+			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
+				t.(*transaction.Transaction).Seller = s.(*sellers.Seller)
 				break
 			}
 		}
-		ts = append(ts, t.(*transactions.Transaction))
+		ts = append(ts, t.(*transaction.Transaction))
 	}
 
 	if err := i.presenter.Present(ts...); err != nil {

@@ -4,7 +4,7 @@ import (
 	"io"
 
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 // SQLStorage for handling SQL databases
@@ -15,6 +15,6 @@ type SQLStorage interface {
 
 // CSVStorage for handling CSV files
 type CSVStorage interface {
-	transactions.CSVHandler
+	transaction.CSVHandler
 	io.Closer
 }

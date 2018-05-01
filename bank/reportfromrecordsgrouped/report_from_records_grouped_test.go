@@ -7,7 +7,7 @@ import (
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 func TestUnitReportFromRecodesGrouped(t *testing.T) {
@@ -18,15 +18,15 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 	s2 := sellers.New("Seller2Slug", "Seller2Name")
 	sellersFromRepository := []lib.Entity{s1, s2}
 
-	t1, err := transactions.New(s1, "1")
+	t1, err := transaction.New(s1, "1")
 	testkit.AssertIsNil(t, err)
-	t2, err := transactions.New(s1, "2")
+	t2, err := transaction.New(s1, "2")
 	testkit.AssertIsNil(t, err)
-	t3, err := transactions.New(s2, "1")
+	t3, err := transaction.New(s2, "1")
 	testkit.AssertIsNil(t, err)
 	transactionsFromRepository := []lib.Entity{t1, t2, t3}
 
-	summedTransaction, err := transactions.New(s1, "3")
+	summedTransaction, err := transaction.New(s1, "3")
 	testkit.AssertIsNil(t, err)
 	transactionsToPresenter := []lib.Entity{summedTransaction, t3}
 

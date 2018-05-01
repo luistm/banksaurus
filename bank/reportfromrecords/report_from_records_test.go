@@ -9,18 +9,18 @@ import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
 
 	sellerForTransaction := sellers.New("sellerSlug", "")
-	transaction, err := transactions.New(sellerForTransaction, "")
+	t1, err := transaction.New(sellerForTransaction, "")
 	testkit.AssertIsNil(t, err)
-	transactionsFromRepository := []lib.Entity{transaction}
+	transactionsFromRepository := []lib.Entity{t1}
 
 	sellersFromRepository := []lib.Entity{sellers.New("sellerSlug", "TheSellerName")}
-	transactionToPresenter, err := transactions.New(sellersFromRepository[0].(*sellers.Seller), "")
+	transactionToPresenter, err := transaction.New(sellersFromRepository[0].(*sellers.Seller), "")
 	testkit.AssertIsNil(t, err)
 	transactionsToPresenter := []lib.Entity{transactionToPresenter}
 
@@ -58,7 +58,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			output:           nil,
 		},
 		{
-			name: "Handles cases where transactions do not exists",
+			name: "Handles cases where transaction do not exists",
 			transactionRepository:        &lib.RepositoryMock{},
 			transactionRepositoryReturns: []interface{}{[]lib.Entity{}, nil},
 			sellersRepository:            &lib.RepositoryMock{},

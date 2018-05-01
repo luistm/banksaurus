@@ -1,8 +1,7 @@
-package transactions
+package transaction
 
 import (
 	"errors"
-	"reflect"
 	"testing"
 
 	"github.com/luistm/banksaurus/elib/testkit"
@@ -39,15 +38,15 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 		},
 		{
 			name:       "Returns error if infrastructure fails",
-			output:     []interface{}{[]lib.Entity{}, &customerrors.ErrInfrastructure{Msg: "Test Error"}},
+			output:     []interface{}{[]lib.Entity{}, &customerrors.ErrInfrastructure{Msg: "test error"}},
 			withMock:   true,
-			mockOutput: []interface{}{[][]string{}, errors.New("Test Error")},
+			mockOutput: []interface{}{[][]string{}, errors.New("test error")},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		r := &repository{}
+		r := &Transactions{}
 		var m *storageMock
 		if tc.withMock {
 			m = new(storageMock)
@@ -77,7 +76,7 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 	}{
 		{
 			name:   "Parses a single line",
-			input:  [][]string{[]string{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
+			input:  [][]string{{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
 			output: nil,
 			expectedTransactions: []lib.Entity{
 				&Transaction{
@@ -89,16 +88,11 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		r := &repository{}
+		r := &Transactions{}
 
 		err := r.buildTransactions(tc.input)
 
-		// Use testkit
-		if !reflect.DeepEqual(tc.output, err) {
-			t.Errorf("Expected '%v', got '%v'", tc.output, err)
-		}
-		if !reflect.DeepEqual(tc.expectedTransactions, r.transactions) {
-			t.Errorf("Expected '%v', got '%v'", tc.expectedTransactions, r.transactions)
-		}
+		testkit.AssertEqual(t, tc.output, err)
+		testkit.AssertEqual(t, tc.expectedTransactions, r.transactions)
 	}
 }

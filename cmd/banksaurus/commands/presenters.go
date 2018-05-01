@@ -7,7 +7,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 
 	"github.com/luistm/banksaurus/lib"
 )
@@ -36,7 +36,7 @@ func (c *CLIPresenter) Present(entities ...lib.Entity) error {
 
 	for _, entity := range entities {
 		switch entity.(type) {
-		case *transactions.Transaction:
+		case *transaction.Transaction:
 			stringArray := strings.Fields(entity.String())
 			value := stringArray[0]
 			seller := strings.Join(stringArray[1:], " ")

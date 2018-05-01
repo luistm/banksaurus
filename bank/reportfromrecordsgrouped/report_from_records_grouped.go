@@ -4,7 +4,7 @@ import "github.com/luistm/banksaurus/lib/customerrors"
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/sellers"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/lib/transaction"
 )
 
 // New creates a new ReportFromRecords use case
@@ -39,7 +39,7 @@ type ReportFromRecordsGrouped struct {
 func (i *ReportFromRecordsGrouped) Execute() error {
 	var ts []lib.Entity
 
-	// Get all transactions. If there are no transactions, return
+	// Get all transaction. If there are no transaction, return
 	allTransactions, err := i.transactionsRepository.GetAll()
 	if err != nil {
 		return &customerrors.ErrRepository{Msg: err.Error()}
@@ -55,13 +55,13 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 			return &customerrors.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
-			if s.ID() == t.(*transactions.Transaction).Seller.ID() {
+			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
 				// TODO: This could a method... Transaction.mergeSeller(s)
-				t.(*transactions.Transaction).Seller = s.(*sellers.Seller)
+				t.(*transaction.Transaction).Seller = s.(*sellers.Seller)
 				break
 			}
 		}
-		ts = append(ts, t.(*transactions.Transaction))
+		ts = append(ts, t.(*transaction.Transaction))
 	}
 
 	transactionsMap := map[string]lib.Entity{}
@@ -69,16 +69,16 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 
 	for _, t := range ts {
 		// FIXME: I'm seeing a lot of type assertion and i don't like it. Code smell??
-		if _, ok := transactionsMap[t.(*transactions.Transaction).Seller.String()]; ok {
-			tmpValue := transactionsMap[t.(*transactions.Transaction).Seller.String()].(*transactions.Transaction).Value().Add(*t.(*transactions.Transaction).Value())
-			s := transactionsMap[t.(*transactions.Transaction).Seller.String()].(*transactions.Transaction).Seller
-			newTransaction, err := transactions.New(s, tmpValue.String())
+		if _, ok := transactionsMap[t.(*transaction.Transaction).Seller.String()]; ok {
+			tmpValue := transactionsMap[t.(*transaction.Transaction).Seller.String()].(*transaction.Transaction).Value().Add(*t.(*transaction.Transaction).Value())
+			s := transactionsMap[t.(*transaction.Transaction).Seller.String()].(*transaction.Transaction).Seller
+			newTransaction, err := transaction.New(s, tmpValue.String())
 			if err != nil {
 				return err
 			}
-			transactionsMap[t.(*transactions.Transaction).Seller.String()] = newTransaction
+			transactionsMap[t.(*transaction.Transaction).Seller.String()] = newTransaction
 		} else {
-			transactionsMap[t.(*transactions.Transaction).Seller.String()] = t
+			transactionsMap[t.(*transaction.Transaction).Seller.String()] = t
 		}
 	}
 
