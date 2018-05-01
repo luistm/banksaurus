@@ -8,7 +8,6 @@ import (
 
 	"github.com/luistm/banksaurus/lib"
 
-	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/stretchr/testify/mock"
 )
@@ -32,13 +31,13 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if storage is not defined",
-			output:     []interface{}{[]lib.Entity{}, customerrors.ErrInfrastructureUndefined},
+			output:     []interface{}{[]lib.Entity{}, lib.ErrInfrastructureUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error if infrastructure fails",
-			output:     []interface{}{[]lib.Entity{}, &customerrors.ErrInfrastructure{Msg: "test error"}},
+			output:     []interface{}{[]lib.Entity{}, &lib.ErrInfrastructure{Msg: "test error"}},
 			withMock:   true,
 			mockOutput: []interface{}{[][]string{}, errors.New("test error")},
 		},

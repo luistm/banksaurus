@@ -1,11 +1,11 @@
 package seller
 
 import (
-	"github.com/luistm/banksaurus/lib"
-	"fmt"
-	"github.com/luistm/banksaurus/lib/customerrors"
-	"github.com/mattn/go-sqlite3"
 	"errors"
+	"fmt"
+
+	"github.com/luistm/banksaurus/lib"
+	"github.com/mattn/go-sqlite3"
 )
 
 // New creates a new seller instance but does not persist it
@@ -49,7 +49,7 @@ type Sellers struct {
 func (r *Sellers) Save(ent lib.Entity) error {
 
 	if r.SQLStorage == nil {
-		return customerrors.ErrInfrastructureUndefined
+		return lib.ErrInfrastructureUndefined
 	}
 
 	s := ent.(*Seller)
@@ -59,11 +59,11 @@ func (r *Sellers) Save(ent lib.Entity) error {
 		case sqlite3.Error:
 			if err.(sqlite3.Error).Code == sqlite3.ErrConstraint {
 				if err = r.SQLStorage.Execute(updateStatement, s.name, s.slug); err != nil {
-					return &customerrors.ErrInfrastructure{Msg: err.Error()}
+					return &lib.ErrInfrastructure{Msg: err.Error()}
 				}
 			}
 		default:
-			return &customerrors.ErrInfrastructure{Msg: err.Error()}
+			return &lib.ErrInfrastructure{Msg: err.Error()}
 		}
 	}
 
@@ -115,4 +115,3 @@ func (r *Sellers) GetAll() ([]lib.Entity, error) {
 
 	return sellers, nil
 }
-

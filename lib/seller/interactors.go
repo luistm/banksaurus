@@ -2,7 +2,6 @@ package seller
 
 import (
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/customerrors"
 )
 
 // NewInteractor creates a new Interactor object for seller
@@ -23,16 +22,16 @@ type Interactor struct {
 func (i *Interactor) Create(name string) error {
 
 	if name == "" {
-		return customerrors.ErrBadInput
+		return lib.ErrBadInput
 	}
 
 	if i.repository == nil {
-		return customerrors.ErrRepositoryUndefined
+		return lib.ErrRepositoryUndefined
 	}
 
 	s := &Seller{slug: name}
 	if err := i.repository.Save(s); err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil
@@ -42,20 +41,20 @@ func (i *Interactor) Create(name string) error {
 func (i *Interactor) GetAll() error {
 
 	if i.repository == nil {
-		return customerrors.ErrRepositoryUndefined
+		return lib.ErrRepositoryUndefined
 	}
 
 	sellers, err := i.repository.GetAll()
 	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	if i.presenter == nil {
-		return customerrors.ErrPresenterUndefined
+		return lib.ErrPresenterUndefined
 	}
 
 	if err := i.presenter.Present(sellers...); err != nil {
-		return &customerrors.ErrPresenter{Msg: err.Error()}
+		return &lib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil
@@ -65,16 +64,16 @@ func (i *Interactor) GetAll() error {
 func (i *Interactor) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
-		return customerrors.ErrBadInput
+		return lib.ErrBadInput
 	}
 	if i.repository == nil {
-		return customerrors.ErrRepositoryUndefined
+		return lib.ErrRepositoryUndefined
 	}
 
 	s := &Seller{slug, name}
 	err := i.repository.Save(s)
 	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil

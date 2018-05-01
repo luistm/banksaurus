@@ -2,7 +2,6 @@ package load_data_from_records
 
 import (
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
@@ -28,22 +27,22 @@ type LoadDataFromRecords struct {
 func (i *LoadDataFromRecords) Execute() error {
 
 	if i.transactionsRepository == nil {
-		return customerrors.ErrRepositoryUndefined
+		return lib.ErrRepositoryUndefined
 	}
 
 	ts, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 
 	if i.sellersRepository == nil {
-		return customerrors.ErrInteractorUndefined
+		return lib.ErrInteractorUndefined
 	}
 
 	for _, t := range ts {
 		err := i.sellersRepository.Save(t.(*transaction.Transaction).Seller)
 		if err != nil {
-			return &customerrors.ErrInteractor{Msg: err.Error()}
+			return &lib.ErrInteractor{Msg: err.Error()}
 		}
 	}
 

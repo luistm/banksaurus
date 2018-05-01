@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/customerrors"
 	sqlite3 "github.com/mattn/go-sqlite3"
 )
 
@@ -27,7 +26,7 @@ func TestUnitRepositorySave(t *testing.T) {
 		{
 			name:       "Returns error if infrastructure is not defined",
 			input:      &Seller{},
-			output:     customerrors.ErrInfrastructureUndefined,
+			output:     lib.ErrInfrastructureUndefined,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -35,7 +34,7 @@ func TestUnitRepositorySave(t *testing.T) {
 		{
 			name:     "Returns error if infrastructure returns error",
 			input:    seller,
-			output:   &customerrors.ErrInfrastructure{Msg: "Test error"},
+			output:   &lib.ErrInfrastructure{Msg: "Test error"},
 			withMock: true,
 			mockInput: []interface{}{
 				saveStatement,

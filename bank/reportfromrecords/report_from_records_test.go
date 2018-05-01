@@ -7,7 +7,6 @@ import (
 	"github.com/luistm/banksaurus/bank/reportfromrecords"
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
@@ -75,7 +74,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, nil},
 			presenter:                    &lib.PresenterMock{},
 			presenterReturns:             nil,
-			output:                       &customerrors.ErrRepository{Msg: "test error"},
+			output:                       &lib.ErrRepository{Msg: "test error"},
 		},
 		{
 			name: "Returns error if seller repository returns error",
@@ -85,7 +84,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, errors.New("test error")},
 			presenter:                    &lib.PresenterMock{},
 			presenterReturns:             nil,
-			output:                       &customerrors.ErrRepository{Msg: "test error"},
+			output:                       &lib.ErrRepository{Msg: "test error"},
 		},
 		{
 			name: "Returns error if presenter returns error",
@@ -95,7 +94,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 			sellersRepositoryReturns:     []interface{}{[]lib.Entity{}, nil},
 			presenter:                    &lib.PresenterMock{},
 			presenterReturns:             errors.New("test error"),
-			output:                       &customerrors.ErrPresenter{Msg: "test error"},
+			output:                       &lib.ErrPresenter{Msg: "test error"},
 		},
 	}
 

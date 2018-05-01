@@ -37,6 +37,5 @@ deps: ## Ensures dependencies are met
 
 style: ## Formats the project
 	golint
-	gofmt -s
 	goimports -w .
 	go fmt ./...

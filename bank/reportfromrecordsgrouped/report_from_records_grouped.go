@@ -1,6 +1,5 @@
 package reportfromrecordsgrouped
 
-import "github.com/luistm/banksaurus/lib/customerrors"
 import (
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
@@ -14,10 +13,10 @@ func New(
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecordsGrouped{}, customerrors.ErrRepositoryUndefined
+		return &ReportFromRecordsGrouped{}, lib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecordsGrouped{}, customerrors.ErrPresenterUndefined
+		return &ReportFromRecordsGrouped{}, lib.ErrPresenterUndefined
 	}
 
 	return &ReportFromRecordsGrouped{
@@ -42,7 +41,7 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 	// Get all transaction. If there are no transaction, return
 	allTransactions, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 	if len(allTransactions) == 0 {
 		return nil
@@ -52,7 +51,7 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 	for _, t := range allTransactions {
 		allSellers, err := i.sellersRepository.GetAll() // FIXME: For each transaction, fetch only the needed seller, not all the seller
 		if err != nil {
-			return &customerrors.ErrRepository{Msg: err.Error()}
+			return &lib.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
 			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
@@ -86,7 +85,7 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 		returnTransactions = append(returnTransactions, v)
 	}
 	if err := i.presenter.Present(returnTransactions...); err != nil {
-		return &customerrors.ErrPresenter{Msg: err.Error()}
+		return &lib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil

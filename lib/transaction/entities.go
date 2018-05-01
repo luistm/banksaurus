@@ -10,7 +10,6 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/shopspring/decimal"
 )
@@ -100,19 +99,19 @@ func (r *Transactions) GetAll() ([]lib.Entity, error) {
 	// TODO: Should return an iterator
 
 	if r.storage == nil {
-		return []lib.Entity{}, customerrors.ErrInfrastructureUndefined
+		return []lib.Entity{}, lib.ErrInfrastructureUndefined
 	}
 
 	lines, err := r.storage.Lines()
 	if err != nil {
-		return []lib.Entity{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Entity{}, &lib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	// TODO: Validate if Lines() output is the expected one
 
 	err = r.buildTransactions(lines[5 : len(lines)-2])
 	if err != nil {
-		return []lib.Entity{}, &customerrors.ErrInfrastructure{Msg: err.Error()}
+		return []lib.Entity{}, &lib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return r.transactions, nil

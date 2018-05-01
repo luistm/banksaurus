@@ -2,7 +2,6 @@ package reportfromrecords
 
 import (
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/customerrors"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 )
@@ -14,10 +13,10 @@ func New(
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecords{}, customerrors.ErrRepositoryUndefined
+		return &ReportFromRecords{}, lib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecords{}, customerrors.ErrPresenterUndefined
+		return &ReportFromRecords{}, lib.ErrPresenterUndefined
 	}
 
 	return &ReportFromRecords{
@@ -42,7 +41,7 @@ func (i *ReportFromRecords) Execute() error {
 
 	transactionsList, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return &customerrors.ErrRepository{Msg: err.Error()}
+		return &lib.ErrRepository{Msg: err.Error()}
 	}
 	if len(transactionsList) == 0 {
 		return nil
@@ -52,7 +51,7 @@ func (i *ReportFromRecords) Execute() error {
 		// FIXME: For each transaction, fetch only the needed seller, not all the seller
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
-			return &customerrors.ErrRepository{Msg: err.Error()}
+			return &lib.ErrRepository{Msg: err.Error()}
 		}
 
 		for _, s := range allSellers {
@@ -65,7 +64,7 @@ func (i *ReportFromRecords) Execute() error {
 	}
 
 	if err := i.presenter.Present(ts...); err != nil {
-		return &customerrors.ErrPresenter{Msg: err.Error()}
+		return &lib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil
