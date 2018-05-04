@@ -7,9 +7,11 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// New creates a new ReportFromRecords use case
+// New creates a service instance
 func New(
-	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
+	transactionsRepository banklib.Repository,
+	sellersRepository banklib.Repository,
+	presenter bankservices.Presenter,
 ) (*Service, error) {
 
 	if transactionsRepository == nil ||
@@ -21,26 +23,26 @@ func New(
 	}
 
 	return &Service{
-		transactionsRepository: transactionsRepository,
-		sellersRepository:      sellersRepository,
-		presenter:              presenter,
+		transactions: transactionsRepository,
+		sellers:      sellersRepository,
+		presenter:    presenter,
 	}, nil
 }
 
-// Service makes a reportgrouped from an input file.
-// If a Command has a pretty name, that name will be used.
+// Service produces a report from a collection of transactions
+// grouped by seller name.
 type Service struct {
-	transactionsRepository banklib.Repository
-	sellersRepository      banklib.Repository
-	presenter              bankservices.Presenter
+	transactions banklib.Repository
+	sellers      banklib.Repository
+	presenter    bankservices.Presenter
 }
 
-// Execute an instance of Service
+// Execute the service
 func (i *Service) Execute() error {
 	var ts []banklib.Entity
 
 	// Get all transaction. If there are no transaction, return
-	allTransactions, err := i.transactionsRepository.GetAll()
+	allTransactions, err := i.transactions.GetAll()
 	if err != nil {
 		return &banklib.ErrRepository{Msg: err.Error()}
 	}
@@ -50,7 +52,7 @@ func (i *Service) Execute() error {
 
 	// Populate the seller with a name if it is available
 	for _, t := range allTransactions {
-		allSellers, err := i.sellersRepository.GetAll() // FIXME: For each transaction, fetch only the needed seller, not all the seller
+		allSellers, err := i.sellers.GetAll() // FIXME: For each transaction, fetch only the needed seller, not all the seller
 		if err != nil {
 			return &banklib.ErrRepository{Msg: err.Error()}
 		}

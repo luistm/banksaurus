@@ -7,13 +7,14 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// New creates a new Service use case
+// New creates a new service instance
 func New(
-	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
+	transactionsRepository banklib.Repository,
+	sellersRepository banklib.Repository,
+	presenter bankservices.Presenter,
 ) (*Service, error) {
 
-	if transactionsRepository == nil ||
-		sellersRepository == nil {
+	if transactionsRepository == nil || sellersRepository == nil {
 		return &Service{}, banklib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
@@ -21,26 +22,25 @@ func New(
 	}
 
 	return &Service{
-		transactionsRepository: transactionsRepository,
-		sellersRepository:      sellersRepository,
-		presenter:              presenter,
+		transactions: transactionsRepository,
+		sellers:      sellersRepository,
+		presenter:    presenter,
 	}, nil
 }
 
-// Service makes a reportgrouped from an input file.
-// If a Command has a pretty name, that name will be used.
+// Service produces a report from an collection of transactions.
 type Service struct {
-	transactionsRepository banklib.Repository
-	sellersRepository      banklib.Repository
-	presenter              bankservices.Presenter
+	transactions banklib.Repository
+	sellers      banklib.Repository
+	presenter    bankservices.Presenter
 }
 
-// Execute ...
+// Execute the service
 func (i *Service) Execute() error {
 
 	var ts []banklib.Entity
 
-	transactionsList, err := i.transactionsRepository.GetAll()
+	transactionsList, err := i.transactions.GetAll()
 	if err != nil {
 		return &banklib.ErrRepository{Msg: err.Error()}
 	}
@@ -50,7 +50,7 @@ func (i *Service) Execute() error {
 
 	for _, t := range transactionsList {
 		// FIXME: For each transaction, fetch only the needed seller, not all the seller
-		allSellers, err := i.sellersRepository.GetAll()
+		allSellers, err := i.sellers.GetAll()
 		if err != nil {
 			return &banklib.ErrRepository{Msg: err.Error()}
 		}

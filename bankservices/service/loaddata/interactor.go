@@ -5,7 +5,7 @@ import (
 	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
-// New creates a new  Interactor to loaddata data from records
+// New creates a new service instance
 func New(transactionsRepository banklib.Repository, sellerRepository banklib.Repository) *Service {
 	return &Service{
 		transactions: transactionsRepository,
@@ -13,13 +13,14 @@ func New(transactionsRepository banklib.Repository, sellerRepository banklib.Rep
 	}
 }
 
-// Service saves records into transactions
+// Service copies data available in a collection of transactions to
+// the entities which belong to it.
 type Service struct {
 	transactions banklib.Repository
 	sellers      banklib.Repository
 }
 
-// Execute the Service interactor
+// Execute the service
 func (i *Service) Execute() error {
 
 	if i.transactions == nil {

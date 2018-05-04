@@ -22,7 +22,7 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
-	sellersInteractor := seller.NewInteractor(SQLStorage, NewPresenter(os.Stdout))
+	sellersInteractor := seller.New(SQLStorage, NewPresenter(os.Stdout))
 
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
 		err = sellersInteractor.Create(arguments["<name>"].(string))

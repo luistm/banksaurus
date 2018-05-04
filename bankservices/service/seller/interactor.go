@@ -6,8 +6,8 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// NewInteractor creates a new Service object for seller
-func NewInteractor(storage banklib.SQLInfrastructer, presenter bankservices.Presenter) *Service {
+// New creates a service instance
+func New(storage banklib.SQLInfrastructer, presenter bankservices.Presenter) *Service {
 	return &Service{
 		repository: &seller.Sellers{SQLStorage: storage},
 		presenter:  presenter,
