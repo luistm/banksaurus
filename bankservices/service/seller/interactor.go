@@ -6,22 +6,22 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// NewInteractor creates a new SellerInteractor object for seller
-func NewInteractor(storage banklib.SQLInfrastructer, presenter bankservices.Presenter) *SellerInteractor {
-	return &SellerInteractor{
+// NewInteractor creates a new Service object for seller
+func NewInteractor(storage banklib.SQLInfrastructer, presenter bankservices.Presenter) *Service {
+	return &Service{
 		repository: &seller.Sellers{SQLStorage: storage},
 		presenter:  presenter,
 	}
 }
 
-// SellerInteractor ...
-type SellerInteractor struct {
+// Service ...
+type Service struct {
 	repository banklib.Repository
 	presenter  bankservices.Presenter
 }
 
 // Create adds a new seller and persists it
-func (i *SellerInteractor) Create(name string) error {
+func (i *Service) Create(name string) error {
 
 	if name == "" {
 		return banklib.ErrBadInput
@@ -40,7 +40,7 @@ func (i *SellerInteractor) Create(name string) error {
 }
 
 // GetAll returns all the seller available in the system
-func (i *SellerInteractor) GetAll() error {
+func (i *Service) GetAll() error {
 
 	if i.repository == nil {
 		return banklib.ErrRepositoryUndefined
@@ -63,7 +63,7 @@ func (i *SellerInteractor) GetAll() error {
 }
 
 // Update a seller given it's slug
-func (i *SellerInteractor) Update(slug string, name string) error {
+func (i *Service) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
 		return banklib.ErrBadInput

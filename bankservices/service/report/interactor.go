@@ -7,36 +7,36 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// New creates a new ReportFromRecords use case
+// New creates a new Service use case
 func New(
 	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
-) (*ReportFromRecords, error) {
+) (*Service, error) {
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecords{}, banklib.ErrRepositoryUndefined
+		return &Service{}, banklib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecords{}, banklib.ErrPresenterUndefined
+		return &Service{}, banklib.ErrPresenterUndefined
 	}
 
-	return &ReportFromRecords{
+	return &Service{
 		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellersRepository,
 		presenter:              presenter,
 	}, nil
 }
 
-// ReportFromRecords makes a reportgrouped from an input file.
+// Service makes a reportgrouped from an input file.
 // If a Command has a pretty name, that name will be used.
-type ReportFromRecords struct {
+type Service struct {
 	transactionsRepository banklib.Repository
 	sellersRepository      banklib.Repository
 	presenter              bankservices.Presenter
 }
 
 // Execute ...
-func (i *ReportFromRecords) Execute() error {
+func (i *Service) Execute() error {
 
 	var ts []banklib.Entity
 

@@ -5,8 +5,8 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// Interactor is the interface each use case must implement
-type Interactor interface {
+// Servicer is the interface each use case must implement
+type Servicer interface {
 	Execute() error
 }
 

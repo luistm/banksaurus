@@ -41,7 +41,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	sellersRepository := seller.NewRepository(SQLStorage)
 	presenter := NewPresenter(os.Stdout)
 
-	var rfr bankservices.Interactor
+	var rfr bankservices.Servicer
 	if grouped {
 		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
 	} else {

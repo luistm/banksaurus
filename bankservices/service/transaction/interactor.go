@@ -3,14 +3,14 @@ package transaction
 import "github.com/luistm/banksaurus/bankservices"
 
 // New creates a transaction show interactor
-func New() (bankservices.Interactor, error) {
-	return &TransactionsShow{}, nil
+func New() (bankservices.Servicer, error) {
+	return &Service{}, nil
 }
 
-// TransactionsShow shows transaction
-type TransactionsShow struct{}
+// Service shows transaction
+type Service struct{}
 
 // Execute ...
-func (ts *TransactionsShow) Execute() error {
+func (ts *Service) Execute() error {
 	return nil
 }

@@ -10,33 +10,33 @@ import (
 // New creates a new ReportFromRecords use case
 func New(
 	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
-) (*ReportFromRecordsGrouped, error) {
+) (*Service, error) {
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecordsGrouped{}, banklib.ErrRepositoryUndefined
+		return &Service{}, banklib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecordsGrouped{}, banklib.ErrPresenterUndefined
+		return &Service{}, banklib.ErrPresenterUndefined
 	}
 
-	return &ReportFromRecordsGrouped{
+	return &Service{
 		transactionsRepository: transactionsRepository,
 		sellersRepository:      sellersRepository,
 		presenter:              presenter,
 	}, nil
 }
 
-// ReportFromRecordsGrouped makes a reportgrouped from an input file.
+// Service makes a reportgrouped from an input file.
 // If a Command has a pretty name, that name will be used.
-type ReportFromRecordsGrouped struct {
+type Service struct {
 	transactionsRepository banklib.Repository
 	sellersRepository      banklib.Repository
 	presenter              bankservices.Presenter
 }
 
-// Execute an instance of ReportFromRecordsGrouped
-func (i *ReportFromRecordsGrouped) Execute() error {
+// Execute an instance of Service
+func (i *Service) Execute() error {
 	var ts []banklib.Entity
 
 	// Get all transaction. If there are no transaction, return

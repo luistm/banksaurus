@@ -60,7 +60,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &SellerInteractor{}
+		i := &Service{}
 		var m *banklib.RepositoryMock
 		if tc.withMock {
 			m = new(banklib.RepositoryMock)
@@ -119,7 +119,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := &SellerInteractor{}
+		i := &Service{}
 		var m *banklib.RepositoryMock
 		if tc.withMock {
 			m = new(banklib.RepositoryMock)
@@ -174,7 +174,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		i := SellerInteractor{presenter: presenterMock}
+		i := Service{presenter: presenterMock}
 		var repositoryMock *banklib.RepositoryMock
 		if tc.withMock {
 			repositoryMock = new(banklib.RepositoryMock)
@@ -221,7 +221,7 @@ func TestUnitInteractorGetAll(t *testing.T) {
 
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
-		i := SellerInteractor{repository: repositoryMock}
+		i := Service{repository: repositoryMock}
 		var presenterMock *bankservices.PresenterMock
 		if tc.withMock {
 			presenterMock = new(bankservices.PresenterMock)

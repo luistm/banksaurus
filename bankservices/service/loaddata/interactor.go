@@ -6,21 +6,21 @@ import (
 )
 
 // New creates a new  Interactor to loaddata data from records
-func New(transactionsRepository banklib.Repository, sellerRepository banklib.Repository) *LoadDataFromRecords {
-	return &LoadDataFromRecords{
+func New(transactionsRepository banklib.Repository, sellerRepository banklib.Repository) *Service {
+	return &Service{
 		transactions: transactionsRepository,
 		sellers:      sellerRepository,
 	}
 }
 
-// LoadDataFromRecords saves records into transactions
-type LoadDataFromRecords struct {
+// Service saves records into transactions
+type Service struct {
 	transactions banklib.Repository
 	sellers      banklib.Repository
 }
 
-// Execute the LoadDataFromRecords interactor
-func (i *LoadDataFromRecords) Execute() error {
+// Execute the Service interactor
+func (i *Service) Execute() error {
 
 	if i.transactions == nil {
 		return banklib.ErrRepositoryUndefined
