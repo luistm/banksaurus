@@ -1,8 +1,9 @@
-package bank
+package transaction
 
+import "github.com/luistm/banksaurus/bank"
 
 // New creates a transaction show interactor
-func New() (Interactor, error) {
+func New() (bank.Interactor, error) {
 	return &TransactionsShow{}, nil
 }
 

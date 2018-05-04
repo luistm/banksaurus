@@ -1,4 +1,4 @@
-package bank
+package seller
 
 import (
 	"errors"
@@ -7,6 +7,7 @@ import (
 
 	"github.com/luistm/banksaurus/elib/testkit"
 
+	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 )
@@ -139,7 +140,7 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 func TestUnitInteractorGetAll(t *testing.T) {
 
-	presenterMock := new(PresenterMock)
+	presenterMock := new(bank.PresenterMock)
 	presenterMock.On(
 		"Present",
 		[]lib.Entity{seller.New("", ""), seller.New("", "")},
@@ -221,9 +222,9 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
 		i := SellerInteractor{repository: repositoryMock}
-		var presenterMock *PresenterMock
+		var presenterMock *bank.PresenterMock
 		if tc.withMock {
-			presenterMock = new(PresenterMock)
+			presenterMock = new(bank.PresenterMock)
 			presenterMock.On("Present", tc.mockInput).Return(tc.mockOutput)
 			i.presenter = presenterMock
 		}

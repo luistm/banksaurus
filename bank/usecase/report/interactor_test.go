@@ -1,15 +1,15 @@
-package reportfromrecords_test
+package report
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/luistm/banksaurus/bank/reportfromrecords"
+	"github.com/luistm/banksaurus/bank"
+
 	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
-	"github.com/luistm/banksaurus/bank"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {
@@ -105,7 +105,7 @@ func TestUnitReportFromRecordsExecute(t *testing.T) {
 		tc.transactionRepository.(*lib.RepositoryMock).On("GetAll").Return(tc.transactionRepositoryReturns...)
 		tc.sellersRepository.(*lib.RepositoryMock).On("GetAll").Return(tc.sellersRepositoryReturns...).Maybe()
 		tc.presenter.(*bank.PresenterMock).On("Present", transactionsToPresenter).Return(tc.presenterReturns).Maybe()
-		i, err := reportfromrecords.New(tc.transactionRepository, tc.sellersRepository, tc.presenter)
+		i, err := New(tc.transactionRepository, tc.sellersRepository, tc.presenter)
 		testkit.AssertIsNil(t, err)
 
 		err = i.Execute()

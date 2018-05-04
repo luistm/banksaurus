@@ -1,9 +1,9 @@
 package commands
 
 import (
+	"github.com/luistm/banksaurus/bank/usecase/transaction"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/bank"
 )
 
 // TransactionCommand handles transaction
@@ -19,7 +19,7 @@ func (tc *TransactionCommand) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
-	i, err := bank.New()
+	i, err := transaction.New()
 	if err != nil {
 		return err
 	}

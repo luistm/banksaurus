@@ -1,10 +1,10 @@
-package reportfromrecordsgrouped
+package reportgrouped
 
 import (
+	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
-	"github.com/luistm/banksaurus/bank"
 )
 
 // New creates a new ReportFromRecords use case
@@ -27,7 +27,7 @@ func New(
 	}, nil
 }
 
-// ReportFromRecordsGrouped makes a report from an input file.
+// ReportFromRecordsGrouped makes a reportgrouped from an input file.
 // If a Seller has a pretty name, that name will be used.
 type ReportFromRecordsGrouped struct {
 	transactionsRepository lib.Repository

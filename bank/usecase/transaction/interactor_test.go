@@ -1,11 +1,11 @@
-package bank_test
+package transaction_test
 
 import (
 	"testing"
-	"github.com/luistm/banksaurus/bank"
+
+	"github.com/luistm/banksaurus/bank/usecase/transaction"
 	"github.com/luistm/banksaurus/elib/testkit"
 )
-
 
 //type infrastructureStub struct{
 //	t *testing.T
@@ -23,12 +23,11 @@ import (
 //
 //}
 
-
 func TestIntegrationTransactionsShow(t *testing.T) {
 
 	//is := infrastructureStub{t}
 
-	transactionShowUseCase, err := bank.New()
+	transactionShowUseCase, err := transaction.New()
 	testkit.AssertIsNil(t, err)
 
 	err = transactionShowUseCase.Execute()

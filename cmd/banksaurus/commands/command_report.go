@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/bank/reportfromrecords"
-	"github.com/luistm/banksaurus/bank/reportfromrecordsgrouped"
+	"github.com/luistm/banksaurus/bank/usecase/report"
+	"github.com/luistm/banksaurus/bank/usecase/reportgrouped"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
@@ -16,7 +16,7 @@ import (
 // Report handles reports
 type Report struct{}
 
-// Execute the report command
+// Execute the reportgrouped command
 func (rc *Report) Execute(arguments map[string]interface{}) error {
 	var grouped bool
 
@@ -43,9 +43,9 @@ func (rc *Report) Execute(arguments map[string]interface{}) error {
 
 	var rfr bank.Interactor
 	if grouped {
-		rfr, err = reportfromrecordsgrouped.New(transactionRepository, sellersRepository, presenter)
+		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
 	} else {
-		rfr, err = reportfromrecords.New(transactionRepository, sellersRepository, presenter)
+		rfr, err = report.New(transactionRepository, sellersRepository, presenter)
 	}
 	if err != nil {
 		return err

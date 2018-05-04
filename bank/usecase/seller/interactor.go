@@ -1,12 +1,13 @@
-package bank
+package seller
 
 import (
+	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/lib/seller"
 )
 
 // NewInteractor creates a new SellerInteractor object for seller
-func NewInteractor(storage lib.SQLInfrastructer, presenter Presenter) *SellerInteractor {
+func NewInteractor(storage lib.SQLInfrastructer, presenter bank.Presenter) *SellerInteractor {
 	return &SellerInteractor{
 		repository: &seller.Sellers{SQLStorage: storage},
 		presenter:  presenter,
@@ -16,7 +17,7 @@ func NewInteractor(storage lib.SQLInfrastructer, presenter Presenter) *SellerInt
 // SellerInteractor ...
 type SellerInteractor struct {
 	repository lib.Repository
-	presenter  Presenter
+	presenter  bank.Presenter
 }
 
 // Create adds a new seller and persists it
