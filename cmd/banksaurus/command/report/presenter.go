@@ -9,8 +9,8 @@ import (
 
 	"github.com/luistm/banksaurus/banklib/transaction"
 
-	"github.com/luistm/banksaurus/bankservices"
 	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/bankservices"
 )
 
 var errOutputPipeUndefined = errors.New("output pipe is undefined")

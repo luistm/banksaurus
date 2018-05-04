@@ -3,9 +3,9 @@ package transaction_test
 import (
 	"testing"
 
-	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/luistm/banksaurus/banklib/transaction"
+	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/shopspring/decimal"
 )
 

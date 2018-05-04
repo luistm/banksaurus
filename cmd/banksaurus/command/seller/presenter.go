@@ -2,13 +2,14 @@ package seller
 
 import (
 	"errors"
-	"io"
-	"github.com/luistm/banksaurus/bankservices"
-	"github.com/luistm/banksaurus/banklib"
-	"text/tabwriter"
-	"github.com/luistm/banksaurus/banklib/transaction"
-	"strings"
 	"fmt"
+	"io"
+	"strings"
+	"text/tabwriter"
+
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/transaction"
+	"github.com/luistm/banksaurus/bankservices"
 )
 
 var errOutputPipeUndefined = errors.New("output pipe is undefined")

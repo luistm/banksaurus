@@ -5,10 +5,10 @@ import (
 
 	"github.com/luistm/banksaurus/bankservices"
 
-	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/luistm/banksaurus/banklib/transaction"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitReportFromRecodesGrouped(t *testing.T) {

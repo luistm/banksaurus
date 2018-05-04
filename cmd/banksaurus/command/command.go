@@ -2,8 +2,9 @@ package command
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/cmd/banksaurus/command/report"
+
 	"github.com/luistm/banksaurus/cmd/banksaurus/command/load"
+	"github.com/luistm/banksaurus/cmd/banksaurus/command/report"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command/seller"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command/transaction"
 )

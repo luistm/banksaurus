@@ -3,8 +3,8 @@ package command
 import (
 	"testing"
 
-	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command/report"
+	"github.com/luistm/banksaurus/elib/testkit"
 )
 
 func TestUnitNewCommand(t *testing.T) {

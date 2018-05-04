@@ -1,9 +1,9 @@
 package seller
 
 import (
-	"github.com/luistm/banksaurus/bankservices"
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/bankservices"
 )
 
 // NewInteractor creates a new SellerInteractor object for seller

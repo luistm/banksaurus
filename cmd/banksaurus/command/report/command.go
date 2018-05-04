@@ -3,14 +3,14 @@ package report
 import (
 	"os"
 
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 	"github.com/luistm/banksaurus/bankservices"
 	"github.com/luistm/banksaurus/bankservices/service/report"
 	"github.com/luistm/banksaurus/bankservices/service/reportgrouped"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/banklib/seller"
-	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // Command handles reports

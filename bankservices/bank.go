@@ -10,7 +10,6 @@ type Interactor interface {
 	Execute() error
 }
 
-
 // Presenter is use
 type Presenter interface {
 	Present(...banklib.Entity) error

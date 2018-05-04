@@ -1,13 +1,12 @@
 package report
 
 import (
-	"testing"
-	"github.com/luistm/banksaurus/banklib"
 	"bytes"
+	"testing"
+
+	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/elib/testkit"
 )
-
-
 
 func TestUnitCLIPresenterPresent(t *testing.T) {
 
