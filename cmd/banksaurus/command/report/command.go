@@ -3,14 +3,14 @@ package report
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/bank/usecase/report"
-	"github.com/luistm/banksaurus/bank/usecase/reportgrouped"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/bankservices/service/report"
+	"github.com/luistm/banksaurus/bankservices/service/reportgrouped"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // Command handles reports
@@ -41,7 +41,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	sellersRepository := seller.NewRepository(SQLStorage)
 	presenter := NewPresenter(os.Stdout)
 
-	var rfr bank.Interactor
+	var rfr bankservices.Interactor
 	if grouped {
 		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
 	} else {

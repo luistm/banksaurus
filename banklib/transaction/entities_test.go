@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/elib/testkit"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 	"github.com/shopspring/decimal"
 )
 

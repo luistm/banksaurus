@@ -1,12 +1,12 @@
 package load
 
 import (
-	"github.com/luistm/banksaurus/bank/usecase/loaddata"
+	"github.com/luistm/banksaurus/bankservices/service/loaddata"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // Command command to loaddata input from a file

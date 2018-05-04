@@ -7,9 +7,9 @@ import (
 
 	"github.com/luistm/banksaurus/elib/testkit"
 
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/seller"
 )
 
 func TestUnitInteractorCreate(t *testing.T) {
@@ -27,7 +27,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error if Sellers is not defined",
 			input:      s,
-			output:     lib.ErrRepositoryUndefined,
+			output:     banklib.ErrRepositoryUndefined,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -35,7 +35,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error if s is empty string",
 			input:      "",
-			output:     lib.ErrBadInput,
+			output:     banklib.ErrBadInput,
 			withMock:   false,
 			mockInput:  nil,
 			mockOutput: nil,
@@ -43,7 +43,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 		{
 			name:       "Returns error on Sellers error",
 			input:      s,
-			output:     &lib.ErrRepository{Msg: "test Error"},
+			output:     &banklib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
 			mockInput:  seller.New(s, ""), // &Command{slug: s},
 			mockOutput: errors.New("test Error"),
@@ -61,9 +61,9 @@ func TestUnitInteractorCreate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &SellerInteractor{}
-		var m *lib.RepositoryMock
+		var m *banklib.RepositoryMock
 		if tc.withMock {
-			m = new(lib.RepositoryMock)
+			m = new(banklib.RepositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
 			i.repository = m
 		}
@@ -92,25 +92,25 @@ func TestUnitInteractorUpdate(t *testing.T) {
 			name:       "Returns error if seller ID is null",
 			slug:       "",
 			sellerName: "Command Name",
-			output:     lib.ErrBadInput,
+			output:     banklib.ErrBadInput,
 		},
 		{
 			name:       "Returns error if seller name is null",
 			slug:       "Command Slug",
 			sellerName: "",
-			output:     lib.ErrBadInput,
+			output:     banklib.ErrBadInput,
 		},
 		{
 			name:       "Returns error if Sellers undefined",
 			slug:       "Command Slug",
 			sellerName: "Command Name",
-			output:     lib.ErrRepositoryUndefined,
+			output:     banklib.ErrRepositoryUndefined,
 		},
 		{
 			name:       "Returns error if Sellers fails",
 			slug:       "Command Slug",
 			sellerName: "Command Name",
-			output:     &lib.ErrRepository{Msg: "test Error"},
+			output:     &banklib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
 			mockInput:  seller.New("Command Slug", "Command Name"),
 			mockOutput: errors.New("test Error"),
@@ -120,9 +120,9 @@ func TestUnitInteractorUpdate(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := &SellerInteractor{}
-		var m *lib.RepositoryMock
+		var m *banklib.RepositoryMock
 		if tc.withMock {
-			m = new(lib.RepositoryMock)
+			m = new(banklib.RepositoryMock)
 			m.On("Save", tc.mockInput).Return(tc.mockOutput)
 			i.repository = m
 		}
@@ -140,10 +140,10 @@ func TestUnitInteractorUpdate(t *testing.T) {
 
 func TestUnitInteractorGetAll(t *testing.T) {
 
-	presenterMock := new(bank.PresenterMock)
+	presenterMock := new(bankservices.PresenterMock)
 	presenterMock.On(
 		"Present",
-		[]lib.Entity{seller.New("", ""), seller.New("", "")},
+		[]banklib.Entity{seller.New("", ""), seller.New("", "")},
 	).Return(nil)
 
 	testCases := []struct {
@@ -154,30 +154,30 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if Sellers is undefined",
-			output:     lib.ErrRepositoryUndefined,
+			output:     banklib.ErrRepositoryUndefined,
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error on Sellers error",
-			output:     &lib.ErrRepository{Msg: "test Error"},
+			output:     &banklib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{}, errors.New("test Error")},
+			mockOutput: []interface{}{[]banklib.Entity{}, errors.New("test Error")},
 		},
 		{
 			name:       "Returns seller entities",
 			output:     nil,
 			withMock:   true,
-			mockOutput: []interface{}{[]lib.Entity{seller.New("", ""), seller.New("", "")}, nil},
+			mockOutput: []interface{}{[]banklib.Entity{seller.New("", ""), seller.New("", "")}, nil},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		i := SellerInteractor{presenter: presenterMock}
-		var repositoryMock *lib.RepositoryMock
+		var repositoryMock *banklib.RepositoryMock
 		if tc.withMock {
-			repositoryMock = new(lib.RepositoryMock)
+			repositoryMock = new(banklib.RepositoryMock)
 			repositoryMock.On("GetAll").Return(tc.mockOutput...)
 			i.repository = repositoryMock
 		}
@@ -190,31 +190,31 @@ func TestUnitInteractorGetAll(t *testing.T) {
 		testkit.AssertEqual(t, tc.output, err)
 	}
 
-	repositoryMock := new(lib.RepositoryMock)
-	repositoryMock.On("GetAll").Return([]lib.Entity{seller.New("", ""), seller.New("", "")}, nil)
+	repositoryMock := new(banklib.RepositoryMock)
+	repositoryMock.On("GetAll").Return([]banklib.Entity{seller.New("", ""), seller.New("", "")}, nil)
 	testCasesPresenter := []struct {
 		name       string
 		output     error
 		withMock   bool
-		mockInput  []lib.Entity
+		mockInput  []banklib.Entity
 		mockOutput error
 	}{
 		{
 			name:   "Returns error if presenter is not defined",
-			output: lib.ErrPresenterUndefined,
+			output: banklib.ErrPresenterUndefined,
 		},
 		{
 			name:       "Handles presenter error",
-			output:     &lib.ErrPresenter{Msg: "test error"},
+			output:     &banklib.ErrPresenter{Msg: "test error"},
 			withMock:   true,
-			mockInput:  []lib.Entity{seller.New("", ""), seller.New("", "")},
+			mockInput:  []banklib.Entity{seller.New("", ""), seller.New("", "")},
 			mockOutput: errors.New("test error"),
 		},
 		{
 			name:       "Handles presenter success",
 			output:     nil,
 			withMock:   true,
-			mockInput:  []lib.Entity{seller.New("", ""), seller.New("", "")},
+			mockInput:  []banklib.Entity{seller.New("", ""), seller.New("", "")},
 			mockOutput: nil,
 		},
 	}
@@ -222,9 +222,9 @@ func TestUnitInteractorGetAll(t *testing.T) {
 	for _, tc := range testCasesPresenter {
 		t.Log(tc.name)
 		i := SellerInteractor{repository: repositoryMock}
-		var presenterMock *bank.PresenterMock
+		var presenterMock *bankservices.PresenterMock
 		if tc.withMock {
-			presenterMock = new(bank.PresenterMock)
+			presenterMock = new(bankservices.PresenterMock)
 			presenterMock.On("Present", tc.mockInput).Return(tc.mockOutput)
 			i.presenter = presenterMock
 		}

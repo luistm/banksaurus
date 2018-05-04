@@ -3,12 +3,12 @@ package reportgrouped
 import (
 	"testing"
 
-	"github.com/luistm/banksaurus/bank"
+	"github.com/luistm/banksaurus/bankservices"
 
 	"github.com/luistm/banksaurus/elib/testkit"
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 func TestUnitReportFromRecodesGrouped(t *testing.T) {
@@ -17,7 +17,7 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 
 	s1 := seller.New("Seller1Slug", "Seller1Name")
 	s2 := seller.New("Seller2Slug", "Seller2Name")
-	sellersFromRepository := []lib.Entity{s1, s2}
+	sellersFromRepository := []banklib.Entity{s1, s2}
 
 	t1, err := transaction.New(s1, "1")
 	testkit.AssertIsNil(t, err)
@@ -25,17 +25,17 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 	testkit.AssertIsNil(t, err)
 	t3, err := transaction.New(s2, "1")
 	testkit.AssertIsNil(t, err)
-	transactionsFromRepository := []lib.Entity{t1, t2, t3}
+	transactionsFromRepository := []banklib.Entity{t1, t2, t3}
 
 	summedTransaction, err := transaction.New(s1, "3")
 	testkit.AssertIsNil(t, err)
-	transactionsToPresenter := []lib.Entity{summedTransaction, t3}
+	transactionsToPresenter := []banklib.Entity{summedTransaction, t3}
 
-	transactionRepository := &lib.RepositoryMock{}
+	transactionRepository := &banklib.RepositoryMock{}
 	transactionRepository.On("GetAll").Return(transactionsFromRepository, nil)
-	sellersRepository := &lib.RepositoryMock{}
+	sellersRepository := &banklib.RepositoryMock{}
 	sellersRepository.On("GetAll").Return(sellersFromRepository, nil)
-	presenter := &bank.PresenterMock{}
+	presenter := &bankservices.PresenterMock{}
 	presenter.On("Present", transactionsToPresenter).Return(nil)
 	i, err := New(transactionRepository, sellersRepository, presenter)
 	testkit.AssertIsNil(t, err)

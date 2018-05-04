@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 	"github.com/mattn/go-sqlite3"
 )
 
@@ -33,7 +33,7 @@ func (s *Seller) String() string {
 }
 
 // NewRepository creates a Sellers ofr seller
-func NewRepository(db lib.SQLInfrastructer) lib.Repository {
+func NewRepository(db banklib.SQLInfrastructer) banklib.Repository {
 	return &Sellers{SQLStorage: db}
 }
 
@@ -42,14 +42,14 @@ var updateStatement = "UPDATE seller SET name=? WHERE slug=?"
 
 // Sellers repository
 type Sellers struct {
-	SQLStorage lib.SQLInfrastructer
+	SQLStorage banklib.SQLInfrastructer
 }
 
 // Save a seller
-func (r *Sellers) Save(ent lib.Entity) error {
+func (r *Sellers) Save(ent banklib.Entity) error {
 
 	if r.SQLStorage == nil {
-		return lib.ErrInfrastructureUndefined
+		return banklib.ErrInfrastructureUndefined
 	}
 
 	s := ent.(*Seller)
@@ -59,11 +59,11 @@ func (r *Sellers) Save(ent lib.Entity) error {
 		case sqlite3.Error:
 			if err.(sqlite3.Error).Code == sqlite3.ErrConstraint {
 				if err = r.SQLStorage.Execute(updateStatement, s.name, s.slug); err != nil {
-					return &lib.ErrInfrastructure{Msg: err.Error()}
+					return &banklib.ErrInfrastructure{Msg: err.Error()}
 				}
 			}
 		default:
-			return &lib.ErrInfrastructure{Msg: err.Error()}
+			return &banklib.ErrInfrastructure{Msg: err.Error()}
 		}
 	}
 
@@ -71,7 +71,7 @@ func (r *Sellers) Save(ent lib.Entity) error {
 }
 
 // Get a seller
-func (r *Sellers) Get(sellerSlug string) (lib.Entity, error) {
+func (r *Sellers) Get(sellerSlug string) (banklib.Entity, error) {
 	// statement := "SELECT * FROM seller WHERE slug=?"
 	// rows, err := r.SQLStorage.Query(statement, sellerSlug)
 	// if err != nil {
@@ -93,15 +93,15 @@ func (r *Sellers) Get(sellerSlug string) (lib.Entity, error) {
 }
 
 // GetAll fetches all seller
-func (r *Sellers) GetAll() ([]lib.Entity, error) {
+func (r *Sellers) GetAll() ([]banklib.Entity, error) {
 	statement := "SELECT * FROM seller"
 	rows, err := r.SQLStorage.Query(statement)
 	if err != nil {
-		return []lib.Entity{}, fmt.Errorf("database failure: %s", err)
+		return []banklib.Entity{}, fmt.Errorf("database failure: %s", err)
 	}
 	defer rows.Close()
 
-	var sellers []lib.Entity
+	var sellers []banklib.Entity
 
 	for rows.Next() {
 		var slug string

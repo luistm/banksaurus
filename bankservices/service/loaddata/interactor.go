@@ -1,12 +1,12 @@
 package loaddata
 
 import (
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // New creates a new  Interactor to loaddata data from records
-func New(transactionsRepository lib.Repository, sellerRepository lib.Repository) *LoadDataFromRecords {
+func New(transactionsRepository banklib.Repository, sellerRepository banklib.Repository) *LoadDataFromRecords {
 	return &LoadDataFromRecords{
 		transactions: transactionsRepository,
 		sellers:      sellerRepository,
@@ -15,30 +15,30 @@ func New(transactionsRepository lib.Repository, sellerRepository lib.Repository)
 
 // LoadDataFromRecords saves records into transactions
 type LoadDataFromRecords struct {
-	transactions lib.Repository
-	sellers      lib.Repository
+	transactions banklib.Repository
+	sellers      banklib.Repository
 }
 
 // Execute the LoadDataFromRecords interactor
 func (i *LoadDataFromRecords) Execute() error {
 
 	if i.transactions == nil {
-		return lib.ErrRepositoryUndefined
+		return banklib.ErrRepositoryUndefined
 	}
 
 	ts, err := i.transactions.GetAll()
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 
 	if i.sellers == nil {
-		return lib.ErrInteractorUndefined
+		return banklib.ErrInteractorUndefined
 	}
 
 	for _, t := range ts {
 		err := i.sellers.Save(t.(*transaction.Transaction).Seller)
 		if err != nil {
-			return &lib.ErrInteractor{Msg: err.Error()}
+			return &banklib.ErrInteractor{Msg: err.Error()}
 		}
 	}
 

@@ -19,7 +19,7 @@ func IsDev() bool {
 // DatabasePath returns the path nad name for the database
 // taking into account the type of environment
 func DatabasePath() (string, string) {
-	dbName := "bank"
+	dbName := "bankservices"
 	if IsDev() {
 		return dbName, os.TempDir()
 	}
@@ -33,12 +33,12 @@ func LogPath() string {
 }
 
 // ApplicationHomePath builds the path to application data in the user home,
-// something like ~/.bank
+// something like ~/.bankservices
 func ApplicationHomePath() string {
 	usr, err := user.Current()
 	if err != nil {
 		// TODO: no panic here...
 		panic(err)
 	}
-	return path.Join(usr.HomeDir, ".bank")
+	return path.Join(usr.HomeDir, ".bankservices")
 }

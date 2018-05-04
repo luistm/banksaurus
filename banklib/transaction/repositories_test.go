@@ -6,9 +6,9 @@ import (
 
 	"github.com/luistm/banksaurus/elib/testkit"
 
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 
-	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -31,13 +31,13 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 	}{
 		{
 			name:       "Returns error if storage is not defined",
-			output:     []interface{}{[]lib.Entity{}, lib.ErrInfrastructureUndefined},
+			output:     []interface{}{[]banklib.Entity{}, banklib.ErrInfrastructureUndefined},
 			withMock:   false,
 			mockOutput: nil,
 		},
 		{
 			name:       "Returns error if infrastructure fails",
-			output:     []interface{}{[]lib.Entity{}, &lib.ErrInfrastructure{Msg: "test error"}},
+			output:     []interface{}{[]banklib.Entity{}, &banklib.ErrInfrastructure{Msg: "test error"}},
 			withMock:   true,
 			mockOutput: []interface{}{[][]string{}, errors.New("test error")},
 		},
@@ -71,13 +71,13 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 		name                 string
 		input                [][]string
 		output               error
-		expectedTransactions []lib.Entity
+		expectedTransactions []banklib.Entity
 	}{
 		{
 			name:   "Parses a single line",
 			input:  [][]string{{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
 			output: nil,
-			expectedTransactions: []lib.Entity{
+			expectedTransactions: []banklib.Entity{
 				&Transaction{
 					value:  &value,
 					Seller: seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),

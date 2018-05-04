@@ -7,16 +7,16 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/banklib/transaction"
 
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/banklib"
 )
 
 var errOutputPipeUndefined = errors.New("output pipe is undefined")
 
 // NewPresenter creates a new presenter object
-func NewPresenter(output io.Writer) bank.Presenter {
+func NewPresenter(output io.Writer) bankservices.Presenter {
 	return &CLIPresenter{output: output}
 }
 
@@ -26,7 +26,7 @@ type CLIPresenter struct {
 }
 
 // Present receives the data to be shown
-func (c *CLIPresenter) Present(entities ...lib.Entity) error {
+func (c *CLIPresenter) Present(entities ...banklib.Entity) error {
 
 	if c.output == nil {
 		return errOutputPipeUndefined

@@ -1,4 +1,4 @@
-package lib
+package banklib
 
 import "errors"
 import "fmt"

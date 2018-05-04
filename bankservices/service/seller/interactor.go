@@ -1,13 +1,13 @@
 package seller
 
 import (
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/seller"
 )
 
 // NewInteractor creates a new SellerInteractor object for seller
-func NewInteractor(storage lib.SQLInfrastructer, presenter bank.Presenter) *SellerInteractor {
+func NewInteractor(storage banklib.SQLInfrastructer, presenter bankservices.Presenter) *SellerInteractor {
 	return &SellerInteractor{
 		repository: &seller.Sellers{SQLStorage: storage},
 		presenter:  presenter,
@@ -16,24 +16,24 @@ func NewInteractor(storage lib.SQLInfrastructer, presenter bank.Presenter) *Sell
 
 // SellerInteractor ...
 type SellerInteractor struct {
-	repository lib.Repository
-	presenter  bank.Presenter
+	repository banklib.Repository
+	presenter  bankservices.Presenter
 }
 
 // Create adds a new seller and persists it
 func (i *SellerInteractor) Create(name string) error {
 
 	if name == "" {
-		return lib.ErrBadInput
+		return banklib.ErrBadInput
 	}
 
 	if i.repository == nil {
-		return lib.ErrRepositoryUndefined
+		return banklib.ErrRepositoryUndefined
 	}
 
 	s := seller.New(name, "")
 	if err := i.repository.Save(s); err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil
@@ -43,20 +43,20 @@ func (i *SellerInteractor) Create(name string) error {
 func (i *SellerInteractor) GetAll() error {
 
 	if i.repository == nil {
-		return lib.ErrRepositoryUndefined
+		return banklib.ErrRepositoryUndefined
 	}
 
 	sellers, err := i.repository.GetAll()
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 
 	if i.presenter == nil {
-		return lib.ErrPresenterUndefined
+		return banklib.ErrPresenterUndefined
 	}
 
 	if err := i.presenter.Present(sellers...); err != nil {
-		return &lib.ErrPresenter{Msg: err.Error()}
+		return &banklib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil
@@ -66,16 +66,16 @@ func (i *SellerInteractor) GetAll() error {
 func (i *SellerInteractor) Update(slug string, name string) error {
 
 	if slug == "" || name == "" {
-		return lib.ErrBadInput
+		return banklib.ErrBadInput
 	}
 	if i.repository == nil {
-		return lib.ErrRepositoryUndefined
+		return banklib.ErrRepositoryUndefined
 	}
 
 	s := seller.New(slug, name)
 	err := i.repository.Save(s)
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 
 	return nil

@@ -3,7 +3,7 @@ package transaction_test
 import (
 	"testing"
 
-	"github.com/luistm/banksaurus/bank/usecase/transaction"
+	"github.com/luistm/banksaurus/bankservices/service/transaction"
 	"github.com/luistm/banksaurus/elib/testkit"
 )
 
@@ -11,7 +11,7 @@ import (
 //	t *testing.T
 //}
 //
-//func (is *infrastructureStub) Execute(q *lib.Inquirer) (lib.Rows, error){
+//func (is *infrastructureStub) Execute(q *banklib.Inquirer) (banklib.Rows, error){
 //
 //	db, _, err := sqlmock.New()
 //	testkit.AssertIsNil(is.t, err)

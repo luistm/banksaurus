@@ -1,23 +1,23 @@
 package reportgrouped
 
 import (
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // New creates a new ReportFromRecords use case
 func New(
-	transactionsRepository lib.Repository, sellersRepository lib.Repository, presenter bank.Presenter,
+	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
 ) (*ReportFromRecordsGrouped, error) {
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecordsGrouped{}, lib.ErrRepositoryUndefined
+		return &ReportFromRecordsGrouped{}, banklib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecordsGrouped{}, lib.ErrPresenterUndefined
+		return &ReportFromRecordsGrouped{}, banklib.ErrPresenterUndefined
 	}
 
 	return &ReportFromRecordsGrouped{
@@ -30,19 +30,19 @@ func New(
 // ReportFromRecordsGrouped makes a reportgrouped from an input file.
 // If a Command has a pretty name, that name will be used.
 type ReportFromRecordsGrouped struct {
-	transactionsRepository lib.Repository
-	sellersRepository      lib.Repository
-	presenter              bank.Presenter
+	transactionsRepository banklib.Repository
+	sellersRepository      banklib.Repository
+	presenter              bankservices.Presenter
 }
 
 // Execute an instance of ReportFromRecordsGrouped
 func (i *ReportFromRecordsGrouped) Execute() error {
-	var ts []lib.Entity
+	var ts []banklib.Entity
 
 	// Get all transaction. If there are no transaction, return
 	allTransactions, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 	if len(allTransactions) == 0 {
 		return nil
@@ -52,7 +52,7 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 	for _, t := range allTransactions {
 		allSellers, err := i.sellersRepository.GetAll() // FIXME: For each transaction, fetch only the needed seller, not all the seller
 		if err != nil {
-			return &lib.ErrRepository{Msg: err.Error()}
+			return &banklib.ErrRepository{Msg: err.Error()}
 		}
 		for _, s := range allSellers {
 			if s.ID() == t.(*transaction.Transaction).Seller.ID() {
@@ -64,8 +64,8 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 		ts = append(ts, t.(*transaction.Transaction))
 	}
 
-	transactionsMap := map[string]lib.Entity{}
-	var returnTransactions []lib.Entity
+	transactionsMap := map[string]banklib.Entity{}
+	var returnTransactions []banklib.Entity
 
 	for _, t := range ts {
 		// FIXME: I'm seeing a lot of type assertion and i don't like it. Code smell??
@@ -86,7 +86,7 @@ func (i *ReportFromRecordsGrouped) Execute() error {
 		returnTransactions = append(returnTransactions, v)
 	}
 	if err := i.presenter.Present(returnTransactions...); err != nil {
-		return &lib.ErrPresenter{Msg: err.Error()}
+		return &banklib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil

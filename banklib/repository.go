@@ -1,4 +1,4 @@
-package lib
+package banklib
 
 // Rows is the interface SQL infrastructure rows must implement
 type Rows interface {

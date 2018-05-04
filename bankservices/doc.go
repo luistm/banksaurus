@@ -1,3 +1,3 @@
-// Package bank holds application logic for banksaurus
+// Package bankservices holds application logic for banksaurus
 
-package bank
+package bankservices

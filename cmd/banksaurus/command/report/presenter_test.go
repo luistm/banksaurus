@@ -2,7 +2,7 @@ package report
 
 import (
 	"testing"
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 	"bytes"
 	"github.com/luistm/banksaurus/elib/testkit"
 )
@@ -31,7 +31,7 @@ func TestUnitCLIPresenterPresent(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		em := &lib.EntityMock{}
+		em := &banklib.EntityMock{}
 		p := &CLIPresenter{}
 		var ioWriterMock bytes.Buffer
 		if tc.withMock {

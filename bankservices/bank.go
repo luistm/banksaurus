@@ -1,7 +1,7 @@
-package bank
+package bankservices
 
 import (
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -13,7 +13,7 @@ type Interactor interface {
 
 // Presenter is use
 type Presenter interface {
-	Present(...lib.Entity) error
+	Present(...banklib.Entity) error
 }
 
 // PresenterMock to use in tests which need a presenter
@@ -22,7 +22,7 @@ type PresenterMock struct {
 }
 
 // Present ...
-func (m *PresenterMock) Present(entities ...lib.Entity) error {
+func (m *PresenterMock) Present(entities ...banklib.Entity) error {
 	args := m.Called(entities)
 	return args.Error(0)
 }

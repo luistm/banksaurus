@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/luistm/banksaurus/infrastructure"
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
@@ -126,7 +126,7 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 // TODO: Make sure rows are being closed across the code
 
 // Query fetches data from the database
-func (s *sqlite) Query(statement string, args ...interface{}) (lib.Rows, error) {
+func (s *sqlite) Query(statement string, args ...interface{}) (banklib.Rows, error) {
 	if s.db == nil {
 		return nil, errUndefinedDataBase
 	}

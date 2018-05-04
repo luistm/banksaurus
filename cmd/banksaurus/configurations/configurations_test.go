@@ -15,8 +15,8 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	expectedDbName := "bank"
-	expectedDbPath := path.Join(usr.HomeDir, ".bank")
+	expectedDbName := "bankservices"
+	expectedDbPath := path.Join(usr.HomeDir, ".bankservices")
 
 	dbName, dbPath := DatabasePath()
 
@@ -26,7 +26,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	os.Setenv("GO_BANK_CLI_DEV", "true")
 	defer os.Setenv("GO_BANK_CLI_DEV", "")
 
-	expectedDbName = "bank"
+	expectedDbName = "bankservices"
 	expectedDbPath = os.TempDir()
 
 	dbName, dbPath = DatabasePath()

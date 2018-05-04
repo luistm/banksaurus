@@ -5,18 +5,18 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/luistm/banksaurus/lib"
+	"github.com/luistm/banksaurus/banklib"
 
 	"errors"
 	"strings"
 
-	"github.com/luistm/banksaurus/lib/seller"
+	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/shopspring/decimal"
 )
 
 // Fetcher to fetch transaction
 type Fetcher interface {
-	GetAll() ([]lib.Entity, error)
+	GetAll() ([]banklib.Entity, error)
 }
 
 // New creates a record with some parsed data
@@ -79,39 +79,39 @@ type CSVHandler interface {
 // Transactions repository
 type Transactions struct {
 	storage      CSVHandler
-	transactions []lib.Entity
+	transactions []banklib.Entity
 }
 
 // Save to save a transaction
-func (r *Transactions) Save(t lib.Entity) error {
+func (r *Transactions) Save(t banklib.Entity) error {
 	// TODO: Implement this
 	return errors.New("save not implemented")
 }
 
 // Get to fetch a single transaction
-func (r *Transactions) Get(s string) (lib.Entity, error) {
+func (r *Transactions) Get(s string) (banklib.Entity, error) {
 	// TODO: Implement this
 	return &Transaction{}, errors.New("get not implemented")
 }
 
 // GetAll to fetch all transactions
-func (r *Transactions) GetAll() ([]lib.Entity, error) {
+func (r *Transactions) GetAll() ([]banklib.Entity, error) {
 	// TODO: Should return an iterator
 
 	if r.storage == nil {
-		return []lib.Entity{}, lib.ErrInfrastructureUndefined
+		return []banklib.Entity{}, banklib.ErrInfrastructureUndefined
 	}
 
 	lines, err := r.storage.Lines()
 	if err != nil {
-		return []lib.Entity{}, &lib.ErrInfrastructure{Msg: err.Error()}
+		return []banklib.Entity{}, &banklib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	// TODO: Validate if Lines() output is the expected one
 
 	err = r.buildTransactions(lines[5 : len(lines)-2])
 	if err != nil {
-		return []lib.Entity{}, &lib.ErrInfrastructure{Msg: err.Error()}
+		return []banklib.Entity{}, &banklib.ErrInfrastructure{Msg: err.Error()}
 	}
 
 	return r.transactions, nil

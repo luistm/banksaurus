@@ -85,7 +85,7 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:          "Shows reportgrouped from bank records file",
+			name:          "Shows reportgrouped from bankservices records file",
 			command:       []string{"reportgrouped", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
@@ -121,19 +121,19 @@ func TestSystem(t *testing.T) {
 			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
-			name:          "Shows reportgrouped from bank records file, with seller name instead of slug",
+			name:          "Shows reportgrouped from bankservices records file, with seller name instead of slug",
 			command:       []string{"reportgrouped", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
-			name:          "Shows reportgrouped from bank records file, returns error if path does not exist",
+			name:          "Shows reportgrouped from bankservices records file, returns error if path does not exist",
 			command:       []string{"reportgrouped", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
 			expected:      errGeneric.Error() + "\n",
 			errorExpected: true,
 		},
 		{
-			name: "Shows reportgrouped from bank records file, grouped by seller",
+			name: "Shows reportgrouped from bankservices records file, grouped by seller",
 			command: []string{
 				"reportgrouped",
 				"--input", "./tests/fixtures/sample_records_load.csv",

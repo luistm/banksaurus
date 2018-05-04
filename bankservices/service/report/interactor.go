@@ -1,23 +1,23 @@
 package report
 
 import (
-	"github.com/luistm/banksaurus/bank"
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/bankservices"
+	"github.com/luistm/banksaurus/banklib"
+	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 )
 
 // New creates a new ReportFromRecords use case
 func New(
-	transactionsRepository lib.Repository, sellersRepository lib.Repository, presenter bank.Presenter,
+	transactionsRepository banklib.Repository, sellersRepository banklib.Repository, presenter bankservices.Presenter,
 ) (*ReportFromRecords, error) {
 
 	if transactionsRepository == nil ||
 		sellersRepository == nil {
-		return &ReportFromRecords{}, lib.ErrRepositoryUndefined
+		return &ReportFromRecords{}, banklib.ErrRepositoryUndefined
 	}
 	if presenter == nil {
-		return &ReportFromRecords{}, lib.ErrPresenterUndefined
+		return &ReportFromRecords{}, banklib.ErrPresenterUndefined
 	}
 
 	return &ReportFromRecords{
@@ -30,19 +30,19 @@ func New(
 // ReportFromRecords makes a reportgrouped from an input file.
 // If a Command has a pretty name, that name will be used.
 type ReportFromRecords struct {
-	transactionsRepository lib.Repository
-	sellersRepository      lib.Repository
-	presenter              bank.Presenter
+	transactionsRepository banklib.Repository
+	sellersRepository      banklib.Repository
+	presenter              bankservices.Presenter
 }
 
 // Execute ...
 func (i *ReportFromRecords) Execute() error {
 
-	var ts []lib.Entity
+	var ts []banklib.Entity
 
 	transactionsList, err := i.transactionsRepository.GetAll()
 	if err != nil {
-		return &lib.ErrRepository{Msg: err.Error()}
+		return &banklib.ErrRepository{Msg: err.Error()}
 	}
 	if len(transactionsList) == 0 {
 		return nil
@@ -52,7 +52,7 @@ func (i *ReportFromRecords) Execute() error {
 		// FIXME: For each transaction, fetch only the needed seller, not all the seller
 		allSellers, err := i.sellersRepository.GetAll()
 		if err != nil {
-			return &lib.ErrRepository{Msg: err.Error()}
+			return &banklib.ErrRepository{Msg: err.Error()}
 		}
 
 		for _, s := range allSellers {
@@ -65,7 +65,7 @@ func (i *ReportFromRecords) Execute() error {
 	}
 
 	if err := i.presenter.Present(ts...); err != nil {
-		return &lib.ErrPresenter{Msg: err.Error()}
+		return &banklib.ErrPresenter{Msg: err.Error()}
 	}
 
 	return nil
