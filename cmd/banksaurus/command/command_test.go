@@ -1,9 +1,10 @@
-package commands
+package command
 
 import (
 	"testing"
 
 	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/banksaurus/cmd/banksaurus/command/report"
 )
 
 func TestUnitNewCommand(t *testing.T) {
@@ -26,7 +27,7 @@ func TestUnitNewCommand(t *testing.T) {
 		{
 			name:   "Returns command instance if cli input matches",
 			input:  []string{"reportgrouped"},
-			output: []interface{}{&Report{}, nil},
+			output: []interface{}{&report.Command{}, nil},
 		},
 	}
 

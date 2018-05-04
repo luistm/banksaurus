@@ -1,19 +1,17 @@
-package commands
+package seller
 
 import (
 	"errors"
-	"fmt"
 	"io"
-	"strings"
-	"text/tabwriter"
-
-	"github.com/luistm/banksaurus/lib/transaction"
-
 	"github.com/luistm/banksaurus/bank"
 	"github.com/luistm/banksaurus/lib"
+	"text/tabwriter"
+	"github.com/luistm/banksaurus/lib/transaction"
+	"strings"
+	"fmt"
 )
 
-var errOutputPipeUndefined = errors.New("Output pipe is undefined")
+var errOutputPipeUndefined = errors.New("output pipe is undefined")
 
 // NewPresenter creates a new presenter object
 func NewPresenter(output io.Writer) bank.Presenter {

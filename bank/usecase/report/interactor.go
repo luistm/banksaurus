@@ -28,7 +28,7 @@ func New(
 }
 
 // ReportFromRecords makes a reportgrouped from an input file.
-// If a Seller has a pretty name, that name will be used.
+// If a Command has a pretty name, that name will be used.
 type ReportFromRecords struct {
 	transactionsRepository lib.Repository
 	sellersRepository      lib.Repository

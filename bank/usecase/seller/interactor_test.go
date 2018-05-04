@@ -45,7 +45,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 			input:      s,
 			output:     &lib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
-			mockInput:  seller.New(s, ""), // &Seller{slug: s},
+			mockInput:  seller.New(s, ""), // &Command{slug: s},
 			mockOutput: errors.New("test Error"),
 		},
 		{
@@ -53,7 +53,7 @@ func TestUnitInteractorCreate(t *testing.T) {
 			input:      s,
 			output:     nil,
 			withMock:   true,
-			mockInput:  seller.New(s, ""), //&Seller{slug: s},
+			mockInput:  seller.New(s, ""), //&Command{slug: s},
 			mockOutput: nil,
 		},
 	}
@@ -91,28 +91,28 @@ func TestUnitInteractorUpdate(t *testing.T) {
 		{
 			name:       "Returns error if seller ID is null",
 			slug:       "",
-			sellerName: "Seller Name",
+			sellerName: "Command Name",
 			output:     lib.ErrBadInput,
 		},
 		{
 			name:       "Returns error if seller name is null",
-			slug:       "Seller Slug",
+			slug:       "Command Slug",
 			sellerName: "",
 			output:     lib.ErrBadInput,
 		},
 		{
 			name:       "Returns error if Sellers undefined",
-			slug:       "Seller Slug",
-			sellerName: "Seller Name",
+			slug:       "Command Slug",
+			sellerName: "Command Name",
 			output:     lib.ErrRepositoryUndefined,
 		},
 		{
 			name:       "Returns error if Sellers fails",
-			slug:       "Seller Slug",
-			sellerName: "Seller Name",
+			slug:       "Command Slug",
+			sellerName: "Command Name",
 			output:     &lib.ErrRepository{Msg: "test Error"},
 			withMock:   true,
-			mockInput:  seller.New("Seller Slug", "Seller Name"),
+			mockInput:  seller.New("Command Slug", "Command Name"),
 			mockOutput: errors.New("test Error"),
 		},
 	}

@@ -1,4 +1,4 @@
-package commands
+package transaction
 
 import (
 	"github.com/luistm/banksaurus/bank/usecase/transaction"

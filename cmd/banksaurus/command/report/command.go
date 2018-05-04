@@ -1,4 +1,4 @@
-package commands
+package report
 
 import (
 	"os"
@@ -13,11 +13,11 @@ import (
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
-// Report handles reports
-type Report struct{}
+// Command handles reports
+type Command struct{}
 
 // Execute the reportgrouped command
-func (rc *Report) Execute(arguments map[string]interface{}) error {
+func (rc *Command) Execute(arguments map[string]interface{}) error {
 	var grouped bool
 
 	if arguments["--grouped"].(bool) {

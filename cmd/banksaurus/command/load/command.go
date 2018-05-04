@@ -1,4 +1,4 @@
-package commands
+package load
 
 import (
 	"github.com/luistm/banksaurus/bank/usecase/loaddata"
@@ -9,11 +9,11 @@ import (
 	"github.com/luistm/banksaurus/lib/transaction"
 )
 
-// Load command to loaddata input from a file
-type Load struct{}
+// Command command to loaddata input from a file
+type Command struct{}
 
-// Execute the Load command
-func (l *Load) Execute(arguments map[string]interface{}) error {
+// Execute the Command command
+func (l *Command) Execute(arguments map[string]interface{}) error {
 	err := l.loadFile(arguments["<file>"].(string))
 	if err != nil {
 		return nil
@@ -22,7 +22,7 @@ func (l *Load) Execute(arguments map[string]interface{}) error {
 	return nil
 }
 
-func (l *Load) loadFile(inputFilePath string) error {
+func (l *Command) loadFile(inputFilePath string) error {
 	CSVStorage, err := csv.New(inputFilePath)
 	if err != nil {
 		return err

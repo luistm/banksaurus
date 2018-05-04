@@ -1,4 +1,4 @@
-package commands
+package seller
 
 import (
 	"os"
@@ -8,11 +8,11 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 )
 
-// Seller commands
-type Seller struct{}
+// Command command
+type Command struct{}
 
 // Execute the seller command with arguments
-func (s *Seller) Execute(arguments map[string]interface{}) error {
+func (s *Command) Execute(arguments map[string]interface{}) error {
 	var err error
 
 	dbName, dbPath := configurations.DatabasePath()
