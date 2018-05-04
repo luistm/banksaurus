@@ -21,23 +21,23 @@ func New(inputFilePath string) (infrastructure.CSVStorage, error) {
 		return nil, err
 	}
 
-	f := &csvfile{file: file}
+	f := &Infrastructure{file: file}
 
 	return f, nil
 }
 
-// File represents the content of CSV formated file
-type csvfile struct {
+// Infrastructure represents the content of CSV formated file
+type Infrastructure struct {
 	file *os.File
 }
 
 // Close to disconnect with associated file
-func (c *csvfile) Close() error {
+func (c *Infrastructure) Close() error {
 	return c.file.Close()
 }
 
-// GetAll returns all lines in the file
-func (c *csvfile) Lines() ([][]string, error) {
+// Lines returns all lines in the file
+func (c *Infrastructure) Lines() ([][]string, error) {
 	reader := csv.NewReader(c.file)
 	reader.Comma = ';'
 	reader.FieldsPerRecord = -1

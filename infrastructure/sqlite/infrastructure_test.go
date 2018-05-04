@@ -22,13 +22,13 @@ func TestUnitNewSqlite(t *testing.T) {
 			name:     "name is empty",
 			dbName:   "",
 			dbPath:   "ignoreThisForNow",
-			expected: []interface{}{&sqlite{}, errInvalidConfiguration},
+			expected: []interface{}{&Infrastructure{}, errInvalidConfiguration},
 		},
 		{
 			name:     "Path is empty",
 			dbName:   "ignoreThisForNow",
 			dbPath:   "",
-			expected: []interface{}{&sqlite{}, errInvalidConfiguration},
+			expected: []interface{}{&Infrastructure{}, errInvalidConfiguration},
 		},
 		// TODO: Test that exec was called as it should be
 	}
@@ -71,7 +71,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		s := &sqlite{}
+		s := &Infrastructure{}
 		db, mock, err := sqlmock.New()
 		if tc.withMock {
 			assert.NoError(t, err)
@@ -110,7 +110,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 		t.Log(tc.name)
 		db, mock, err := sqlmock.New()
 		assert.NoError(t, err)
-		s := &sqlite{db}
+		s := &Infrastructure{db}
 
 		if tc.output != nil {
 			mock.ExpectBegin().WillReturnError(tc.output)
@@ -160,7 +160,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 
 // 	for _, tc := range testCases {
 // 		t.Log(tc.name)
-// 		dbh := &sqlite{}
+// 		dbh := &Infrastructure{}
 // 		var mock sqlmock.Sqlmock
 // 		var err error
 // 		var dbMock *sql.DB

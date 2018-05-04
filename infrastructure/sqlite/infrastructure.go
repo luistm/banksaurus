@@ -16,14 +16,14 @@ var errUndefinedDataBase = errors.New("database is not defined")
 
 // ErrStatementUndefined ...
 var ErrStatementUndefined = errors.New("statement is undefined")
-var errInvalidConfiguration = errors.New("sqlite configuration parameters are invalid")
+var errInvalidConfiguration = errors.New("Infrastructure configuration parameters are invalid")
 var errFailedToCreatedDB = errors.New("failed to create database")
 
-// New creates a new instance of sqlite
+// New creates a new instance of Infrastructure
 func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
 
 	if name == "" || path == "" {
-		return &sqlite{}, errInvalidConfiguration
+		return &Infrastructure{}, errInvalidConfiguration
 	}
 
 	var db *sql.DB
@@ -33,7 +33,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		db, err = sql.Open("sqlite3", ":memory:")
 	} else {
 		if err := validatePath(path); err != nil {
-			return &sqlite{}, errInvalidConfiguration
+			return &Infrastructure{}, errInvalidConfiguration
 		}
 		db, err = sql.Open("sqlite3", path+"/"+name+".db")
 	}
@@ -48,10 +48,10 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return &sqlite{}, errFailedToCreatedDB
+		return &Infrastructure{}, errFailedToCreatedDB
 	}
 
-	s := &sqlite{db}
+	s := &Infrastructure{db}
 	return s, nil
 }
 
@@ -77,13 +77,13 @@ func validatePath(path string) error {
 	return nil
 }
 
-// sqlite contains a sqlite database
-type sqlite struct {
+// Infrastructure contains a Infrastructure database
+type Infrastructure struct {
 	db *sql.DB
 }
 
-// Close closes the connection with the sqlite database
-func (s *sqlite) Close() error {
+// Close closes the connection with the Infrastructure database
+func (s *Infrastructure) Close() error {
 	if s.db == nil {
 		return errUndefinedDataBase
 	}
@@ -92,7 +92,7 @@ func (s *sqlite) Close() error {
 }
 
 // Execute is to execute an sql statement
-func (s *sqlite) Execute(statement string, values ...interface{}) error {
+func (s *Infrastructure) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
 		return errUndefinedDataBase
 	}
@@ -126,7 +126,7 @@ func (s *sqlite) Execute(statement string, values ...interface{}) error {
 // TODO: Make sure rows are being closed across the code
 
 // Query fetches data from the database
-func (s *sqlite) Query(statement string, args ...interface{}) (banklib.Rows, error) {
+func (s *Infrastructure) Query(statement string, args ...interface{}) (banklib.Rows, error) {
 	if s.db == nil {
 		return nil, errUndefinedDataBase
 	}
