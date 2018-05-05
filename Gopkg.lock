@@ -20,10 +20,10 @@
   version = "0.6.2"
 
 [[projects]]
-  branch = "master"
   name = "github.com/luistm/testkit"
   packages = ["."]
   revision = "f405b13529b1039994efb74f15d639b6c057556c"
+  version = "0.0.1"
 
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
@@ -38,10 +38,10 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "2df3e6ddaf6e9531dd02d7b6337f2d310f5e4f22"
+  revision = "69b3a8ad1f5f2c8bd855cb6506d18593064a346b"
+  version = "1.0.1"
 
 [[projects]]
   name = "github.com/stretchr/objx"
@@ -61,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1ad19c368bb56cf5c2913eebc5a375d95d292177868e57b0ba65a7e46a079e63"
+  inputs-digest = "b73bac4c3738c3a1865ac7ea45777fec8b1a77bac6f96bfe21333806e2d09f2e"
   solver-name = "gps-cdcl"
   solver-version = 1
