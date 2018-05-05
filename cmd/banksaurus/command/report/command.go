@@ -37,7 +37,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
-	transactionRepository := transaction.NewRepository(CSVStorage)
+	transactionRepository := transaction.NewRepository(CSVStorage, SQLStorage)
 	sellersRepository := seller.NewRepository(SQLStorage)
 	presenter := NewPresenter(os.Stdout)
 

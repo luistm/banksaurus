@@ -29,9 +29,9 @@ func New(cliRequest CLIRequest) (Commander, error) {
 
 	command := cliRequest[0]
 	switch command {
-	case "reportgrouped":
+	case "report":
 		return &report.Command{}, nil
-	case "loaddata":
+	case "load":
 		return &load.Command{}, nil
 	case "seller":
 		return &seller.Command{}, nil

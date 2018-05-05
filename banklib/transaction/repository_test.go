@@ -1,4 +1,4 @@
-package transaction
+package transaction_test
 
 import (
 	"errors"
@@ -9,6 +9,7 @@ import (
 	"github.com/luistm/banksaurus/banklib"
 
 	"github.com/luistm/banksaurus/banklib/seller"
+	"github.com/luistm/banksaurus/banklib/transaction"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -45,13 +46,12 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
-		r := &Transactions{}
 		var m *storageMock
 		if tc.withMock {
 			m = new(storageMock)
 			m.On("Lines").Return(tc.mockOutput...)
-			r.storage = m
 		}
+		r := transaction.NewRepository(m, nil)
 
 		transactions, err := r.GetAll()
 
@@ -65,7 +65,8 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 
 func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 
-	value, _ := decimalFromStringWithComma("4,30")
+	t1, err := transaction.New(seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"), "4,30")
+	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
 		name                 string
@@ -78,20 +79,41 @@ func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 			input:  [][]string{{"25-10-2017", "25-10-2017", "COMPRA CAFETARIA HEAR", "4,30", "", "233,86", "233,86"}},
 			output: nil,
 			expectedTransactions: []banklib.Entity{
-				&Transaction{
-					value:  &value,
-					Seller: seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"),
-				},
+				t1,
 			},
 		},
 	}
 
 	for _, tc := range testCases {
-		r := &Transactions{}
+		r := transaction.NewRepository(nil, nil)
 
-		err := r.buildTransactions(tc.input)
+		err := r.BuildTransactions(tc.input)
 
 		testkit.AssertEqual(t, tc.output, err)
-		testkit.AssertEqual(t, tc.expectedTransactions, r.transactions)
+		testkit.AssertEqual(t, tc.expectedTransactions, r.Transactions)
+	}
+}
+
+func TestUnitTransactionsSave(t *testing.T) {
+
+	testCases := []struct {
+		name       string
+		input      *transaction.Transaction
+		dataSource banklib.CSVHandler
+		storage    banklib.SQLInfrastructer
+		output     error
+	}{
+		{},
+	}
+
+	for _, tc := range testCases {
+		t.Log(tc.name)
+		sm := &storageMock{}
+		sqlSm := &banklib.SQLStorageMock{}
+
+		transactions := transaction.NewRepository(sm, sqlSm)
+		err := transactions.Save(tc.input)
+
+		testkit.AssertEqual(t, tc.output, err)
 	}
 }
