@@ -3,7 +3,7 @@ package load
 import (
 	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/luistm/banksaurus/banklib/transaction"
-	"github.com/luistm/banksaurus/bankservices/service/loaddata"
+	"github.com/luistm/banksaurus/bankservices/loaddata"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
