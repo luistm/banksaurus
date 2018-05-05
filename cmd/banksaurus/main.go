@@ -14,8 +14,8 @@ var intro = "    \n    Your command line finance manager.\n\n"
 
 var usage = `Usage:
 	banksaurus -h | --help
-	banksaurus reportgrouped --input <file> [ --grouped ]
-	banksaurus loaddata --input <file>
+	banksaurus report --input <file> [ --grouped ]
+	banksaurus load --input <file>
 	banksaurus seller change <id> --pretty <name>
 	banksaurus seller new <name>
 	banksaurus seller show
@@ -24,7 +24,7 @@ var usage = `Usage:
 var options = `
 
 Options:
-	--grouped     The reportgrouped is present grouped by seller.
+	--grouped     The report is grouped by seller.
 	--input       The path to the records list.
 	--name        Specifies the name.
 	-h --help     Show this screen.`

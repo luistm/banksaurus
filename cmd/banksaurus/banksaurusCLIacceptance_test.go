@@ -85,8 +85,8 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:          "Shows reportgrouped from bankservices records file",
-			command:       []string{"reportgrouped", "--input", "./tests/fixtures/sample_records_load.csv"},
+			name:          "Shows report from bank records file",
+			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 COMPRA CONTINENTE MAI\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
@@ -97,7 +97,7 @@ func TestSystem(t *testing.T) {
 		},
 		{
 			name:     "Load records from file",
-			command:  []string{"loaddata", "--input", "./tests/fixtures/sample_records_load.csv"},
+			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
@@ -121,21 +121,21 @@ func TestSystem(t *testing.T) {
 			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
-			name:          "Shows reportgrouped from bankservices records file, with seller name instead of slug",
-			command:       []string{"reportgrouped", "--input", "./tests/fixtures/sample_records_load.csv"},
+			name:          "Shows report from bank records file, with seller name instead of slug",
+			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
-			name:          "Shows reportgrouped from bankservices records file, returns error if path does not exist",
-			command:       []string{"reportgrouped", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
+			name:          "Shows report from bank records file, returns error if path does not exist",
+			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
 			expected:      errGeneric.Error() + "\n",
 			errorExpected: true,
 		},
 		{
-			name: "Shows reportgrouped from bankservices records file, grouped by seller",
+			name: "Shows report from bank records file, grouped by seller",
 			command: []string{
-				"reportgrouped",
+				"report",
 				"--input", "./tests/fixtures/sample_records_load.csv",
 				"--grouped",
 			},
