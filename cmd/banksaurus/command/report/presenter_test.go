@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/banklib"
-	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/testkit"
 )
 
 func TestUnitCLIPresenterPresent(t *testing.T) {

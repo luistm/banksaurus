@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
-	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/testkit"
 )
 
 func deleteTestFiles(t *testing.T) {

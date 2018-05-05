@@ -9,7 +9,7 @@ import (
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/luistm/banksaurus/banklib/transaction"
-	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/testkit"
 )
 
 func TestUnitReportFromRecordsExecute(t *testing.T) {

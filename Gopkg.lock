@@ -20,6 +20,12 @@
   version = "0.6.2"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/luistm/testkit"
+  packages = ["."]
+  revision = "f405b13529b1039994efb74f15d639b6c057556c"
+
+[[projects]]
   name = "github.com/mattn/go-sqlite3"
   packages = ["."]
   revision = "6c771bb9887719704b210e87e934f08be014bdb1"
@@ -55,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e3afe9b015524fd9096b90b2a14bb40c338bc2522ddc3856df6f0661415f417c"
+  inputs-digest = "1ad19c368bb56cf5c2913eebc5a375d95d292177868e57b0ba65a7e46a079e63"
   solver-name = "gps-cdcl"
   solver-version = 1

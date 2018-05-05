@@ -3,9 +3,8 @@ package transaction_test
 import (
 	"testing"
 
-
-	"github.com/luistm/banksaurus/elib/testkit"
 	"github.com/luistm/banksaurus/bankservices/transaction"
+	"github.com/luistm/testkit"
 )
 
 //type infrastructureStub struct{

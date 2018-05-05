@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/testkit"
 
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/banklib/seller"
