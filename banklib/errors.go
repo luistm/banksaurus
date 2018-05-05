@@ -19,16 +19,6 @@ func (e *ErrInfrastructure) Error() string {
 // ErrBadInput for inputs which does not meet the requirements
 var ErrBadInput = errors.New("bad input")
 
-// ErrInteractor for errors returned by Interactors
-type ErrInteractor struct {
-	Msg string
-}
-
-// Error ...
-func (e *ErrInteractor) Error() string {
-	return fmt.Sprintf("Interactor error, %s", e.Msg)
-}
-
 // ErrInteractorUndefined to use when the Interactor is not defined
 var ErrInteractorUndefined = errors.New("interactor is not defined")
 
