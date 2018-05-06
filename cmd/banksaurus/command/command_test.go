@@ -26,7 +26,7 @@ func TestUnitNewCommand(t *testing.T) {
 		},
 		{
 			name:   "Returns command instance if cli input matches",
-			input:  []string{"reportgrouped"},
+			input:  []string{"report"},
 			output: []interface{}{&report.Command{}, nil},
 		},
 	}

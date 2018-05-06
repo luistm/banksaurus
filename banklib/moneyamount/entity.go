@@ -28,7 +28,7 @@ type MoneyAmount struct {
 	amount *decimal.Decimal
 }
 
-// AmountToDecimal returns the amount of money in Decimal format
-func (ma *MoneyAmount) AmountToDecimal() *decimal.Decimal {
+// ToDecimal returns the amount of money in Decimal format
+func (ma *MoneyAmount) ToDecimal() *decimal.Decimal {
 	return ma.amount
 }

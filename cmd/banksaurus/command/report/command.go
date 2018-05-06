@@ -16,7 +16,7 @@ import (
 // Command handles reports
 type Command struct{}
 
-// Execute the reportgrouped command
+// Execute the report command
 func (rc *Command) Execute(arguments map[string]interface{}) error {
 	var grouped bool
 

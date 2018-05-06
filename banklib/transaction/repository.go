@@ -81,7 +81,7 @@ func (r *Transactions) BuildTransactions(lines [][]string) error {
 		slug := strings.TrimSuffix(line[2], " ")
 		t := &Transaction{
 			id:     uint64(i),
-			value:  value.AmountToDecimal(),
+			value:  value.ToDecimal(),
 			Seller: seller.New(slug, slug),
 		}
 		r.Transactions = append(r.Transactions, t)

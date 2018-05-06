@@ -101,15 +101,15 @@ func TestSystem(t *testing.T) {
 			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
-			name:     "Shows seller loaded by the loaddata records from file",
+			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
 			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
 		},
-		{
-			name:     "Show transaction, from the records file just loaded",
-			command:  []string{"transaction", "show"},
-			expected: "COMPRA CONTINENTE MAI 77.52\nCOMPRA FARMACIA SAO J 95.09",
-		},
+		//{
+		//	name:     "Show transaction, from the records file just loaded",
+		//	command:  []string{"transaction", "show"},
+		//	expected: "COMPRA CONTINENTE MAI 77.52\nCOMPRA FARMACIA SAO J 95.09",
+		//},
 		{
 			name:     "Adds pretty name to seller",
 			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},

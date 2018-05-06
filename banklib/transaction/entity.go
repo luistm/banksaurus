@@ -22,7 +22,7 @@ func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 		return &Transaction{}, err
 	}
 
-	return &Transaction{Seller: s, isCredit: false, value: moneyAmount.AmountToDecimal()}, nil
+	return &Transaction{Seller: s, isCredit: false, value: moneyAmount.ToDecimal()}, nil
 }
 
 // Transaction is a money movement
