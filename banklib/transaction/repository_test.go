@@ -65,7 +65,7 @@ func TestUnitTransactionRepositoryGetAll(t *testing.T) {
 
 func TestUnitTransactionRepositoryBuildTransactions(t *testing.T) {
 
-	t1, err := transaction.New(seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"), "4,30")
+	t1, err := transaction.NewFromString(seller.New("COMPRA CAFETARIA HEAR", "COMPRA CAFETARIA HEAR"), "4,30")
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {

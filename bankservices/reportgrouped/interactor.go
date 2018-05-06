@@ -7,7 +7,7 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// New creates a service instance
+// NewFromString creates a service instance
 func New(
 	transactionsRepository banklib.Repository,
 	sellersRepository banklib.Repository,
@@ -69,20 +69,20 @@ func (i *Service) Execute() error {
 	transactionsMap := map[string]banklib.Entity{}
 	var returnTransactions []banklib.Entity
 
+	// TODO: Transaction.Add(t). Should return err if transaction does not have the same seller and name
 	for _, t := range ts {
-		// FIXME: I'm seeing a lot of type assertion and i don't like it. Code smell??
-		if _, ok := transactionsMap[t.(*transaction.Transaction).Seller.String()]; ok {
-			tmpValue := transactionsMap[t.(*transaction.Transaction).Seller.String()].(*transaction.Transaction).Value().Add(*t.(*transaction.Transaction).Value())
-			s := transactionsMap[t.(*transaction.Transaction).Seller.String()].(*transaction.Transaction).Seller
-			newTransaction, err := transaction.New(s, tmpValue.String())
-			if err != nil {
-				return err
-			}
-			transactionsMap[t.(*transaction.Transaction).Seller.String()] = newTransaction
-		} else {
-			transactionsMap[t.(*transaction.Transaction).Seller.String()] = t
+		sellerID := t.(*transaction.Transaction).Seller.ID()
+		value := *t.(*transaction.Transaction).Value()
+
+		tmp := t
+		if _, ok := transactionsMap[sellerID]; ok {
+			sum := transactionsMap[sellerID].(*transaction.Transaction).Value().Add(value)
+			s := transactionsMap[sellerID].(*transaction.Transaction).Seller
+			tmp = transaction.NewFromDecimal(s, &sum)
 		}
+		transactionsMap[sellerID] = tmp
 	}
+	// ------------------------------- TODO
 
 	for _, v := range transactionsMap {
 		returnTransactions = append(returnTransactions, v)

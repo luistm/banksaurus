@@ -7,7 +7,7 @@ import (
 	"github.com/luistm/banksaurus/bankservices"
 )
 
-// New creates a new service instance
+// NewFromString creates a new service instance
 func New(
 	transactionsRepository banklib.Repository,
 	sellersRepository banklib.Repository,

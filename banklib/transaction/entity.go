@@ -10,8 +10,13 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// New creates a record with some parsed data
-func New(s *seller.Seller, value string) (*Transaction, error) {
+// NewFromDecimal creates a transaction using a money amount from a decimal
+func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) (*Transaction){
+	return &Transaction{Seller: s, isCredit: false, value: moneyAmount}
+}
+
+// NewFromString creates a transaction using a money amount from a string
+func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 	moneyAmount, err := moneyamount.New(value)
 	if err != nil {
 		return &Transaction{}, err

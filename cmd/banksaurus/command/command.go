@@ -20,7 +20,7 @@ type Commander interface {
 	Execute(map[string]interface{}) error
 }
 
-// New creates a new command handler
+// NewFromString creates a new command handler
 func New(cliRequest CLIRequest) (Commander, error) {
 
 	if len(cliRequest) == 0 {

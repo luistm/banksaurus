@@ -14,7 +14,7 @@ func TestUnitTransactionNew(t *testing.T) {
 	s := seller.New("TheSellerSlug", "TheSellerName")
 	value := "1.1"
 
-	tr, err := transaction.New(s, value)
+	tr, err := transaction.NewFromString(s, value)
 
 	testkit.AssertIsNil(t, err)
 	testkit.AssertEqual(t, tr.Seller, s)
@@ -22,7 +22,7 @@ func TestUnitTransactionNew(t *testing.T) {
 	testkit.AssertIsNil(t, err)
 	testkit.AssertEqual(t, tr.Value().String(), v.String())
 
-	tr, err = transaction.New(s, "")
+	tr, err = transaction.NewFromString(s, "")
 
 	testkit.AssertIsNil(t, err)
 	testkit.AssertEqual(t, tr.Seller, s)

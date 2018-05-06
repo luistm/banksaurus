@@ -19,15 +19,15 @@ func TestUnitReportFromRecodesGrouped(t *testing.T) {
 	s2 := seller.New("Seller2Slug", "Seller2Name")
 	sellersFromRepository := []banklib.Entity{s1, s2}
 
-	t1, err := transaction.New(s1, "1")
+	t1, err := transaction.NewFromString(s1, "1")
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(s1, "2")
+	t2, err := transaction.NewFromString(s1, "2")
 	testkit.AssertIsNil(t, err)
-	t3, err := transaction.New(s2, "1")
+	t3, err := transaction.NewFromString(s2, "1")
 	testkit.AssertIsNil(t, err)
 	transactionsFromRepository := []banklib.Entity{t1, t2, t3}
 
-	summedTransaction, err := transaction.New(s1, "3")
+	summedTransaction, err := transaction.NewFromString(s1, "3")
 	testkit.AssertIsNil(t, err)
 	transactionsToPresenter := []banklib.Entity{summedTransaction, t3}
 

@@ -15,12 +15,12 @@ import (
 func TestUnitReportFromRecordsExecute(t *testing.T) {
 
 	sellerForTransaction := seller.New("sellerSlug", "")
-	t1, err := transaction.New(sellerForTransaction, "")
+	t1, err := transaction.NewFromString(sellerForTransaction, "")
 	testkit.AssertIsNil(t, err)
 	transactionsFromRepository := []banklib.Entity{t1}
 
 	sellersFromRepository := []banklib.Entity{seller.New("sellerSlug", "TheSellerName")}
-	transactionToPresenter, err := transaction.New(sellersFromRepository[0].(*seller.Seller), "")
+	transactionToPresenter, err := transaction.NewFromString(sellersFromRepository[0].(*seller.Seller), "")
 	testkit.AssertIsNil(t, err)
 	transactionsToPresenter := []banklib.Entity{transactionToPresenter}
 

@@ -13,7 +13,7 @@ import (
 //
 //func (is *infrastructureStub) Execute(q *banklib.Inquirer) (banklib.Rows, error){
 //
-//	db, _, err := sqlmock.New()
+//	db, _, err := sqlmock.NewFromString()
 //	testkit.AssertIsNil(is.t, err)
 //
 //	rows, err := db.Query("SELECT SOMETHING")
