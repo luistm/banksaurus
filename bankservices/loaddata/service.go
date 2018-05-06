@@ -4,10 +4,11 @@ import (
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/banklib/seller"
 	"github.com/luistm/banksaurus/banklib/transaction"
+	"github.com/luistm/banksaurus/bankservices"
 )
 
 // NewFromString creates a new service instance
-func New(fileStorage banklib.CSVHandler, relationalStorage banklib.SQLInfrastructer) *Service {
+func New(fileStorage banklib.CSVHandler, relationalStorage banklib.SQLInfrastructer) bankservices.Servicer {
 	tr := transaction.NewRepository(fileStorage, relationalStorage)
 	sr := seller.NewRepository(relationalStorage)
 

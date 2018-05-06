@@ -11,7 +11,7 @@ import (
 )
 
 // NewFromDecimal creates a transaction using a money amount from a decimal
-func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) (*Transaction){
+func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) *Transaction {
 	return &Transaction{Seller: s, isCredit: false, value: moneyAmount}
 }
 
