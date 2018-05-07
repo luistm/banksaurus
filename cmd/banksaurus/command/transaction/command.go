@@ -8,11 +8,11 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 )
 
-// TransactionCommand handles transaction
-type TransactionCommand struct{}
+// Command handles transaction command
+type Command struct{}
 
 // Executes the command instance
-func (tc *TransactionCommand) Execute(arguments map[string]interface{}) error {
+func (tc *Command) Execute(arguments map[string]interface{}) error {
 
 	dbName, dbPath := configurations.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
