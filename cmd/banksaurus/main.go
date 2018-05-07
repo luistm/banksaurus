@@ -20,9 +20,8 @@ var usage = `Usage:
 	banksaurus load --input <file>
 	banksaurus seller change <id> --pretty <name>
 	banksaurus seller new <name>
-	banksaurus seller show`
-
-// banksaurus transaction show
+	banksaurus seller show
+	banksaurus transaction show`
 
 var options = `
 
