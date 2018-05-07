@@ -22,8 +22,8 @@
 [[projects]]
   name = "github.com/luistm/testkit"
   packages = ["."]
-  revision = "f405b13529b1039994efb74f15d639b6c057556c"
-  version = "0.0.1"
+  revision = "3155cb2ece559f49e972fc6f9a24533c0b1d8fc9"
+  version = "0.0.3"
 
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
