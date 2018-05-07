@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
-	"github.com/luistm/banksaurus/elib/testkit"
+	"github.com/luistm/testkit"
 )
 
 func deleteTestFiles(t *testing.T) {
@@ -91,20 +91,25 @@ func TestSystem(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:     "No sellers should be available here",
+			name:     "No seller should be available here",
 			command:  []string{"seller", "show"},
 			expected: "",
 		},
 		{
-			name:     "LoadDataFromRecords records from file",
+			name:     "Load records from file",
 			command:  []string{"load", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
 		},
 		{
-			name:     "Shows sellers loaded by the run report",
+			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
 			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
 		},
+		//{
+		//	name:     "Show transaction, from the records file just loaded",
+		//	command:  []string{"transaction", "show"},
+		//	expected: "COMPRA CONTINENTE MAI 77.52\nCOMPRA FARMACIA SAO J 95.09",
+		//},
 		{
 			name:     "Adds pretty name to seller",
 			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
@@ -116,7 +121,7 @@ func TestSystem(t *testing.T) {
 			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
-			name:          "Shows report from bank records file, with sellers name instead of slug",
+			name:          "Shows report from bank records file, with seller name instead of slug",
 			command:       []string{"report", "--input", "./tests/fixtures/sample_records_load.csv"},
 			expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,

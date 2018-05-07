@@ -3,18 +3,17 @@ package infrastructure
 import (
 	"io"
 
-	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/transactions"
+	"github.com/luistm/banksaurus/banklib"
 )
 
 // SQLStorage for handling SQL databases
 type SQLStorage interface {
-	lib.SQLInfrastructer
+	banklib.SQLInfrastructer
 	io.Closer
 }
 
 // CSVStorage for handling CSV files
 type CSVStorage interface {
-	transactions.CSVHandler
+	banklib.CSVHandler
 	io.Closer
 }

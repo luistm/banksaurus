@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 
+	"log"
+
 	"github.com/docopt/docopt-go"
-	"github.com/luistm/banksaurus/cmd/banksaurus/commands"
+	"github.com/luistm/banksaurus/cmd/banksaurus/command"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 )
 
@@ -20,10 +22,12 @@ var usage = `Usage:
 	banksaurus seller new <name>
 	banksaurus seller show`
 
+// banksaurus transaction show
+
 var options = `
 
 Options:
-	--grouped     The report is present grouped by seller
+	--grouped     The report is grouped by seller.
 	--input       The path to the records list.
 	--name        Specifies the name.
 	-h --help     Show this screen.`
@@ -66,8 +70,12 @@ func main() {
 		os.Exit(2)
 	}
 
-	command, err := commands.New(os.Args[1:])
+	command, err := command.New(os.Args[1:])
 	if err != nil {
+		if configurations.IsDev() {
+			log.Printf("ERROR: %s", err)
+		}
+
 		fmt.Fprintf(os.Stderr, errGeneric.Error())
 		os.Exit(2)
 	}

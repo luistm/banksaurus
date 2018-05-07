@@ -6,6 +6,9 @@ import (
 	"path"
 )
 
+var applicationName = "banksaurus"
+
+// IsDev returns if in dev environment or not
 func IsDev() bool {
 	if os.Getenv("GO_BANK_CLI_DEV") == "true" {
 		return true
@@ -16,7 +19,7 @@ func IsDev() bool {
 // DatabasePath returns the path nad name for the database
 // taking into account the type of environment
 func DatabasePath() (string, string) {
-	dbName := "bank"
+	dbName := "bankservices"
 	if IsDev() {
 		return dbName, os.TempDir()
 	}
@@ -26,16 +29,16 @@ func DatabasePath() (string, string) {
 
 // LogPath returns the path to the log file
 func LogPath() string {
-	return path.Join(ApplicationHomePath(), "banksaurus.log")
+	return path.Join(ApplicationHomePath(), applicationName+".log")
 }
 
 // ApplicationHomePath builds the path to application data in the user home,
-// something like ~/.bank
+// something like ~/.bankservices
 func ApplicationHomePath() string {
 	usr, err := user.Current()
 	if err != nil {
 		// TODO: no panic here...
 		panic(err)
 	}
-	return path.Join(usr.HomeDir, ".bank")
+	return path.Join(usr.HomeDir, ".bankservices")
 }
