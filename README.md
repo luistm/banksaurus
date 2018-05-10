@@ -1,10 +1,12 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/luistm/banksaurus)](https://goreportcard.com/report/github.com/luistm/banksaurus)
 
-# banksaurus
+## Banksaurus
 
-Personal finance manager driven mainly by fun.
+When managing your finances you must ask yourself, where does your money go? 
 
-## Current status
+This is a personal finance manager driven mainly by fun.
+
+### Current status
 
 This is a work in progress and is mainly a way to learn software stuff.
 
@@ -12,11 +14,11 @@ For now, it offers only a command line interface.
 
 Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file.
 
-## How to use
+### How to use
 
 Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the csv file with your account movements.
 
-### Available commands
+#### Available commands
 
 ```bash
 $ banksaurus --help
@@ -38,7 +40,7 @@ Options:
 	-h --help     Show this screen.
 ```
 
-## Setup
+### Setup
 
 If you're interested in hacking or trying `banksaurus`, you can install via `go get`:
 
@@ -77,10 +79,10 @@ For help about make commands just type:
 make
 ```
 
-## Feedback
+### Feedback
 
 Feedback is greatly appreciated.
 
-## Contributing
+### Contributing
 
 Although this is mainly a way to learn Go, contributions are greatly appreciated.
