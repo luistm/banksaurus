@@ -22,13 +22,13 @@ func TestUnitNewSqlite(t *testing.T) {
 			name:     "name is empty",
 			dbName:   "",
 			dbPath:   "ignoreThisForNow",
-			expected: []interface{}{&Infrastructure{}, errInvalidConfiguration},
+			expected: []interface{}{&Infrastructure{}, ErrInvalidConfiguration},
 		},
 		{
 			name:     "Path is empty",
 			dbName:   "ignoreThisForNow",
 			dbPath:   "",
-			expected: []interface{}{&Infrastructure{}, errInvalidConfiguration},
+			expected: []interface{}{&Infrastructure{}, ErrInvalidConfiguration},
 		},
 		// TODO: Test that exec was called as it should be
 	}
@@ -58,7 +58,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 			name:      "Returns error if DB is undefined",
 			statement: "This is a statement",
 			arguments: []interface{}{},
-			output:    errUndefinedDataBase,
+			output:    ErrUndefinedDataBase,
 		},
 		{
 			name:      "Returns error if statement is empty",
@@ -142,7 +142,7 @@ func TestUnitSqliteExecute(t *testing.T) {
 // 		{
 // 			name:     "Returns error if database not defined",
 // 			input:    []interface{}{"", []interface{}{}},
-// 			output:   []interface{}{nil, errUndefinedDataBase},
+// 			output:   []interface{}{nil, ErrUndefinedDataBase},
 // 			withMock: false,
 // 		},
 // 		{

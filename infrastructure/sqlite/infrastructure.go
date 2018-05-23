@@ -5,25 +5,25 @@ import (
 	"errors"
 	"os"
 
-	"github.com/luistm/banksaurus/lib"
 	"github.com/luistm/banksaurus/infrastructure"
+	"github.com/luistm/banksaurus/lib"
 
 	// To init the database driver
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var errUndefinedDataBase = errors.New("database is not defined")
-
-// ErrStatementUndefined ...
-var ErrStatementUndefined = errors.New("statement is undefined")
-var errInvalidConfiguration = errors.New("Infrastructure configuration parameters are invalid")
-var errFailedToCreatedDB = errors.New("failed to create database")
+var (
+	ErrUndefinedDataBase    = errors.New("database is not defined")
+	ErrStatementUndefined   = errors.New("statement is undefined")
+	ErrInvalidConfiguration = errors.New("infrastructure configuration parameters are invalid")
+	ErrFailedToCreatedDB    = errors.New("failed to create database")
+)
 
 // New creates a new instance of Infrastructure
 func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
 
 	if name == "" || path == "" {
-		return &Infrastructure{}, errInvalidConfiguration
+		return &Infrastructure{}, ErrInvalidConfiguration
 	}
 
 	var db *sql.DB
@@ -33,7 +33,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		db, err = sql.Open("sqlite3", ":memory:")
 	} else {
 		if err := validatePath(path); err != nil {
-			return &Infrastructure{}, errInvalidConfiguration
+			return &Infrastructure{}, ErrInvalidConfiguration
 		}
 		db, err = sql.Open("sqlite3", path+"/"+name+".db")
 	}
@@ -48,7 +48,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return &Infrastructure{}, errFailedToCreatedDB
+		return &Infrastructure{}, ErrFailedToCreatedDB
 	}
 
 	s := &Infrastructure{db}
@@ -85,7 +85,7 @@ type Infrastructure struct {
 // Close closes the connection with the Infrastructure database
 func (s *Infrastructure) Close() error {
 	if s.db == nil {
-		return errUndefinedDataBase
+		return ErrUndefinedDataBase
 	}
 
 	return s.db.Close()
@@ -94,7 +94,7 @@ func (s *Infrastructure) Close() error {
 // Execute is to execute an sql statement
 func (s *Infrastructure) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
-		return errUndefinedDataBase
+		return ErrUndefinedDataBase
 	}
 
 	if statement == "" {
@@ -128,7 +128,7 @@ func (s *Infrastructure) Execute(statement string, values ...interface{}) error 
 // Query fetches data from the database
 func (s *Infrastructure) Query(statement string, args ...interface{}) (lib.Rows, error) {
 	if s.db == nil {
-		return nil, errUndefinedDataBase
+		return nil, ErrUndefinedDataBase
 	}
 
 	if statement == "" {
