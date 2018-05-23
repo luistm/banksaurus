@@ -1,4 +1,4 @@
-package loaddata_test
+package loadcsv_test
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/bankservices"
-	"github.com/luistm/banksaurus/bankservices/loaddata"
+	"github.com/luistm/banksaurus/bankservices/loadcsv"
 	"github.com/luistm/banksaurus/bankservices/transaction"
 	"github.com/luistm/testkit"
 )
@@ -56,7 +56,7 @@ func (dbs *dbStub) Execute(statement string, args ...interface{}) error {
 
 func TestIntegrationLoadData(t *testing.T) {
 
-	service := loaddata.New(&fileStub{}, &fileStub{})
+	service := loadcsv.New(&fileStub{}, &fileStub{})
 	err := service.Execute()
 	testkit.AssertIsNil(t, err)
 

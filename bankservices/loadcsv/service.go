@@ -1,4 +1,4 @@
-package loaddata
+package loadcsv
 
 import (
 	"github.com/luistm/banksaurus/banklib"
