@@ -3,7 +3,7 @@ package transaction
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/bankservices/transaction"
+	"github.com/luistm/banksaurus/services/transaction"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 )
