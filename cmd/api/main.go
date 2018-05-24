@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/luistm/banksaurus/app"
 )
 
-func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello world!")
+func version(w http.ResponseWriter, r *http.Request){
+	fmt.Fprintf(w, app.Version + "\n")
 }
 
 func main() {
-	http.HandleFunc("/", helloWorldHandler)
+	http.HandleFunc("/version", version)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
