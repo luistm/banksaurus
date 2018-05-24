@@ -66,14 +66,14 @@ func main() {
 		os.Exit(2)
 	}
 
-	command, err := command.New(os.Args[1:])
+	cmd, err := command.New(os.Args[1:])
 	if err != nil {
 
 		fmt.Fprintf(os.Stderr, errGeneric.Error())
 		os.Exit(2)
 	}
 
-	err = command.Execute(arguments)
+	err = cmd.Execute(arguments)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, errGeneric.Error()+"\n")
 		os.Exit(2)
