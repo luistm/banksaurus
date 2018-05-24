@@ -12,7 +12,7 @@ import (
 
 // NewFromDecimal creates a transaction using a money amount from a decimal
 func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) *Transaction {
-	return &Transaction{Seller: s, isCredit: false, value: moneyAmount}
+	return &Transaction{Seller: s, value: moneyAmount}
 }
 
 // NewFromString creates a transaction using a money amount from a string
@@ -22,16 +22,15 @@ func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 		return &Transaction{}, err
 	}
 
-	return &Transaction{Seller: s, isCredit: false, value: m.ToDecimal()}, nil
+	return &Transaction{Seller: s, value: m.ToDecimal()}, nil
 }
 
 // Transaction is a money movement
 type Transaction struct {
-	id       uint64
-	value    *decimal.Decimal
-	Seller   *seller.Seller
-	isCredit bool
-	date     time.Time
+	id     uint64
+	value  *decimal.Decimal
+	Seller *seller.Seller
+	date   time.Time
 }
 
 // ID of a transaction
@@ -42,14 +41,6 @@ func (t *Transaction) ID() string {
 // String to satisfy the fmt.Stringer interface
 func (t *Transaction) String() string {
 	return fmt.Sprintf("%s %s", t.Value(), t.Seller)
-}
-
-// IsDebt returns true if a transaction is a debt
-func (t *Transaction) IsDebt() bool {
-	if t.isCredit {
-		return false
-	}
-	return true
 }
 
 // Value returns the field money parsed for money
