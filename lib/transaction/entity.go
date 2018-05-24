@@ -12,7 +12,11 @@ import (
 
 // NewFromDecimal creates a transaction using a money amount from a decimal
 func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) *Transaction {
-	return &Transaction{Seller: s, value: moneyAmount}
+	return &Transaction{
+		Seller: s,
+		value:  moneyAmount,
+		tType:  Debt,
+	}
 }
 
 // NewFromString creates a transaction using a money amount from a string
@@ -22,15 +26,28 @@ func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 		return &Transaction{}, err
 	}
 
-	return &Transaction{Seller: s, value: m.ToDecimal()}, nil
+	return &Transaction{
+		Seller: s,
+		value:  m.ToDecimal(),
+		tType:  Debt,
+	}, nil
 }
 
-// Transaction is a money movement
+// TypeOfTransaction ...
+type TypeOfTransaction int
+
+const (
+	Debt   TypeOfTransaction = 0
+	Credit TypeOfTransaction = 1
+)
+
+// Transaction is a money movementg
 type Transaction struct {
 	id     uint64
-	value  *decimal.Decimal
-	Seller *seller.Seller
 	date   time.Time
+	Seller *seller.Seller
+	tType  TypeOfTransaction
+	value  *decimal.Decimal
 }
 
 // ID of a transaction
