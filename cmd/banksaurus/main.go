@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"github.com/docopt/docopt-go"
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
-	"github.com/luistm/banksaurus/app"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"

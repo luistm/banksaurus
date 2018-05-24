@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/testkit"
-	"github.com/luistm/banksaurus/app"
 )
 
 func deleteTestFiles(t *testing.T) {
