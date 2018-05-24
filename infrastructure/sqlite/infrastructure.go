@@ -9,6 +9,8 @@ import (
 	"github.com/luistm/banksaurus/lib"
 
 	// To init the database driver
+	"fmt"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -16,8 +18,17 @@ var (
 	ErrUndefinedDataBase    = errors.New("database is not defined")
 	ErrStatementUndefined   = errors.New("statement is undefined")
 	ErrInvalidConfiguration = errors.New("infrastructure configuration parameters are invalid")
-	ErrFailedToCreatedDB    = errors.New("failed to create database")
 )
+
+// ErrFailedToCreatedDB for database error
+type ErrFailedToCreatedDB struct {
+	Msg string
+}
+
+// Error to satisfy the Error interface
+func (e *ErrFailedToCreatedDB) Error() string {
+	return fmt.Sprintf("failed to create database: %s", e.Msg)
+}
 
 // New creates a new instance of Infrastructure
 func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
@@ -44,11 +55,32 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	// Create table in order to create the database file
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS seller
-	(slug TEXT NOT NULL PRIMARY KEY, name TEXT);
+	(
+		slug TEXT NOT NULL PRIMARY KEY,
+		name TEXT
+	);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return &Infrastructure{}, ErrFailedToCreatedDB
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
+	}
+
+	// Create transactions table in order to create the database file
+	// 25-10-2017;25-10-2017;COMPRA CONTINENTE MAI ;77,52;;61,25;61,25;
+	// id, seller_id, debt amount, credit amount, contabilistic, real
+	sqlStmt = `
+	CREATE TABLE IF NOT EXISTS transactions
+	(
+		ID int NOT NULL PRIMARY KEY,
+		SELLER_ID int NOT NULL,
+		CREDIT_AMOUNT int DEFAULT 0,
+		DEBT_AMOUNT int DEFAULT 0,
+		BALANCE int NOT NULL
+	);
+	`
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
 	}
 
 	s := &Infrastructure{db}

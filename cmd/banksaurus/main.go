@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"log"
-
 	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
@@ -71,9 +69,6 @@ func main() {
 
 	command, err := command.New(os.Args[1:])
 	if err != nil {
-		if configurations.IsDev() {
-			log.Printf("ERROR: %s", err)
-		}
 
 		fmt.Fprintf(os.Stderr, errGeneric.Error())
 		os.Exit(2)
