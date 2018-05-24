@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/luistm/banksaurus/lib"
-	"github.com/luistm/banksaurus/lib/moneyamount"
+	"github.com/luistm/banksaurus/lib/money"
 	"github.com/luistm/banksaurus/lib/seller"
 )
 
@@ -73,7 +73,7 @@ func (r *Transactions) BuildTransactions(lines [][]string) error {
 			continue
 		}
 
-		value, err := moneyamount.New(line[3])
+		value, err := money.New(line[3])
 		if err != nil {
 			return fmt.Errorf("failed to create decimal from string: %s", err.Error())
 		}

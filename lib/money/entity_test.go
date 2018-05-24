@@ -1,9 +1,9 @@
-package moneyamount_test
+package money_test
 
 import (
 	"testing"
 
-	"github.com/luistm/banksaurus/lib/moneyamount"
+	"github.com/luistm/banksaurus/lib/money"
 	"github.com/luistm/testkit"
 )
 
@@ -24,7 +24,7 @@ func TestUnitMoneyAmountNew(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 
-		ma, err := moneyamount.New(tc.input)
+		ma, err := money.New(tc.input)
 
 		testkit.AssertIsNil(t, err)
 		testkit.AssertEqual(t, tc.output, ma.ToDecimal().String())

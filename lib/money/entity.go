@@ -1,4 +1,4 @@
-package moneyamount
+package money
 
 import (
 	"strings"
@@ -6,8 +6,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// New creates a MoneyAmount instance from a string
-func New(amount string) (*MoneyAmount, error) {
+// New creates a Money instance from a string
+func New(amount string) (*Money, error) {
 	sanedAmount := amount
 	if sanedAmount == "" {
 		sanedAmount = "0"
@@ -17,18 +17,18 @@ func New(amount string) (*MoneyAmount, error) {
 	parsedField = strings.Replace(parsedField, ",", ".", -1)
 	d, err := decimal.NewFromString(parsedField)
 	if err != nil {
-		return &MoneyAmount{}, err
+		return &Money{}, err
 	}
 
-	return &MoneyAmount{&d}, nil
+	return &Money{&d}, nil
 }
 
-// MoneyAmount represents the quantity of money
-type MoneyAmount struct {
+// Money represents the quantity of money
+type Money struct {
 	amount *decimal.Decimal
 }
 
 // ToDecimal returns the amount of money in Decimal format
-func (ma *MoneyAmount) ToDecimal() *decimal.Decimal {
+func (ma *Money) ToDecimal() *decimal.Decimal {
 	return ma.amount
 }

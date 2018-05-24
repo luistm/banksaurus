@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/luistm/banksaurus/lib/moneyamount"
+	"github.com/luistm/banksaurus/lib/money"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/shopspring/decimal"
 )
@@ -17,12 +17,12 @@ func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) *Transaction
 
 // NewFromString creates a transaction using a money amount from a string
 func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
-	moneyAmount, err := moneyamount.New(value)
+	m, err := money.New(value)
 	if err != nil {
 		return &Transaction{}, err
 	}
 
-	return &Transaction{Seller: s, isCredit: false, value: moneyAmount.ToDecimal()}, nil
+	return &Transaction{Seller: s, isCredit: false, value: m.ToDecimal()}, nil
 }
 
 // Transaction is a money movement
@@ -52,7 +52,7 @@ func (t *Transaction) IsDebt() bool {
 	return true
 }
 
-// Value returns the field moneyamount parsed for money
+// Value returns the field money parsed for money
 func (t *Transaction) Value() *decimal.Decimal {
 	return t.value
 }
