@@ -29,7 +29,7 @@ Options:
 	--name        Specifies the name.
 	-h --help     Show this screen.`
 
-var version = "banksaurus 1.1.0"
+var version = "banksaurus 1.2.0"
 
 func setup() error {
 	if configurations.IsDev() {
