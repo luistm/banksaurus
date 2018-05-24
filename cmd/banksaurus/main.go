@@ -8,6 +8,7 @@ import (
 	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/app"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
@@ -28,8 +29,6 @@ Options:
 	--input       The path to the records list.
 	--name        Specifies the name.
 	-h --help     Show this screen.`
-
-var version = "banksaurus 1.2.0"
 
 func setup() error {
 	if configurations.IsDev() {
@@ -61,7 +60,7 @@ func main() {
 		os.Exit(2)
 	}
 
-	arguments, err := docopt.Parse(intro+usage+options, nil, true, version, false)
+	arguments, err := docopt.Parse(intro+usage+options, nil, true, app.Version, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(2)

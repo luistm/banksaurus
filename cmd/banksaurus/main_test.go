@@ -11,6 +11,7 @@ import (
 
 	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 	"github.com/luistm/testkit"
+	"github.com/luistm/banksaurus/app"
 )
 
 func deleteTestFiles(t *testing.T) {
@@ -81,7 +82,7 @@ func TestSystem(t *testing.T) {
 		{
 			name:          "Shows version if option is '--version'",
 			command:       []string{"--version"},
-			expected:      version + "\n",
+			expected:      app.Version + "\n",
 			errorExpected: false,
 		},
 		{
