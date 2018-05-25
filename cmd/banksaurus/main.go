@@ -8,7 +8,6 @@ import (
 	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
-	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
@@ -30,33 +29,12 @@ Options:
 	--name        Specifies the name.
 	-h --help     Show this screen.`
 
-func setup() error {
-	if configurations.IsDev() {
-		return nil
-	}
-
-	// Create home dir if not exists
-	_, err := os.Stat(configurations.ApplicationHomePath())
-	if err != nil {
-		if os.IsNotExist(err) {
-			err = os.Mkdir(configurations.ApplicationHomePath(), 0700)
-			if err != nil {
-				return err
-			}
-		} else {
-			return err
-		}
-	}
-
-	return nil
-}
-
 var errGeneric = errors.New("error while performing operation")
 
 func main() {
-	err := setup()
+	_, err := app.New("../../")
 	if err != nil {
-		fmt.Fprint(os.Stderr, "Failed to setup application")
+		fmt.Fprint(os.Stderr, "Failed to Setup application")
 		os.Exit(2)
 	}
 

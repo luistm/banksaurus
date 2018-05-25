@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/configurations"
 	"github.com/luistm/testkit"
 )
 

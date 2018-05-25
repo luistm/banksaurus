@@ -3,7 +3,7 @@ package seller
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/configurations"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/services/seller"
 )

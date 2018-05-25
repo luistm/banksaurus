@@ -52,6 +52,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		return nil, err
 	}
 
+	// TODO: Move table creation to a proper place ---------------------------------------------------------------------
 	// Create table in order to create the database file
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS seller
@@ -65,6 +66,18 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
 	}
 
+	sqlStmt = `
+	CREATE TABLE IF NOT EXISTS transaction_types
+	(
+		TYPE CHAR NOT NULL
+	)
+	`
+
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
+	}
+
 	// Create transactions table in order to create the database file
 	// 25-10-2017;25-10-2017;COMPRA CONTINENTE MAI ;77,52;;61,25;61,25;
 	// id, seller_id, debt amount, credit amount, contabilistic, real
@@ -73,8 +86,8 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	(
 		ID int NOT NULL PRIMARY KEY,
 		SELLER_ID int NOT NULL,
-		CREDIT_AMOUNT int DEFAULT 0,
-		DEBT_AMOUNT int DEFAULT 0,
+		AMOUNT int DEFAULT 0,
+		TYPE 
 		BALANCE int NOT NULL
 	);
 	`
@@ -82,6 +95,8 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 	if err != nil {
 		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
 	}
+
+	// -----------------------------------------------------------------------------------------------------------------
 
 	s := &Infrastructure{db}
 	return s, nil
