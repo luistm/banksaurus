@@ -40,5 +40,5 @@ func ApplicationHomePath() string {
 		// TODO: no panic here...
 		panic(err)
 	}
-	return path.Join(usr.HomeDir, ".bankservices")
+	return path.Join(usr.HomeDir, ".bank")
 }
