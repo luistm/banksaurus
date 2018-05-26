@@ -127,13 +127,13 @@ func ApplicationHomePath() string {
 		// TODO: no panic here...
 		panic(err)
 	}
-	return path.Join(usr.HomeDir, ".services")
+	return path.Join(usr.HomeDir, ".bank")
 }
 
 // DatabasePath returns the path and name for the database
 // taking into account the type of environment
 func DatabasePath() (string, string) {
-	dbName := "services"
+	dbName := "bank"
 	if IsDev() {
 		return dbName, os.TempDir()
 	}
