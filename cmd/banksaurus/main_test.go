@@ -10,12 +10,11 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/configurations"
 	"github.com/luistm/testkit"
 )
 
 func deleteTestFiles(t *testing.T) {
-	dbName, dbPath := configurations.DatabasePath()
+	dbName, dbPath := app.DatabasePath()
 	if err := os.RemoveAll(path.Join(dbPath, dbName) + ".db"); err != nil {
 		t.Error(err)
 	}
@@ -23,8 +22,8 @@ func deleteTestFiles(t *testing.T) {
 
 func TestSystemUsage(t *testing.T) {
 
-	os.Setenv("GO_BANK_CLI_DEV", "true")
-	defer os.Setenv("GO_BANK_CLI_DEV", "")
+	os.Setenv("BANKSAURUS_ENV", "dev")
+	defer os.Setenv("BANKSAURUS_ENV", "")
 	defer deleteTestFiles(t)
 
 	testCases := []struct {
@@ -63,8 +62,8 @@ func TestSystemUsage(t *testing.T) {
 
 func TestSystem(t *testing.T) {
 
-	os.Setenv("GO_BANK_CLI_DEV", "true")
-	defer os.Setenv("GO_BANK_CLI_DEV", "")
+	os.Setenv("BANKSAURUS_ENV", "dev")
+	defer os.Setenv("BANKSAURUS_ENV", "")
 	defer deleteTestFiles(t)
 
 	testCases := []struct {

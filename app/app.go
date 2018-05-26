@@ -8,7 +8,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/luistm/banksaurus/configurations"
+	"os/user"
 )
 
 const (
@@ -99,15 +99,15 @@ func ValidatePath(path string) error {
 // Init initializes the application
 func (a *App) Init() error {
 
-	if configurations.IsDev() {
+	if IsDev() {
 		return nil
 	}
 
 	// Create home dir if not exists
-	_, err := os.Stat(configurations.ApplicationHomePath())
+	_, err := os.Stat(ApplicationHomePath())
 	if err != nil {
 		if os.IsNotExist(err) {
-			err = os.Mkdir(configurations.ApplicationHomePath(), 0700)
+			err = os.Mkdir(ApplicationHomePath(), 0700)
 			if err != nil {
 				return err
 			}
@@ -117,4 +117,34 @@ func (a *App) Init() error {
 	}
 
 	return nil
+}
+
+// ApplicationHomePath builds the path to application data in the user home,
+// something like ~/.services
+func ApplicationHomePath() string {
+	usr, err := user.Current()
+	if err != nil {
+		// TODO: no panic here...
+		panic(err)
+	}
+	return path.Join(usr.HomeDir, ".services")
+}
+
+// DatabasePath returns the path and name for the database
+// taking into account the type of environment
+func DatabasePath() (string, string) {
+	dbName := "services"
+	if IsDev() {
+		return dbName, os.TempDir()
+	}
+
+	return dbName, ApplicationHomePath()
+}
+
+// IsDev returns if in dev environment or not
+func IsDev() bool {
+	if os.Getenv("BANKSAURUS_ENV") == "dev" {
+		return true
+	}
+	return false
 }

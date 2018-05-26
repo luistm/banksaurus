@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"path"
+
 	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
@@ -32,9 +34,14 @@ Options:
 var errGeneric = errors.New("error while performing operation")
 
 func main() {
-	_, err := app.New("../../")
+	pwd, err := os.Getwd()
 	if err != nil {
-		fmt.Fprint(os.Stderr, "Failed to Setup application")
+		panic(err)
+	}
+
+	_, err = app.New(path.Join(pwd, "..", "..","configurations", "banksaurus_cli_dev.json"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to Setup application: %s\n", err.Error())
 		os.Exit(2)
 	}
 

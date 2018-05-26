@@ -3,7 +3,7 @@ package report
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/configurations"
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/seller"
@@ -30,7 +30,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer CSVStorage.Close()
 
-	dbName, dbPath := configurations.DatabasePath()
+	dbName, dbPath := app.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return err

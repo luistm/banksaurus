@@ -6,6 +6,8 @@ import (
 	"os"
 	"path"
 
+	"os/user"
+
 	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/testkit"
 )
@@ -102,4 +104,30 @@ func TestUnitValidatePath(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestUnitGetDataBasePath(t *testing.T) {
+
+	usr, err := user.Current()
+	if err != nil {
+		t.Fatal(err)
+	}
+	expectedDbName := "services"
+	expectedDbPath := path.Join(usr.HomeDir, ".services")
+
+	dbName, dbPath := app.DatabasePath()
+
+	testkit.AssertEqual(t, expectedDbName, dbName)
+	testkit.AssertEqual(t, expectedDbPath, dbPath)
+
+	os.Setenv("BANKSAURUS_ENV", "true")
+	defer os.Setenv("BANKSAURUS_ENV", "")
+
+	expectedDbName = "services"
+	expectedDbPath = os.TempDir()
+
+	dbName, dbPath = app.DatabasePath()
+
+	testkit.AssertEqual(t, expectedDbName, dbName)
+	testkit.AssertEqual(t, expectedDbPath, dbPath)
 }

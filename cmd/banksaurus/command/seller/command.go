@@ -3,7 +3,7 @@ package seller
 import (
 	"os"
 
-	"github.com/luistm/banksaurus/configurations"
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/services/seller"
 )
@@ -15,7 +15,7 @@ type Command struct{}
 func (s *Command) Execute(arguments map[string]interface{}) error {
 	var err error
 
-	dbName, dbPath := configurations.DatabasePath()
+	dbName, dbPath := app.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return err

@@ -1,7 +1,7 @@
 package load
 
 import (
-	"github.com/luistm/banksaurus/configurations"
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/services/loadcsv"
@@ -27,7 +27,7 @@ func (l *Command) loadFile(inputFilePath string) error {
 	}
 	defer CSVStorage.Close()
 
-	dbName, dbPath := configurations.DatabasePath()
+	dbName, dbPath := app.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return err
