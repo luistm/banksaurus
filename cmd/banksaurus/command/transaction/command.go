@@ -21,6 +21,9 @@ func (tc *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer SQLStorage.Close()
 
+	// TODO: Get dependencies from the app here
+	// SQLStorage := app.Get(app.config.storage)
+
 	i, err := transaction.New(SQLStorage, NewPresenter(os.Stdout))
 	if err != nil {
 		return err

@@ -38,6 +38,10 @@ func main() {
 		os.Exit(2)
 	}
 
+	// TODO: Inject dependencies here
+	// err := application.Add(aConstructor, "constructor.slug")
+	// defer application.Close()
+
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, app.Version, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
