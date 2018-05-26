@@ -20,10 +20,15 @@ func deleteTestFiles(t *testing.T) {
 	}
 }
 
-func TestSystemUsage(t *testing.T) {
-
+func TestMain(t *testing.M){
+	// TODO: Define test settings by setting them in the BANKSAURUS_CONFIG variable.
 	os.Setenv("BANKSAURUS_ENV", "dev")
 	defer os.Setenv("BANKSAURUS_ENV", "")
+	os.Exit(t.Run())
+}
+
+func TestSystemUsage(t *testing.T) {
+
 	defer deleteTestFiles(t)
 
 	testCases := []struct {
@@ -62,8 +67,6 @@ func TestSystemUsage(t *testing.T) {
 
 func TestSystem(t *testing.T) {
 
-	os.Setenv("BANKSAURUS_ENV", "dev")
-	defer os.Setenv("BANKSAURUS_ENV", "")
 	defer deleteTestFiles(t)
 
 	testCases := []struct {

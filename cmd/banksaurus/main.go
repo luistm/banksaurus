@@ -39,6 +39,7 @@ func main() {
 		panic(err)
 	}
 
+	// TODO: Define test settings by setting them in the BANKSAURUS_CONFIG variable. See test main!!
 	_, err = app.New(path.Join(pwd, "..", "..","configurations", "banksaurus_cli_dev.json"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to Setup application: %s\n", err.Error())
