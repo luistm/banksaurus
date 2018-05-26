@@ -120,7 +120,7 @@ func TestUnitGetDataBasePath(t *testing.T) {
 	testkit.AssertEqual(t, expectedDbName, dbName)
 	testkit.AssertEqual(t, expectedDbPath, dbPath)
 
-	os.Setenv("BANKSAURUS_ENV", "true")
+	os.Setenv("BANKSAURUS_ENV", "dev")
 	defer os.Setenv("BANKSAURUS_ENV", "")
 
 	expectedDbName = "services"
