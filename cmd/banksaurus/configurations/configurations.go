@@ -19,7 +19,7 @@ func IsDev() bool {
 // DatabasePath returns the path nad name for the database
 // taking into account the type of environment
 func DatabasePath() (string, string) {
-	dbName := "bankservices"
+	dbName := "bank"
 	if IsDev() {
 		return dbName, os.TempDir()
 	}
