@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"path"
-
 	"github.com/docopt/docopt-go"
 	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
+	"path"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
@@ -39,8 +38,16 @@ func main() {
 		panic(err)
 	}
 
-	// TODO: Define test settings by setting them in the BANKSAURUS_CONFIG variable. See test main!!
-	_, err = app.New(path.Join(pwd, "..", "..","configurations", "banksaurus_cli_dev.json"))
+	// TODO: Define test settings by setting it in the BANKSAURUS_CONFIG variable.
+	// Because this is a CLI application with an embedded database,
+	// We will assume some defaults.
+	// If BANKSAURUS_CONFIG is defined, use what is defined.
+	// Else, try to fetch settings from
+	// a) ~/.banksaurus/banksaurus_cli.json
+	// b) $GOPATH/src/github.com/luistm/configurations/banksaurus_cli.json
+
+	confPath := path.Join(pwd, "..", "..", "configurations", "banksaurus_cli_dev.json")
+	_, err = app.New(confPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to Setup application: %s\n", err.Error())
 		os.Exit(2)
