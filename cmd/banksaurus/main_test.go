@@ -27,7 +27,7 @@ func TestMain(t *testing.M){
 	os.Exit(t.Run())
 }
 
-func TestSystemUsage(t *testing.T) {
+func TestAcceptanceUsage(t *testing.T) {
 
 	defer deleteTestFiles(t)
 
@@ -65,7 +65,7 @@ func TestSystemUsage(t *testing.T) {
 	}
 }
 
-func TestSystem(t *testing.T) {
+func TestAcceptance(t *testing.T) {
 
 	defer deleteTestFiles(t)
 
