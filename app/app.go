@@ -7,13 +7,13 @@ import (
 
 	"path"
 	"path/filepath"
-
-	"os/user"
 )
 
 const (
 	// Version of the application
-	Version = "banksaurus 1.2.0" // TODO: define this automagically on make build
+	Version = "banksaurus 1.2.0"
+
+	// TODO: Application version should be defined auto magically when a release is made
 )
 
 // New creates an instance of App.
@@ -55,6 +55,10 @@ func New(configurationFilePath string) (*App, error) {
 	}
 
 	application := &App{projectPath}
+	if isDev() {
+		return application, nil
+	}
+
 	err := application.Init()
 	if err != nil {
 		return &App{}, err
@@ -63,10 +67,10 @@ func New(configurationFilePath string) (*App, error) {
 	return application, nil
 }
 
-// A project must have in the project path
-// - /configurations
-// - /cmd
-// - /infrastructure
+// A project must have in the project path:
+// a) /configurations
+// b) /cmd
+// c) /infrastructure
 func buildProjectPath(pth string) (string, error) {
 
 	p := path.Join(pth, "..")
@@ -113,57 +117,27 @@ func ValidatePath(path string) error {
 	return nil
 }
 
-// Init initializes the application
+// Init initializes the application.
 func (a *App) Init() error {
-
-	if IsDev() {
-		return nil
-	}
 
 	// Create home dir if not exists
 	_, err := os.Stat(ConfigHome())
-	if err != nil {
-		if os.IsNotExist(err) {
-			err = os.Mkdir(ConfigHome(), 0700)
-			if err != nil {
-				return err
-			}
-		} else {
+
+	// Create ConfigHome if it does not exist
+	if err != nil && os.IsNotExist(err) {
+		err = os.Mkdir(ConfigHome(), 0700)
+		if err != nil {
 			return err
 		}
 	}
 
-	// TODO: Must create the configuration file here
-	// touch applicationpath/config.json
+	// Handle all other errors
+	if err != nil {
+		return err
+	}
+
+	// TODO: Create configuration files
+	//       ~/.bank/config.json
 
 	return nil
-}
-
-// ConfigHome defines the base directory relative to which
-// user specific configuration files should be stored.
-func ConfigHome() string {
-	usr, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
-	return path.Join(usr.HomeDir, ".bank")
-}
-
-// DatabasePath returns the path and name for the database
-// taking into account the type of environment
-func DatabasePath() (string, string) {
-	dbName := "bank"
-	if IsDev() {
-		return dbName, os.TempDir()
-	}
-
-	return dbName, ConfigHome()
-}
-
-// IsDev returns if in dev environment or not
-func IsDev() bool {
-	if os.Getenv("BANKSAURUS_ENV") == "dev" {
-		return true
-	}
-	return false
 }
