@@ -95,10 +95,7 @@ type App struct {
 }
 
 // ValidatePath checks if a path is valid
-// A path is considered valid if:
-// a) the path exists
-// b) it's not a file
-// If a path is valid the return is nil
+// A path is considered valid if exists.
 func ValidatePath(path string) error {
 
 	if !strings.HasPrefix(path, "/") {
@@ -112,10 +109,6 @@ func ValidatePath(path string) error {
 	if err != nil {
 		return err
 	}
-
-	//if !fileInfo.IsDir() {
-	//	return ErrPathIsFile
-	//}
 
 	return nil
 }
