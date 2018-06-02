@@ -20,7 +20,7 @@ func deleteTestFiles(t *testing.T) {
 	}
 }
 
-func TestMain(t *testing.M){
+func TestMain(t *testing.M) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		panic(err)

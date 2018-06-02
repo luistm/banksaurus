@@ -13,36 +13,42 @@ import (
 
 const (
 	// Version of the application
-	Version = "banksaurus 1.2.0"
+	Version = "banksaurus 1.2.0" // TODO: define this automagically on make build
 )
 
-// New creates an instance of App in the specified path.
-// It should receive the full path to the configuration file.
-// If the full path to the configuration path is not received,
-// defaults will be assumed.
-func New(configurationPath string) (*App, error) {
+// New creates an instance of App.
+//
+// An app needs a configuration file.
+// The path to the configuration file can be defined by:
+// 1) passing by argument to the new function;
+// 2) Defining the BANKSAURUS_CONFIG environment variable
+// Both ways should receive the full path to the configuration file.
+//
+// If a configuration file path is not defined,
+// the default value is $HOME/.bank/config.json
+//
+func New(configurationFilePath string) (*App, error) {
 
 	var projectPath string
 
-
 	// Environment variable has priority above others
 	configPath := os.Getenv("BANKSAURUS_CONFIG")
-	if configPath != ""{
-		configurationPath = configPath
+	if configPath != "" {
+		configurationFilePath = configPath
 	}
 
 	// Assume defaults
-	if configurationPath == ""{
+	if configurationFilePath == "" {
 		projectPath = path.Join(ApplicationHomePath(), "config.json")
 	}
 
-	if configurationPath != "" {
-		err := ValidatePath(configurationPath)
+	if configurationFilePath != "" {
+		err := ValidatePath(configurationFilePath)
 		if err != nil {
 			return &App{}, err
 		}
 
-		projectPath, err = buildProjectPath(filepath.Dir(configurationPath))
+		projectPath, err = buildProjectPath(filepath.Dir(configurationFilePath))
 		if err != nil {
 			return &App{}, err
 		}

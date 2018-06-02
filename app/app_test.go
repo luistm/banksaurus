@@ -34,8 +34,8 @@ func TestUnitNewApp(t *testing.T) {
 			expectedApp:           &app.App{ProjectPath: path.Join(pwd, "/..")},
 		},
 		{
-			name: "Creating path with no configuration path will assume default",
-			expectedApp:           &app.App{ProjectPath: path.Join(app.ApplicationHomePath(), "config.json")},
+			name:        "Creating path with no configuration path will assume default",
+			expectedApp: &app.App{ProjectPath: path.Join(app.ApplicationHomePath(), "config.json")},
 		},
 		{
 			name: "Creates app with non exiting directory",
