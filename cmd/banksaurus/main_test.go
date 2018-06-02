@@ -21,9 +21,18 @@ func deleteTestFiles(t *testing.T) {
 }
 
 func TestMain(t *testing.M){
-	// TODO: Define test settings by setting them in the BANKSAURUS_CONFIG variable.
+	pwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	configPath := path.Join(pwd, "..", "..", "configurations", "banksaurus_cli_dev.json")
+
+	os.Setenv("BANKSAURUS_CONFIG", configPath)
+	defer os.Setenv("BANKSAURUS_CONFIG", "")
+
 	os.Setenv("BANKSAURUS_ENV", "dev")
 	defer os.Setenv("BANKSAURUS_ENV", "")
+
 	os.Exit(t.Run())
 }
 

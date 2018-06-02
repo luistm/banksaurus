@@ -34,6 +34,10 @@ func TestUnitNewApp(t *testing.T) {
 			expectedApp:           &app.App{ProjectPath: path.Join(pwd, "/..")},
 		},
 		{
+			name: "Creating path with no configuration path will assume default",
+			expectedApp:           &app.App{ProjectPath: path.Join(app.ApplicationHomePath(), "config.json")},
+		},
+		{
 			name: "Creates app with non exiting directory",
 			configurationFilePath: "/ThisDirectoryDoesNotExist",
 			expectedApp:           &app.App{},
@@ -63,6 +67,26 @@ func TestUnitNewApp(t *testing.T) {
 			testkit.AssertEqual(t, tc.expectedApp, application)
 		})
 	}
+
+	t.Run("Defines configuration in environment variable", func(t *testing.T) {
+		expectedApp := &app.App{ProjectPath: path.Join(pwd, "/..")}
+		os.Setenv("BANKSAURUS_CONFIG", path.Join(pwd, "..", "/configurations/test_conf.json"))
+		defer os.Setenv("BANKSAURUS_CONFIG", "")
+
+		application, err := app.New("")
+		testkit.AssertIsNil(t, err)
+
+		testkit.AssertEqual(t, expectedApp, application)
+	})
+
+	t.Run("Validates path when path defined in environment variable", func(t *testing.T) {
+		os.Setenv("BANKSAURUS_CONFIG", "/ThisPathDoesNotExist")
+		defer os.Setenv("BANKSAURUS_CONFIG", "")
+
+		_, err := app.New("")
+
+		testkit.AssertEqual(t, err, app.ErrPathDoesNotExist)
+	})
 }
 
 func TestUnitValidatePath(t *testing.T) {

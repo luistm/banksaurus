@@ -18,20 +18,38 @@ const (
 
 // New creates an instance of App in the specified path.
 // It should receive the full path to the configuration file.
+// If the full path to the configuration path is not received,
+// defaults will be assumed.
 func New(configurationPath string) (*App, error) {
 
-	err := ValidatePath(configurationPath)
-	if err != nil {
-		return &App{}, err
+	var projectPath string
+
+
+	// Environment variable has priority above others
+	configPath := os.Getenv("BANKSAURUS_CONFIG")
+	if configPath != ""{
+		configurationPath = configPath
 	}
 
-	projectPath, err := buildProjectPath(filepath.Dir(configurationPath))
-	if err != nil {
-		return &App{}, err
+	// Assume defaults
+	if configurationPath == ""{
+		projectPath = path.Join(ApplicationHomePath(), "config.json")
+	}
+
+	if configurationPath != "" {
+		err := ValidatePath(configurationPath)
+		if err != nil {
+			return &App{}, err
+		}
+
+		projectPath, err = buildProjectPath(filepath.Dir(configurationPath))
+		if err != nil {
+			return &App{}, err
+		}
 	}
 
 	application := &App{projectPath}
-	err = application.Init()
+	err := application.Init()
 	if err != nil {
 		return &App{}, err
 	}
@@ -115,6 +133,9 @@ func (a *App) Init() error {
 			return err
 		}
 	}
+
+	// TODO: Must create the configuration file here
+	// touch applicationpath/config.json
 
 	return nil
 }
