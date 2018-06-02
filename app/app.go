@@ -39,7 +39,7 @@ func New(configurationFilePath string) (*App, error) {
 
 	// Assume defaults
 	if configurationFilePath == "" {
-		projectPath = path.Join(ApplicationHomePath(), "config.json")
+		projectPath = path.Join(ConfigHome(), "config.json")
 	}
 
 	if configurationFilePath != "" {
@@ -128,10 +128,10 @@ func (a *App) Init() error {
 	}
 
 	// Create home dir if not exists
-	_, err := os.Stat(ApplicationHomePath())
+	_, err := os.Stat(ConfigHome())
 	if err != nil {
 		if os.IsNotExist(err) {
-			err = os.Mkdir(ApplicationHomePath(), 0700)
+			err = os.Mkdir(ConfigHome(), 0700)
 			if err != nil {
 				return err
 			}
@@ -146,12 +146,11 @@ func (a *App) Init() error {
 	return nil
 }
 
-// ApplicationHomePath builds the path to application data in the user home,
-// something like ~/.services
-func ApplicationHomePath() string {
+// ConfigHome defines the base directory relative to which
+// user specific configuration files should be stored.
+func ConfigHome() string {
 	usr, err := user.Current()
 	if err != nil {
-		// TODO: no panic here...
 		panic(err)
 	}
 	return path.Join(usr.HomeDir, ".bank")
@@ -165,7 +164,7 @@ func DatabasePath() (string, string) {
 		return dbName, os.TempDir()
 	}
 
-	return dbName, ApplicationHomePath()
+	return dbName, ConfigHome()
 }
 
 // IsDev returns if in dev environment or not
