@@ -2,7 +2,6 @@ package cgd_csv
 
 import (
 	"encoding/csv"
-	"errors"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"os"
 	"strconv"
@@ -11,27 +10,13 @@ import (
 )
 
 // New opens and returns a file handler for a CSV file
-func New(inputFilePath string) (*Repository, error) {
-	_, err := os.Stat(inputFilePath)
+func New(filePath string) (*Repository, error) {
+	_, err := os.Stat(filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	f := &Repository{filePath: inputFilePath}
-
-	return f, nil
-}
-
-// Repository represents the content of CSV formatted file
-type Repository struct {
-	file     *os.File
-	filePath string
-}
-
-// GetAll returns all transactions
-func (r *Repository) GetAll() ([]*transaction.Entity, error) {
-
-	file, err := os.Open(r.filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -43,20 +28,30 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	lines, err := reader.ReadAll()
 	if err != nil {
-		return []*transaction.Entity{}, err
+		return &Repository{}, err
 	}
+
+	f := &Repository{lines: lines[5 : len(lines)-2]}
+
+	return f, nil
+}
+
+// Repository represents the content of CSV formatted file
+type Repository struct {
+	lines [][]string
+}
+
+// GetAll returns all transactions
+func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	transactions := []*transaction.Entity{}
 
-	for _, line := range lines[5 : len(lines)-2] {
+	for _, line := range r.lines {
 
 		// If not a debt, then is a credit
 		valueString := line[3]
 		if line[4] != "" {
 			valueString = line[4]
-		}
-		if valueString == "" && line[4] == "" {
-			return []*transaction.Entity{}, errors.New("invalid input file")
 		}
 
 		valueString = strings.Replace(valueString, ",", "", -1)

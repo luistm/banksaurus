@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-// TODO: Hardening: Test that the GetAll method can handle all kind of input files
-
 func TestUnitNewGateway(t *testing.T) {
 
 	timeNow := time.Now()
