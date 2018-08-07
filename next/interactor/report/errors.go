@@ -2,7 +2,6 @@ package report
 
 import "fmt"
 
-// ErrRepository ...
 type customError struct {
 	msg string
 	err error

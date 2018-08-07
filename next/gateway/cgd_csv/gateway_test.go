@@ -10,7 +10,7 @@ import (
 
 // TODO: Hardening: Test that the GetAll method can handle all kind of input files
 
-func TestNewGateway(t *testing.T) {
+func TestUnitNewGateway(t *testing.T) {
 
 	timeNow := time.Now()
 	t1, err := transaction.New(timeNow, "", 1)

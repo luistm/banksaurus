@@ -7,6 +7,7 @@ import (
 	"github.com/luistm/testkit"
 	"strconv"
 	"testing"
+	"time"
 )
 
 type presenter struct {
@@ -40,7 +41,7 @@ func (tr *transactionRepository) GetAll() ([]*transaction.Entity, error) {
 	return tr.transactions, nil
 }
 
-func TestNewReport(t *testing.T) {
+func TestUnitNewReport(t *testing.T) {
 
 	_, err := report.NewInteractor(nil, nil)
 	testkit.AssertEqual(t, err, report.ErrPresenterUndefined)
@@ -49,12 +50,12 @@ func TestNewReport(t *testing.T) {
 	testkit.AssertEqual(t, err, report.ErrRepositoryUndefined)
 }
 
-func TestReport(t *testing.T) {
+func TestUnitReport(t *testing.T) {
 
 	rq1, err := report.NewRequest()
 	testkit.AssertIsNil(t, err)
 
-	t1, err := transaction.New()
+	t1, err := transaction.New(time.Now(), "", 1)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
