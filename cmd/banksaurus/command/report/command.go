@@ -9,7 +9,6 @@ import (
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 	"github.com/luistm/banksaurus/services"
-	"github.com/luistm/banksaurus/services/report"
 	"github.com/luistm/banksaurus/services/reportgrouped"
 )
 
@@ -24,35 +23,37 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		grouped = true
 	}
 
-	CSVStorage, err := csv.New(arguments["<file>"].(string))
-	if err != nil {
-		return err
-	}
-	defer CSVStorage.Close()
-
-	dbName, dbPath := app.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
-	if err != nil {
-		return err
-	}
-	defer SQLStorage.Close()
-
-	transactionRepository := transaction.NewRepository(CSVStorage, SQLStorage)
-	sellersRepository := seller.NewRepository(SQLStorage)
-	presenter := NewPresenter(os.Stdout)
-
-	var rfr services.Servicer
 	if grouped {
-		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
-	} else {
-		rfr, err = report.New(transactionRepository, sellersRepository, presenter)
-	}
-	if err != nil {
-		return err
-	}
+		CSVStorage, err := csv.New(arguments["<file>"].(string))
+		if err != nil {
+			return err
+		}
+		defer CSVStorage.Close()
 
-	if err := rfr.Execute(); err != nil {
-		return nil
+		dbName, dbPath := app.DatabasePath()
+		SQLStorage, err := sqlite.New(dbPath, dbName, false)
+		if err != nil {
+			return err
+		}
+		defer SQLStorage.Close()
+
+		transactionRepository := transaction.NewRepository(CSVStorage, SQLStorage)
+		sellersRepository := seller.NewRepository(SQLStorage)
+		presenter := NewPresenter(os.Stdout)
+
+		var rfr services.Servicer
+
+		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
+		if err != nil {
+			return err
+		}
+
+		if err := rfr.Execute(); err != nil {
+			return nil
+		}
+		
+	} else {
+		// rfr, err = report.New(transactionRepository, sellersRepository, presenter)
 	}
 
 	return nil
