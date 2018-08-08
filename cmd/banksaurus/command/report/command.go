@@ -9,7 +9,7 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
-	"github.com/luistm/banksaurus/next/gateway/cgd_csv"
+	"github.com/luistm/banksaurus/next/adapter/cgd_csv"
 	"github.com/luistm/banksaurus/services"
 	"github.com/luistm/banksaurus/services/reportgrouped"
 )

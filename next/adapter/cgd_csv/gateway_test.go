@@ -2,7 +2,7 @@ package cgd_csv_test
 
 import (
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/gateway/cgd_csv"
+	"github.com/luistm/banksaurus/next/adapter/cgd_csv"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
