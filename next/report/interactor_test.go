@@ -3,7 +3,7 @@ package report_test
 import (
 	"errors"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/interactor/report"
+	"github.com/luistm/banksaurus/next/report"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
