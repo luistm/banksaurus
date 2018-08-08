@@ -10,17 +10,7 @@ import (
 )
 
 // New opens and returns a file handler for a CSV file
-func New(filePath string) (*Repository, error) {
-	_, err := os.Stat(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+func New(file *os.File) (*Repository, error) {
 
 	reader := csv.NewReader(file)
 	reader.Comma = ';'
