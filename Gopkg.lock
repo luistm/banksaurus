@@ -2,65 +2,91 @@
 
 
 [[projects]]
+  digest = "1:04aea75705cb453e24bf8c1506a24a5a9036537dbc61ddf71d20900d6c7c3ab9"
   name = "github.com/DATA-DOG/go-sqlmock"
   packages = ["."]
+  pruneopts = "UT"
   revision = "d76b18b42f285b792bf985118980ce9eacea9d10"
   version = "v1.3.0"
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:abaaa7489a2f0f3afb2adc8ea1a282a5bd52350b87b26da220c94fc778d6d63b"
   name = "github.com/docopt/docopt-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "784ddc588536785e7299f7272f39101f7faccc3f"
   version = "0.6.2"
 
 [[projects]]
+  digest = "1:b44d8ec8a5ef5ab43daea307fcd1563911d0f6d1c3829ba92f69fcd1bdc66139"
   name = "github.com/luistm/testkit"
   packages = ["."]
+  pruneopts = "UT"
   revision = "3155cb2ece559f49e972fc6f9a24533c0b1d8fc9"
   version = "0.0.3"
 
 [[projects]]
+  digest = "1:3cafc6a5a1b8269605d9df4c6956d43d8011fc57f266ca6b9d04da6c09dee548"
   name = "github.com/mattn/go-sqlite3"
   packages = ["."]
-  revision = "323a32be5a2421b8c7087225079c6c900ec397cd"
-  version = "v1.7.0"
+  pruneopts = "UT"
+  revision = "25ecb14adfc7543176f7d85291ec7dba82c6f7e4"
+  version = "v1.9.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:81e02c4edb639c80559c0650f9401d3e2dcc3256d1fa215382bb7c83c1db9126"
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "69b3a8ad1f5f2c8bd855cb6506d18593064a346b"
-  version = "1.0.1"
+  pruneopts = "UT"
+  revision = "cd690d0c9e2447b1ef2a129a6b7b49077da89b8e"
+  version = "1.1.0"
 
 [[projects]]
+  digest = "1:ac83cf90d08b63ad5f7e020ef480d319ae890c208f8524622a2f3136e2686b02"
   name = "github.com/stretchr/objx"
   packages = ["."]
-  revision = "facf9a85c22f48d2f52f2380e4efce1768749a89"
-  version = "v0.1"
+  pruneopts = "UT"
+  revision = "477a77ecc69700c7cdeb1fa9e129548e1c1c393c"
+  version = "v0.1.1"
 
 [[projects]]
+  digest = "1:15a4a7e5afac3cea801fa24831fce3bf3b5bd3620cbf8355a07b7dbf06877883"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
-    "mock"
+    "mock",
   ]
-  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
-  version = "v1.2.1"
+  pruneopts = "UT"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b73bac4c3738c3a1865ac7ea45777fec8b1a77bac6f96bfe21333806e2d09f2e"
+  input-imports = [
+    "github.com/DATA-DOG/go-sqlmock",
+    "github.com/docopt/docopt-go",
+    "github.com/luistm/testkit",
+    "github.com/mattn/go-sqlite3",
+    "github.com/shopspring/decimal",
+    "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/mock",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
