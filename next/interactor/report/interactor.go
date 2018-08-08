@@ -43,7 +43,13 @@ func (i *Interactor) Execute(r *Request) error {
 		return ErrRepository.AppendError(err)
 	}
 
-	err = i.presenter.Present(ts)
+	returnData := []map[string]int64{}
+	for _, t := range ts {
+		transactionData := map[string]int64{t.Seller(): t.Value()}
+		returnData = append(returnData, transactionData)
+	}
+
+	err = i.presenter.Present(returnData)
 	if err != nil {
 		return ErrPresenter.AppendError(err)
 	}

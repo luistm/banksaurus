@@ -19,3 +19,13 @@ type Entity struct {
 func (t *Entity) ID() uint64 {
 	return t.id
 }
+
+// Seller of the transaction
+func (t *Entity) Seller() string {
+	return t.sellerID
+}
+
+// Value of the transaction
+func (t *Entity) Value() int64 {
+	return t.value
+}

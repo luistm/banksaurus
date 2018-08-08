@@ -51,7 +51,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		if err := rfr.Execute(); err != nil {
 			return nil
 		}
-		
+
 	} else {
 		// rfr, err = report.New(transactionRepository, sellersRepository, presenter)
 		filePath := arguments["<file>"].(string)
@@ -65,7 +65,6 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 		defer file.Close()
-
 
 	}
 

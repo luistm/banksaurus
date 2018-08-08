@@ -5,27 +5,35 @@ import (
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/banksaurus/next/interactor/report"
 	"github.com/luistm/testkit"
-	"strconv"
 	"testing"
 	"time"
 )
 
 type presenter struct {
-	rawData map[string]string
-	err     error
+	seller string
+	value  int64
+	err    error
 }
 
-func (p *presenter) Data() map[string]string {
-	return p.rawData
-}
-
-func (p *presenter) Present(ts []*transaction.Entity) error {
+func (p *presenter) Present(data []map[string]int64) error {
 	if p.err != nil {
 		return p.err
 	}
 
-	p.rawData = map[string]string{"id": strconv.FormatUint(ts[0].ID(), 10)}
+	for key, value := range data[0] {
+		p.seller = key
+		p.value = value
+	}
+
 	return nil
+}
+
+func (p *presenter) Seller() string {
+	return p.seller
+}
+
+func (p *presenter) Value() int64 {
+	return p.value
 }
 
 type transactionRepository struct {
@@ -55,16 +63,19 @@ func TestUnitReport(t *testing.T) {
 	rq1, err := report.NewRequest()
 	testkit.AssertIsNil(t, err)
 
-	t1, err := transaction.New(time.Now(), "", 1)
+	s1 := "Seller1"
+	v1 := int64(1234)
+	t1, err := transaction.New(time.Now(), s1, v1)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
-		name       string
-		input      *report.Request
-		presenter  *presenter
-		repository *transactionRepository
-		err        error
-		output     map[string]string
+		name         string
+		input        *report.Request
+		presenter    *presenter
+		repository   *transactionRepository
+		err          error
+		outputSeller string
+		outputValue  int64
 	}{
 		{
 			name:      "Response has expected data",
@@ -73,7 +84,8 @@ func TestUnitReport(t *testing.T) {
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
 			},
-			output: map[string]string{"id": strconv.FormatUint(t1.ID(), 10)},
+			outputSeller: s1,
+			outputValue:  v1,
 		},
 		{
 			name:      "Returns error if repository returns error",
@@ -104,7 +116,8 @@ func TestUnitReport(t *testing.T) {
 			err = i.Execute(tc.input)
 
 			testkit.AssertEqual(t, tc.err, err)
-			testkit.AssertEqual(t, tc.output, tc.presenter.Data())
+			testkit.AssertEqual(t, tc.outputSeller, tc.presenter.Seller())
+			testkit.AssertEqual(t, tc.outputValue, tc.presenter.Value())
 		})
 	}
 }
