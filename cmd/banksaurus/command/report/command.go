@@ -1,13 +1,15 @@
 package report
 
 import (
+	"encoding/csv"
 	"os"
 
 	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/infrastructure/csv"
+	infraCSV "github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
+	"github.com/luistm/banksaurus/next/gateway/cgd_csv"
 	"github.com/luistm/banksaurus/services"
 	"github.com/luistm/banksaurus/services/reportgrouped"
 )
@@ -24,7 +26,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	if grouped {
-		CSVStorage, err := csv.New(arguments["<file>"].(string))
+		CSVStorage, err := infraCSV.New(arguments["<file>"].(string))
 		if err != nil {
 			return err
 		}
@@ -65,6 +67,20 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 		defer file.Close()
+
+		reader := csv.NewReader(file)
+		reader.Comma = ';'
+		reader.FieldsPerRecord = -1
+
+		lines, err := reader.ReadAll()
+		if err != nil {
+			return err
+		}
+
+		_, err = cgd_csv.New(lines)
+		if err != nil {
+			return err
+		}
 
 	}
 

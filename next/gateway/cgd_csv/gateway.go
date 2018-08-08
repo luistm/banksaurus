@@ -1,28 +1,23 @@
 package cgd_csv
 
 import (
-	"encoding/csv"
+	"errors"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 )
 
+// ErrInvalidNumberOfLines ...
+var ErrInvalidNumberOfLines = errors.New("number of lines is less than needed")
+
 // New opens and returns a file handler for a CSV file
-func New(file *os.File) (*Repository, error) {
-
-	reader := csv.NewReader(file)
-	reader.Comma = ';'
-	reader.FieldsPerRecord = -1
-
-	lines, err := reader.ReadAll()
-	if err != nil {
-		return &Repository{}, err
+func New(lines [][]string) (*Repository, error) {
+	if len(lines) < 8 {
+		return &Repository{}, ErrInvalidNumberOfLines
 	}
 
 	f := &Repository{lines: lines[5 : len(lines)-2]}
-
 	return f, nil
 }
 
