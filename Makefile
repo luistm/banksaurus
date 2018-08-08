@@ -16,13 +16,13 @@ clean: ## Cleans binary created by make build
 tests: acceptance-tests integration-tests unit-tests ## Runs all tests
 
 unit-tests: ## Runs unit tests
-	go test ./... -run Unit
+	go test ./next/... -run Unit
 
 integration-tests: ## Runs integration tests
-	go test ./... -run Integration
+	go test ./next/... -run Integration
 
 coverage-unit: ## Runs coverage for unit tests
-	go test ./... -run Unit -cover
+	go test ./next/... -run Unit -cover
 
 acceptance-tests: build ## Runs acceptance tests
 	- go test ./... -run Acceptance
