@@ -1,8 +1,8 @@
 package CGDcsv_test
 
 import (
-	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
+	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
