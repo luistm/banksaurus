@@ -9,7 +9,7 @@ import (
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
-	"github.com/luistm/banksaurus/next/adapter/cgd_csv"
+	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
 	"github.com/luistm/banksaurus/services"
 	"github.com/luistm/banksaurus/services/reportgrouped"
 )
@@ -77,7 +77,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 
-		_, err = cgd_csv.New(lines)
+		_, err = CGDcsv.New(lines)
 		if err != nil {
 			return err
 		}

@@ -1,8 +1,8 @@
-package cgd_csv_test
+package CGDcsv_test
 
 import (
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/adapter/cgd_csv"
+	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
@@ -19,7 +19,7 @@ func TestUnitNewGateway(t *testing.T) {
 		{
 			name:  "Returns error if line number does not match",
 			input: [][]string{},
-			err:   cgd_csv.ErrInvalidNumberOfLines,
+			err:   CGDcsv.ErrInvalidNumberOfLines,
 		},
 		{
 			name:  "Expects 8 lines",
@@ -29,7 +29,7 @@ func TestUnitNewGateway(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := cgd_csv.New(tc.input)
+			_, err := CGDcsv.New(tc.input)
 			testkit.AssertEqual(t, tc.err, err)
 		})
 	}
@@ -61,7 +61,7 @@ func TestUnitReturnTransactions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := cgd_csv.New(tc.input)
+			r, err := CGDcsv.New(tc.input)
 			testkit.AssertIsNil(t, err)
 
 			ts, err := r.GetAll()

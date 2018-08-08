@@ -1,4 +1,4 @@
-package cgd_csv
+package CGDcsv
 
 import (
 	"errors"
