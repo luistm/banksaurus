@@ -10,6 +10,8 @@ import (
 	"github.com/luistm/banksaurus/lib/seller"
 	"github.com/luistm/banksaurus/lib/transaction"
 	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
+	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
+	"github.com/luistm/banksaurus/next/report"
 	"github.com/luistm/banksaurus/services"
 	"github.com/luistm/banksaurus/services/reportgrouped"
 )
@@ -55,7 +57,6 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		}
 
 	} else {
-		// rfr, err = report.New(transactionRepository, sellersRepository, presenter)
 		filePath := arguments["<file>"].(string)
 		_, err := os.Stat(filePath)
 		if err != nil {
@@ -77,11 +78,33 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 
-		_, err = CGDcsv.New(lines)
+		inputGateway, err := CGDcsv.New(lines)
 		if err != nil {
 			return err
 		}
 
+		p, err := transactionpresenter.NewPresenter()
+		if err != nil {
+			return err
+		}
+
+		i, err := report.NewInteractor(p, inputGateway)
+		if err != nil {
+			return err
+		}
+
+		r, _ := report.NewRequest()
+		err = i.Execute(r)
+		if err != nil {
+			return err
+		}
+
+		vm, err := p.ViewModel()
+		if err != nil {
+			return err
+		}
+
+		vm.Write(os.Stdout)
 	}
 
 	return nil
