@@ -102,11 +102,11 @@ func TestAcceptance(t *testing.T) {
 			expected:      "77,52€ COMPRA CONTINENTE MAI \n95,09€ COMPRA FARMACIA SAO J \n95,09€ COMPRA FARMACIA SAO J \n",
 			errorExpected: false,
 		},
-		//{
-		//	name:     "No seller should be available here",
-		//	command:  []string{"seller", "show"},
-		//	expected: "",
-		//},
+		{
+			name:     "No seller should be available here",
+			command:  []string{"seller", "show"},
+			expected: "",
+		},
 		//{
 		//	name:     "Load records from file",
 		//	command:  []string{"load", "--input", "../../data/fixtures/sample_records_load.csv"},
