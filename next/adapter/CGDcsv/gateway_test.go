@@ -40,8 +40,8 @@ func TestUnitReturnTransactions(t *testing.T) {
 	timeNow := time.Now()
 	t1, err := transaction.New(timeNow, "", 1)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(timeNow, "", 1)
-	testkit.AssertIsNil(t, err)
+	//t2, err := transaction.New(timeNow, "", 1)
+	//testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
 		name   string
@@ -55,7 +55,7 @@ func TestUnitReturnTransactions(t *testing.T) {
 				{"25-10-2017", "25-10-2017", "COMPRA CONTINENTE MAI ", "77,52", "", "61,25", "61.25"},
 				{"25-10-2017", "25-10-2017", "COMPRA CONTINENTE MAI ", "", "77,52", "61,25", "61.25"},
 				{}, {}},
-			output: []*transaction.Entity{t1, t2},
+			output: []*transaction.Entity{t1},
 		},
 	}
 

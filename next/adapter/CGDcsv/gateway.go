@@ -37,6 +37,7 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 		valueString := line[3]
 		if line[4] != "" {
 			valueString = line[4]
+			continue
 		}
 
 		valueString = strings.Replace(valueString, ",", "", -1)
