@@ -3,6 +3,7 @@ package transactionpresenter
 import (
 	"errors"
 	"strconv"
+	"strings"
 )
 
 // ErrNoDataToPresent ...
@@ -24,22 +25,42 @@ type Presenter struct {
 // to the view model.
 func (p *Presenter) Present(data []map[string]int64) error {
 	outputData := []string{}
+	comma := rune(44)
+	zero := rune(48)
+
 	for _, dict := range data {
 		for key, value := range dict {
+
+			// TODO: create a test with for each possible combination of input
 			valueString := strconv.FormatInt(value, 10)
 
 			// Wooow... there must be a better way of doing this
-			comma := rune(44)
 			finalString := []rune{}
-			a := []rune(valueString)
-			for i := 0; i < len(a); i++ {
-				if i == len(a)-2 {
-					finalString = append(finalString, comma)
+
+			// Converting two digit values.
+			if len(valueString) == 2 {
+				// 12 becomes 0,12
+				finalString = append(finalString, zero, comma)
+				valueString = string(finalString) + valueString
+
+			} else if len(valueString) == 3 && strings.HasPrefix(valueString, "-") {
+				// -12 becomes -0,12
+				finalString = append(finalString, zero, comma)
+				prefix := "-"
+				valueString = prefix + string(finalString) + strings.TrimPrefix(valueString, prefix)
+
+			} else {
+				a := []rune(valueString)
+				for i := 0; i < len(a); i++ {
+					if i == len(a)-2 {
+						finalString = append(finalString, comma)
+					}
+					finalString = append(finalString, a[i])
 				}
-				finalString = append(finalString, a[i])
+				valueString = string(finalString)
 			}
 
-			outputData = append(outputData, string(finalString)+"€", key)
+			outputData = append(outputData, valueString+"€", key)
 		}
 	}
 

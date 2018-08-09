@@ -20,11 +20,12 @@ func TestUnitPresenterPresent(t *testing.T) {
 			name: "Presenter prepares prepares output data",
 			input: []map[string]int64{
 				{"key": 1234},
-				{"key": 124},
-				{"key2": 12345},
+				{"key": 12},
+				{"key2": -12345},
+				{"key2": -12},
 			},
 			callPresent: true,
-			output:      []string{"12,34€", "key", "1,24€", "key", "123,45€", "key2"},
+			output:      []string{"12,34€", "key", "0,12€", "key", "-123,45€", "key2", "-0,12€", "key2"},
 		},
 		{
 			name:        "Presenter receives no data",
