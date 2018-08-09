@@ -70,8 +70,6 @@ func TestUnitPresenterViewModel(t *testing.T) {
 			outputError: transactionpresenter.ErrNoDataToPresent,
 		},
 	}
-	// TODO: Data is not prepared
-	// TODO: Data is prepared
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {

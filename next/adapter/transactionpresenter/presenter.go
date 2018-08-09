@@ -15,7 +15,6 @@ func NewPresenter() (*Presenter, error) {
 
 // Presenter repackages transactions into a view model
 type Presenter struct {
-	viewModel  *ViewModel
 	outputData []string
 	hasData    bool
 }
@@ -52,6 +51,10 @@ func (p *Presenter) ViewModel() (*ViewModel, error) {
 		return &ViewModel{}, ErrNoDataToPresent
 	}
 
-	p.viewModel, _ = NewViewModel(p.outputData)
-	return p.viewModel, nil
+	viewModel, err := NewViewModel(p.outputData)
+	if err != nil {
+		return &ViewModel{}, err
+	}
+
+	return viewModel, nil
 }
