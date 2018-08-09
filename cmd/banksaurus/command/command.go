@@ -20,7 +20,7 @@ type Commander interface {
 	Execute(map[string]interface{}) error
 }
 
-// NewFromString creates a new command handler
+// New creates a new command handler
 func New(cliRequest CLIRequest) (Commander, error) {
 
 	if len(cliRequest) == 0 {
@@ -36,7 +36,7 @@ func New(cliRequest CLIRequest) (Commander, error) {
 	case "seller":
 		return &seller.Command{}, nil
 	case "transaction":
-		return &transaction.TransactionCommand{}, nil
+		return &transaction.Command{}, nil
 	default:
 		return nil, errCommandNotFound
 	}

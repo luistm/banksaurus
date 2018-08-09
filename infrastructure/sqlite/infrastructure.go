@@ -5,25 +5,36 @@ import (
 	"errors"
 	"os"
 
-	"github.com/luistm/banksaurus/banklib"
 	"github.com/luistm/banksaurus/infrastructure"
+	"github.com/luistm/banksaurus/lib"
 
 	// To init the database driver
+	"fmt"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var errUndefinedDataBase = errors.New("database is not defined")
+var (
+	ErrUndefinedDataBase    = errors.New("database is not defined")
+	ErrStatementUndefined   = errors.New("statement is undefined")
+	ErrInvalidConfiguration = errors.New("infrastructure configuration parameters are invalid")
+)
 
-// ErrStatementUndefined ...
-var ErrStatementUndefined = errors.New("statement is undefined")
-var errInvalidConfiguration = errors.New("Infrastructure configuration parameters are invalid")
-var errFailedToCreatedDB = errors.New("failed to create database")
+// ErrFailedToCreatedDB for database error
+type ErrFailedToCreatedDB struct {
+	Msg string
+}
+
+// Error to satisfy the Error interface
+func (e *ErrFailedToCreatedDB) Error() string {
+	return fmt.Sprintf("failed to create database: %s", e.Msg)
+}
 
 // New creates a new instance of Infrastructure
 func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
 
 	if name == "" || path == "" {
-		return &Infrastructure{}, errInvalidConfiguration
+		return &Infrastructure{}, ErrInvalidConfiguration
 	}
 
 	var db *sql.DB
@@ -33,7 +44,7 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		db, err = sql.Open("sqlite3", ":memory:")
 	} else {
 		if err := validatePath(path); err != nil {
-			return &Infrastructure{}, errInvalidConfiguration
+			return &Infrastructure{}, ErrInvalidConfiguration
 		}
 		db, err = sql.Open("sqlite3", path+"/"+name+".db")
 	}
@@ -41,15 +52,51 @@ func New(path string, name string, memory bool) (infrastructure.SQLStorage, erro
 		return nil, err
 	}
 
+	// TODO: Move table creation to a proper place ---------------------------------------------------------------------
 	// Create table in order to create the database file
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS seller
-	(slug TEXT NOT NULL PRIMARY KEY, name TEXT);
+	(
+		slug TEXT NOT NULL PRIMARY KEY,
+		name TEXT
+	);
 	`
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		return &Infrastructure{}, errFailedToCreatedDB
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
 	}
+
+	sqlStmt = `
+	CREATE TABLE IF NOT EXISTS transaction_types
+	(
+		TYPE CHAR NOT NULL
+	)
+	`
+
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
+	}
+
+	// Create transactions table in order to create the database file
+	// 25-10-2017;25-10-2017;COMPRA CONTINENTE MAI ;77,52;;61,25;61,25;
+	// id, seller_id, debt amount, credit amount, contabilistic, real
+	sqlStmt = `
+	CREATE TABLE IF NOT EXISTS transactions
+	(
+		ID int NOT NULL PRIMARY KEY,
+		SELLER_ID int NOT NULL,
+		AMOUNT int DEFAULT 0,
+		TYPE 
+		BALANCE int NOT NULL
+	);
+	`
+	_, err = db.Exec(sqlStmt)
+	if err != nil {
+		return &Infrastructure{}, &ErrFailedToCreatedDB{Msg: err.Error()}
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
 
 	s := &Infrastructure{db}
 	return s, nil
@@ -85,7 +132,7 @@ type Infrastructure struct {
 // Close closes the connection with the Infrastructure database
 func (s *Infrastructure) Close() error {
 	if s.db == nil {
-		return errUndefinedDataBase
+		return ErrUndefinedDataBase
 	}
 
 	return s.db.Close()
@@ -94,7 +141,7 @@ func (s *Infrastructure) Close() error {
 // Execute is to execute an sql statement
 func (s *Infrastructure) Execute(statement string, values ...interface{}) error {
 	if s.db == nil {
-		return errUndefinedDataBase
+		return ErrUndefinedDataBase
 	}
 
 	if statement == "" {
@@ -126,9 +173,9 @@ func (s *Infrastructure) Execute(statement string, values ...interface{}) error 
 // TODO: Make sure rows are being closed across the code
 
 // Query fetches data from the database
-func (s *Infrastructure) Query(statement string, args ...interface{}) (banklib.Rows, error) {
+func (s *Infrastructure) Query(statement string, args ...interface{}) (lib.Rows, error) {
 	if s.db == nil {
-		return nil, errUndefinedDataBase
+		return nil, ErrUndefinedDataBase
 	}
 
 	if statement == "" {
