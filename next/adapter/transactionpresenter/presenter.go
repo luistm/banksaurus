@@ -48,7 +48,10 @@ func (p *Presenter) OutputData() ([]string, error) {
 
 // ViewModel returns an object with the data to be presented
 func (p *Presenter) ViewModel() (*ViewModel, error) {
-	// TODO: Handle error. Data shouldbe available only if cleaned by present
+	if !p.hasData {
+		return &ViewModel{}, ErrNoDataToPresent
+	}
+
 	p.viewModel, _ = NewViewModel(p.outputData)
 	return p.viewModel, nil
 }

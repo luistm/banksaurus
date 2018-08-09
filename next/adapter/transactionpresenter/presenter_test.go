@@ -64,14 +64,20 @@ func TestUnitPresenterViewModel(t *testing.T) {
 		presenter   *transactionpresenter.Presenter
 		outputError error
 	}{
-		{},
+		{
+			name:        "Returns error if data if present has no data",
+			presenter:   &transactionpresenter.Presenter{},
+			outputError: transactionpresenter.ErrNoDataToPresent,
+		},
 	}
 	// TODO: Data is not prepared
 	// TODO: Data is prepared
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			t.Error("Test is not finished")
+			_, err := tc.presenter.ViewModel()
+
+			testkit.AssertEqual(t, tc.outputError, err)
 		})
 	}
 }
