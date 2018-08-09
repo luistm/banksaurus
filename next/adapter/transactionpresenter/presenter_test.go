@@ -7,20 +7,26 @@ import (
 	"github.com/luistm/testkit"
 )
 
-func TestUnitPresenterViewModel(t *testing.T) {
+func TestUnitPresenterPresent(t *testing.T) {
 
 	testCases := []struct {
 		name   string
 		input  []map[string]int64
-		output string
+		output []string
 	}{
 		{
-			name: "View model",
+			name: "Presenter prepares prepares output data",
 			input: []map[string]int64{
 				{"key": 1234},
+				{"key": 124},
 				{"key2": 12345},
 			},
-			output: " key 1234 \nkey2 12345\n",
+			output: []string{"key", "1234", "key", "124", "key2", "12345"},
+		},
+		{
+			name: "Presenter receives no data",
+			input: []map[string]int64{},
+			output: []string{},
 		},
 	}
 
@@ -30,11 +36,28 @@ func TestUnitPresenterViewModel(t *testing.T) {
 			testkit.AssertIsNil(t, err)
 
 			err = p.Present(tc.input)
+
 			testkit.AssertIsNil(t, err)
+			testkit.AssertEqual(t, tc.output, p.OutputData)
+		})
+	}
+}
 
-			vm, err := p.ViewModel()
+func TestUnitPresenterViewModel(t *testing.T){
 
-			testkit.AssertEqual(t, tc.output, vm)
+	testCases := []struct{
+		name string
+		presenter *transactionpresenter.Presenter
+		outputError error
+	}{
+		{},
+	}
+	// TODO: Data is not prepared
+	// TODO: Data is prepared
+	
+	for _, tc := range testCases{
+		t.Run(tc.name, func(t *testing.T) {
+			t.Error("Test is not finished")
 		})
 	}
 }

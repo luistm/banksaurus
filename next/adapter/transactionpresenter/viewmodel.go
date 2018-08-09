@@ -4,14 +4,25 @@ import (
 	"fmt"
 )
 
-// ViewModel contains data to be shown
+// NewViewModel creates a view model instance
+func NewViewModel(data []string) (*ViewModel, error){
+
+	// TODO: Input data len, must be a even number
+
+	return &ViewModel{ raw: data}, nil
+}
+
+// ViewModel contains data to be shown.
 type ViewModel struct {
 	raw []string
-
-	// Receives a view... which must be an io.writer
+	view Viewer
 }
 
 func (vm *ViewModel) String() string {
+
+	if len(vm.raw) == 0{
+		return ""
+	}
 
 	// Here parse data with tabe writer
 	//if c.output == nil {
