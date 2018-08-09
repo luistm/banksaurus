@@ -1,49 +1,38 @@
 package transactionpresenter
 
 import (
+	"errors"
 	"fmt"
+	"text/tabwriter"
 )
+
+// ErrDataHasOddLength ...
+var ErrDataHasOddLength = errors.New("data has odd length")
 
 // NewViewModel creates a view model instance
 func NewViewModel(data []string) (*ViewModel, error) {
 
-	// TODO: Input data len, must be a even number
+	if len(data)%2 == 1 {
+		return &ViewModel{}, ErrDataHasOddLength
+	}
 
 	return &ViewModel{raw: data}, nil
 }
 
 // ViewModel contains data to be shown.
 type ViewModel struct {
-	raw  []string
-	view Viewer
+	raw []string
 }
 
-func (vm *ViewModel) String() string {
+// Writes the data into a view
+func (vm *ViewModel) Write(view Viewer) {
 
-	if len(vm.raw) == 0 {
-		return ""
+	const padding = 1
+	w := tabwriter.NewWriter(view, 0, 0, padding, ' ', 0)
+
+	for i := 0; i < len(vm.raw); i = i + 2 {
+		fmt.Fprintf(w, "%s\t%s\n", vm.raw[i], vm.raw[i+1])
 	}
 
-	// Here parse data with tabe writer
-	//if c.output == nil {
-	//	return errOutputPipeUndefined
-	//}
-	//
-	//const padding = 1
-	//w := tabwriter.NewWriter(c.output, 0, 0, padding, ' ', 0)
-	//
-	//for _, entity := range entities {
-	//	switch entity.(type) {
-	//	case *transaction.Transaction:
-	//		stringArray := strings.Fields(entity.String())
-	//		value := stringArray[0]
-	//		seller := strings.Join(stringArray[1:], " ")
-	//		fmt.Fprintf(w, "%s\t%s\n", value, seller)
-	//	default:
-	//		fmt.Fprintf(w, "%s\n", entity)
-	//	}
-	//}
-	//w.Flush()
-
-	return fmt.Sprintf("%s", vm.raw)
+	w.Flush()
 }

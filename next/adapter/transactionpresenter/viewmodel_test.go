@@ -6,39 +6,70 @@ import (
 	"testing"
 )
 
+type mockIOWriter struct {
+	data []byte
+}
+
+func (miow *mockIOWriter) Write(p []byte) (n int, err error) {
+	miow.data = append(miow.data, p...)
+	return len(p), nil
+}
+
+func (miow *mockIOWriter) received() string {
+	return string(miow.data)
+}
+
+func TestUnitNewVieModel(t *testing.T) {
+
+	t.Run("Returns error if data has not an event length", func(t *testing.T) {
+		_, err := transactionpresenter.NewViewModel([]string{"key", "1234", "key2"})
+		testkit.AssertEqual(t, transactionpresenter.ErrDataHasOddLength, err)
+	})
+
+	t.Run("Returns no error if data has zero length", func(t *testing.T) {
+		_, err := transactionpresenter.NewViewModel([]string{})
+		testkit.AssertIsNil(t, err)
+	})
+}
+
 func TestUnitViewModel(t *testing.T) {
 
 	testCases := []struct {
 		name   string
-		input  []map[string]int64
+		input  []string
 		output string
 	}{
 		{
-			name: "View model",
-			input: []map[string]int64{
-				{"key": 1234},
-				{"key2": 12345},
-			},
-			output: " key 1234 \nkey2 12345\n",
+			name:   "View model",
+			input:  []string{"key", "1234", "key2", "12345"},
+			output: "key  1234\nkey2 12345\n",
 		},
 		{
 			name:   "View model has not data",
-			input:  []map[string]int64{},
+			input:  []string{},
+			output: "",
+		},
+		{
+			name:   "View model empty slice",
+			input:  []string{},
+			output: "",
+		},
+		{
+			name:   "View model no input",
 			output: "",
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			p, err := transactionpresenter.NewPresenter()
+			screen := &mockIOWriter{}
+
+			vm, err := transactionpresenter.NewViewModel(tc.input)
 			testkit.AssertIsNil(t, err)
 
-			err = p.Present(tc.input)
-			testkit.AssertIsNil(t, err)
+			vm.Write(screen)
 
-			vm, err := p.ViewModel()
-
-			testkit.AssertEqual(t, tc.output, vm.String())
+			testkit.AssertEqual(t, tc.output, screen.received())
 		})
 	}
 }
