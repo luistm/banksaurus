@@ -37,11 +37,12 @@ func TestUnitNewGateway(t *testing.T) {
 
 func TestUnitReturnTransactions(t *testing.T) {
 
-	timeNow := time.Now()
-	t1, err := transaction.New(timeNow, "", 1)
+	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)
-	//t2, err := transaction.New(timeNow, "", 1)
-	//testkit.AssertIsNil(t, err)
+	t1, err := transaction.New(date, "COMPRA CONTINENTE MAI ", -7752)
+	testkit.AssertIsNil(t, err)
+	t2, err := transaction.New(date, "COMPRA CONTINENTE ", 7752)
+	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
 		name   string
@@ -53,9 +54,9 @@ func TestUnitReturnTransactions(t *testing.T) {
 			name: "Returns transactions",
 			input: [][]string{{}, {}, {}, {}, {},
 				{"25-10-2017", "25-10-2017", "COMPRA CONTINENTE MAI ", "77,52", "", "61,25", "61.25"},
-				{"25-10-2017", "25-10-2017", "COMPRA CONTINENTE MAI ", "", "77,52", "61,25", "61.25"},
+				{"25-10-2017", "25-10-2017", "COMPRA CONTINENTE ", "", "77,52", "61,25", "61.25"},
 				{}, {}},
-			output: []*transaction.Entity{t1},
+			output: []*transaction.Entity{t1, t2},
 		},
 	}
 
@@ -68,6 +69,7 @@ func TestUnitReturnTransactions(t *testing.T) {
 
 			testkit.AssertEqual(t, tc.err, err)
 			testkit.AssertEqual(t, len(tc.output), len(ts))
+			testkit.AssertEqual(t, tc.output, ts)
 		})
 	}
 }

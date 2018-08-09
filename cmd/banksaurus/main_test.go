@@ -99,7 +99,7 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
-			expected:      "77,52€ COMPRA CONTINENTE MAI \n95,09€ COMPRA FARMACIA SAO J \n95,09€ COMPRA FARMACIA SAO J \n",
+			expected:      "-77,52€ COMPRA CONTINENTE MAI \n593,48€ TRF CREDIT            \n-95,09€ COMPRA FARMACIA SAO J \n-95,09€ COMPRA FARMACIA SAO J \n",
 			errorExpected: false,
 		},
 		{

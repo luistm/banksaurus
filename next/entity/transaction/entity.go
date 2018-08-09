@@ -1,6 +1,9 @@
 package transaction
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // New creates a new transaction
 func New(date time.Time, sellerID string, value int64) (*Entity, error) {
@@ -28,4 +31,9 @@ func (t *Entity) Seller() string {
 // Value of the transaction
 func (t *Entity) Value() int64 {
 	return t.value
+}
+
+// GoString to satisfy fmt.GoStringer
+func (t *Entity) GoString() string {
+	return fmt.Sprintf("%d %s %s %d", t.id, t.date, t.sellerID, t.value)
 }

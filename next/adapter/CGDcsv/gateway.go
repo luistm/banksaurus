@@ -34,10 +34,11 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 	for _, line := range r.lines {
 
 		// If not a debt, then is a credit
+		isDebt := true
 		valueString := line[3]
 		if line[4] != "" {
 			valueString = line[4]
-			continue
+			isDebt = false
 		}
 
 		valueString = strings.Replace(valueString, ",", "", -1)
@@ -50,6 +51,10 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 		date, err := time.Parse("02-01-2006", line[0])
 		if err != nil {
 			return []*transaction.Entity{}, err
+		}
+
+		if isDebt {
+			value = value * -1
 		}
 
 		t, err := transaction.New(date, line[2], value)
