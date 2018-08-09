@@ -26,8 +26,20 @@ func (p *Presenter) Present(data []map[string]int64) error {
 	outputData := []string{}
 	for _, dict := range data {
 		for key, value := range dict {
-			valueInt := strconv.FormatInt(value, 10)
-			outputData = append(outputData, key, valueInt)
+			valueString := strconv.FormatInt(value, 10)
+
+			// Wooow... there must be a better way of doing this
+			comma := rune(44)
+			finalString := []rune{}
+			a := []rune(valueString)
+			for i := 0; i < len(a); i++ {
+				if i == len(a)-2 {
+					finalString = append(finalString, comma)
+				}
+				finalString = append(finalString, a[i])
+			}
+
+			outputData = append(outputData, string(finalString)+"€", key)
 		}
 	}
 

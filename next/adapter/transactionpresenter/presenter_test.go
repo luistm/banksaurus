@@ -24,7 +24,7 @@ func TestUnitPresenterPresent(t *testing.T) {
 				{"key2": 12345},
 			},
 			callPresent: true,
-			output:      []string{"key", "1234", "key", "124", "key2", "12345"},
+			output:      []string{"12,34€", "key", "1,24€", "key", "123,45€", "key2"},
 		},
 		{
 			name:        "Presenter receives no data",
