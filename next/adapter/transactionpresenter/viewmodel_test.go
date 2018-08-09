@@ -1,9 +1,9 @@
 package transactionpresenter_test
 
 import (
-	"testing"
-	"github.com/luistm/testkit"
 	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
+	"github.com/luistm/testkit"
+	"testing"
 )
 
 func TestUnitViewModel(t *testing.T) {
@@ -22,8 +22,8 @@ func TestUnitViewModel(t *testing.T) {
 			output: " key 1234 \nkey2 12345\n",
 		},
 		{
-			name: "View model has not data",
-			input: []map[string]int64{},
+			name:   "View model has not data",
+			input:  []map[string]int64{},
 			output: "",
 		},
 	}

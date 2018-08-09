@@ -5,22 +5,22 @@ import (
 )
 
 // NewViewModel creates a view model instance
-func NewViewModel(data []string) (*ViewModel, error){
+func NewViewModel(data []string) (*ViewModel, error) {
 
 	// TODO: Input data len, must be a even number
 
-	return &ViewModel{ raw: data}, nil
+	return &ViewModel{raw: data}, nil
 }
 
 // ViewModel contains data to be shown.
 type ViewModel struct {
-	raw []string
+	raw  []string
 	view Viewer
 }
 
 func (vm *ViewModel) String() string {
 
-	if len(vm.raw) == 0{
+	if len(vm.raw) == 0 {
 		return ""
 	}
 
