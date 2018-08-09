@@ -107,31 +107,31 @@ func TestAcceptance(t *testing.T) {
 			command:  []string{"seller", "show"},
 			expected: "",
 		},
-		//{
-		//	name:     "Load records from file",
-		//	command:  []string{"load", "--input", "../../data/fixtures/sample_records_load.csv"},
-		//	expected: "", // TODO: Show the number of record saved. Example: 'saved 5 records'
-		//},
-		//{
-		//	name:     "Shows seller loaded by the load records from file",
-		//	command:  []string{"seller", "show"},
-		//	expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
-		//},
+		{
+			name:     "Load records from file",
+			command:  []string{"load", "--input", "../../data/fixtures/sample_records_load.csv"},
+			expected: "",
+		},
+		{
+			name:     "Shows seller loaded by the load records from file",
+			command:  []string{"seller", "show"},
+			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
+		},
 		//{
 		//	name:     "Show transaction, from the records file just loaded",
 		//	command:  []string{"transaction", "show"},
 		//	expected: "COMPRA CONTINENTE MAI -77.52\nCOMPRA FARMACIA SAO J -95.09",
 		//},
-		//{
-		//	name:     "Adds pretty name to seller",
-		//	command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
-		//	expected: "",
-		//},
-		//{
-		//	name:     "Show seller changed",
-		//	command:  []string{"seller", "show"},
-		//	expected: "Continente\nCOMPRA FARMACIA SAO J\n",
-		//},
+		{
+			name:     "Adds pretty name to seller",
+			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
+			expected: "",
+		},
+		{
+			name:     "Show seller changed",
+			command:  []string{"seller", "show"},
+			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
+		},
 		//{
 		//	name:          "Shows report from bank records file, with seller name instead of slug",
 		//	command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
