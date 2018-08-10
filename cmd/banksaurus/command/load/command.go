@@ -1,13 +1,13 @@
 package load
 
 import (
-	"github.com/luistm/banksaurus/bankservices/loaddata"
-	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
+	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/infrastructure/csv"
 	"github.com/luistm/banksaurus/infrastructure/sqlite"
+	"github.com/luistm/banksaurus/services/loadcsv"
 )
 
-// Command command to loaddata input from a file
+// Command command to loadcsv input from a file
 type Command struct{}
 
 // Execute the Command command
@@ -27,14 +27,14 @@ func (l *Command) loadFile(inputFilePath string) error {
 	}
 	defer CSVStorage.Close()
 
-	dbName, dbPath := configurations.DatabasePath()
+	dbName, dbPath := app.DatabasePath()
 	SQLStorage, err := sqlite.New(dbPath, dbName, false)
 	if err != nil {
 		return err
 	}
 	defer SQLStorage.Close()
 
-	transactionsInteractor := loaddata.New(CSVStorage, SQLStorage)
+	transactionsInteractor := loadcsv.New(CSVStorage, SQLStorage)
 	err = transactionsInteractor.Execute()
 	if err != nil {
 		return err

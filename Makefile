@@ -13,19 +13,19 @@ build: clean ## Builds the project
 clean: ## Cleans binary created by make build
 	- rm banksaurus
 
-tests: system-tests integration-tests unit-tests ## Runs all tests
+tests: acceptance-tests integration-tests unit-tests ## Runs all tests
 
 unit-tests: ## Runs unit tests
-	go test ./... -run Unit
+	go test ./next/... -run Unit
 
 integration-tests: ## Runs integration tests
-	go test ./... -run Integration
+	go test ./next/... -run Integration
 
 coverage-unit: ## Runs coverage for unit tests
-	go test ./... -run Unit -cover
+	go test ./next/... -run Unit -cover
 
-system-tests: build ## Runs system tests
-	- go test ./... -run System
+acceptance-tests: build ## Runs acceptance tests
+	- go test ./... -run Acceptance
 	- rm banksaurus
 
 coverage-package: ## Runs coverage for package $PACKAGE

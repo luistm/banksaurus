@@ -1,16 +1,13 @@
 package report
 
 import (
+	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/banklib/seller"
-	"github.com/luistm/banksaurus/banklib/transaction"
-	"github.com/luistm/banksaurus/bankservices"
-	"github.com/luistm/banksaurus/bankservices/report"
-	"github.com/luistm/banksaurus/bankservices/reportgrouped"
-	"github.com/luistm/banksaurus/cmd/banksaurus/configurations"
-	"github.com/luistm/banksaurus/infrastructure/csv"
-	"github.com/luistm/banksaurus/infrastructure/sqlite"
+	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
+	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
+	"github.com/luistm/banksaurus/next/report"
+	"github.com/luistm/banksaurus/next/reportgrouped"
 )
 
 // Command handles reports
@@ -24,36 +21,66 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		grouped = true
 	}
 
-	CSVStorage, err := csv.New(arguments["<file>"].(string))
+	filePath := arguments["<file>"].(string)
+	_, err := os.Stat(filePath)
 	if err != nil {
 		return err
 	}
-	defer CSVStorage.Close()
 
-	dbName, dbPath := configurations.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}
-	defer SQLStorage.Close()
+	defer file.Close()
 
-	transactionRepository := transaction.NewRepository(CSVStorage, SQLStorage)
-	sellersRepository := seller.NewRepository(SQLStorage)
-	presenter := NewPresenter(os.Stdout)
+	reader := csv.NewReader(file)
+	reader.Comma = ';'
+	reader.FieldsPerRecord = -1
 
-	var rfr bankservices.Servicer
+	lines, err := reader.ReadAll()
+	if err != nil {
+		return err
+	}
+
+	cgdCSVRepository, err := CGDcsv.New(lines)
+	if err != nil {
+		return err
+	}
+
+	p, err := transactionpresenter.NewPresenter()
+	if err != nil {
+		return err
+	}
+
 	if grouped {
-		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
+		i, err := reportgrouped.NewInteractor(cgdCSVRepository, p)
+		if err != nil {
+			return err
+		}
+
+		err = i.Execute()
+		if err != nil {
+			return err
+		}
+
 	} else {
-		rfr, err = report.New(transactionRepository, sellersRepository, presenter)
+		i, err := report.NewInteractor(p, cgdCSVRepository)
+		if err != nil {
+			return err
+		}
+
+		err = i.Execute()
+		if err != nil {
+			return err
+		}
 	}
+
+	vm, err := p.ViewModel()
 	if err != nil {
 		return err
 	}
 
-	if err := rfr.Execute(); err != nil {
-		return nil
-	}
+	vm.Write(os.Stdout)
 
 	return nil
 }
