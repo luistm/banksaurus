@@ -151,7 +151,7 @@ func TestAcceptance(t *testing.T) {
 				"--input", "../../data/fixtures/sample_records_load.csv",
 				"--grouped",
 			},
-			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n\n",
+			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n",
 			errorExpected: false,
 		},
 	}

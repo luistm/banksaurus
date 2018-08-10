@@ -4,16 +4,10 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/app"
-	infraCSV "github.com/luistm/banksaurus/infrastructure/csv"
-	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/lib/seller"
-	"github.com/luistm/banksaurus/lib/transaction"
 	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
 	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
 	"github.com/luistm/banksaurus/next/report"
-	"github.com/luistm/banksaurus/services"
-	"github.com/luistm/banksaurus/services/reportgrouped"
+	"github.com/luistm/banksaurus/next/reportgrouped"
 )
 
 // Command handles reports
@@ -27,68 +21,50 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		grouped = true
 	}
 
+	filePath := arguments["<file>"].(string)
+	_, err := os.Stat(filePath)
+	if err != nil {
+		return err
+	}
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	reader.Comma = ';'
+	reader.FieldsPerRecord = -1
+
+	lines, err := reader.ReadAll()
+	if err != nil {
+		return err
+	}
+
+	cgdCSVRepository, err := CGDcsv.New(lines)
+	if err != nil {
+		return err
+	}
+
+	p, err := transactionpresenter.NewPresenter()
+	if err != nil {
+		return err
+	}
+
 	if grouped {
-		CSVStorage, err := infraCSV.New(arguments["<file>"].(string))
-		if err != nil {
-			return err
-		}
-		defer CSVStorage.Close()
-
-		dbName, dbPath := app.DatabasePath()
-		SQLStorage, err := sqlite.New(dbPath, dbName, false)
-		if err != nil {
-			return err
-		}
-		defer SQLStorage.Close()
-
-		transactionRepository := transaction.NewRepository(CSVStorage, SQLStorage)
-		sellersRepository := seller.NewRepository(SQLStorage)
-		presenter := NewPresenter(os.Stdout)
-
-		var rfr services.Servicer
-
-		rfr, err = reportgrouped.New(transactionRepository, sellersRepository, presenter)
+		i, err := reportgrouped.NewInteractor(cgdCSVRepository, p)
 		if err != nil {
 			return err
 		}
 
-		if err := rfr.Execute(); err != nil {
-			return nil
+		err = i.Execute()
+		if err != nil {
+			return err
 		}
 
 	} else {
-		filePath := arguments["<file>"].(string)
-		_, err := os.Stat(filePath)
-		if err != nil {
-			return err
-		}
-
-		file, err := os.Open(filePath)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-
-		reader := csv.NewReader(file)
-		reader.Comma = ';'
-		reader.FieldsPerRecord = -1
-
-		lines, err := reader.ReadAll()
-		if err != nil {
-			return err
-		}
-
-		inputGateway, err := CGDcsv.New(lines)
-		if err != nil {
-			return err
-		}
-
-		p, err := transactionpresenter.NewPresenter()
-		if err != nil {
-			return err
-		}
-
-		i, err := report.NewInteractor(p, inputGateway)
+		i, err := report.NewInteractor(p, cgdCSVRepository)
 		if err != nil {
 			return err
 		}
@@ -98,14 +74,14 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		if err != nil {
 			return err
 		}
-
-		vm, err := p.ViewModel()
-		if err != nil {
-			return err
-		}
-
-		vm.Write(os.Stdout)
 	}
+
+	vm, err := p.ViewModel()
+	if err != nil {
+		return err
+	}
+
+	vm.Write(os.Stdout)
 
 	return nil
 }
