@@ -1,6 +1,7 @@
 package load_test
 
 import (
+	"errors"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/banksaurus/next/load"
@@ -11,19 +12,29 @@ import (
 
 type repository struct {
 	Transactions []*transaction.Entity
+	Error        error
 }
 
 func (r *repository) GetAll() ([]*transaction.Entity, error) {
+	if r.Error != nil {
+		return r.Transactions, r.Error
+	}
 	return r.Transactions, nil
 }
 
 type sellerRepository struct {
 	Sellers      []*seller.Entity
 	SavedSellers []*seller.Entity
+	Error        error
 }
 
 func (r *sellerRepository) Save(s *seller.Entity) error {
+	if r.Error != nil {
+		return r.Error
+	}
+
 	r.SavedSellers = append(r.SavedSellers, s)
+
 	return nil
 }
 
@@ -70,8 +81,18 @@ func TestUnitLoad(t *testing.T) {
 			sellerRepo:      &sellerRepository{Sellers: []*seller.Entity{s1}},
 			expectedSellers: []*seller.Entity{s1},
 		},
-
-		// TODO: Test error paths
+		{
+			name:            "Handles transaction repository errors",
+			transactionRepo: &repository{Transactions: []*transaction.Entity{}, Error: errors.New("test error")},
+			expectedErr:     errors.New("test error"),
+			sellerRepo:      &sellerRepository{},
+		},
+		{
+			name:            "Handles seller repository errors",
+			transactionRepo: &repository{Transactions: []*transaction.Entity{t1}},
+			expectedErr:     errors.New("test error"),
+			sellerRepo:      &sellerRepository{Error: errors.New("test error")},
+		},
 	}
 
 	for _, tc := range testCases {

@@ -36,7 +36,10 @@ type Interactor struct {
 // Execute the load interactor
 func (i *Interactor) Execute() error {
 
-	ts, _ := i.transactions.GetAll()
+	ts, err := i.transactions.GetAll()
+	if err != nil {
+		return err
+	}
 
 	for _, t := range ts {
 		s, err := seller.NewFromID(t.Seller())
@@ -44,7 +47,10 @@ func (i *Interactor) Execute() error {
 			return err
 		}
 
-		i.sellers.Save(s)
+		err = i.sellers.Save(s)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
