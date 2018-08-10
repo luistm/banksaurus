@@ -39,22 +39,17 @@ func (as *adapterStub) Present(receivedData []map[string]int64) error {
 
 func TestUnitReportGroupedNew(t *testing.T) {
 	t.Run("Returns error if transactions repository is undefined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(nil, nil, nil)
+		_, err := reportgrouped.NewInteractor(nil, nil)
 		testkit.AssertEqual(t, reportgrouped.ErrTransactionsRepositoryUndefined, err)
 	})
 
 	t.Run("Returns error if presenter is undefined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(&adapterStub{}, &adapterStub{}, nil)
+		_, err := reportgrouped.NewInteractor(&adapterStub{}, nil)
 		testkit.AssertEqual(t, reportgrouped.ErrPresenterUndefined, err)
 	})
 
-	t.Run("Returns error if sellers repository is undefined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(&adapterStub{}, nil, &adapterStub{})
-		testkit.AssertEqual(t, reportgrouped.ErrSellersRepositoryUndefined, err)
-	})
-
 	t.Run("Returns no error if repositories and presenter are defined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(&adapterStub{}, &adapterStub{}, &adapterStub{})
+		_, err := reportgrouped.NewInteractor(&adapterStub{}, &adapterStub{})
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -71,7 +66,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 	testCases := []struct {
 		name         string
 		transactions *adapterStub
-		sellers      *adapterStub
 		presenter    *adapterStub
 		expectedErr  error
 		expectedData []map[string]int64
@@ -79,7 +73,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		{
 			name:         "Returns nothing if no data available",
 			transactions: &adapterStub{},
-			sellers:      &adapterStub{},
 			presenter:    &adapterStub{},
 			expectedData: []map[string]int64{},
 		},
@@ -89,7 +82,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				Transactions:          []*transaction.Entity{t1},
 				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
-			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
 			expectedData: []map[string]int64{
 				{t1.Seller(): t1.Value()},
@@ -101,7 +93,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				Transactions:          []*transaction.Entity{t1, t2},
 				TransactionsForSeller: [][]*transaction.Entity{{t1}, {t2}},
 			},
-			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
 			expectedData: []map[string]int64{
 				{t1.Seller(): t1.Value()},
@@ -114,7 +105,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				Transactions:          []*transaction.Entity{t1, t2, t3},
 				TransactionsForSeller: [][]*transaction.Entity{{t1, t3}, {t2}},
 			},
-			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
 			expectedData: []map[string]int64{
 				{t1.Seller(): t1.Value() + t3.Value()},
@@ -127,7 +117,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := reportgrouped.NewInteractor(tc.transactions, tc.sellers, tc.presenter)
+			r, err := reportgrouped.NewInteractor(tc.transactions, tc.presenter)
 			testkit.AssertIsNil(t, err)
 
 			err = r.Execute()

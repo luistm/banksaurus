@@ -17,13 +17,9 @@ var ErrSellersRepositoryUndefined = errors.New("sellers repository is not define
 var ErrPresenterUndefined = errors.New("presenter is not defined")
 
 // NewInteractor creates a new interactor instance
-func NewInteractor(tr TransactionsRepository, sr SellersRepository, p Presenter) (*Interactor, error) {
+func NewInteractor(tr TransactionsRepository, p Presenter) (*Interactor, error) {
 	if tr == nil {
 		return &Interactor{}, ErrTransactionsRepositoryUndefined
-	}
-
-	if sr == nil {
-		return &Interactor{}, ErrSellersRepositoryUndefined
 	}
 
 	if p == nil {
