@@ -8,7 +8,6 @@ import (
 // TransactionRepository is a collection of entities to be used by the report
 type TransactionRepository interface {
 	GetAll() ([]*transaction.Entity, error)
-	Save([]*transaction.Entity) error
 }
 
 // SellerRepository is a collection of sellers

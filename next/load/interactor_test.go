@@ -10,13 +10,7 @@ import (
 )
 
 type repository struct {
-	Transactions      []*transaction.Entity
-	SavedTransactions []*transaction.Entity
-}
-
-func (r *repository) Save(ts []*transaction.Entity) error {
-	r.SavedTransactions = ts
-	return nil
+	Transactions []*transaction.Entity
 }
 
 func (r *repository) GetAll() ([]*transaction.Entity, error) {
@@ -59,12 +53,11 @@ func TestUnitLoad(t *testing.T) {
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
-		name                 string
-		transactionRepo      *repository
-		sellerRepo           *sellerRepository
-		expectedErr          error
-		expectedTransactions []*transaction.Entity
-		expectedSellers      []*seller.Entity
+		name            string
+		transactionRepo *repository
+		sellerRepo      *sellerRepository
+		expectedErr     error
+		expectedSellers []*seller.Entity
 	}{
 		{
 			name:            "Zero transactions to save",
@@ -72,11 +65,10 @@ func TestUnitLoad(t *testing.T) {
 			sellerRepo:      &sellerRepository{},
 		},
 		{
-			name:                 "Load creates new seller and new transaction",
-			transactionRepo:      &repository{Transactions: []*transaction.Entity{t1}},
-			sellerRepo:           &sellerRepository{Sellers: []*seller.Entity{s1}},
-			expectedTransactions: []*transaction.Entity{t1},
-			expectedSellers:      []*seller.Entity{s1},
+			name:            "Load creates new sellers",
+			transactionRepo: &repository{Transactions: []*transaction.Entity{t1}},
+			sellerRepo:      &sellerRepository{Sellers: []*seller.Entity{s1}},
+			expectedSellers: []*seller.Entity{s1},
 		},
 
 		// TODO: Test error paths
@@ -90,7 +82,6 @@ func TestUnitLoad(t *testing.T) {
 			err = r.Execute()
 
 			testkit.AssertEqual(t, tc.expectedErr, err)
-			testkit.AssertEqual(t, tc.expectedTransactions, tc.transactionRepo.SavedTransactions)
 			testkit.AssertEqual(t, tc.expectedSellers, tc.sellerRepo.SavedSellers)
 		})
 	}

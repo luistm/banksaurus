@@ -37,7 +37,6 @@ type Interactor struct {
 func (i *Interactor) Execute() error {
 
 	ts, _ := i.transactions.GetAll()
-	i.transactions.Save(ts)
 
 	for _, t := range ts {
 		s, err := seller.NewFromID(t.Seller())
