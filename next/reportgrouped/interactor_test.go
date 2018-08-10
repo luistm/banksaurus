@@ -10,16 +10,26 @@ import (
 )
 
 type adapterStub struct {
-	ReceivedData []map[string]int64
-	Transactions []*transaction.Entity
-}
-
-func (*adapterStub) GetByID() ([]*seller.Entity, error) {
-	panic("implement me")
+	ReceivedData          []map[string]int64
+	Transactions          []*transaction.Entity
+	TransactionsForSeller [][]*transaction.Entity
+	callNumber            int
 }
 
 func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
 	return as.Transactions, nil
+}
+
+func (as *adapterStub) GetBySellerID(entity *seller.Entity) ([]*transaction.Entity, error) {
+	if as.callNumber == 0 {
+		as.callNumber += 1
+		return as.TransactionsForSeller[0], nil
+	}
+	return as.TransactionsForSeller[1], nil
+}
+
+func (*adapterStub) GetByID() ([]*seller.Entity, error) {
+	panic("implement me")
 }
 
 func (as *adapterStub) Present(receivedData []map[string]int64) error {
@@ -53,7 +63,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 
 	t1, err := transaction.New(time.Now(), "SellerID", 123456789)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(time.Now(), "AnotherSellerID", 123456789)
+	t2, err := transaction.New(time.Now(), "AnotherSellerID", 10)
 	testkit.AssertIsNil(t, err)
 	t3, err := transaction.New(time.Now(), "SellerID", 123456789)
 	testkit.AssertIsNil(t, err)
@@ -76,7 +86,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		{
 			name: "Returns a single transaction",
 			transactions: &adapterStub{
-				Transactions: []*transaction.Entity{t1},
+				Transactions:          []*transaction.Entity{t1},
+				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
 			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
@@ -87,7 +98,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		{
 			name: "Returns a multiple transactions",
 			transactions: &adapterStub{
-				Transactions: []*transaction.Entity{t1, t2},
+				Transactions:          []*transaction.Entity{t1, t2},
+				TransactionsForSeller: [][]*transaction.Entity{{t1}, {t2}},
 			},
 			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
@@ -99,7 +111,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		{
 			name: "Returns transactions grouped by seller",
 			transactions: &adapterStub{
-				Transactions: []*transaction.Entity{t1, t2, t3},
+				Transactions:          []*transaction.Entity{t1, t2, t3},
+				TransactionsForSeller: [][]*transaction.Entity{{t1, t3}, {t2}},
 			},
 			sellers:   &adapterStub{},
 			presenter: &adapterStub{},
@@ -110,7 +123,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		},
 
 		// TODO: Test it can handle errors from repositories and presenter
-
 	}
 
 	for _, tc := range testCases {

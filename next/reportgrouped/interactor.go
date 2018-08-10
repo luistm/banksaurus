@@ -2,6 +2,7 @@ package reportgrouped
 
 import (
 	"errors"
+	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"time"
 )
@@ -44,44 +45,37 @@ func (i *Interactor) Execute() error {
 	ts, _ := i.transactions.GetAll()
 
 	presenterData := []map[string]int64{}
-	transactionsForSeller := map[string][]*transaction.Entity{}
+	transactionsForSeller := []*transaction.Entity{}
 
-	groupTransactionsBySeller(ts, transactionsForSeller)
+	sellersSeen := map[string]bool{}
+	for _, t := range ts {
+		s, err := seller.NewFromID(t.Seller())
+		if err != nil {
+			return err
+		}
 
-	presenterData, _ = sumValueBySeller(transactionsForSeller, presenterData)
+		_, ok := sellersSeen[t.Seller()]
+		if ok {
+			continue
+		}
+		sellersSeen[t.Seller()] = true
 
-	i.presenter.Present(presenterData)
+		transactionsForSeller, _ = i.transactions.GetBySellerID(s)
 
-	return nil
-}
-
-// TODO: transform this into Transaction.Add(*Transaction)
-func sumValueBySeller(transactionsForSeller map[string][]*transaction.Entity, presenterData []map[string]int64) ([]map[string]int64, error) {
-	for s, ts := range transactionsForSeller {
 		var sellerTotal int64
-		for _, t := range ts {
+		for _, t := range transactionsForSeller {
 			sellerTotal += t.Value()
 		}
 
-		t, err := transaction.New(time.Now(), s, sellerTotal)
+		t, err := transaction.New(time.Now(), s.ID(), sellerTotal)
 		if err != nil {
-			return []map[string]int64{}, err
+			return err
 		}
 
 		presenterData = append(presenterData, map[string]int64{t.Seller(): t.Value()})
 	}
 
-	return presenterData, nil
-}
+	i.presenter.Present(presenterData)
 
-// TODO: Transform this into Repository.GetAllBySeller()
-func groupTransactionsBySeller(ts []*transaction.Entity, transactionsForSeller map[string][]*transaction.Entity) {
-	for _, t := range ts {
-		listOfTransactionForSeller, ok := transactionsForSeller[t.Seller()]
-		if !ok {
-			transactionsForSeller[t.Seller()] = []*transaction.Entity{t}
-		} else {
-			transactionsForSeller[t.Seller()] = append(listOfTransactionForSeller, t)
-		}
-	}
+	return nil
 }
