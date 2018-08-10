@@ -69,8 +69,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 
-		r, _ := report.NewRequest()
-		err = i.Execute(r)
+		err = i.Execute()
 		if err != nil {
 			return err
 		}

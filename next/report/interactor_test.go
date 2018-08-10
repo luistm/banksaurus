@@ -60,9 +60,6 @@ func TestUnitNewReport(t *testing.T) {
 
 func TestUnitReport(t *testing.T) {
 
-	rq1, err := report.NewRequest()
-	testkit.AssertIsNil(t, err)
-
 	s1 := "Seller1"
 	v1 := int64(1234)
 	t1, err := transaction.New(time.Now(), s1, v1)
@@ -70,7 +67,6 @@ func TestUnitReport(t *testing.T) {
 
 	testCases := []struct {
 		name         string
-		input        *report.Request
 		presenter    *presenter
 		repository   *transactionRepository
 		err          error
@@ -79,7 +75,6 @@ func TestUnitReport(t *testing.T) {
 	}{
 		{
 			name:      "Response has expected data",
-			input:     rq1,
 			presenter: &presenter{},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
@@ -89,7 +84,6 @@ func TestUnitReport(t *testing.T) {
 		},
 		{
 			name:      "Returns error if repository returns error",
-			input:     rq1,
 			presenter: &presenter{},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{},
@@ -99,7 +93,6 @@ func TestUnitReport(t *testing.T) {
 		},
 		{
 			name:      "Returns error if presenter returns error",
-			input:     rq1,
 			presenter: &presenter{err: errors.New("test error")},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
@@ -113,7 +106,7 @@ func TestUnitReport(t *testing.T) {
 			i, err := report.NewInteractor(tc.presenter, tc.repository)
 			testkit.AssertIsNil(t, err)
 
-			err = i.Execute(tc.input)
+			err = i.Execute()
 
 			testkit.AssertEqual(t, tc.err, err)
 			testkit.AssertEqual(t, tc.outputSeller, tc.presenter.Seller())

@@ -36,7 +36,7 @@ type Interactor struct {
 }
 
 // Execute the interactor
-func (i *Interactor) Execute(r *Request) error {
+func (i *Interactor) Execute() error {
 
 	ts, err := i.transactions.GetAll()
 	if err != nil {
