@@ -14,13 +14,22 @@ func NewSellerRepository(db *sql.DB) (*SellerRepository, error) {
 	if db == nil {
 		return &SellerRepository{}, ErrDatabaseUndefined
 	}
-	return &SellerRepository{}, nil
+	return &SellerRepository{db}, nil
 }
 
 // SellerRepository handles persistence in a database
-type SellerRepository struct{}
+type SellerRepository struct {
+	db *sql.DB
+}
 
 // Saves seller to the database
-func (*SellerRepository) Save(entity *seller.Entity) error {
-	panic("implement me")
+func (sr *SellerRepository) Save(seller *seller.Entity) error {
+
+	insertStatement := "INSERT INTO seller(slug) VALUES (?)"
+	_, err := sr.db.Exec(insertStatement, seller.ID())
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
