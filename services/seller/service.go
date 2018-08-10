@@ -39,7 +39,7 @@ func (i *Service) Create(name string) error {
 	return nil
 }
 
-// GetAll returns all the seller available in the system
+// GetAll returns all the segller available in the system
 func (i *Service) GetAll() error {
 
 	if i.repository == nil {

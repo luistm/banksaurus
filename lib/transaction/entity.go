@@ -10,15 +10,6 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// NewFromDecimal creates a transaction using a money amount from a decimal
-func NewFromDecimal(s *seller.Seller, moneyAmount *decimal.Decimal) *Transaction {
-	return &Transaction{
-		Seller: s,
-		value:  moneyAmount,
-		tType:  Debt,
-	}
-}
-
 // NewFromString creates a transaction using a money amount from a string
 func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 	m, err := money.New(value)
@@ -37,8 +28,7 @@ func NewFromString(s *seller.Seller, value string) (*Transaction, error) {
 type TypeOfTransaction int
 
 const (
-	Debt   TypeOfTransaction = 0
-	Credit TypeOfTransaction = 1
+	Debt TypeOfTransaction = 0
 )
 
 // Transaction is a money movementg
