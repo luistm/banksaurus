@@ -138,12 +138,12 @@ func TestAcceptance(t *testing.T) {
 		//	expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 		//	errorExpected: false,
 		//},
-		//{
-		//	name:          "Shows report from bank records file, returns error if path does not exist",
-		//	command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
-		//	expected:      errGeneric.Error() + "\n",
-		//	errorExpected: true,
-		//},
+		{
+			name:          "Shows report from bank records file, returns error if path does not exist",
+			command:       []string{"report", "--input", "./thispathdoesnotexist/sample_records_load.csv"},
+			expected:      errGeneric.Error() + "\n",
+			errorExpected: true,
+		},
 		//{
 		//	name: "Shows report from bank records file, grouped by seller",
 		//	command: []string{
