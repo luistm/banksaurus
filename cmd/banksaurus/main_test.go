@@ -144,16 +144,16 @@ func TestAcceptance(t *testing.T) {
 			expected:      errGeneric.Error() + "\n",
 			errorExpected: true,
 		},
-		//{
-		//	name: "Shows report from bank records file, grouped by seller",
-		//	command: []string{
-		//		"report",
-		//		"--input", "../../data/fixtures/sample_records_load.csv",
-		//		"--grouped",
-		//	},
-		//	expected:      "77.52  Continente\n190.18 COMPRA FARMACIA SAO J\n",
-		//	errorExpected: false,
-		//},
+		{
+			name: "Shows report from bank records file, grouped by seller",
+			command: []string{
+				"report",
+				"--input", "../../data/fixtures/sample_records_load.csv",
+				"--grouped",
+			},
+			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n\n",
+			errorExpected: false,
+		},
 	}
 
 	for _, tc := range testCases {
