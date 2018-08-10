@@ -1,8 +1,8 @@
-package postgres_test
+package sqlite_test
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/luistm/banksaurus/next/adapter/postgres"
+	"github.com/luistm/banksaurus/next/adapter/sqlite"
 	"github.com/luistm/testkit"
 	"testing"
 )
@@ -10,8 +10,8 @@ import (
 func TestUnitSellerRepositoryNew(t *testing.T) {
 
 	t.Run("Returns error if database is nil", func(t *testing.T) {
-		_, err := postgres.NewSellerRepository(nil)
-		testkit.AssertEqual(t, postgres.ErrDatabaseUndefined, err)
+		_, err := sqlite.NewSellerRepository(nil)
+		testkit.AssertEqual(t, sqlite.ErrDatabaseUndefined, err)
 	})
 
 	db, _, err := sqlmock.New()
@@ -21,7 +21,7 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 	defer db.Close()
 
 	t.Run("Does not return error if receives a database", func(t *testing.T) {
-		_, err := postgres.NewSellerRepository(db)
+		_, err := sqlite.NewSellerRepository(db)
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -49,7 +49,7 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 //			//mock....
 //			//Ler database applications Go
 //
-//			r, err := postgres.NewSellerRepository(db)
+//			r, err := sqlite.NewSellerRepository(db)
 //			testkit.AssertIsNil(t, err)
 //
 //			err = r.Save(tc.input)
