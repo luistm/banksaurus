@@ -60,7 +60,7 @@ func (i *Interactor) Execute() error {
 		}
 		sellersSeen[t.Seller()] = true
 
-		transactionsForSeller, _ = i.transactions.GetBySellerID(s)
+		transactionsForSeller, _ = i.transactions.GetBySeller(s)
 
 		var sellerTotal int64
 		for _, t := range transactionsForSeller {

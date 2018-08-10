@@ -20,7 +20,7 @@ func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
 	return as.Transactions, nil
 }
 
-func (as *adapterStub) GetBySellerID(entity *seller.Entity) ([]*transaction.Entity, error) {
+func (as *adapterStub) GetBySeller(entity *seller.Entity) ([]*transaction.Entity, error) {
 	if as.callNumber == 0 {
 		as.callNumber += 1
 		return as.TransactionsForSeller[0], nil

@@ -2,6 +2,7 @@ package CGDcsv
 
 import (
 	"errors"
+	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"strconv"
 	"strings"
@@ -26,12 +27,15 @@ type Repository struct {
 	lines [][]string
 }
 
-// GetAll returns all transactions
-func (r *Repository) GetAll() ([]*transaction.Entity, error) {
-
+// GetBySeller returns transactions for the specified sellers
+func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error) {
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
+		sellerID := line[2]
+		if sellerID != s.ID() {
+			continue
+		}
 
 		// If not a debt, then is a credit
 		isDebt := true
@@ -57,7 +61,50 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			value = value * -1
 		}
 
-		t, err := transaction.New(date, line[2], value)
+		t, err := transaction.New(date, sellerID, value)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		transactions = append(transactions, t)
+	}
+
+	return transactions, nil
+}
+
+// GetAll returns all transactions
+func (r *Repository) GetAll() ([]*transaction.Entity, error) {
+
+	transactions := []*transaction.Entity{}
+
+	for _, line := range r.lines {
+		sellerID := line[2]
+
+		// If not a debt, then is a credit
+		isDebt := true
+		valueString := line[3]
+		if line[4] != "" {
+			valueString = line[4]
+			isDebt = false
+		}
+
+		valueString = strings.Replace(valueString, ",", "", -1)
+		valueString = strings.Replace(valueString, ".", "", -1)
+		value, err := strconv.ParseInt(valueString, 10, 64)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		date, err := time.Parse("02-01-2006", line[0])
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		if isDebt {
+			value = value * -1
+		}
+
+		t, err := transaction.New(date, sellerID, value)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}

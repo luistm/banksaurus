@@ -13,7 +13,7 @@ type Presenter interface {
 // TransactionsRepository is a collection of transactions to be used by the report
 type TransactionsRepository interface {
 	GetAll() ([]*transaction.Entity, error)
-	GetBySellerID(*seller.Entity) ([]*transaction.Entity, error)
+	GetBySeller(*seller.Entity) ([]*transaction.Entity, error)
 }
 
 // SellersRepository is a collection of sellers to be used by the report
