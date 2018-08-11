@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/luistm/banksaurus/next/entity/seller"
+	"github.com/mattn/go-sqlite3"
 )
 
 // ErrDatabaseUndefined ...
@@ -28,6 +29,13 @@ func (sr *SellerRepository) Save(seller *seller.Entity) error {
 	insertStatement := "INSERT INTO seller(slug) VALUES (?)"
 	_, err := sr.db.Exec(insertStatement, seller.ID())
 	if err != nil {
+		// Ignore unique
+		pqErr, ok := err.(sqlite3.Error)
+		if ok && pqErr.Code == sqlite3.ErrConstraint {
+			// Should it return the error?
+			// Maybe update the name, if needed?
+			return nil
+		}
 		return err
 	}
 
