@@ -1,7 +1,7 @@
-package transactionpresenter_test
+package presenterlisttransactions_test
 
 import (
-	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
+	"github.com/luistm/banksaurus/next/adapter/presenterlisttransactions"
 	"github.com/luistm/testkit"
 	"testing"
 )
@@ -22,12 +22,12 @@ func (miow *mockIOWriter) received() string {
 func TestUnitNewVieModel(t *testing.T) {
 
 	t.Run("Returns error if data has not an event length", func(t *testing.T) {
-		_, err := transactionpresenter.NewViewModel([]string{"key", "1234", "key2"})
-		testkit.AssertEqual(t, transactionpresenter.ErrDataHasOddLength, err)
+		_, err := presenterlisttransactions.NewViewModel([]string{"key", "1234", "key2"})
+		testkit.AssertEqual(t, presenterlisttransactions.ErrDataHasOddLength, err)
 	})
 
 	t.Run("Returns no error if data has zero length", func(t *testing.T) {
-		_, err := transactionpresenter.NewViewModel([]string{})
+		_, err := presenterlisttransactions.NewViewModel([]string{})
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -64,7 +64,7 @@ func TestUnitViewModel(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			screen := &mockIOWriter{}
 
-			vm, err := transactionpresenter.NewViewModel(tc.input)
+			vm, err := presenterlisttransactions.NewViewModel(tc.input)
 			testkit.AssertIsNil(t, err)
 
 			vm.Write(screen)

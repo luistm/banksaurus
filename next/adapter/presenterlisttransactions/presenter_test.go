@@ -1,7 +1,7 @@
-package transactionpresenter_test
+package presenterlisttransactions_test
 
 import (
-	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
+	"github.com/luistm/banksaurus/next/adapter/presenterlisttransactions"
 	"testing"
 
 	"github.com/luistm/testkit"
@@ -36,13 +36,13 @@ func TestUnitPresenterPresent(t *testing.T) {
 		{
 			name:   "Returns error if data was not presented",
 			output: []string{},
-			err:    transactionpresenter.ErrNoDataToPresent,
+			err:    presenterlisttransactions.ErrNoDataToPresent,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			p, err := transactionpresenter.NewPresenter()
+			p, err := presenterlisttransactions.NewPresenter()
 			testkit.AssertIsNil(t, err)
 
 			if tc.callPresent {
@@ -62,13 +62,13 @@ func TestUnitPresenterViewModel(t *testing.T) {
 
 	testCases := []struct {
 		name        string
-		presenter   *transactionpresenter.Presenter
+		presenter   *presenterlisttransactions.Presenter
 		outputError error
 	}{
 		{
 			name:        "Returns error if data if present has no data",
-			presenter:   &transactionpresenter.Presenter{},
-			outputError: transactionpresenter.ErrNoDataToPresent,
+			presenter:   &presenterlisttransactions.Presenter{},
+			outputError: presenterlisttransactions.ErrNoDataToPresent,
 		},
 	}
 
