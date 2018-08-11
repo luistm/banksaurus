@@ -3,14 +3,15 @@ package relational
 import (
 	"database/sql"
 	"errors"
-	"github.com/luistm/banksaurus/app"
+
+	"github.com/luistm/banksaurus/next/application"
 	"os"
 )
 
 // NewDatabase creates a new database instance
 func NewDatabase() (*sql.DB, error) {
 
-	dbName, dbPath := app.DatabasePath()
+	dbName, dbPath := application.DatabasePath()
 	var db *sql.DB
 
 	if err := validatePath(dbPath); err != nil {

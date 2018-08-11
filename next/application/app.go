@@ -1,10 +1,11 @@
-package app
+package application
 
 import (
 	"os"
 
 	"strings"
 
+	"errors"
 	"path"
 	"path/filepath"
 )
@@ -14,6 +15,17 @@ const (
 	Version = "banksaurus 1.2.0"
 
 	// TODO: Application version should be defined auto magically when a release is made
+)
+
+var (
+	// ErrMalformedPath ...
+	ErrMalformedPath = errors.New("path is malformed")
+
+	// ErrPathDoesNotExist ...
+	ErrPathDoesNotExist = errors.New("path does not exist")
+
+	// ErrInvalidAppStructure ...
+	ErrInvalidAppStructure = errors.New("invalid application structure")
 )
 
 // New creates an instance of App.

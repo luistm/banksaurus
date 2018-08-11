@@ -1,4 +1,4 @@
-package app_test
+package application_test
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 
 	"os/user"
 
-	"github.com/luistm/banksaurus/app"
+	app "github.com/luistm/banksaurus/next/application"
 	"github.com/luistm/testkit"
 )
 

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/luistm/banksaurus/app"
+	app "github.com/luistm/banksaurus/next/application"
 	"github.com/luistm/testkit"
 )
 
