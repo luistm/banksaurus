@@ -20,8 +20,8 @@ func New(lines [][]string) (*Repository, error) {
 	}
 
 	transactionStartLine := 5
-	lastTransactionLine := len(lines)-2
-	f := &Repository{lines: lines[transactionStartLine : lastTransactionLine]}
+	lastTransactionLine := len(lines) - 2
+	f := &Repository{lines: lines[transactionStartLine:lastTransactionLine]}
 
 	return f, nil
 }

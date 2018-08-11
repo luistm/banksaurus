@@ -23,6 +23,10 @@ type SellerRepository struct {
 	db *sql.DB
 }
 
+func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
+	return []*seller.Entity{}, nil
+}
+
 // Saves seller to the database
 func (sr *SellerRepository) Save(seller *seller.Entity) error {
 

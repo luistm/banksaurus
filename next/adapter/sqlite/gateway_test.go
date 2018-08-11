@@ -29,6 +29,23 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 	})
 }
 
+func TestUnitSellerGetAll(t *testing.T) {
+
+	testCases := []struct {
+		name            string
+		expectedSellers []*seller.Entity
+		expectedError   error
+	}{
+		{},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+
+		})
+	}
+}
+
 func TestUnitSellerRepositorySave(t *testing.T) {
 
 	s1, err := seller.NewFromID("SellerID")
