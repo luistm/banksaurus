@@ -1,12 +1,10 @@
 package load
 
 import (
-	"database/sql"
 	"encoding/csv"
-	"errors"
-	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
 	"github.com/luistm/banksaurus/next/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
 	"os"
 )
@@ -46,14 +44,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	// Create database repository
-	dbName, dbPath := app.DatabasePath()
-	var db *sql.DB
-
-	if err := validatePath(dbPath); err != nil {
-		return errors.New("invalid database path")
-	}
-	db, err = sql.Open("sqlite3", dbPath+"/"+dbName+".db")
+	db, err := relational.NewDatabase()
 	if err != nil {
 		return err
 	}
@@ -72,28 +63,6 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	err = i.Execute()
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-// validatePath validates that the database directory or file exists and it is
-// in a proper format to be used
-func validatePath(path string) error {
-	fileInfo, err := os.Stat(path)
-	if err != nil && os.IsNotExist(err) {
-		err := os.MkdirAll(path, 0755)
-		if err != nil {
-			return err
-		}
-	} else {
-		if err != nil {
-			return err
-		}
-		fileInfo, _ = os.Stat(path)
-		if !fileInfo.Mode().IsDir() {
-			return err
-		}
 	}
 
 	return nil
