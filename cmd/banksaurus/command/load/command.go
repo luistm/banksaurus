@@ -5,7 +5,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
+	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
 	"github.com/luistm/banksaurus/next/adapter/sqlite"
 	"github.com/luistm/banksaurus/next/loadtransactions"
 	"os"
@@ -41,7 +41,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	tr, err := CGDcsv.New(lines)
+	tr, err := cgdcsv.New(lines)
 	if err != nil {
 		return err
 	}

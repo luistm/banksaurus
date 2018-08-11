@@ -1,7 +1,7 @@
-package CGDcsv_test
+package cgdcsv_test
 
 import (
-	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
+	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/testkit"
@@ -20,7 +20,7 @@ func TestUnitNewGateway(t *testing.T) {
 		{
 			name:  "Returns error if line number does not match",
 			input: [][]string{},
-			err:   CGDcsv.ErrInvalidNumberOfLines,
+			err:   cgdcsv.ErrInvalidNumberOfLines,
 		},
 		{
 			name:  "Expects 8 lines",
@@ -30,7 +30,7 @@ func TestUnitNewGateway(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := CGDcsv.New(tc.input)
+			_, err := cgdcsv.New(tc.input)
 			testkit.AssertEqual(t, tc.err, err)
 		})
 	}
@@ -63,7 +63,7 @@ func TestUnitGetAll(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := CGDcsv.New(tc.input)
+			r, err := cgdcsv.New(tc.input)
 			testkit.AssertIsNil(t, err)
 
 			ts, err := r.GetAll()
@@ -107,7 +107,7 @@ func TestUnitReturnGetBySeller(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := CGDcsv.New(tc.input)
+			r, err := cgdcsv.New(tc.input)
 			testkit.AssertIsNil(t, err)
 
 			ts, err := r.GetBySeller(tc.seller)
