@@ -31,16 +31,55 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 
 func TestUnitSellerGetAll(t *testing.T) {
 
+	s1, err := seller.NewFromID("SellerID")
+	testkit.AssertIsNil(t, err)
+	s2, err := seller.NewFromID("SellerID")
+	testkit.AssertIsNil(t, err)
+
 	testCases := []struct {
 		name            string
 		expectedSellers []*seller.Entity
 		expectedError   error
+		dbError         error
+		dbRows          *sqlmock.Rows
 	}{
-		{},
+		{
+			name:            "Returns sellers",
+			expectedSellers: []*seller.Entity{s1, s2},
+			dbRows:          sqlmock.NewRows([]string{"seller", "name"}).AddRow(s1.ID(), "").AddRow(s2.ID(), ""),
+		},
+		{
+			name:            "Handles query error",
+			expectedSellers: []*seller.Entity{},
+			dbError:         errors.New("test error"),
+			expectedError:   errors.New("test error"),
+		},
+		{
+			name:            "Handles scan error",
+			expectedSellers: []*seller.Entity{},
+			dbRows:          sqlmock.NewRows([]string{"seller", "name"}).AddRow(s1.ID(), "").RowError(0, errors.New("test error")),
+			expectedError:   errors.New("test error"),
+		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
+			db, mock, err := sqlmock.New()
+			if err != nil {
+				t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+			}
+			defer db.Close()
+
+			r, err := sqlite.NewSellerRepository(db)
+			testkit.AssertIsNil(t, err)
+
+			mock.ExpectQuery("SELECT (.*) FROM sellers").WillReturnRows(tc.dbRows).WillReturnError(tc.dbError)
+
+			sellers, err := r.GetAll()
+
+			testkit.AssertIsNil(t, mock.ExpectationsWereMet())
+			testkit.AssertEqual(t, tc.expectedError, err)
+			testkit.AssertEqual(t, tc.expectedSellers, sellers)
 
 		})
 	}

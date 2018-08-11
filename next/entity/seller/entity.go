@@ -10,6 +10,10 @@ type Entity struct {
 	id string
 }
 
+func (e *Entity) GoString() string {
+	return e.id
+}
+
 // ID returns the id of the seller
 func (e *Entity) ID() string {
 	return e.id

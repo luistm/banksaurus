@@ -24,7 +24,43 @@ type SellerRepository struct {
 }
 
 func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
-	return []*seller.Entity{}, nil
+
+	selectStatement := "SELECT * FROM sellers"
+	rows, err := sr.db.Query(selectStatement)
+	if err != nil {
+		return []*seller.Entity{}, err
+	}
+
+	sellers := []*seller.Entity{}
+
+	for rows.Next() {
+		var id string
+		var name string
+
+		err := rows.Scan(&id, &name)
+		if err != nil {
+			return []*seller.Entity{}, err
+		}
+
+		s, err := seller.NewFromID(id)
+		if err != nil {
+			return []*seller.Entity{}, err
+		}
+
+		sellers = append(sellers, s)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return []*seller.Entity{}, err
+	}
+
+	err = rows.Close()
+	if err != nil {
+		return []*seller.Entity{}, err
+	}
+
+	return sellers, nil
 }
 
 // Saves seller to the database
