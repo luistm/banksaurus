@@ -6,8 +6,8 @@ import (
 	"github.com/luistm/banksaurus/next/adapter/sqlite"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/testkit"
-	"testing"
 	"github.com/mattn/go-sqlite3"
+	"testing"
 )
 
 func TestUnitSellerRepositoryNew(t *testing.T) {
@@ -35,9 +35,9 @@ func TestUnitSellerRepositorySave(t *testing.T) {
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
-		name        string
-		input       *seller.Entity
-		expectedErr error
+		name         string
+		input        *seller.Entity
+		expectedErr  error
 		sqlMockError error
 	}{
 		{
@@ -45,15 +45,15 @@ func TestUnitSellerRepositorySave(t *testing.T) {
 			input: s1,
 		},
 		{
-			name:        "Returns error if db returns error",
-			input:       s1,
-			expectedErr: errors.New("this is a database error"),
+			name:         "Returns error if db returns error",
+			input:        s1,
+			expectedErr:  errors.New("this is a database error"),
 			sqlMockError: errors.New("this is a database error"),
 		},
 		{
-			name: "Returns success if error is: UNIQUE constraint failed",
-			input: s1,
-			expectedErr: nil,
+			name:         "Returns success if error is: UNIQUE constraint failed",
+			input:        s1,
+			expectedErr:  nil,
 			sqlMockError: sqlite3.Error{Code: sqlite3.ErrConstraint},
 		},
 	}

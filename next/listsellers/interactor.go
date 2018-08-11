@@ -16,3 +16,7 @@ func NewInteractor(sr SellerRepository) (*Interactor, error) {
 
 // Interactor to list sellers
 type Interactor struct{}
+
+func (i *Interactor) Execute() error {
+	return nil
+}
