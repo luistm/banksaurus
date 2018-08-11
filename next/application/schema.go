@@ -1,4 +1,4 @@
-package sqlite
+package application
 
 import (
 	"database/sql"
@@ -21,7 +21,7 @@ func (e *ErrFailedToCreatedDB) Error() string {
 }
 
 // New creates a new instance of Infrastructure
-func New(path string, name string, memory bool) (*Infrastructure, error) {
+func NewSchema(path string, name string, memory bool) (*Infrastructure, error) {
 
 	if name == "" || path == "" {
 		return &Infrastructure{}, ErrInvalidConfiguration
