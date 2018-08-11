@@ -21,11 +21,11 @@ func (sr *sellerRepository) GetAll() ([]*seller.Entity, error) {
 }
 
 type sellerPresenter struct {
-	receivedSellers []map[string]string
+	receivedSellers []string
 	error
 }
 
-func (sp *sellerPresenter) Present(sellers []map[string]string) error {
+func (sp *sellerPresenter) Present(sellers []string) error {
 	if sp.error != nil {
 		return sp.error
 	}
@@ -63,20 +63,20 @@ func TestUnitListSellers(t *testing.T) {
 		name            string
 		repository      *sellerRepository
 		presenter       *sellerPresenter
-		expectedSellers []map[string]string
+		expectedSellers []string
 		expectedError   error
 	}{
 		{
 			name:            "List sellers",
 			repository:      &sellerRepository{sellers: []*seller.Entity{s1, s2}},
 			presenter:       &sellerPresenter{},
-			expectedSellers: []map[string]string{{s1.ID(): ""}, {s2.ID(): ""}},
+			expectedSellers: []string{s1.ID(), s2.ID()},
 		},
 		{
 			name:            "No sellers to list",
 			repository:      &sellerRepository{sellers: []*seller.Entity{}},
 			presenter:       &sellerPresenter{},
-			expectedSellers: []map[string]string{},
+			expectedSellers: []string{},
 		},
 		{
 			name:          "Handles error from repository",

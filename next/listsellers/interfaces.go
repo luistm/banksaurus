@@ -7,5 +7,5 @@ type SellerRepository interface {
 }
 
 type SellerPresenter interface {
-	Present([]map[string]string) error
+	Present([]string) error
 }

@@ -33,9 +33,9 @@ func (i *Interactor) Execute() error {
 		return err
 	}
 
-	sellersToPresenter := []map[string]string{}
+	sellersToPresenter := []string{}
 	for _, s := range sellers {
-		sellersToPresenter = append(sellersToPresenter, map[string]string{s.ID(): ""})
+		sellersToPresenter = append(sellersToPresenter, s.ID())
 	}
 
 	err = i.presenter.Present(sellersToPresenter)

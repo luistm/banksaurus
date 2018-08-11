@@ -3,8 +3,10 @@ package seller
 import (
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 
+	"github.com/luistm/banksaurus/next/application/adapter/presenterlistsellers"
 	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
 	"github.com/luistm/banksaurus/next/listsellers"
+	"os"
 )
 
 // Command seller
@@ -29,7 +31,12 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 			return err
 		}
 
-		i, err := listsellers.NewInteractor(sr, nil)
+		p, err := presenterlistsellers.NewPresenter()
+		if err != nil {
+			return err
+		}
+
+		i, err := listsellers.NewInteractor(sr, p)
 		if err != nil {
 			return err
 		}
@@ -38,6 +45,13 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 		if err != nil {
 			return err
 		}
+
+		vm, err := p.ViewModel()
+		if err != nil {
+			return err
+		}
+
+		vm.Write(os.Stdout)
 	}
 
 	if arguments["seller"].(bool) && arguments["change"].(bool) {

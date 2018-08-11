@@ -60,6 +60,8 @@ func TestUnitViewModel(t *testing.T) {
 		},
 	}
 
+	// TODO: fix this! vm.View is not handling errors
+
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			screen := &mockIOWriter{}
