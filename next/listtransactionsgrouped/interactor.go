@@ -1,4 +1,4 @@
-package reportgrouped
+package listtransactionsgrouped
 
 import (
 	"errors"

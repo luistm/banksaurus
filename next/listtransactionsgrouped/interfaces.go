@@ -1,4 +1,4 @@
-package reportgrouped
+package listtransactionsgrouped
 
 import (
 	"github.com/luistm/banksaurus/next/entity/seller"

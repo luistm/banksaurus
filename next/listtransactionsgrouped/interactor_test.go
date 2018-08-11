@@ -1,9 +1,9 @@
-package reportgrouped_test
+package listtransactionsgrouped_test
 
 import (
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/reportgrouped"
+	"github.com/luistm/banksaurus/next/listtransactionsgrouped"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
@@ -39,17 +39,17 @@ func (as *adapterStub) Present(receivedData []map[string]int64) error {
 
 func TestUnitReportGroupedNew(t *testing.T) {
 	t.Run("Returns error if transactions repository is undefined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(nil, nil)
-		testkit.AssertEqual(t, reportgrouped.ErrTransactionsRepositoryUndefined, err)
+		_, err := listtransactionsgrouped.NewInteractor(nil, nil)
+		testkit.AssertEqual(t, listtransactionsgrouped.ErrTransactionsRepositoryUndefined, err)
 	})
 
 	t.Run("Returns error if presenter is undefined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(&adapterStub{}, nil)
-		testkit.AssertEqual(t, reportgrouped.ErrPresenterUndefined, err)
+		_, err := listtransactionsgrouped.NewInteractor(&adapterStub{}, nil)
+		testkit.AssertEqual(t, listtransactionsgrouped.ErrPresenterUndefined, err)
 	})
 
 	t.Run("Returns no error if repositories and presenter are defined", func(t *testing.T) {
-		_, err := reportgrouped.NewInteractor(&adapterStub{}, &adapterStub{})
+		_, err := listtransactionsgrouped.NewInteractor(&adapterStub{}, &adapterStub{})
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -117,7 +117,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := reportgrouped.NewInteractor(tc.transactions, tc.presenter)
+			r, err := listtransactionsgrouped.NewInteractor(tc.transactions, tc.presenter)
 			testkit.AssertIsNil(t, err)
 
 			err = r.Execute()
