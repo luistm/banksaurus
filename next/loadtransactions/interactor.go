@@ -1,4 +1,4 @@
-package load
+package loadtransactions
 
 import (
 	"errors"
@@ -27,13 +27,13 @@ func NewInteractor(tr TransactionRepository, sr SellerRepository) (*Interactor, 
 	return &Interactor{tr, sr}, nil
 }
 
-// Interactor for load
+// Interactor for loadtransactions
 type Interactor struct {
 	transactions TransactionRepository
 	sellers      SellerRepository
 }
 
-// Execute the load interactor
+// Execute the loadtransactions interactor
 func (i *Interactor) Execute() error {
 
 	ts, err := i.transactions.GetAll()

@@ -1,4 +1,4 @@
-package load
+package loadtransactions
 
 import (
 	"github.com/luistm/banksaurus/next/entity/seller"

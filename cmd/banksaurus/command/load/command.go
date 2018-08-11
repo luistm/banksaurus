@@ -7,11 +7,11 @@ import (
 	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
 	"github.com/luistm/banksaurus/next/adapter/sqlite"
-	"github.com/luistm/banksaurus/next/load"
+	"github.com/luistm/banksaurus/next/loadtransactions"
 	"os"
 )
 
-// Command command to load a csv input from a file
+// Command command to loadtransactions a csv input from a file
 type Command struct{}
 
 // Execute the Command command
@@ -64,7 +64,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	// Execute the interactor
-	i, err := load.NewInteractor(tr, sr)
+	i, err := loadtransactions.NewInteractor(tr, sr)
 	if err != nil {
 		return err
 	}

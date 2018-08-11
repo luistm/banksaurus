@@ -1,10 +1,10 @@
-package load_test
+package loadtransactions_test
 
 import (
 	"errors"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/load"
+	"github.com/luistm/banksaurus/next/loadtransactions"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
@@ -41,17 +41,17 @@ func (r *sellerRepository) Save(s *seller.Entity) error {
 func TestUnitNewInteractor(t *testing.T) {
 
 	t.Run("Returns error if transaction repository is undefined", func(t *testing.T) {
-		_, err := load.NewInteractor(nil, &sellerRepository{})
-		testkit.AssertEqual(t, load.ErrTransactionRepositoryUndefined, err)
+		_, err := loadtransactions.NewInteractor(nil, &sellerRepository{})
+		testkit.AssertEqual(t, loadtransactions.ErrTransactionRepositoryUndefined, err)
 	})
 
 	t.Run("Returns error if seller repository is undefined", func(t *testing.T) {
-		_, err := load.NewInteractor(&repository{}, nil)
-		testkit.AssertEqual(t, load.ErrSellerRepositoryUndefined, err)
+		_, err := loadtransactions.NewInteractor(&repository{}, nil)
+		testkit.AssertEqual(t, loadtransactions.ErrSellerRepositoryUndefined, err)
 	})
 
 	t.Run("New interactor receives repository", func(t *testing.T) {
-		_, err := load.NewInteractor(&repository{}, &sellerRepository{})
+		_, err := loadtransactions.NewInteractor(&repository{}, &sellerRepository{})
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -97,7 +97,7 @@ func TestUnitLoad(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := load.NewInteractor(tc.transactionRepo, tc.sellerRepo)
+			r, err := loadtransactions.NewInteractor(tc.transactionRepo, tc.sellerRepo)
 			testkit.AssertIsNil(t, err)
 
 			err = r.Execute()
