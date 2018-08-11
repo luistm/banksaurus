@@ -6,7 +6,7 @@ import (
 
 	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
 	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
-	"github.com/luistm/banksaurus/next/report"
+	"github.com/luistm/banksaurus/next/listtransactions"
 	"github.com/luistm/banksaurus/next/reportgrouped"
 )
 
@@ -64,7 +64,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		}
 
 	} else {
-		i, err := report.NewInteractor(p, cgdCSVRepository)
+		i, err := listtransactions.NewInteractor(p, cgdCSVRepository)
 		if err != nil {
 			return err
 		}

@@ -1,4 +1,4 @@
-package report
+package listtransactions
 
 import (
 	"errors"
@@ -15,7 +15,7 @@ var (
 	ErrPresenter = &customError{msg: "error in presenter"}
 )
 
-// NewInteractor creates a new report interactor instance
+// NewInteractor creates a new listtransactions interactor instance
 func NewInteractor(p Presenter, r Repository) (*Interactor, error) {
 
 	if p == nil {
@@ -29,7 +29,7 @@ func NewInteractor(p Presenter, r Repository) (*Interactor, error) {
 	return &Interactor{presenter: p, transactions: r}, nil
 }
 
-// Interactor for report
+// Interactor for listtransactions
 type Interactor struct {
 	presenter    Presenter
 	transactions Repository

@@ -1,9 +1,9 @@
-package report_test
+package listtransactions_test
 
 import (
 	"errors"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"github.com/luistm/banksaurus/next/report"
+	"github.com/luistm/banksaurus/next/listtransactions"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"
@@ -51,11 +51,11 @@ func (tr *transactionRepository) GetAll() ([]*transaction.Entity, error) {
 
 func TestUnitNewReport(t *testing.T) {
 
-	_, err := report.NewInteractor(nil, nil)
-	testkit.AssertEqual(t, err, report.ErrPresenterUndefined)
+	_, err := listtransactions.NewInteractor(nil, nil)
+	testkit.AssertEqual(t, err, listtransactions.ErrPresenterUndefined)
 
-	_, err = report.NewInteractor(&presenter{}, nil)
-	testkit.AssertEqual(t, err, report.ErrRepositoryUndefined)
+	_, err = listtransactions.NewInteractor(&presenter{}, nil)
+	testkit.AssertEqual(t, err, listtransactions.ErrRepositoryUndefined)
 }
 
 func TestUnitReport(t *testing.T) {
@@ -89,7 +89,7 @@ func TestUnitReport(t *testing.T) {
 				transactions: []*transaction.Entity{},
 				err:          errors.New("test error"),
 			},
-			err: report.ErrRepository.AppendError(errors.New("test error")),
+			err: listtransactions.ErrRepository.AppendError(errors.New("test error")),
 		},
 		{
 			name:      "Returns error if presenter returns error",
@@ -97,13 +97,13 @@ func TestUnitReport(t *testing.T) {
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
 			},
-			err: report.ErrPresenter.AppendError(errors.New("test error")),
+			err: listtransactions.ErrPresenter.AppendError(errors.New("test error")),
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			i, err := report.NewInteractor(tc.presenter, tc.repository)
+			i, err := listtransactions.NewInteractor(tc.presenter, tc.repository)
 			testkit.AssertIsNil(t, err)
 
 			err = i.Execute()
