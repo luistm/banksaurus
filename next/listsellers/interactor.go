@@ -2,21 +2,46 @@ package listsellers
 
 import "github.com/pkg/errors"
 
-// ErrSellersRepositoryUndefined ...
-var ErrSellersRepositoryUndefined = errors.New("sellers repository is undefined")
+var (
+	ErrSellersRepositoryUndefined   = errors.New("seller repository is undefined")
+	ErrPresenterRepositoryUndefined = errors.New("seller presenter is undefined")
+)
 
 // Creates a new interactor instance
-func NewInteractor(sr SellerRepository) (*Interactor, error) {
+func NewInteractor(sr SellerRepository, sp SellerPresenter) (*Interactor, error) {
 	if sr == nil {
 		return &Interactor{}, ErrSellersRepositoryUndefined
 	}
 
-	return &Interactor{}, nil
+	if sp == nil {
+		return &Interactor{}, ErrPresenterRepositoryUndefined
+	}
+
+	return &Interactor{sr, sp}, nil
 }
 
 // Interactor to list sellers
-type Interactor struct{}
+type Interactor struct {
+	sellers   SellerRepository
+	presenter SellerPresenter
+}
 
 func (i *Interactor) Execute() error {
+
+	sellers, err := i.sellers.GetAll()
+	if err != nil {
+		return err
+	}
+
+	sellersToPresenter := []map[string]string{}
+	for _, s := range sellers {
+		sellersToPresenter = append(sellersToPresenter, map[string]string{s.ID(): ""})
+	}
+
+	err = i.presenter.Present(sellersToPresenter)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
