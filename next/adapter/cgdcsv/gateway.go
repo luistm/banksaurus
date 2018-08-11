@@ -14,11 +14,15 @@ var ErrInvalidNumberOfLines = errors.New("number of lines is less than needed")
 
 // New opens and returns a file handler for a CSV file
 func New(lines [][]string) (*Repository, error) {
-	if len(lines) < 8 {
+	minLinesInWellFormattedFile := 8
+	if len(lines) < minLinesInWellFormattedFile {
 		return &Repository{}, ErrInvalidNumberOfLines
 	}
 
-	f := &Repository{lines: lines[5 : len(lines)-2]}
+	transactionStartLine := 5
+	lastTransactionLine := len(lines)-2
+	f := &Repository{lines: lines[transactionStartLine : lastTransactionLine]}
+
 	return f, nil
 }
 
