@@ -1,43 +1,21 @@
 package seller
 
-import (
-	"os"
-
-	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/services/seller"
-)
-
-// Command command
+// Command seller
 type Command struct{}
 
 // Execute the seller command with arguments
 func (s *Command) Execute(arguments map[string]interface{}) error {
-	var err error
-
-	dbName, dbPath := app.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
-	if err != nil {
-		return err
-	}
-	defer SQLStorage.Close()
-
-	sellersInteractor := seller.New(SQLStorage, NewPresenter(os.Stdout))
 
 	if arguments["seller"].(bool) && arguments["new"].(bool) {
-		err = sellersInteractor.Create(arguments["<name>"].(string))
+		panic("seller new not implemented")
 	}
 
 	if arguments["seller"].(bool) && arguments["show"].(bool) {
-		err = sellersInteractor.GetAll()
+		panic("seller show not implemented")
 	}
 
 	if arguments["seller"].(bool) && arguments["change"].(bool) {
-		err = sellersInteractor.Update(arguments["<id>"].(string), arguments["<name>"].(string))
-	}
-
-	if err != nil {
-		return nil
+		panic("seller change not implemented")
 	}
 
 	return nil
