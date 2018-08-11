@@ -3,22 +3,12 @@ package sqlite
 import (
 	"database/sql"
 	"errors"
-	"os"
-
-	"github.com/luistm/banksaurus/infrastructure"
-	"github.com/luistm/banksaurus/lib"
-
-	// To init the database driver
 	"fmt"
-
 	_ "github.com/mattn/go-sqlite3"
+	"os"
 )
 
-var (
-	ErrUndefinedDataBase    = errors.New("database is not defined")
-	ErrStatementUndefined   = errors.New("statement is undefined")
-	ErrInvalidConfiguration = errors.New("infrastructure configuration parameters are invalid")
-)
+var ErrInvalidConfiguration = errors.New("infrastructure configuration parameters are invalid")
 
 // ErrFailedToCreatedDB for database error
 type ErrFailedToCreatedDB struct {
@@ -31,7 +21,7 @@ func (e *ErrFailedToCreatedDB) Error() string {
 }
 
 // New creates a new instance of Infrastructure
-func New(path string, name string, memory bool) (infrastructure.SQLStorage, error) {
+func New(path string, name string, memory bool) (*Infrastructure, error) {
 
 	if name == "" || path == "" {
 		return &Infrastructure{}, ErrInvalidConfiguration
@@ -127,84 +117,4 @@ func validatePath(path string) error {
 // Infrastructure contains a Infrastructure database
 type Infrastructure struct {
 	db *sql.DB
-}
-
-// Close closes the connection with the Infrastructure database
-func (s *Infrastructure) Close() error {
-	if s.db == nil {
-		return ErrUndefinedDataBase
-	}
-
-	return s.db.Close()
-}
-
-// Execute is to execute an sql statement
-func (s *Infrastructure) Execute(statement string, values ...interface{}) error {
-	if s.db == nil {
-		return ErrUndefinedDataBase
-	}
-
-	if statement == "" {
-		return ErrStatementUndefined
-	}
-
-	tx, err := s.db.Begin()
-	if err != nil {
-		return err
-	}
-
-	_, err = tx.Exec(statement, values...)
-	// TODO: this section is missing unit tests ----------------------------------
-	if err != nil {
-		if errTx := tx.Rollback(); errTx != nil {
-			return errTx
-		}
-		return err
-	}
-	// ---------------------------------------------------------------------------
-	err = tx.Commit()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// TODO: Make sure rows are being closed across the code
-
-// Query fetches data from the database
-func (s *Infrastructure) Query(statement string, args ...interface{}) (lib.Rows, error) {
-	if s.db == nil {
-		return nil, ErrUndefinedDataBase
-	}
-
-	if statement == "" {
-		return nil, ErrStatementUndefined
-	}
-
-	// TODO: why i can't fetch results here? Must read!
-	//
-	// I'm looking into transaction here, because i don't understand why Query does't return results.
-	// Must read more stuff about this.
-
-	// tx, err := s.db.Begin()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	rows, err := s.db.Query(statement)
-	// rows, err := tx.Query(statement)
-	if err != nil {
-		// if errTx := tx.Rollback(); errTx != nil {
-		// 	return nil, errTx
-		// }
-		return nil, err
-	}
-
-	// err = tx.Commit()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	return rows, nil
 }
