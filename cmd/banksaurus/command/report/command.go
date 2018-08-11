@@ -4,8 +4,8 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
-	"github.com/luistm/banksaurus/next/adapter/presenterlisttransactions"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/presenterlisttransactions"
 	"github.com/luistm/banksaurus/next/listtransactions"
 	"github.com/luistm/banksaurus/next/listtransactionsgrouped"
 )

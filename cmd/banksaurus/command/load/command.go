@@ -2,9 +2,9 @@ package load
 
 import (
 	"encoding/csv"
-	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
-	"github.com/luistm/banksaurus/next/adapter/sqlite"
-	"github.com/luistm/banksaurus/next/infrastructure/relational"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
 	"os"
 )

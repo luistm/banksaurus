@@ -3,7 +3,7 @@ package sqlite_test
 import (
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/luistm/banksaurus/next/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/testkit"
 	"github.com/mattn/go-sqlite3"

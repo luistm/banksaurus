@@ -1,7 +1,7 @@
 package cgdcsv_test
 
 import (
-	"github.com/luistm/banksaurus/next/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/testkit"

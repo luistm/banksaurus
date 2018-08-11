@@ -1,7 +1,7 @@
 package presenterlisttransactions_test
 
 import (
-	"github.com/luistm/banksaurus/next/adapter/presenterlisttransactions"
+	"github.com/luistm/banksaurus/next/application/adapter/presenterlisttransactions"
 	"github.com/luistm/testkit"
 	"testing"
 )
