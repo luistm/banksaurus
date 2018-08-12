@@ -36,7 +36,7 @@ func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
-		sellerID := line[2]
+		sellerID := strings.TrimSpace(line[2])
 		if sellerID != s.ID() {
 			continue
 		}
@@ -82,7 +82,7 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
-		sellerID := line[2]
+		sellerID := strings.TrimSpace(line[2])
 
 		// If not a debt, then is a credit
 		isDebt := true

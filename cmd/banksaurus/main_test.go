@@ -101,7 +101,7 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", fixture},
-			expected:      "-0,52€  COMPRA CONTINENTE MAI \n593,48€ TRF CREDIT            \n-95,09€ COMPRA FARMACIA SAO J \n-95,09€ COMPRA FARMACIA SAO J \n",
+			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
@@ -117,7 +117,7 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
-			expected: "COMPRA CONTINENTE MAI \nTRF CREDIT            \nCOMPRA FARMACIA SAO J \n",
+			expected: "COMPRA CONTINENTE MAI\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:          "Shows report from bank records file, returns error if path does not exist",
@@ -132,7 +132,7 @@ func TestAcceptance(t *testing.T) {
 				"--input", fixture,
 				"--grouped",
 			},
-			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n",
+			expected:      "-0,52€   COMPRA CONTINENTE MAI\n593,48€  TRF CREDIT\n-190,18€ COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		//{
@@ -142,18 +142,18 @@ func TestAcceptance(t *testing.T) {
 		//},
 		{
 			name:     "Adds pretty name to seller",
-			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI ", "--pretty", "Continente"},
+			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
 			expected: "",
 		},
 		{
 			name:     "Show seller changed",
 			command:  []string{"seller", "show"},
-			expected: "Continente\nCOMPRA FARMACIA SAO J \n",
+			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:          "Shows report from bank records file, with seller name instead of slug",
 			command:       []string{"report", "--input", fixture},
-			expected:      "-77.52 Continente\n593,48€  TRF CREDIT            \n-95.09 COMPRA FARMACIA SAO J \n-95.09 COMPRA FARMACIA SAO J \n",
+			expected:      "-77.52 Continente\n593,48€  TRF CREDIT\n-95.09 COMPRA FARMACIA SAO J\n-95.09 COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 	}
