@@ -16,7 +16,7 @@ var (
 )
 
 // NewInteractor creates a new listtransactions interactor instance
-func NewInteractor(p Presenter, r Repository) (*Interactor, error) {
+func NewInteractor(p Presenter, r TransactionGateway) (*Interactor, error) {
 
 	if p == nil {
 		return &Interactor{}, ErrPresenterUndefined
@@ -32,7 +32,7 @@ func NewInteractor(p Presenter, r Repository) (*Interactor, error) {
 // Interactor for listtransactions
 type Interactor struct {
 	presenter    Presenter
-	transactions Repository
+	transactions TransactionGateway
 }
 
 // Execute the interactor

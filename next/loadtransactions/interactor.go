@@ -14,7 +14,7 @@ var (
 )
 
 // NewInteractor creates an interactor instance
-func NewInteractor(tr TransactionRepository, sr SellerRepository) (*Interactor, error) {
+func NewInteractor(tr TransactionGateway, sr SellerGateway) (*Interactor, error) {
 
 	if tr == nil {
 		return &Interactor{}, ErrTransactionRepositoryUndefined
@@ -29,8 +29,8 @@ func NewInteractor(tr TransactionRepository, sr SellerRepository) (*Interactor, 
 
 // Interactor for loadtransactions
 type Interactor struct {
-	transactions TransactionRepository
-	sellers      SellerRepository
+	transactions TransactionGateway
+	sellers      SellerGateway
 }
 
 // Execute the loadtransactions interactor

@@ -5,12 +5,12 @@ import (
 	"github.com/luistm/banksaurus/next/entity/transaction"
 )
 
-// TransactionRepository is a collection of entities to be used by the report
-type TransactionRepository interface {
+// TransactionGateway is a collection of entities to be used by the report
+type TransactionGateway interface {
 	GetAll() ([]*transaction.Entity, error)
 }
 
-// SellerRepository is a collection of sellers
-type SellerRepository interface {
+// SellerGateway is a collection of sellers
+type SellerGateway interface {
 	Save(entity *seller.Entity) error
 }
