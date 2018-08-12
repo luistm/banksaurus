@@ -14,15 +14,36 @@ func NewInteractor(sellers SellerRepository) (*Interactor, error) {
 	return &Interactor{sellers}, nil
 }
 
-type Interactor struct{
+type Interactor struct {
 	sellers SellerRepository
 }
 
 func (i *Interactor) Execute(r *Request) error {
 
-	s, _  := i.sellers.GetByID(r.SellerID())
-	s, _ := seller.NewFromSeller(s)
-	i.sellers.UpdateSeller(s)
+	sellerID, err := r.SellerID()
+	if err != nil {
+		return err
+	}
+
+	s, err := i.sellers.GetByID(sellerID)
+	if err != nil {
+		return err
+	}
+
+	sellerName, err := r.SellerName()
+	if err != nil {
+		return err
+	}
+
+	s, err = seller.New(s.ID(), sellerName)
+	if err != nil {
+		return err
+	}
+
+	err = i.sellers.UpdateSeller(s)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
