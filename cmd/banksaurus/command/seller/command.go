@@ -4,7 +4,7 @@ import (
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 
 	"github.com/luistm/banksaurus/next/application/adapter/presenterlistsellers"
-	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/changesellername"
 	"github.com/luistm/banksaurus/next/listsellers"
 	"os"
@@ -26,7 +26,7 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer db.Close()
 
-	sr, err := sqlite.NewSellerRepository(db)
+	sr, err := databasegateway.NewSellerRepository(db)
 	if err != nil {
 		return err
 	}

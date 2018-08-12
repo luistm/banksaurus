@@ -3,7 +3,7 @@ package load
 import (
 	"encoding/csv"
 	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
-	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
 	"os"
@@ -50,7 +50,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer db.Close()
 
-	sr, err := sqlite.NewSellerRepository(db)
+	sr, err := databasegateway.NewSellerRepository(db)
 	if err != nil {
 		return err
 	}
