@@ -66,6 +66,8 @@ func TestUnitChangeSellerName(t *testing.T) {
 			repository:    &repository{err: errors.New("test error")},
 			expectedError: errors.New("test error"),
 		},
+
+		// TODO: test remaining error paths
 	}
 
 	for _, tc := range testCases {
