@@ -23,6 +23,14 @@ type SellerRepository struct {
 	db *sql.DB
 }
 
+func (sr *SellerRepository) GetByID(string) (*seller.Entity, error) {
+	panic("implement me")
+}
+
+func (sr *SellerRepository) UpdateSeller(*seller.Entity) error {
+	panic("implement me")
+}
+
 func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller"

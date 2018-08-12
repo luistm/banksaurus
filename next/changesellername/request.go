@@ -24,7 +24,7 @@ type Request struct {
 }
 
 func (r *Request) SellerID() (string, error) {
-	if r.sellerID == ""{
+	if r.sellerID == "" {
 		return r.sellerID, ErrDataWasNotCleaned
 	}
 
@@ -32,7 +32,7 @@ func (r *Request) SellerID() (string, error) {
 }
 
 func (r *Request) SellerName() (string, error) {
-	if r.sellerName == ""{
+	if r.sellerName == "" {
 		return "", ErrDataWasNotCleaned
 	}
 

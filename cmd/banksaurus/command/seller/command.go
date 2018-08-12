@@ -5,6 +5,7 @@ import (
 
 	"github.com/luistm/banksaurus/next/application/adapter/presenterlistsellers"
 	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/changesellername"
 	"github.com/luistm/banksaurus/next/listsellers"
 	"os"
 )
@@ -19,17 +20,17 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 		panic("seller new not implemented")
 	}
 
+	db, err := relational.NewDatabase()
+	if err != nil {
+		return err
+	}
+
+	sr, err := sqlite.NewSellerRepository(db)
+	if err != nil {
+		return err
+	}
+
 	if arguments["seller"].(bool) && arguments["show"].(bool) {
-
-		db, err := relational.NewDatabase()
-		if err != nil {
-			return err
-		}
-
-		sr, err := sqlite.NewSellerRepository(db)
-		if err != nil {
-			return err
-		}
 
 		p, err := presenterlistsellers.NewPresenter()
 		if err != nil {
@@ -55,7 +56,20 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	if arguments["seller"].(bool) && arguments["change"].(bool) {
-		panic("seller change not implemented")
+		i, err := changesellername.NewInteractor(sr)
+		if err != nil {
+			return err
+		}
+
+		r, err := changesellername.NewRequest(arguments["<id>"].(string), arguments["<name>"].(string))
+		if err != nil {
+			return err
+		}
+
+		err = i.Execute(r)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
