@@ -35,7 +35,12 @@ func (i *Interactor) Execute() error {
 
 	sellersToPresenter := []string{}
 	for _, s := range sellers {
-		sellersToPresenter = append(sellersToPresenter, s.ID())
+		show := s.ID()
+		if s.HasName() {
+			show = s.Name()
+		}
+
+		sellersToPresenter = append(sellersToPresenter, show)
 	}
 
 	err = i.presenter.Present(sellersToPresenter)

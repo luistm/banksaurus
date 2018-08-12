@@ -148,7 +148,7 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:     "Show seller changed",
 			command:  []string{"seller", "show"},
-			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
+			expected: "Continente\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:          "Shows report from bank records file, with seller name instead of slug",

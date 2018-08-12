@@ -40,9 +40,9 @@ func TestUnitGetAll(t *testing.T) {
 
 	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)
-	t1, err := transaction.New(date, "COMPRA CONTINENTE MAI ", -7752)
+	t1, err := transaction.New(date, "COMPRA CONTINENTE MAI", -7752)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(date, "COMPRA CONTINENTE ", 7752)
+	t2, err := transaction.New(date, "COMPRA CONTINENTE", 7752)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
@@ -77,7 +77,7 @@ func TestUnitGetAll(t *testing.T) {
 
 func TestUnitReturnGetBySeller(t *testing.T) {
 
-	sellerID := "COMPRA CONTINENTE "
+	sellerID := "COMPRA CONTINENTE"
 
 	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)

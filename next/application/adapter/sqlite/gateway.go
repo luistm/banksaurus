@@ -87,7 +87,7 @@ func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
 			return []*seller.Entity{}, err
 		}
 
-		s, err := seller.NewFromID(id)
+		s, err := seller.New(id, name)
 		if err != nil {
 			return []*seller.Entity{}, err
 		}

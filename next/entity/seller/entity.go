@@ -30,3 +30,12 @@ func (e *Entity) ID() string {
 func (e *Entity) Name() string {
 	return e.name
 }
+
+// HasName ...
+func (e *Entity) HasName() bool {
+	if e.name == "" {
+		return false
+	}
+
+	return true
+}
