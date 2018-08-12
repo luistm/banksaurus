@@ -73,7 +73,7 @@ func TestUnitSellerGetAll(t *testing.T) {
 			r, err := sqlite.NewSellerRepository(db)
 			testkit.AssertIsNil(t, err)
 
-			mock.ExpectQuery("SELECT (.*) FROM sellers").WillReturnRows(tc.dbRows).WillReturnError(tc.dbError)
+			mock.ExpectQuery("SELECT (.*) FROM seller").WillReturnRows(tc.dbRows).WillReturnError(tc.dbError)
 
 			sellers, err := r.GetAll()
 
@@ -123,7 +123,7 @@ func TestUnitSellerRepositorySave(t *testing.T) {
 			defer db.Close()
 
 			mock.ExpectExec("INSERT INTO seller").
-				WithArgs(tc.input.ID()).
+				WithArgs(tc.input.ID(), "").
 				WillReturnError(tc.sqlMockError).
 				WillReturnResult(sqlmock.NewResult(1, 1))
 

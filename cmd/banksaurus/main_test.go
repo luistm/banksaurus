@@ -115,7 +115,7 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
-			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
+			expected: "COMPRA CONTINENTE MAI \nTRF CREDIT            \nCOMPRA FARMACIA SAO J \n",
 		},
 		{
 			name:          "Shows report from bank records file, returns error if path does not exist",

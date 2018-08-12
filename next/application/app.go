@@ -68,6 +68,11 @@ func New(configurationFilePath string) (*App, error) {
 
 	application := &App{projectPath}
 	if isDev() {
+		dbName, dbPath := DatabasePath()
+		_, err := NewSchema(dbPath, dbName, false)
+		if err != nil {
+			return &App{}, err
+		}
 		return application, nil
 	}
 
@@ -92,15 +97,15 @@ func buildProjectPath(pth string) (string, error) {
 		return "", ErrInvalidAppStructure
 	}
 
-	err = ValidatePath(path.Join(p, "/cmd"))
-	if err != nil {
-		return "", ErrInvalidAppStructure
-	}
-
-	err = ValidatePath(path.Join(p, "/infrastructure"))
-	if err != nil {
-		return "", ErrInvalidAppStructure
-	}
+	//err = ValidatePath(path.Join(p, "/cmd"))
+	//if err != nil {
+	//	return "", ErrInvalidAppStructure
+	//}
+	//
+	//err = ValidatePath(path.Join(p, "/infrastructure"))
+	//if err != nil {
+	//	return "", ErrInvalidAppStructure
+	//}
 
 	return p, nil
 }
