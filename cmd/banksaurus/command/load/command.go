@@ -48,6 +48,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	sr, err := sqlite.NewSellerRepository(db)
 	if err != nil {
