@@ -2,12 +2,17 @@ package seller
 
 // NewFromID creates a new seller instance given it's ID
 func NewFromID(id string) (*Entity, error) {
-	return &Entity{id}, nil
+	return &Entity{id: id}, nil
+}
+
+func New(id string, name string) (*Entity, error) {
+	return &Entity{id, name}, nil
 }
 
 // Entity for seller
 type Entity struct {
-	id string
+	id   string
+	name string
 }
 
 func (e *Entity) GoString() string {
