@@ -155,6 +155,11 @@ func (a *App) Init() error {
 
 	// TODO: Create configuration files
 	//       ~/.bank/config.json
+	dbName, dbPath := DatabasePath()
+	_, err = NewSchema(dbPath, dbName, false)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
