@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/luistm/banksaurus/app"
+	app "github.com/luistm/banksaurus/next/application"
 	"github.com/luistm/testkit"
 )
 
@@ -78,6 +78,8 @@ func TestAcceptance(t *testing.T) {
 
 	defer deleteTestFiles(t)
 
+	fixture := "../../data/fixtures/sample_records_load.csv"
+
 	testCases := []struct {
 		name          string
 		command       []string
@@ -98,8 +100,8 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:          "Shows report from bank records file",
-			command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
-			expected:      "-0,52€  COMPRA CONTINENTE MAI \n593,48€ TRF CREDIT            \n-95,09€ COMPRA FARMACIA SAO J \n-95,09€ COMPRA FARMACIA SAO J \n",
+			command:       []string{"report", "--input", fixture},
+			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		{
@@ -109,13 +111,13 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:     "Load records from file",
-			command:  []string{"load", "--input", "../../data/fixtures/sample_records_load.csv"},
+			command:  []string{"load", "--input", fixture},
 			expected: "",
 		},
 		{
 			name:     "Shows seller loaded by the load records from file",
 			command:  []string{"seller", "show"},
-			expected: "COMPRA CONTINENTE MAI\nCOMPRA FARMACIA SAO J\n",
+			expected: "COMPRA CONTINENTE MAI\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
 		{
 			name:          "Shows report from bank records file, returns error if path does not exist",
@@ -127,10 +129,10 @@ func TestAcceptance(t *testing.T) {
 			name: "Shows report from bank records file, grouped by seller",
 			command: []string{
 				"report",
-				"--input", "../../data/fixtures/sample_records_load.csv",
+				"--input", fixture,
 				"--grouped",
 			},
-			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n",
+			expected:      "-0,52€   COMPRA CONTINENTE MAI\n593,48€  TRF CREDIT\n-190,18€ COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
 		//{
@@ -146,14 +148,14 @@ func TestAcceptance(t *testing.T) {
 		{
 			name:     "Show seller changed",
 			command:  []string{"seller", "show"},
-			expected: "Continente\nCOMPRA FARMACIA SAO J\n",
+			expected: "Continente\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
-		//{
-		//	name:          "Shows report from bank records file, with seller name instead of slug",
-		//	command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
-		//	expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
-		//	errorExpected: false,
-		//},
+		{
+			name:          "Shows report from bank records file, with seller name instead of slug",
+			command:       []string{"report", "--input", fixture},
+			expected:      "-77.52 Continente\n593,48€  TRF CREDIT\n-95.09 COMPRA FARMACIA SAO J\n-95.09 COMPRA FARMACIA SAO J\n",
+			errorExpected: false,
+		},
 	}
 
 	for _, tc := range testCases {

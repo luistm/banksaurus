@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/docopt/docopt-go"
-	"github.com/luistm/banksaurus/app"
 	"github.com/luistm/banksaurus/cmd/banksaurus/command"
+	app "github.com/luistm/banksaurus/next/application"
 )
 
 var intro = "    \n    Your command line finance manager.\n\n"
@@ -18,8 +18,7 @@ var usage = `Usage:
 	banksaurus load --input <file>
 	banksaurus seller change <id> --pretty <name>
 	banksaurus seller new <name>
-	banksaurus seller show
-	banksaurus transaction show`
+	banksaurus seller show`
 
 var options = `
 

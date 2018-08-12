@@ -4,10 +4,10 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/next/adapter/CGDcsv"
-	"github.com/luistm/banksaurus/next/adapter/transactionpresenter"
-	"github.com/luistm/banksaurus/next/report"
-	"github.com/luistm/banksaurus/next/reportgrouped"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/presenterlisttransactions"
+	"github.com/luistm/banksaurus/next/listtransactions"
+	"github.com/luistm/banksaurus/next/listtransactionsgrouped"
 )
 
 // Command handles reports
@@ -42,18 +42,18 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	cgdCSVRepository, err := CGDcsv.New(lines)
+	cgdCSVRepository, err := cgdcsv.New(lines)
 	if err != nil {
 		return err
 	}
 
-	p, err := transactionpresenter.NewPresenter()
+	p, err := presenterlisttransactions.NewPresenter()
 	if err != nil {
 		return err
 	}
 
 	if grouped {
-		i, err := reportgrouped.NewInteractor(cgdCSVRepository, p)
+		i, err := listtransactionsgrouped.NewInteractor(cgdCSVRepository, p)
 		if err != nil {
 			return err
 		}
@@ -64,7 +64,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		}
 
 	} else {
-		i, err := report.NewInteractor(p, cgdCSVRepository)
+		i, err := listtransactions.NewInteractor(p, cgdCSVRepository)
 		if err != nil {
 			return err
 		}

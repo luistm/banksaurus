@@ -1,41 +1,67 @@
 package load
 
 import (
-	"github.com/luistm/banksaurus/app"
-	"github.com/luistm/banksaurus/infrastructure/csv"
-	"github.com/luistm/banksaurus/infrastructure/sqlite"
-	"github.com/luistm/banksaurus/services/loadcsv"
+	"encoding/csv"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
+	"github.com/luistm/banksaurus/next/loadtransactions"
+	"os"
 )
 
-// Command command to loadcsv input from a file
+// Command command to loadtransactions a csv input from a file
 type Command struct{}
 
 // Execute the Command command
 func (l *Command) Execute(arguments map[string]interface{}) error {
-	err := l.loadFile(arguments["<file>"].(string))
-	if err != nil {
-		return nil
-	}
 
-	return nil
-}
+	// TODO: To much code here
 
-func (l *Command) loadFile(inputFilePath string) error {
-	CSVStorage, err := csv.New(inputFilePath)
+	filePath := arguments["<file>"].(string)
+	_, err := os.Stat(filePath)
 	if err != nil {
 		return err
 	}
-	defer CSVStorage.Close()
 
-	dbName, dbPath := app.DatabasePath()
-	SQLStorage, err := sqlite.New(dbPath, dbName, false)
+	// Create repository to access csv
+	file, err := os.Open(filePath)
 	if err != nil {
 		return err
 	}
-	defer SQLStorage.Close()
+	defer file.Close()
 
-	transactionsInteractor := loadcsv.New(CSVStorage, SQLStorage)
-	err = transactionsInteractor.Execute()
+	reader := csv.NewReader(file)
+	reader.Comma = ';'
+	reader.FieldsPerRecord = -1
+
+	lines, err := reader.ReadAll()
+	if err != nil {
+		return err
+	}
+
+	tr, err := cgdcsv.New(lines)
+	if err != nil {
+		return err
+	}
+
+	db, err := relational.NewDatabase()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	sr, err := sqlite.NewSellerRepository(db)
+	if err != nil {
+		return err
+	}
+
+	// Execute the interactor
+	i, err := loadtransactions.NewInteractor(tr, sr)
+	if err != nil {
+		return err
+	}
+
+	err = i.Execute()
 	if err != nil {
 		return err
 	}

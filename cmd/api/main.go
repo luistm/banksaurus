@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/luistm/banksaurus/app"
+	app "github.com/luistm/banksaurus/next/application"
 )
 
 func version(w http.ResponseWriter, r *http.Request) {
