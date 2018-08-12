@@ -23,12 +23,49 @@ type SellerRepository struct {
 	db *sql.DB
 }
 
-func (sr *SellerRepository) GetByID(string) (*seller.Entity, error) {
-	panic("implement me")
+func (sr *SellerRepository) GetByID(id string) (*seller.Entity, error) {
+
+	selectStatement := "SELECT * FROM seller WHERE slug = ?"
+	rows, err := sr.db.Query(selectStatement, id)
+	var slug string
+	var name string
+
+	for rows.Next() {
+		err := rows.Scan(&slug, &name)
+		if err != nil {
+			return &seller.Entity{}, err
+		}
+
+		break // expecting one row max
+	}
+
+	s, err := seller.NewFromID(slug)
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	err = rows.Close()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	return s, nil
 }
 
-func (sr *SellerRepository) UpdateSeller(*seller.Entity) error {
-	panic("implement me")
+func (sr *SellerRepository) UpdateSeller(seller *seller.Entity) error {
+
+	updateStatement := "UPDATE seller SET name = ? WHERE slug = ?"
+	_, err := sr.db.Exec(updateStatement, seller.Name(), seller.ID())
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {

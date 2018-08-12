@@ -1,5 +1,7 @@
 package seller
 
+import "fmt"
+
 // NewFromID creates a new seller instance given it's ID
 func NewFromID(id string) (*Entity, error) {
 	return &Entity{id: id}, nil
@@ -16,10 +18,15 @@ type Entity struct {
 }
 
 func (e *Entity) GoString() string {
-	return e.id
+	return fmt.Sprintf(">%s, %s", e.id, e.name)
 }
 
 // ID returns the id of the seller
 func (e *Entity) ID() string {
 	return e.id
+}
+
+// ID returns the name of the seller
+func (e *Entity) Name() string {
+	return e.name
 }
