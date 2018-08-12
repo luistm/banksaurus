@@ -3,8 +3,8 @@ package seller
 import (
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 
-	"github.com/luistm/banksaurus/next/application/adapter/presenterlistsellers"
 	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
+	"github.com/luistm/banksaurus/next/application/adapter/presenterlistsellers"
 	"github.com/luistm/banksaurus/next/changesellername"
 	"github.com/luistm/banksaurus/next/listsellers"
 	"os"

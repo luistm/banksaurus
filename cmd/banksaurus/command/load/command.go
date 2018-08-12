@@ -2,7 +2,7 @@ package load
 
 import (
 	"encoding/csv"
-	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
@@ -39,7 +39,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	tr, err := cgdcsv.New(lines)
+	tr, err := cgdgateway.New(lines)
 	if err != nil {
 		return err
 	}

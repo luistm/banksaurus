@@ -1,4 +1,4 @@
-package cgdcsv
+package cgdgateway
 
 import (
 	"errors"

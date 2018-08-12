@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/next/application/adapter/cgdcsv"
+	"github.com/luistm/banksaurus/next/application/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/next/application/adapter/presenterlisttransactions"
 	"github.com/luistm/banksaurus/next/listtransactions"
 	"github.com/luistm/banksaurus/next/listtransactionsgrouped"
@@ -42,7 +42,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	cgdCSVRepository, err := cgdcsv.New(lines)
+	cgdCSVRepository, err := cgdgateway.New(lines)
 	if err != nil {
 		return err
 	}
