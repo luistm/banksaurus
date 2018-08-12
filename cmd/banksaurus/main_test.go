@@ -78,6 +78,8 @@ func TestAcceptance(t *testing.T) {
 
 	defer deleteTestFiles(t)
 
+	fixture := "../../data/fixtures/sample_records_load.csv"
+
 	testCases := []struct {
 		name          string
 		command       []string
@@ -98,7 +100,7 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:          "Shows report from bank records file",
-			command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
+			command:       []string{"report", "--input", fixture},
 			expected:      "-0,52€  COMPRA CONTINENTE MAI \n593,48€ TRF CREDIT            \n-95,09€ COMPRA FARMACIA SAO J \n-95,09€ COMPRA FARMACIA SAO J \n",
 			errorExpected: false,
 		},
@@ -109,7 +111,7 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:     "Load records from file",
-			command:  []string{"load", "--input", "../../data/fixtures/sample_records_load.csv"},
+			command:  []string{"load", "--input", fixture},
 			expected: "",
 		},
 		{
@@ -127,7 +129,7 @@ func TestAcceptance(t *testing.T) {
 			name: "Shows report from bank records file, grouped by seller",
 			command: []string{
 				"report",
-				"--input", "../../data/fixtures/sample_records_load.csv",
+				"--input", fixture,
 				"--grouped",
 			},
 			expected:      "-0,52€   COMPRA CONTINENTE MAI \n593,48€  TRF CREDIT            \n-190,18€ COMPRA FARMACIA SAO J \n",
@@ -150,7 +152,7 @@ func TestAcceptance(t *testing.T) {
 		},
 		//{
 		//	name:          "Shows report from bank records file, with seller name instead of slug",
-		//	command:       []string{"report", "--input", "../../data/fixtures/sample_records_load.csv"},
+		//	command:       []string{"report", "--input", fixture},
 		//	expected:      "77.52 Continente\n95.09 COMPRA FARMACIA SAO J\n95.09 COMPRA FARMACIA SAO J\n",
 		//	errorExpected: false,
 		//},

@@ -66,7 +66,6 @@ func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
 // Saves seller to the database
 func (sr *SellerRepository) Save(seller *seller.Entity) error {
 
-
 	insertStatement := "INSERT INTO seller(slug, name) VALUES (?, ?)"
 	_, err := sr.db.Exec(insertStatement, seller.ID(), "")
 	if err != nil {
