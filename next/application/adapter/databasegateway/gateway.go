@@ -39,7 +39,7 @@ func (sr *SellerRepository) GetByID(id string) (*seller.Entity, error) {
 		break // expecting one row max
 	}
 
-	s, err := seller.NewFromID(slug)
+	s, err := seller.New(slug, "")
 	if err != nil {
 		return &seller.Entity{}, err
 	}

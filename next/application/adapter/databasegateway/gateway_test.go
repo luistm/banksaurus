@@ -31,9 +31,9 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 
 func TestUnitSellerGetAll(t *testing.T) {
 
-	s1, err := seller.NewFromID("SellerID")
+	s1, err := seller.New("SellerID", "")
 	testkit.AssertIsNil(t, err)
-	s2, err := seller.NewFromID("SellerID")
+	s2, err := seller.New("SellerID", "")
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
@@ -87,7 +87,7 @@ func TestUnitSellerGetAll(t *testing.T) {
 
 func TestUnitSellerRepositorySave(t *testing.T) {
 
-	s1, err := seller.NewFromID("SellerID")
+	s1, err := seller.New("SellerID", "")
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {

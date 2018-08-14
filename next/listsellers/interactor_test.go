@@ -53,10 +53,10 @@ func TestUnitNewInteractor(t *testing.T) {
 
 func TestUnitListSellers(t *testing.T) {
 
-	s1, err := seller.NewFromID("SellerID1")
+	s1, err := seller.New("SellerID1", "")
 	testkit.AssertIsNil(t, err)
 
-	s2, err := seller.NewFromID("SellerID2")
+	s2, err := seller.New("SellerID2", "")
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {

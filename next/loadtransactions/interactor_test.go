@@ -58,7 +58,7 @@ func TestUnitNewInteractor(t *testing.T) {
 
 func TestUnitLoad(t *testing.T) {
 
-	s1, err := seller.NewFromID("SellerID")
+	s1, err := seller.New("SellerID", "")
 	testkit.AssertIsNil(t, err)
 	t1, err := transaction.New(time.Now(), s1.ID(), 123456)
 	testkit.AssertIsNil(t, err)
