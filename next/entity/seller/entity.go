@@ -1,14 +1,18 @@
 package seller
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/pkg/errors"
+)
 
-// NewFromID creates a new seller instance given it's ID
-func NewFromID(id string) (*Entity, error) {
-	return &Entity{id: id}, nil
-}
+// ErrInvalidSellerID ...
+var ErrInvalidSellerID = errors.New("seller must have an id")
 
 // New creates a new instance of seller
 func New(id string, name string) (*Entity, error) {
+	if id == "" {
+		return &Entity{}, ErrInvalidSellerID
+	}
 	return &Entity{id, name}, nil
 }
 

@@ -45,7 +45,7 @@ func (i *Interactor) Execute() error {
 
 	sellersSeen := map[string]bool{}
 	for _, t := range ts {
-		s, err := seller.NewFromID(t.Seller())
+		s, err := seller.New(t.Seller(), "")
 		if err != nil {
 			return err
 		}

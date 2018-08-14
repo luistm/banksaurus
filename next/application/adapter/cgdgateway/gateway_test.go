@@ -84,7 +84,7 @@ func TestUnitReturnGetBySeller(t *testing.T) {
 	t2, err := transaction.New(date, sellerID, 7752)
 	testkit.AssertIsNil(t, err)
 
-	s1, err := seller.NewFromID(sellerID)
+	s1, err := seller.New(sellerID, "")
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
