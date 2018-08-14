@@ -7,6 +7,7 @@ func NewFromID(id string) (*Entity, error) {
 	return &Entity{id: id}, nil
 }
 
+// New creates a new instance of seller
 func New(id string, name string) (*Entity, error) {
 	return &Entity{id, name}, nil
 }
@@ -17,6 +18,7 @@ type Entity struct {
 	name string
 }
 
+// GoString to satisfy the fmt.GoStringer interface
 func (e *Entity) GoString() string {
 	return fmt.Sprintf(">%s, %s", e.id, e.name)
 }
@@ -26,7 +28,7 @@ func (e *Entity) ID() string {
 	return e.id
 }
 
-// ID returns the name of the seller
+// Name returns the name of the seller
 func (e *Entity) Name() string {
 	return e.name
 }
@@ -38,4 +40,14 @@ func (e *Entity) HasName() bool {
 	}
 
 	return true
+}
+
+// String to satisfy the string interface
+func (e *Entity) String() string {
+	if e.name != "" {
+		return e.Name()
+	}
+
+	return e.ID()
+
 }
