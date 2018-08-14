@@ -2,11 +2,42 @@ package transaction
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"time"
 )
 
+var (
+	// ErrInvalidTransactionID ...
+	ErrInvalidTransactionID = errors.New("invalid transaction ID")
+
+	// ErrInvalidDate ...
+	ErrInvalidDate = errors.New("invalid transaction date")
+
+	// ErrInvalidSeller ...
+	ErrInvalidSeller = errors.New("invalid transaction seller ID")
+
+	// ErrInvalidValue ...
+	ErrInvalidValue = errors.New("invalid transaction value")
+)
+
 // New creates a new transaction
-func New(date time.Time, sellerID string, value int64) (*Entity, error) {
+func New(id uint64, date time.Time, sellerID string, value int64) (*Entity, error) {
+	if id <= 0 {
+		return &Entity{}, ErrInvalidTransactionID
+	}
+
+	if date.Equal(time.Time{}) {
+		return &Entity{}, ErrInvalidDate
+	}
+
+	if sellerID == "" {
+		return &Entity{}, ErrInvalidSeller
+	}
+
+	if value == 0 {
+		return &Entity{}, ErrInvalidValue
+	}
+
 	return &Entity{date: date, sellerID: sellerID, value: value}, nil
 }
 
