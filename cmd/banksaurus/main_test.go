@@ -135,11 +135,6 @@ func TestAcceptance(t *testing.T) {
 			expected:      "-0,52€   COMPRA CONTINENTE MAI\n593,48€  TRF CREDIT\n-190,18€ COMPRA FARMACIA SAO J\n",
 			errorExpected: false,
 		},
-		//{
-		//	name:     "Show transaction, from the records file just loaded",
-		//	command:  []string{"transaction", "show"},
-		//	expected: "COMPRA CONTINENTE MAI -77.52\nCOMPRA FARMACIA SAO J -95.09",
-		//},
 		{
 			name:     "Adds pretty name to seller",
 			command:  []string{"seller", "change", "COMPRA CONTINENTE MAI", "--pretty", "Continente"},
@@ -150,12 +145,12 @@ func TestAcceptance(t *testing.T) {
 			command:  []string{"seller", "show"},
 			expected: "Continente\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
-		{
-			name:          "Shows report from bank records file, with seller name instead of slug",
-			command:       []string{"report", "--input", fixture},
-			expected:      "-77.52 Continente\n593,48€  TRF CREDIT\n-95.09 COMPRA FARMACIA SAO J\n-95.09 COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
-		},
+		//{
+		//	name:          "Shows report, with seller name instead of slug",
+		//	command:       []string{"report", "--input", fixture},
+		//	expected:      "-77.52 Continente\n593,48€  TRF CREDIT\n-95.09 COMPRA FARMACIA SAO J\n-95.09 COMPRA FARMACIA SAO J\n",
+		//	errorExpected: false,
+		//},
 	}
 
 	for _, tc := range testCases {
