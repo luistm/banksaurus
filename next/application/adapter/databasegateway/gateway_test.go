@@ -1,9 +1,9 @@
-package sqlite_test
+package databasegateway_test
 
 import (
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/luistm/banksaurus/next/application/adapter/sqlite"
+	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/testkit"
 	"github.com/mattn/go-sqlite3"
@@ -13,8 +13,8 @@ import (
 func TestUnitSellerRepositoryNew(t *testing.T) {
 
 	t.Run("Returns error if database is nil", func(t *testing.T) {
-		_, err := sqlite.NewSellerRepository(nil)
-		testkit.AssertEqual(t, sqlite.ErrDatabaseUndefined, err)
+		_, err := databasegateway.NewSellerRepository(nil)
+		testkit.AssertEqual(t, databasegateway.ErrDatabaseUndefined, err)
 	})
 
 	db, _, err := sqlmock.New()
@@ -24,7 +24,7 @@ func TestUnitSellerRepositoryNew(t *testing.T) {
 	defer db.Close()
 
 	t.Run("Does not return error if receives a database", func(t *testing.T) {
-		_, err := sqlite.NewSellerRepository(db)
+		_, err := databasegateway.NewSellerRepository(db)
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -70,7 +70,7 @@ func TestUnitSellerGetAll(t *testing.T) {
 			}
 			defer db.Close()
 
-			r, err := sqlite.NewSellerRepository(db)
+			r, err := databasegateway.NewSellerRepository(db)
 			testkit.AssertIsNil(t, err)
 
 			mock.ExpectQuery("SELECT (.*) FROM seller").WillReturnRows(tc.dbRows).WillReturnError(tc.dbError)
@@ -127,7 +127,7 @@ func TestUnitSellerRepositorySave(t *testing.T) {
 				WillReturnError(tc.sqlMockError).
 				WillReturnResult(sqlmock.NewResult(1, 1))
 
-			r, err := sqlite.NewSellerRepository(db)
+			r, err := databasegateway.NewSellerRepository(db)
 			testkit.AssertIsNil(t, err)
 
 			err = r.Save(tc.input)

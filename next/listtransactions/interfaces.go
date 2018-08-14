@@ -7,7 +7,7 @@ type Presenter interface {
 	Present([]map[string]int64) error
 }
 
-// Repository is a collection of entities to be used by the listtransactions
-type Repository interface {
+// TransactionGateway is a collection of entities to be used by the listtransactions
+type TransactionGateway interface {
 	GetAll() ([]*transaction.Entity, error)
 }

@@ -17,7 +17,7 @@ var ErrSellersRepositoryUndefined = errors.New("sellers repository is not define
 var ErrPresenterUndefined = errors.New("presenter is not defined")
 
 // NewInteractor creates a new interactor instance
-func NewInteractor(tr TransactionsRepository, p Presenter) (*Interactor, error) {
+func NewInteractor(tr TransactionGateway, p Presenter) (*Interactor, error) {
 	if tr == nil {
 		return &Interactor{}, ErrTransactionsRepositoryUndefined
 	}
@@ -32,7 +32,7 @@ func NewInteractor(tr TransactionsRepository, p Presenter) (*Interactor, error) 
 // Interactor for report grouped
 type Interactor struct {
 	presenter    Presenter
-	transactions TransactionsRepository
+	transactions TransactionGateway
 }
 
 // Execute the report grouped interactor
