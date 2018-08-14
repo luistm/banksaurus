@@ -38,6 +38,7 @@ type Interactor struct {
 // Execute the report grouped interactor
 func (i *Interactor) Execute() error {
 
+	// TODO: error handling is missing
 	ts, _ := i.transactions.GetAll()
 
 	presenterData := []map[string]int64{}
@@ -56,6 +57,7 @@ func (i *Interactor) Execute() error {
 		}
 		sellersSeen[t.Seller()] = true
 
+		// TODO: error handling is missing
 		transactionsForSeller, _ = i.transactions.GetBySeller(s)
 
 		var sellerTotal int64
