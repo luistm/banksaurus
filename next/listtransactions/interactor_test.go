@@ -96,14 +96,14 @@ func TestUnitReport(t *testing.T) {
 			},
 			err: errors.New("test error"),
 		},
-		//{
-		//	name:      "Returns error if presenter returns error",
-		//	presenter: &presenter{err: errors.New("test error")},
-		//	repository: &transactionRepository{
-		//		transactions: []*transaction.Entity{t1},
-		//	},
-		//	err: listtransactions.ErrPresenter.AppendError(errors.New("test error")),
-		//},
+		{
+			name:      "Returns error if presenter returns error",
+			presenter: &presenter{err: errors.New("test error")},
+			repository: &transactionRepository{
+				transactions: []*transaction.Entity{t1},
+			},
+			err: listtransactions.ErrPresenter.AppendError(errors.New("test error")),
+		},
 	}
 
 	for _, tc := range testCases {

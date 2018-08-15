@@ -113,9 +113,6 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				{t2.Seller(): t2.Value()},
 			},
 		},
-
-		// this test is failing
-
 		{
 			name: "Returns transactions grouped by seller",
 			transactions: &adapterStub{
