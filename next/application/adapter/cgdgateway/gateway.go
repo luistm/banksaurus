@@ -33,6 +33,9 @@ type Repository struct {
 
 // GetBySeller returns transactions for the specified sellers
 func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error) {
+
+	// TODO: The repository should no know that the seller has an ID method.
+
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
@@ -65,7 +68,12 @@ func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error
 			value = value * -1
 		}
 
-		t, err := transaction.New(date, sellerID, value)
+		m, err := transaction.NewMoney(value)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, sellerID, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -108,7 +116,12 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			value = value * -1
 		}
 
-		t, err := transaction.New(date, sellerID, value)
+		m, err := transaction.NewMoney(value)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, sellerID, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}

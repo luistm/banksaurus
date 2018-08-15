@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/luistm/banksaurus/next/entity/transaction"
-	"time"
 )
 
 // ErrTransactionsRepositoryUndefined ...
@@ -41,7 +40,7 @@ func (i *Interactor) Execute() error {
 	// TODO: error handling is missing
 	ts, _ := i.transactions.GetAll()
 
-	presenterData := []map[string]int64{}
+	presenterData := []map[string]*transaction.Money{}
 	transactionsForSeller := []*transaction.Entity{}
 
 	sellersSeen := map[string]bool{}
@@ -60,17 +59,22 @@ func (i *Interactor) Execute() error {
 		// TODO: error handling is missing
 		transactionsForSeller, _ = i.transactions.GetBySeller(s)
 
-		var sellerTotal int64
-		for _, t := range transactionsForSeller {
-			sellerTotal += t.Value()
+		// TODO: If transactionsForSeller len is zero, something wicked happened
+		//       beware of it...
+		var sellerTotal *transaction.Money
+
+		for c, tfs := range transactionsForSeller {
+			if c == 0 {
+				sellerTotal = t.Value()
+				continue
+			}
+			sellerTotal, err = sellerTotal.Add(tfs.Value())
+			if err != nil {
+				return err
+			}
 		}
 
-		t, err := transaction.New(time.Now(), s.ID(), sellerTotal)
-		if err != nil {
-			return err
-		}
-
-		presenterData = append(presenterData, map[string]int64{t.Seller(): t.Value()})
+		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller(): sellerTotal})
 	}
 
 	i.presenter.Present(presenterData)

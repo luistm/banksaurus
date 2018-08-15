@@ -22,6 +22,7 @@ type Money struct{ value int64 }
 
 // Add an instance of money an returns another representing the result
 func (m *Money) Add(money *Money) (*Money, error) {
+	// TODO: What happens if m.value was never defined?
 	newValue := m.value + money.value
 	return &Money{value: newValue}, nil
 }
