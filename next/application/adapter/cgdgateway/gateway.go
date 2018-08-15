@@ -84,8 +84,8 @@ func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error
 	return transactions, nil
 }
 
-// Factory returns all transactions
-func (r *Repository) Factory() ([]*transaction.Entity, error) {
+// GetAll returns all transactions
+func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	transactions := []*transaction.Entity{}
 

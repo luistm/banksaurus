@@ -7,7 +7,7 @@ import (
 
 // TransactionGateway is a collection of entities to be used by the report
 type TransactionGateway interface {
-	Factory() ([]*transaction.Entity, error)
+	GetAll() ([]*transaction.Entity, error)
 }
 
 // SellerGateway is a collection of sellers

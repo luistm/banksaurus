@@ -38,7 +38,7 @@ type Interactor struct {
 func (i *Interactor) Execute() error {
 
 	// TODO: error handling is missing
-	ts, _ := i.transactions.Factory()
+	ts, _ := i.transactions.GetAll()
 
 	presenterData := []map[string]*transaction.Money{}
 	transactionsForSeller := []*transaction.Entity{}

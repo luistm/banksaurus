@@ -45,7 +45,7 @@ type transactionRepository struct {
 	err          error
 }
 
-func (tr *transactionRepository) Factory() ([]*transaction.Entity, error) {
+func (tr *transactionRepository) GetAll() ([]*transaction.Entity, error) {
 	if tr.err != nil {
 		return []*transaction.Entity{}, tr.err
 	}

@@ -36,7 +36,7 @@ type Interactor struct {
 // Execute the loadtransactions interactor
 func (i *Interactor) Execute() error {
 
-	ts, err := i.transactions.Factory()
+	ts, err := i.transactions.GetAll()
 	if err != nil {
 		return err
 	}
