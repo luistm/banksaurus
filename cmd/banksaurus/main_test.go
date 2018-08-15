@@ -99,12 +99,6 @@ func TestAcceptance(t *testing.T) {
 			errorExpected: false,
 		},
 		{
-			name:          "Shows report from bank records file",
-			command:       []string{"report", "--input", fixture},
-			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
-		},
-		{
 			name:     "No seller should be available here",
 			command:  []string{"seller", "show"},
 			expected: "",
@@ -113,6 +107,12 @@ func TestAcceptance(t *testing.T) {
 			name:     "Load records from file",
 			command:  []string{"load", "--input", fixture},
 			expected: "",
+		},
+		{
+			name:          "Shows report from bank records file",
+			command:       []string{"report", "--input", fixture},
+			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
+			errorExpected: false,
 		},
 		{
 			name:     "Shows seller loaded by the load records from file",
