@@ -129,5 +129,17 @@ func (r *Repository) Factory() ([]*transaction.Entity, error) {
 		transactions = append(transactions, t)
 	}
 
+	// TODO: Load transactions in the database here
+
+	// Return the transactions after adding the ir coming from the database
+	//CREATE TABLE IF NOT EXISTS transactions
+	//(
+	//	ID int NOT NULL PRIMARY KEY,
+	//	SELLER_ID int NOT NULL,
+	//	AMOUNT int DEFAULT 0,
+	//	TYPE
+	//BALANCE int NOT NULL
+	//);
+
 	return transactions, nil
 }
