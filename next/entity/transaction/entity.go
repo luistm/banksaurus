@@ -21,7 +21,7 @@ var (
 )
 
 // New creates a new transaction
-func New(id uint64, date time.Time, sellerID string, value int64) (*Entity, error) {
+func New(id uint64, date time.Time, sellerID string, value *Money) (*Entity, error) {
 	if id <= 0 {
 		return &Entity{}, ErrInvalidTransactionID
 	}
@@ -34,7 +34,7 @@ func New(id uint64, date time.Time, sellerID string, value int64) (*Entity, erro
 		return &Entity{}, ErrInvalidSeller
 	}
 
-	if value == 0 {
+	if value == nil {
 		return &Entity{}, ErrInvalidValue
 	}
 
@@ -46,7 +46,7 @@ type Entity struct {
 	id       uint64
 	date     time.Time
 	sellerID string
-	value    int64
+	value    *Money
 }
 
 // ID returns the identification of the transaction
@@ -60,7 +60,7 @@ func (t *Entity) Seller() string {
 }
 
 // Value of the transaction
-func (t *Entity) Value() int64 {
+func (t *Entity) Value() *Money {
 	return t.value
 }
 
