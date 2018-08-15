@@ -37,7 +37,7 @@ type Interactor struct {
 // Execute the interactor
 func (i *Interactor) Execute() error {
 
-	ts, err := i.transactions.GetAll()
+	ts, err := i.transactions.Factory()
 	if err != nil {
 		return err
 	}

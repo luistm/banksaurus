@@ -12,7 +12,7 @@ type Presenter interface {
 
 // TransactionGateway is a collection of transactions to be used by the report
 type TransactionGateway interface {
-	GetAll() ([]*transaction.Entity, error)
+	Factory() ([]*transaction.Entity, error)
 	GetBySeller(*seller.Entity) ([]*transaction.Entity, error)
 }
 

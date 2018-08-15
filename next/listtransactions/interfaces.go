@@ -9,5 +9,5 @@ type Presenter interface {
 
 // TransactionGateway is a collection of entities to be used by the listtransactions
 type TransactionGateway interface {
-	GetAll() ([]*transaction.Entity, error)
+	Factory() ([]*transaction.Entity, error)
 }

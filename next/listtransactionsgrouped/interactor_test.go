@@ -16,7 +16,7 @@ type adapterStub struct {
 	callNumber            int
 }
 
-func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
+func (as *adapterStub) Factory() ([]*transaction.Entity, error) {
 	return as.Transactions, nil
 }
 

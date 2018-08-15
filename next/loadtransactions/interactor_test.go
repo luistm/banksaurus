@@ -15,7 +15,7 @@ type repository struct {
 	Error        error
 }
 
-func (r *repository) GetAll() ([]*transaction.Entity, error) {
+func (r *repository) Factory() ([]*transaction.Entity, error) {
 	if r.Error != nil {
 		return r.Transactions, r.Error
 	}
