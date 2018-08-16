@@ -2,6 +2,7 @@ package listtransactions
 
 import (
 	"errors"
+	"github.com/luistm/banksaurus/next/entity/transaction"
 )
 
 var (
@@ -9,8 +10,6 @@ var (
 	ErrPresenterUndefined = errors.New("presenter is not defined")
 	// ErrRepositoryUndefined ...
 	ErrRepositoryUndefined = errors.New("presenter is not defined")
-	// ErrRepository ...
-	ErrRepository = &customError{msg: "error in repository"}
 	// ErrPresenter ...
 	ErrPresenter = &customError{msg: "error in presenter"}
 )
@@ -40,12 +39,12 @@ func (i *Interactor) Execute() error {
 
 	ts, err := i.transactions.GetAll()
 	if err != nil {
-		return ErrRepository.AppendError(err)
+		return err
 	}
 
-	returnData := []map[string]int64{}
+	returnData := []map[string]*transaction.Money{}
 	for _, t := range ts {
-		transactionData := map[string]int64{t.Seller(): t.Value()}
+		transactionData := map[string]*transaction.Money{t.Seller(): t.Value()}
 		returnData = append(returnData, transactionData)
 	}
 

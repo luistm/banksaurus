@@ -2,7 +2,7 @@ package presenterlisttransactions
 
 import (
 	"errors"
-	"strconv"
+	"github.com/luistm/banksaurus/next/entity/transaction"
 	"strings"
 )
 
@@ -23,7 +23,7 @@ type Presenter struct {
 // Present receives data from the interactor
 // and transforms it in data suitable to be sent
 // to the view model.
-func (p *Presenter) Present(data []map[string]int64) error {
+func (p *Presenter) Present(data []map[string]*transaction.Money) error {
 	outputData := []string{}
 	comma := rune(44)
 	zero := rune(48)
@@ -32,7 +32,7 @@ func (p *Presenter) Present(data []map[string]int64) error {
 		for key, value := range dict {
 
 			// TODO: create a test with for each possible combination of input
-			valueString := strconv.FormatInt(value, 10)
+			valueString := value.String()
 
 			// Wooow... there must be a better way of doing this
 			finalString := []rune{}

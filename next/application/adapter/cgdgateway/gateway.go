@@ -33,6 +33,9 @@ type Repository struct {
 
 // GetBySeller returns transactions for the specified sellers
 func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error) {
+
+	// TODO: The repository should no know that the seller has an ID method.
+
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
@@ -65,7 +68,12 @@ func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error
 			value = value * -1
 		}
 
-		t, err := transaction.New(date, sellerID, value)
+		m, err := transaction.NewMoney(value)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, sellerID, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -108,13 +116,30 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			value = value * -1
 		}
 
-		t, err := transaction.New(date, sellerID, value)
+		m, err := transaction.NewMoney(value)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, sellerID, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
 
 		transactions = append(transactions, t)
 	}
+
+	// TODO: Load transactions in the database here
+
+	// Return the transactions after adding the ir coming from the database
+	//CREATE TABLE IF NOT EXISTS transactions
+	//(
+	//	ID int NOT NULL PRIMARY KEY,
+	//	SELLER_ID int NOT NULL,
+	//	AMOUNT int DEFAULT 0,
+	//	TYPE
+	//BALANCE int NOT NULL
+	//);
 
 	return transactions, nil
 }

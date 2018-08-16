@@ -4,32 +4,42 @@ import (
 	"github.com/luistm/banksaurus/next/application/adapter/presenterlisttransactions"
 	"testing"
 
+	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/testkit"
 )
 
 func TestUnitPresenterPresent(t *testing.T) {
 
+	m1, err := transaction.NewMoney(1234)
+	testkit.AssertIsNil(t, err)
+	m2, err := transaction.NewMoney(12)
+	testkit.AssertIsNil(t, err)
+	m3, err := transaction.NewMoney(-12345)
+	testkit.AssertIsNil(t, err)
+	m4, err := transaction.NewMoney(-12)
+	testkit.AssertIsNil(t, err)
+
 	testCases := []struct {
 		name        string
-		input       []map[string]int64
+		input       []map[string]*transaction.Money
 		callPresent bool
 		output      []string
 		err         error
 	}{
 		{
 			name: "Presenter prepares prepares output data",
-			input: []map[string]int64{
-				{"key": 1234},
-				{"key": 12},
-				{"key2": -12345},
-				{"key2": -12},
+			input: []map[string]*transaction.Money{
+				{"key": m1},
+				{"key": m2},
+				{"key2": m3},
+				{"key2": m4},
 			},
 			callPresent: true,
 			output:      []string{"12,34€", "key", "0,12€", "key", "-123,45€", "key2", "-0,12€", "key2"},
 		},
 		{
 			name:        "Presenter receives no data",
-			input:       []map[string]int64{},
+			input:       []map[string]*transaction.Money{},
 			callPresent: true,
 			output:      []string{},
 		},

@@ -10,7 +10,7 @@ import (
 )
 
 type adapterStub struct {
-	ReceivedData          []map[string]int64
+	ReceivedData          []map[string]*transaction.Money
 	Transactions          []*transaction.Entity
 	TransactionsForSeller [][]*transaction.Entity
 	callNumber            int
@@ -32,7 +32,7 @@ func (*adapterStub) GetByID() ([]*seller.Entity, error) {
 	panic("implement me")
 }
 
-func (as *adapterStub) Present(receivedData []map[string]int64) error {
+func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
 	as.ReceivedData = receivedData
 	return nil
 }
@@ -56,11 +56,24 @@ func TestUnitReportGroupedNew(t *testing.T) {
 
 func TestUnitReportGroupedExecute(t *testing.T) {
 
-	t1, err := transaction.New(time.Now(), "SellerID", 123456789)
+	// How to get a transaction with an ID?
+	//factory, err := NewTransactionFactory(transactionRepository)
+	//transaction ,err := factory.NewTransaction(time.Now(), "SellerID", m1)
+
+	m1, err := transaction.NewMoney(123456789)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(time.Now(), "AnotherSellerID", 10)
+	t1, err := transaction.New(1, time.Now(), "SellerID", m1)
 	testkit.AssertIsNil(t, err)
-	t3, err := transaction.New(time.Now(), "SellerID", 123456789)
+
+	m2, err := transaction.NewMoney(10)
+	testkit.AssertIsNil(t, err)
+	t2, err := transaction.New(2, time.Now(), "AnotherSellerID", m2)
+	testkit.AssertIsNil(t, err)
+
+	t3, err := transaction.New(3, time.Now(), "SellerID", m1)
+	testkit.AssertIsNil(t, err)
+
+	m1plusm3, err := t1.Value().Add(t3.Value())
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
@@ -68,13 +81,16 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		transactions *adapterStub
 		presenter    *adapterStub
 		expectedErr  error
-		expectedData []map[string]int64
+		expectedData []map[string]*transaction.Money
 	}{
 		{
 			name:         "Returns nothing if no data available",
-			transactions: &adapterStub{},
+			transactions: &adapterStub{
+				//Transactions:          []*transaction.Entity{},
+				////TransactionsForSeller: *transaction.Entity{},
+			},
 			presenter:    &adapterStub{},
-			expectedData: []map[string]int64{},
+			expectedData: []map[string]*transaction.Money{},
 		},
 		{
 			name: "Returns a single transaction",
@@ -82,10 +98,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				Transactions:          []*transaction.Entity{t1},
 				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
-			presenter: &adapterStub{},
-			expectedData: []map[string]int64{
-				{t1.Seller(): t1.Value()},
-			},
+			presenter:    &adapterStub{},
+			expectedData: []map[string]*transaction.Money{{t1.Seller(): m1}},
 		},
 		{
 			name: "Returns a multiple transactions",
@@ -94,7 +108,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1}, {t2}},
 			},
 			presenter: &adapterStub{},
-			expectedData: []map[string]int64{
+			expectedData: []map[string]*transaction.Money{
 				{t1.Seller(): t1.Value()},
 				{t2.Seller(): t2.Value()},
 			},
@@ -106,9 +120,9 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1, t3}, {t2}},
 			},
 			presenter: &adapterStub{},
-			expectedData: []map[string]int64{
-				{t1.Seller(): t1.Value() + t3.Value()},
-				{t2.Seller(): t2.Value()},
+			expectedData: []map[string]*transaction.Money{
+				{t1.Seller(): m1plusm3},
+				{t2.Seller(): m2},
 			},
 		},
 

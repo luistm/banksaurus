@@ -7,7 +7,7 @@ import (
 
 // Presenter interface for formatting data for presentation
 type Presenter interface {
-	Present([]map[string]int64) error
+	Present([]map[string]*transaction.Money) error
 }
 
 // TransactionGateway is a collection of transactions to be used by the report
