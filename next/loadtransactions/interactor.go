@@ -2,52 +2,37 @@ package loadtransactions
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/next/entity/seller"
 )
 
 var (
 	// ErrTransactionRepositoryUndefined ...
 	ErrTransactionRepositoryUndefined = errors.New("transaction repository is not defined")
-
-	// ErrSellerRepositoryUndefined ...
-	ErrSellerRepositoryUndefined = errors.New("seller repository is not defined")
 )
 
 // NewInteractor creates an interactor instance
-func NewInteractor(tr TransactionGateway, sr SellerGateway) (*Interactor, error) {
-
+func NewInteractor(tr TransactionGateway) (*Interactor, error) {
 	if tr == nil {
 		return &Interactor{}, ErrTransactionRepositoryUndefined
 	}
 
-	if sr == nil {
-		return &Interactor{}, ErrSellerRepositoryUndefined
-	}
-
-	return &Interactor{tr, sr}, nil
+	return &Interactor{tr}, nil
 }
 
-// Interactor for loadtransactions
+// Interactor for loading transactions
 type Interactor struct {
 	transactions TransactionGateway
-	sellers      SellerGateway
 }
 
-// Execute the loadtransactions interactor
-func (i *Interactor) Execute() error {
+// Execute the load transactions interactor
+func (i *Interactor) Execute(r Request) error {
 
-	ts, err := i.transactions.GetAll()
+	lines, err := r.Lines()
 	if err != nil {
 		return err
 	}
 
-	for _, t := range ts {
-		s, err := seller.New(t.Seller(), "")
-		if err != nil {
-			return err
-		}
-
-		err = i.sellers.Save(s)
+	for _, line := range lines {
+		err := i.transactions.NewFromLine(line)
 		if err != nil {
 			return err
 		}

@@ -2,110 +2,100 @@ package loadtransactions_test
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/next/entity/seller"
-	"github.com/luistm/banksaurus/next/entity/transaction"
 	"github.com/luistm/banksaurus/next/loadtransactions"
 	"github.com/luistm/testkit"
 	"testing"
-	"time"
 )
 
 type repository struct {
-	Transactions []*transaction.Entity
-	Error        error
+	lines [][]string
+	err   error
 }
 
-func (r *repository) GetAll() ([]*transaction.Entity, error) {
-	if r.Error != nil {
-		return r.Transactions, r.Error
+func (r *repository) NewFromLine(line []string) error {
+	if r.err != nil {
+		return r.err
 	}
-	return r.Transactions, nil
-}
-
-type sellerRepository struct {
-	Sellers      []*seller.Entity
-	SavedSellers []*seller.Entity
-	Error        error
-}
-
-func (r *sellerRepository) Save(s *seller.Entity) error {
-	if r.Error != nil {
-		return r.Error
-	}
-
-	r.SavedSellers = append(r.SavedSellers, s)
+	r.lines = append(r.lines, line)
 
 	return nil
+}
+
+type request struct {
+	lines [][]string
+	err   error
+}
+
+func (r *request) Lines() ([][]string, error) {
+	if r.err != nil {
+		return [][]string{}, r.err
+	}
+	return r.lines, nil
 }
 
 func TestUnitNewInteractor(t *testing.T) {
 
 	t.Run("Returns error if transaction repository is undefined", func(t *testing.T) {
-		_, err := loadtransactions.NewInteractor(nil, &sellerRepository{})
+		_, err := loadtransactions.NewInteractor(nil)
 		testkit.AssertEqual(t, loadtransactions.ErrTransactionRepositoryUndefined, err)
 	})
 
-	t.Run("Returns error if seller repository is undefined", func(t *testing.T) {
-		_, err := loadtransactions.NewInteractor(&repository{}, nil)
-		testkit.AssertEqual(t, loadtransactions.ErrSellerRepositoryUndefined, err)
-	})
-
 	t.Run("New interactor receives repository", func(t *testing.T) {
-		_, err := loadtransactions.NewInteractor(&repository{}, &sellerRepository{})
+		_, err := loadtransactions.NewInteractor(&repository{})
 		testkit.AssertIsNil(t, err)
 	})
 }
 
 func TestUnitLoad(t *testing.T) {
 
-	s1, err := seller.New("SellerID", "")
-	testkit.AssertIsNil(t, err)
-	m1, err := transaction.NewMoney(123456)
-	testkit.AssertIsNil(t, err)
-	t1, err := transaction.New(1, time.Now(), s1.ID(), m1)
-	testkit.AssertIsNil(t, err)
-
 	testCases := []struct {
 		name            string
 		transactionRepo *repository
-		sellerRepo      *sellerRepository
+		request         *request
 		expectedErr     error
-		expectedSellers []*seller.Entity
+		expectedLines   [][]string
 	}{
 		{
-			name:            "Zero transactions to save",
+			name:            "Loads zero transactions",
 			transactionRepo: &repository{},
-			sellerRepo:      &sellerRepository{},
+			request:         &request{},
 		},
 		{
-			name:            "Load creates new sellers",
-			transactionRepo: &repository{Transactions: []*transaction.Entity{t1}},
-			sellerRepo:      &sellerRepository{Sellers: []*seller.Entity{s1}},
-			expectedSellers: []*seller.Entity{s1},
+			name:            "Loads one transaction",
+			transactionRepo: &repository{},
+			request:         &request{lines: [][]string{{"item1", "item2"}}},
+			expectedLines:   [][]string{{"item1", "item2"}},
+		},
+		{
+			name:            "Loads multiple transactions",
+			transactionRepo: &repository{},
+			request:         &request{lines: [][]string{{"item1", "item2"}, {"item1", "item2"}}},
+			expectedLines:   [][]string{{"item1", "item2"}, {"item1", "item2"}},
 		},
 		{
 			name:            "Handles transaction repository errors",
-			transactionRepo: &repository{Transactions: []*transaction.Entity{}, Error: errors.New("test error")},
+			transactionRepo: &repository{err: errors.New("test error"), lines: [][]string{}},
+			request:         &request{lines: [][]string{{"item1", "item2"}, {"item1", "item2"}}},
 			expectedErr:     errors.New("test error"),
-			sellerRepo:      &sellerRepository{},
+			expectedLines:   [][]string{},
 		},
 		{
-			name:            "Handles seller repository errors",
-			transactionRepo: &repository{Transactions: []*transaction.Entity{t1}},
+			name:            "Handles request error",
+			transactionRepo: &repository{},
+			request:         &request{lines: [][]string{}, err: errors.New("test error")},
 			expectedErr:     errors.New("test error"),
-			sellerRepo:      &sellerRepository{Error: errors.New("test error")},
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			r, err := loadtransactions.NewInteractor(tc.transactionRepo, tc.sellerRepo)
+			r, err := loadtransactions.NewInteractor(tc.transactionRepo)
 			testkit.AssertIsNil(t, err)
 
-			err = r.Execute()
+			err = r.Execute(tc.request)
 
 			testkit.AssertEqual(t, tc.expectedErr, err)
-			testkit.AssertEqual(t, tc.expectedSellers, tc.sellerRepo.SavedSellers)
+			testkit.AssertEqual(t, tc.expectedLines, tc.transactionRepo.lines)
 		})
 	}
 }
