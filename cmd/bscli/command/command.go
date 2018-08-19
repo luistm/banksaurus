@@ -12,7 +12,7 @@ var errCommandNotFound = errors.New("command not found")
 var errCommandIsUndefined = errors.New("command is undefined")
 
 // CLIRequest is the interface to pass information to a command execution
-type CLIRequest []string // TODO: This interface is not very useful. Think about is!
+type CLIRequest []string
 
 // Commander executes a request from the command line
 type Commander interface {
