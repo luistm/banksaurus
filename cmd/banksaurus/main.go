@@ -14,6 +14,7 @@ var intro = "    \n    Your command line finance manager.\n\n"
 
 var usage = `Usage:
 	banksaurus -h | --help
+	banksaurus report
 	banksaurus report --input <file> [ --grouped ]
 	banksaurus load --input <file>
 	banksaurus seller change <id> --pretty <name>
