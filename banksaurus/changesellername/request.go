@@ -4,7 +4,7 @@ import "errors"
 
 var (
 	// ErrInvalidSellerID ...
-	ErrInvalidSellerID   = errors.New("invalid request seller id data")
+	ErrInvalidSellerID = errors.New("invalid request seller id data")
 
 	// ErrInvalidSellerName ...
 	ErrInvalidSellerName = errors.New("invalid request seller name data")

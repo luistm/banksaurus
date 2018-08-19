@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"strings"
 	"testing"
 
@@ -14,8 +13,7 @@ import (
 )
 
 func deleteTestFiles(t *testing.T) {
-	dbName, dbPath := app.DatabasePath()
-	if err := os.RemoveAll(path.Join(dbPath, dbName) + ".db"); err != nil {
+	if err := os.RemoveAll(app.Path()); err != nil {
 		t.Error(err)
 	}
 }

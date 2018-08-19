@@ -32,15 +32,11 @@ Options:
 var errGeneric = errors.New("error while performing operation")
 
 func main() {
-	_, err := app.New("")
+	_, err := app.New()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to Setup application: %s\n", err.Error())
 		os.Exit(2)
 	}
-
-	// TODO: Inject dependencies here
-	// err := application.Add(aConstructor, "constructor.slug")
-	// defer application.Close()
 
 	arguments, err := docopt.Parse(intro+usage+options, nil, true, app.Version, false)
 	if err != nil {

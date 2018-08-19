@@ -1,12 +1,11 @@
 package seller
 
 import (
-	"github.com/luistm/banksaurus/cmd/bscli/infrastructure/relational"
-
 	"github.com/luistm/banksaurus/banksaurus/changesellername"
 	"github.com/luistm/banksaurus/banksaurus/listsellers"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/databasegateway"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlistsellers"
+	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"os"
 )
 
@@ -20,7 +19,7 @@ func (s *Command) Execute(arguments map[string]interface{}) error {
 		panic("seller new not implemented")
 	}
 
-	db, err := relational.NewDatabase()
+	db, err := application.Database()
 	if err != nil {
 		return err
 	}

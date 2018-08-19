@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/loadtransactions"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/databasegateway"
-	"github.com/luistm/banksaurus/cmd/bscli/infrastructure/relational"
+	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"os"
 )
 
@@ -23,7 +23,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	db, err := relational.NewDatabase()
+	db, err := application.Database()
 	if err != nil {
 		return err
 	}
