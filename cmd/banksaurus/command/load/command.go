@@ -2,6 +2,7 @@ package load
 
 import (
 	"encoding/csv"
+	"errors"
 	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
@@ -14,7 +15,7 @@ type Command struct{}
 // Execute the Command command
 func (l *Command) Execute(arguments map[string]interface{}) error {
 
-	// TODO: To much code here
+	// TODO: To much code here, we need a refactor \0/
 
 	filePath := arguments["<file>"].(string)
 	_, err := os.Stat(filePath)
@@ -54,6 +55,15 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	minLinesInWellFormattedFile := 8
+	if len(lines) < minLinesInWellFormattedFile {
+		return errors.New("Bad formatted file")
+	}
+
+	transactionStartLine := 5
+	lastTransactionLine := len(lines) - 2
+	lines = lines[transactionStartLine:lastTransactionLine]
 
 	r, err := loadtransactions.NewRequest(lines)
 	if err != nil {

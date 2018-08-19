@@ -47,7 +47,6 @@ func transactionFromline(line []string) (time.Time, string, *transaction.Money, 
 // NewFromLine adds a new transaction given it's raw line
 func (r *Repository) NewFromLine(line []string) error {
 
-	return nil
 	_, sellerID, _, err := transactionFromline(line)
 	if err != nil {
 		return err
