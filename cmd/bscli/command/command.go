@@ -6,7 +6,6 @@ import (
 	"github.com/luistm/banksaurus/cmd/bscli/command/load"
 	"github.com/luistm/banksaurus/cmd/bscli/command/report"
 	"github.com/luistm/banksaurus/cmd/bscli/command/seller"
-	"github.com/luistm/banksaurus/cmd/bscli/command/transaction"
 )
 
 var errCommandNotFound = errors.New("command not found")
@@ -35,8 +34,6 @@ func New(cliRequest CLIRequest) (Commander, error) {
 		return &load.Command{}, nil
 	case "seller":
 		return &seller.Command{}, nil
-	case "transaction":
-		return &transaction.Command{}, nil
 	default:
 		return nil, errCommandNotFound
 	}

@@ -8,6 +8,8 @@ import (
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlisttransactions"
+	"github.com/luistm/banksaurus/cmd/bscli/application"
+	"github.com/luistm/banksaurus/cmd/bscli/adapter/transactiongateway"
 )
 
 // Command handles reports
@@ -16,10 +18,20 @@ type Command struct{}
 // Execute the report command
 func (rc *Command) Execute(arguments map[string]interface{}) error {
 	var grouped bool
+	var hasFile bool
+
+
+	_, ok := arguments["--load"]
+	if !ok {
+		panic("command not implemented")
+	}
 
 	if arguments["--grouped"].(bool) {
 		grouped = true
 	}
+
+	var lines [][]string
+	if hasFile{
 
 	filePath := arguments["<file>"].(string)
 	_, err := os.Stat(filePath)
@@ -37,14 +49,10 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	reader.Comma = ';'
 	reader.FieldsPerRecord = -1
 
-	lines, err := reader.ReadAll()
+	lines, err = reader.ReadAll()
 	if err != nil {
 		return err
 	}
-
-	cgdCSVRepository, err := cgdgateway.New(lines)
-	if err != nil {
-		return err
 	}
 
 	p, err := presenterlisttransactions.NewPresenter()
@@ -52,8 +60,18 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	if grouped {
-		i, err := listtransactionsgrouped.NewInteractor(cgdCSVRepository, p)
+	if ! hasFile {
+		db, err := application.Database()
+		if err != nil {
+			return err
+		}
+
+		repository, err := transactiongateway.NewTransactionRepository(db)
+		if err != nil {
+			return err
+		}
+
+		i, err := listtransactions.NewInteractor(p, repository)
 		if err != nil {
 			return err
 		}
@@ -62,9 +80,27 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		if err != nil {
 			return err
 		}
+	}
 
-	} else {
-		i, err := listtransactions.NewInteractor(p, cgdCSVRepository)
+	repository, err := cgdgateway.New(lines)
+	if err != nil {
+		return err
+	}
+
+	if hasFile && grouped {
+		i, err := listtransactionsgrouped.NewInteractor(repository, p)
+		if err != nil {
+			return err
+		}
+
+		err = i.Execute()
+		if err != nil {
+			return err
+		}
+	}
+
+	if hasFile && !grouped {
+		i, err := listtransactions.NewInteractor(p, repository)
 		if err != nil {
 			return err
 		}
