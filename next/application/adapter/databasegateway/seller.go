@@ -1,32 +1,14 @@
 package databasegateway
 
 import (
-	"database/sql"
-	"errors"
 	"github.com/luistm/banksaurus/next/entity/seller"
 	"github.com/mattn/go-sqlite3"
 )
 
-// ErrDatabaseUndefined ...
-var ErrDatabaseUndefined = errors.New("database is not defined")
-
-// NewSellerRepository creates a new seller repository instance
-func NewSellerRepository(db *sql.DB) (*SellerRepository, error) {
-	if db == nil {
-		return &SellerRepository{}, ErrDatabaseUndefined
-	}
-	return &SellerRepository{db}, nil
-}
-
-// SellerRepository handles persistence in a database
-type SellerRepository struct {
-	db *sql.DB
-}
-
-func (sr *SellerRepository) GetByID(id string) (*seller.Entity, error) {
+func (r *Repository) GetByID(id string) (*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller WHERE slug = ?"
-	rows, err := sr.db.Query(selectStatement, id)
+	rows, err := r.db.Query(selectStatement, id)
 	var slug string
 	var name string
 
@@ -57,10 +39,10 @@ func (sr *SellerRepository) GetByID(id string) (*seller.Entity, error) {
 	return s, nil
 }
 
-func (sr *SellerRepository) UpdateSeller(seller *seller.Entity) error {
+func (r *Repository) UpdateSeller(seller *seller.Entity) error {
 
 	updateStatement := "UPDATE seller SET name = ? WHERE slug = ?"
-	_, err := sr.db.Exec(updateStatement, seller.Name(), seller.ID())
+	_, err := r.db.Exec(updateStatement, seller.Name(), seller.ID())
 	if err != nil {
 		return err
 	}
@@ -68,10 +50,10 @@ func (sr *SellerRepository) UpdateSeller(seller *seller.Entity) error {
 	return nil
 }
 
-func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
+func (r *Repository) GetAll() ([]*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller"
-	rows, err := sr.db.Query(selectStatement)
+	rows, err := r.db.Query(selectStatement)
 	if err != nil {
 		return []*seller.Entity{}, err
 	}
@@ -109,10 +91,10 @@ func (sr *SellerRepository) GetAll() ([]*seller.Entity, error) {
 }
 
 // Saves seller to the database
-func (sr *SellerRepository) Save(seller *seller.Entity) error {
+func (r *Repository) Save(seller *seller.Entity) error {
 
 	insertStatement := "INSERT INTO seller(slug, name) VALUES (?, ?)"
-	_, err := sr.db.Exec(insertStatement, seller.ID(), "")
+	_, err := r.db.Exec(insertStatement, seller.ID(), "")
 	if err != nil {
 		// Ignore unique
 		pqErr, ok := err.(sqlite3.Error)
