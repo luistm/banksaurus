@@ -2,7 +2,6 @@ package load
 
 import (
 	"encoding/csv"
-	"github.com/luistm/banksaurus/next/application/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/next/application/adapter/databasegateway"
 	"github.com/luistm/banksaurus/next/application/infrastructure/relational"
 	"github.com/luistm/banksaurus/next/loadtransactions"
@@ -23,6 +22,17 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
+	db, err := relational.NewDatabase()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	sr, err := databasegateway.NewSellerRepository(db)
+	if err != nil {
+		return err
+	}
+
 	// Create repository to access csv
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -39,29 +49,18 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	tr, err := cgdgateway.New(lines)
-	if err != nil {
-		return err
-	}
-
-	db, err := relational.NewDatabase()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	sr, err := databasegateway.NewSellerRepository(db)
-	if err != nil {
-		return err
-	}
-
 	// Execute the interactor
-	i, err := loadtransactions.NewInteractor(tr, sr)
+	i, err := loadtransactions.NewInteractor(sr)
 	if err != nil {
 		return err
 	}
 
-	err = i.Execute()
+	r, err := loadtransactions.NewRequest(lines)
+	if err != nil {
+		return err
+	}
+
+	err = i.Execute(r)
 	if err != nil {
 		return err
 	}
