@@ -46,7 +46,7 @@ func (a *App) createPathAndFolders() error {
 
 	// Create Path if it does not exist
 	if err != nil && os.IsNotExist(err) {
-		err = os.Mkdir(Path(), 0700)
+		err = os.MkdirAll(Path(), 0700)
 		if err != nil {
 			return err
 		}

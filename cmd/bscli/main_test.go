@@ -18,6 +18,13 @@ func deleteTestFiles(t *testing.T) {
 	}
 }
 
+func TestMain(t *testing.M) {
+	os.Setenv("BANKSAURUS_ENV", "dev")
+	defer os.Setenv("BANKSAURUS_ENV", "")
+
+	os.Exit(t.Run())
+}
+
 func TestAcceptanceUsage(t *testing.T) {
 
 	defer deleteTestFiles(t)
