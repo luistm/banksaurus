@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/loadtransactions"
-	"github.com/luistm/banksaurus/cmd/bscli/adapter/databasegateway"
+	"github.com/luistm/banksaurus/cmd/bscli/adapter/sellergateway"
 	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"os"
 )
@@ -29,7 +29,7 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	}
 	defer db.Close()
 
-	sr, err := databasegateway.NewSellerRepository(db)
+	sr, err := sellergateway.NewSellerRepository(db)
 	if err != nil {
 		return err
 	}
