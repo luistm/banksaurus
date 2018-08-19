@@ -5,7 +5,7 @@ type TransactionGateway interface {
 	NewFromLine([]string) error
 }
 
-// Request to load transactions
-type Request interface {
+// Requester to load transactions
+type Requester interface {
 	Lines() ([][]string, error)
 }
