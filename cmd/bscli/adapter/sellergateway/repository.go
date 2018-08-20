@@ -23,7 +23,6 @@ type Repository struct {
 	db *sql.DB
 }
 
-
 func (r *Repository) GetByID(id string) (*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller WHERE slug = ?"
