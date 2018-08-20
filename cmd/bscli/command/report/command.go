@@ -8,8 +8,8 @@ import (
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlisttransactions"
-	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/transactiongateway"
+	"github.com/luistm/banksaurus/cmd/bscli/application"
 )
 
 // Command handles reports
@@ -19,7 +19,6 @@ type Command struct{}
 func (rc *Command) Execute(arguments map[string]interface{}) error {
 	var grouped bool
 	var hasFile bool
-
 
 	_, ok := arguments["--load"]
 	if !ok {
@@ -31,28 +30,28 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	var lines [][]string
-	if hasFile{
+	if hasFile {
 
-	filePath := arguments["<file>"].(string)
-	_, err := os.Stat(filePath)
-	if err != nil {
-		return err
-	}
+		filePath := arguments["<file>"].(string)
+		_, err := os.Stat(filePath)
+		if err != nil {
+			return err
+		}
 
-	file, err := os.Open(filePath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+		file, err := os.Open(filePath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
 
-	reader := csv.NewReader(file)
-	reader.Comma = ';'
-	reader.FieldsPerRecord = -1
+		reader := csv.NewReader(file)
+		reader.Comma = ';'
+		reader.FieldsPerRecord = -1
 
-	lines, err = reader.ReadAll()
-	if err != nil {
-		return err
-	}
+		lines, err = reader.ReadAll()
+		if err != nil {
+			return err
+		}
 	}
 
 	p, err := presenterlisttransactions.NewPresenter()
@@ -60,7 +59,7 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		return err
 	}
 
-	if ! hasFile {
+	if !hasFile {
 		db, err := application.Database()
 		if err != nil {
 			return err

@@ -3,8 +3,8 @@ package seller
 import (
 	"github.com/luistm/banksaurus/banksaurus/changesellername"
 	"github.com/luistm/banksaurus/banksaurus/listsellers"
-	"github.com/luistm/banksaurus/cmd/bscli/adapter/sellergateway"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlistsellers"
+	"github.com/luistm/banksaurus/cmd/bscli/adapter/sellergateway"
 	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"os"
 )
