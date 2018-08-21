@@ -21,17 +21,17 @@ Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the cs
 #### Available commands
 
 ```bash
-$ banksaurus --help
+$ bscli --help
 
     Your command line finance manager.
 
 Usage:
-	banksaurus -h | --help
-	banksaurus report --input <file> [ --grouped ]
-	banksaurus load --input <file>
-	banksaurus seller change <id> --pretty <name>
-	banksaurus seller new <name>
-	banksaurus seller show
+	bscli -h | --help
+	bscli report
+	bscli report --input <file> [ --grouped ]
+	bscli load --input <file>
+	bscli seller change <id> --pretty <name>
+	bscli seller show
 
 Options:
 	--grouped     The report is present grouped by seller
@@ -45,7 +45,7 @@ Options:
 If you're interested in hacking or trying `banksaurus`, you can install via `go get`:
 
 ```bash
-go get -u github.com/luistm/banksaurus/cmd/banksaurus
+go get -u github.com/luistm/banksaurus/cmd/bscli
 ```
 
 On macOS install the latest [dep](https://github.com/golang/dep) version with [Homebrew](https://brew.sh):
