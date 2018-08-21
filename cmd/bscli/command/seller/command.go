@@ -14,7 +14,7 @@ type Command struct{}
 
 // Execute the seller command with arguments
 func (s *Command) Execute(arguments map[string]interface{}) error {
-	
+
 	db, err := application.Database()
 	if err != nil {
 		return err

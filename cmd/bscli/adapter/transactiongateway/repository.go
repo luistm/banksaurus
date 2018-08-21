@@ -36,6 +36,7 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 	if err != nil {
 		return []*transaction.Entity{}, err
 	}
+	defer rows.Close()
 
 	transactions := []*transaction.Entity{}
 
@@ -70,7 +71,6 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 	}
 
 	return transactions, nil
-
 }
 
 func transactionFromline(line []string) (time.Time, string, *transaction.Money, error) {
