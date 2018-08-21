@@ -30,7 +30,7 @@ type Repository struct {
 // GetAll returns all transactions
 func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 
-	statement := "SELECT * FROM transaction"
+	statement := `SELECT * FROM "transaction"`
 	rows, err := t.db.Query(statement)
 	if err != nil {
 		return []*transaction.Entity{}, err

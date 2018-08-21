@@ -18,12 +18,10 @@ type Command struct{}
 // Execute the report command
 func (rc *Command) Execute(arguments map[string]interface{}) error {
 	var grouped bool
-	var hasFile bool
 
-	_, ok := arguments["--load"]
-	if !ok {
-		panic("command not implemented")
-	}
+	// TODO: Lots of code in function, refactor
+
+	hasFile := arguments["--input"].(bool)
 
 	if arguments["--grouped"].(bool) {
 		grouped = true
@@ -81,12 +79,12 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 		}
 	}
 
-	repository, err := cgdgateway.New(lines)
-	if err != nil {
-		return err
-	}
-
 	if hasFile && grouped {
+		repository, err := cgdgateway.New(lines)
+		if err != nil {
+			return err
+		}
+
 		i, err := listtransactionsgrouped.NewInteractor(repository, p)
 		if err != nil {
 			return err
@@ -99,6 +97,11 @@ func (rc *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	if hasFile && !grouped {
+		repository, err := cgdgateway.New(lines)
+		if err != nil {
+			return err
+		}
+
 		i, err := listtransactions.NewInteractor(p, repository)
 		if err != nil {
 			return err
