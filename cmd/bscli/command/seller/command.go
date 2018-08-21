@@ -14,11 +14,7 @@ type Command struct{}
 
 // Execute the seller command with arguments
 func (s *Command) Execute(arguments map[string]interface{}) error {
-
-	if arguments["seller"].(bool) && arguments["new"].(bool) {
-		panic("seller new not implemented")
-	}
-
+	
 	db, err := application.Database()
 	if err != nil {
 		return err

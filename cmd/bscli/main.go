@@ -18,7 +18,6 @@ var usage = `Usage:
 	bscli report --input <file> [ --grouped ]
 	bscli load --input <file>
 	bscli seller change <id> --pretty <name>
-	bscli seller new <name>
 	bscli seller show`
 
 var options = `

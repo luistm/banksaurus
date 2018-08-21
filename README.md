@@ -21,17 +21,17 @@ Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the cs
 #### Available commands
 
 ```bash
-$ banksaurus --help
+$ bscli --help
 
     Your command line finance manager.
 
 Usage:
-	banksaurus -h | --help
-	banksaurus report --input <file> [ --grouped ]
-	banksaurus load --input <file>
-	banksaurus seller change <id> --pretty <name>
-	banksaurus seller new <name>
-	banksaurus seller show
+	bscli -h | --help
+	bscli report
+	bscli report --input <file> [ --grouped ]
+	bscli load --input <file>
+	bscli seller change <id> --pretty <name>
+	bscli seller show
 
 Options:
 	--grouped     The report is present grouped by seller
