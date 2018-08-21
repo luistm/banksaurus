@@ -27,21 +27,23 @@ func (r *Repository) GetByID(id string) (*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller WHERE slug = ?"
 	rows, err := r.db.Query(selectStatement, id)
-	var slug string
-	var name string
 
+	var s *seller.Entity
 	for rows.Next() {
+		var slug string
+		var name string
+
 		err := rows.Scan(&slug, &name)
 		if err != nil {
 			return &seller.Entity{}, err
 		}
 
-		break // expecting one row max
-	}
+		s, err = seller.New(slug, "")
+		if err != nil {
+			return &seller.Entity{}, err
+		}
 
-	s, err := seller.New(slug, "")
-	if err != nil {
-		return &seller.Entity{}, err
+		break // expecting one row max
 	}
 
 	err = rows.Err()

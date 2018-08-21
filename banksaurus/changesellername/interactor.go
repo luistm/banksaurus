@@ -35,6 +35,10 @@ func (i *Interactor) Execute(r *Request) error {
 		return err
 	}
 
+	if s == nil {
+		return nil
+	}
+
 	sellerName, err := r.SellerName()
 	if err != nil {
 		return err
