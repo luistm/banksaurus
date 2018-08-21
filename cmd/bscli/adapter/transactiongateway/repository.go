@@ -6,6 +6,7 @@ import (
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/mattn/go-sqlite3"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -40,11 +41,12 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	for rows.Next() {
 		var id uint64
-		var date time.Time
+		//var date time.Time
 		var seller string
 		var value int64
 
-		err := rows.Scan(&id, &date, &seller, &value)
+		// TODO: Add date
+		err := rows.Scan(&id, &seller, &value)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -54,7 +56,7 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		tr, err := transaction.New(id, date, seller, m)
+		tr, err := transaction.New(id, time.Now(), seller, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -110,7 +112,7 @@ func transactionFromline(line []string) (time.Time, string, *transaction.Money, 
 // NewFromLine adds a new transaction given it's raw line
 func (r *Repository) NewFromLine(line []string) error {
 
-	_, sellerID, _, err := transactionFromline(line)
+	_, sellerID, m, err := transactionFromline(line)
 	if err != nil {
 		return err
 	}
@@ -125,20 +127,13 @@ func (r *Repository) NewFromLine(line []string) error {
 		return err
 	}
 
-	// Save to database
-	// TODO: Add function to load transactions into the database
-	//       transaction, err := TransactionFactory(record)
-	//       Transactions should now have an ID, a sellerID, a value and a date
-
-	// Return the transactions after adding the ir coming from the database
-	//CREATE TABLE IF NOT EXISTS transactions
-	//(
-	//	ID int NOT NULL PRIMARY KEY,
-	//	SELLER_ID int NOT NULL,
-	//	AMOUNT int DEFAULT 0,
-	//	TYPE
-	//BALANCE int NOT NULL
-	//);
+	// TODO: Add date
+	statement := `INSERT INTO "transaction" (seller, amount ) VALUES (?,?)`
+	_, err = r.db.Exec(statement, sellerID, m.Value())
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 
 	return nil
 }

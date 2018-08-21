@@ -27,6 +27,10 @@ func (m *Money) Add(money *Money) (*Money, error) {
 	return &Money{value: newValue}, nil
 }
 
+func (m *Money) Value() int64 {
+	return m.value
+}
+
 // String to satisfy the fmt.Stringer
 func (m *Money) String() string {
 	s := strconv.FormatInt(m.value, 10)
