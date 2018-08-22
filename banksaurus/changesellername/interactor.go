@@ -22,7 +22,7 @@ type Interactor struct {
 	sellers SellerRepository
 }
 
-// Executes the changesellername interactor
+// Execute the changesellername interactor
 func (i *Interactor) Execute(r RequestChangeSellerName) error {
 
 	sellerID, err := r.SellerID()

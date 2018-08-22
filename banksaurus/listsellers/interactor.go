@@ -11,7 +11,7 @@ var (
 )
 
 // NewInteractor creates a new interactor instance
-func NewInteractor(sr SellerGateway, sp SellerPresenter) (*Interactor, error) {
+func NewInteractor(sr SellerGateway, sp PresenterListSellers) (*Interactor, error) {
 	if sr == nil {
 		return &Interactor{}, ErrSellersRepositoryUndefined
 	}
@@ -26,7 +26,7 @@ func NewInteractor(sr SellerGateway, sp SellerPresenter) (*Interactor, error) {
 // Interactor to list sellers
 type Interactor struct {
 	sellers   SellerGateway
-	presenter SellerPresenter
+	presenter PresenterListSellers
 }
 
 func (i *Interactor) Execute() error {

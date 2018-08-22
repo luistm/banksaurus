@@ -6,10 +6,12 @@ import (
 	"text/tabwriter"
 )
 
+// NewViewModel creates a new instance
 func NewViewModel(data []string) (*ViewModel, error) {
 	return &ViewModel{data}, nil
 }
 
+// ViewModel to list sellers
 type ViewModel struct {
 	data []string
 }
