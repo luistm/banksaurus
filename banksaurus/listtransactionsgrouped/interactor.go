@@ -79,7 +79,10 @@ func (i *Interactor) Execute() error {
 		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller(): sellerTotal})
 	}
 
-	i.presenter.Present(presenterData)
+	err = i.presenter.Present(presenterData)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

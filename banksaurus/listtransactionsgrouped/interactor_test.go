@@ -15,6 +15,7 @@ type adapterStub struct {
 	TransactionsForSeller [][]*transaction.Entity
 	callNumber            int
 	getAllError           error
+	presentError          error
 }
 
 func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
@@ -33,6 +34,10 @@ func (as *adapterStub) GetBySeller(entity string) ([]*transaction.Entity, error)
 }
 
 func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
+	if as.presentError != nil {
+		return as.presentError
+	}
+
 	as.ReceivedData = receivedData
 	return nil
 }
@@ -127,8 +132,15 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 			presenter:   &adapterStub{},
 			expectedErr: errors.New("test error"),
 		},
-
-		// TODO: Test it can handle errors from repositories and presenter
+		{
+			name: "Handles presenter error",
+			transactions: &adapterStub{
+				Transactions:          []*transaction.Entity{t1},
+				TransactionsForSeller: [][]*transaction.Entity{{t1}},
+			},
+			presenter:   &adapterStub{presentError: errors.New("test error")},
+			expectedErr: errors.New("test error"),
+		},
 	}
 
 	for _, tc := range testCases {
