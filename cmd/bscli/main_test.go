@@ -94,7 +94,22 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:     "Load records from file",
-			command:  []string{"load", "--input", fixture},
+			command:  []string{"load", "--input", fixture, "--account", "test_account"},
+			expected: `Account "test_account" does not exist"`,
+		},
+		{
+			name:     "Shows seller loaded by the load records from file",
+			command:  []string{"seller", "show"},
+			expected: "",
+		},
+		{
+			name:     "Create account",
+			command:  []string{"account", "create", "--name", "test_account"},
+			expected: "",
+		},
+		{
+			name:     "Load records from file",
+			command:  []string{"load", "--input", fixture, "--account", "test_account"},
 			expected: "",
 		},
 		{
