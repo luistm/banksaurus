@@ -31,9 +31,13 @@ func (rs *repositoryStub) New(balance *money.Money) (*account.Entity, error) {
 
 type requestStub struct {
 	money *money.Money
+	err   error
 }
 
 func (rs *requestStub) Balance() (*money.Money, error) {
+	if rs.err != nil {
+		return &money.Money{}, rs.err
+	}
 	return rs.money, nil
 }
 
@@ -68,13 +72,19 @@ func TestUnitInteractorExecute(t *testing.T) {
 		{
 			name:            "Creates a new account",
 			repository:      &repositoryStub{},
-			request:         &requestStub{m1},
+			request:         &requestStub{money: m1},
 			expectedAccount: ac1,
 		},
 		{
 			name:          "Handles repository error",
 			repository:    &repositoryStub{err: errors.New("test error")},
-			request:       &requestStub{m1},
+			request:       &requestStub{money: m1},
+			expectedError: errors.New("test error"),
+		},
+		{
+			name:          "Handles request error",
+			repository:    &repositoryStub{},
+			request:       &requestStub{err: errors.New("test error")},
 			expectedError: errors.New("test error"),
 		},
 	}
