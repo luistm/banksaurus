@@ -7,3 +7,9 @@ type SellerRepository interface {
 	GetByID(string) (*seller.Entity, error)
 	UpdateSeller(*seller.Entity) error
 }
+
+// RequestChangeSellerName ...
+type RequestChangeSellerName interface {
+	SellerID() (string, error)
+	SellerName() (string, error)
+}

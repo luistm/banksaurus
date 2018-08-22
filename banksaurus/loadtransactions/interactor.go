@@ -24,7 +24,7 @@ type Interactor struct {
 }
 
 // Execute the load transactions interactor
-func (i *Interactor) Execute(r Requester) error {
+func (i *Interactor) Execute(r RequestLoadTransactions) error {
 
 	lines, err := r.Lines()
 	if err != nil {

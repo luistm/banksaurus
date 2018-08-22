@@ -23,7 +23,7 @@ type Interactor struct {
 }
 
 // Executes the changesellername interactor
-func (i *Interactor) Execute(r *Request) error {
+func (i *Interactor) Execute(r RequestChangeSellerName) error {
 
 	sellerID, err := r.SellerID()
 	if err != nil {
