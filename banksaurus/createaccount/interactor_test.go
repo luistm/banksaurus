@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/luistm/banksaurus/account"
 	"github.com/luistm/banksaurus/banksaurus/createaccount"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/testkit"
 	"testing"
 )
@@ -37,7 +38,9 @@ func TestUnitInteractorNew(t *testing.T) {
 
 func TestUnitInteractorExecute(t *testing.T) {
 
-	ac1, err := account.New()
+	m1, err := money.NewMoney(124)
+	testkit.AssertIsNil(t, err)
+	ac1, err := account.New(m1)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
