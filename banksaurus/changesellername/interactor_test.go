@@ -9,20 +9,27 @@ import (
 )
 
 type repository struct {
-	seller         *seller.Entity
-	sellerReceived *seller.Entity
-	err            error
+	seller          *seller.Entity
+	sellerReceived  *seller.Entity
+	getByIDErr      error
+	updateSellerErr error
 }
 
 func (r *repository) UpdateSeller(s *seller.Entity) error {
+	if r.updateSellerErr != nil {
+		return r.updateSellerErr
+	}
+
 	r.sellerReceived = s
+
 	return nil
 }
 
 func (r *repository) GetByID(string) (*seller.Entity, error) {
-	if r.err != nil {
-		return &seller.Entity{}, r.err
+	if r.getByIDErr != nil {
+		return &seller.Entity{}, r.getByIDErr
 	}
+
 	return r.seller, nil
 }
 
@@ -63,11 +70,16 @@ func TestUnitChangeSellerName(t *testing.T) {
 			name:          "Handles repository GetByID error",
 			sellerID:      s1.ID(),
 			sellerName:    sellerName,
-			repository:    &repository{err: errors.New("test error")},
+			repository:    &repository{getByIDErr: errors.New("test error")},
 			expectedError: errors.New("test error"),
 		},
-
-		// TODO: test remaining error paths
+		{
+			name:          "Handles repository UpdateSeller error",
+			sellerID:      s1.ID(),
+			sellerName:    sellerName,
+			repository:    &repository{seller: s1, updateSellerErr: errors.New("test error")},
+			expectedError: errors.New("test error"),
+		},
 	}
 
 	for _, tc := range testCases {
