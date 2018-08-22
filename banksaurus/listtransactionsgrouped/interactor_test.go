@@ -3,6 +3,7 @@ package listtransactionsgrouped_test
 import (
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
@@ -11,7 +12,7 @@ import (
 )
 
 type adapterStub struct {
-	ReceivedData          []map[string]*transaction.Money
+	ReceivedData          []map[string]*money.Money
 	Transactions          []*transaction.Entity
 	TransactionsForSeller [][]*transaction.Entity
 	callNumber            int
@@ -34,7 +35,7 @@ func (as *adapterStub) GetBySeller(entity string) ([]*transaction.Entity, error)
 	return as.TransactionsForSeller[1], nil
 }
 
-func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
+func (as *adapterStub) Present(receivedData []map[string]*money.Money) error {
 	if as.presentError != nil {
 		return as.presentError
 	}
@@ -68,12 +69,12 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 	s2, err := seller.New("AnotherSellerID", "")
 	testkit.AssertIsNil(t, err)
 
-	m1, err := transaction.NewMoney(123456789)
+	m1, err := money.NewMoney(123456789)
 	testkit.AssertIsNil(t, err)
 	t1, err := transaction.New(1, time.Now(), s1, m1)
 	testkit.AssertIsNil(t, err)
 
-	m2, err := transaction.NewMoney(10)
+	m2, err := money.NewMoney(10)
 	testkit.AssertIsNil(t, err)
 	t2, err := transaction.New(2, time.Now(), s2, m2)
 	testkit.AssertIsNil(t, err)
@@ -89,13 +90,13 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 		transactions *adapterStub
 		presenter    *adapterStub
 		expectedErr  error
-		expectedData []map[string]*transaction.Money
+		expectedData []map[string]*money.Money
 	}{
 		{
 			name:         "Returns nothing if no data available",
 			transactions: &adapterStub{},
 			presenter:    &adapterStub{},
-			expectedData: []map[string]*transaction.Money{},
+			expectedData: []map[string]*money.Money{},
 		},
 		{
 			name: "Returns a single transaction",
@@ -104,7 +105,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
 			presenter:    &adapterStub{},
-			expectedData: []map[string]*transaction.Money{{t1.Seller().ID(): m1}},
+			expectedData: []map[string]*money.Money{{t1.Seller().ID(): m1}},
 		},
 		{
 			name: "Returns a multiple transactions",
@@ -113,7 +114,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1}, {t2}},
 			},
 			presenter: &adapterStub{},
-			expectedData: []map[string]*transaction.Money{
+			expectedData: []map[string]*money.Money{
 				{t1.Seller().ID(): t1.Value()},
 				{t2.Seller().ID(): t2.Value()},
 			},
@@ -125,7 +126,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1, t3}, {t2}},
 			},
 			presenter: &adapterStub{},
-			expectedData: []map[string]*transaction.Money{
+			expectedData: []map[string]*money.Money{
 				{t1.Seller().ID(): m1plusm3},
 				{t2.Seller().ID(): m2},
 			},

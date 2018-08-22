@@ -4,31 +4,31 @@ import (
 	"testing"
 
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlisttransactions"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/testkit"
 )
 
 func TestUnitPresenterPresent(t *testing.T) {
 
-	m1, err := transaction.NewMoney(1234)
+	m1, err := money.NewMoney(1234)
 	testkit.AssertIsNil(t, err)
-	m2, err := transaction.NewMoney(12)
+	m2, err := money.NewMoney(12)
 	testkit.AssertIsNil(t, err)
-	m3, err := transaction.NewMoney(-12345)
+	m3, err := money.NewMoney(-12345)
 	testkit.AssertIsNil(t, err)
-	m4, err := transaction.NewMoney(-12)
+	m4, err := money.NewMoney(-12)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
 		name        string
-		input       []map[string]*transaction.Money
+		input       []map[string]*money.Money
 		callPresent bool
 		output      []string
 		err         error
 	}{
 		{
 			name: "Presenter prepares prepares output data",
-			input: []map[string]*transaction.Money{
+			input: []map[string]*money.Money{
 				{"key": m1},
 				{"key": m2},
 				{"key2": m3},
@@ -39,7 +39,7 @@ func TestUnitPresenterPresent(t *testing.T) {
 		},
 		{
 			name:        "Presenter receives no data",
-			input:       []map[string]*transaction.Money{},
+			input:       []map[string]*money.Money{},
 			callPresent: true,
 			output:      []string{},
 		},

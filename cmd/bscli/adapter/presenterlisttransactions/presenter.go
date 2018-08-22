@@ -2,7 +2,7 @@ package presenterlisttransactions
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/money"
 	"strings"
 )
 
@@ -23,7 +23,7 @@ type Presenter struct {
 // Present receives data from the interactor
 // and transforms it in data suitable to be sent
 // to the view model.
-func (p *Presenter) Present(data []map[string]*transaction.Money) error {
+func (p *Presenter) Present(data []map[string]*money.Money) error {
 	outputData := []string{}
 	comma := rune(44)
 	zero := rune(48)

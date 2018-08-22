@@ -1,19 +1,19 @@
-package transaction_test
+package money_test
 
 import (
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/testkit"
 	"testing"
 )
 
 func TestUnitNewMoney(t *testing.T) {
 	t.Run("Returns error if value is zero", func(t *testing.T) {
-		_, err := transaction.NewMoney(0)
-		testkit.AssertEqual(t, transaction.ErrInvalidMoneyValue, err)
+		_, err := money.NewMoney(0)
+		testkit.AssertEqual(t, money.ErrInvalidMoneyValue, err)
 	})
 
 	t.Run("Does not return error", func(t *testing.T) {
-		_, err := transaction.NewMoney(1)
+		_, err := money.NewMoney(1)
 		testkit.AssertIsNil(t, err)
 	})
 }
@@ -43,9 +43,9 @@ func TestUnitMoneyAdd(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			m1, err := transaction.NewMoney(tc.initialValue)
+			m1, err := money.NewMoney(tc.initialValue)
 			testkit.AssertIsNil(t, err)
-			m2, err := transaction.NewMoney(tc.addValue)
+			m2, err := money.NewMoney(tc.addValue)
 			testkit.AssertIsNil(t, err)
 
 			m3, err := m1.Add(m2)

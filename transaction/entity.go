@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"fmt"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/pkg/errors"
 	"time"
@@ -22,7 +23,7 @@ var (
 )
 
 // New creates a new transaction
-func New(id uint64, date time.Time, seller *seller.Entity, value *Money) (*Entity, error) {
+func New(id uint64, date time.Time, seller *seller.Entity, value *money.Money) (*Entity, error) {
 	if id <= 0 {
 		return &Entity{}, ErrInvalidTransactionID
 	}
@@ -47,7 +48,7 @@ type Entity struct {
 	id     uint64
 	date   time.Time
 	seller *seller.Entity
-	value  *Money
+	value  *money.Money
 }
 
 // ID returns the identification of the transaction
@@ -61,7 +62,7 @@ func (t *Entity) Seller() *seller.Entity {
 }
 
 // Value of the transaction
-func (t *Entity) Value() *Money {
+func (t *Entity) Value() *money.Money {
 	return t.value
 }
 

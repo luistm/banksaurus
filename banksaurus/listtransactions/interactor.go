@@ -2,7 +2,7 @@ package listtransactions
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/money"
 )
 
 var (
@@ -42,9 +42,9 @@ func (i *Interactor) Execute() error {
 		return err
 	}
 
-	returnData := []map[string]*transaction.Money{}
+	returnData := []map[string]*money.Money{}
 	for _, t := range ts {
-		transactionData := map[string]*transaction.Money{t.Seller().String(): t.Value()}
+		transactionData := map[string]*money.Money{t.Seller().String(): t.Value()}
 		returnData = append(returnData, transactionData)
 	}
 

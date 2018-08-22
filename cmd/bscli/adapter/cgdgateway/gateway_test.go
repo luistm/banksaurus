@@ -2,6 +2,7 @@ package cgdgateway_test
 
 import (
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/cgdgateway"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
@@ -47,11 +48,11 @@ func TestUnitGetAll(t *testing.T) {
 	s2, err := seller.New("COMPRA CONTINENTE", "")
 	testkit.AssertIsNil(t, err)
 
-	m1, err := transaction.NewMoney(-7752)
+	m1, err := money.NewMoney(-7752)
 	testkit.AssertIsNil(t, err)
 	t1, err := transaction.New(1, date, s1, m1)
 	testkit.AssertIsNil(t, err)
-	m2, err := transaction.NewMoney(7752)
+	m2, err := money.NewMoney(7752)
 	testkit.AssertIsNil(t, err)
 	t2, err := transaction.New(1, date, s2, m2)
 	testkit.AssertIsNil(t, err)
@@ -95,7 +96,7 @@ func TestUnitReturnGetBySeller(t *testing.T) {
 	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)
 
-	m1, err := transaction.NewMoney(7752)
+	m1, err := money.NewMoney(7752)
 	testkit.AssertIsNil(t, err)
 	t2, err := transaction.New(1, date, s1, m1)
 	testkit.AssertIsNil(t, err)

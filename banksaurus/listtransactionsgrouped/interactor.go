@@ -2,6 +2,7 @@ package listtransactionsgrouped
 
 import (
 	"errors"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/transaction"
 )
 
@@ -38,7 +39,7 @@ func (i *Interactor) Execute() error {
 		return err
 	}
 
-	presenterData := []map[string]*transaction.Money{}
+	presenterData := []map[string]*money.Money{}
 	transactionsForSeller := []*transaction.Entity{}
 	sellersSeen := map[string]bool{}
 
@@ -56,7 +57,7 @@ func (i *Interactor) Execute() error {
 
 		// TODO: If transactionsForSeller len is zero, something wicked happened
 		//       beware of it...
-		var sellerTotal *transaction.Money
+		var sellerTotal *money.Money
 
 		for c, tfs := range transactionsForSeller {
 			if c == 0 {
@@ -69,7 +70,7 @@ func (i *Interactor) Execute() error {
 			}
 		}
 
-		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller().ID(): sellerTotal})
+		presenterData = append(presenterData, map[string]*money.Money{t.Seller().ID(): sellerTotal})
 	}
 
 	err = i.presenter.Present(presenterData)

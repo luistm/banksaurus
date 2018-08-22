@@ -3,6 +3,7 @@ package listtransactions_test
 import (
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactions"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
@@ -12,11 +13,11 @@ import (
 
 type presenter struct {
 	seller string
-	value  *transaction.Money
+	value  *money.Money
 	err    error
 }
 
-func (p *presenter) Present(data []map[string]*transaction.Money) error {
+func (p *presenter) Present(data []map[string]*money.Money) error {
 	if p.err != nil {
 		return p.err
 	}
@@ -67,7 +68,7 @@ func TestUnitReport(t *testing.T) {
 
 	s1, err := seller.New("Seller1", "")
 	testkit.AssertIsNil(t, err)
-	v1, err := transaction.NewMoney(1234)
+	v1, err := money.NewMoney(1234)
 	testkit.AssertIsNil(t, err)
 	t1, err := transaction.New(1, time.Now(), s1, v1)
 	testkit.AssertIsNil(t, err)

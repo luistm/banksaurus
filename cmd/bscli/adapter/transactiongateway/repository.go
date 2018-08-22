@@ -3,6 +3,7 @@ package transactiongateway
 import (
 	"database/sql"
 	"errors"
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/mattn/go-sqlite3"
@@ -50,7 +51,7 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		m, err := transaction.NewMoney(value)
+		m, err := money.NewMoney(value)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -112,7 +113,7 @@ func (r *Repository) getSellerByID(id string) (*seller.Entity, error) {
 	return s, nil
 }
 
-func transactionFromline(line []string) (time.Time, string, *transaction.Money, error) {
+func transactionFromline(line []string) (time.Time, string, *money.Money, error) {
 
 	s := strings.TrimSpace(line[2])
 
@@ -128,21 +129,21 @@ func transactionFromline(line []string) (time.Time, string, *transaction.Money, 
 	valueString = strings.Replace(valueString, ".", "", -1)
 	value, err := strconv.ParseInt(valueString, 10, 64)
 	if err != nil {
-		return time.Time{}, "", &transaction.Money{}, err
+		return time.Time{}, "", &money.Money{}, err
 	}
 
 	date, err := time.Parse("02-01-2006", line[0])
 	if err != nil {
-		return time.Time{}, "", &transaction.Money{}, err
+		return time.Time{}, "", &money.Money{}, err
 	}
 
 	if isDebt {
 		value = value * -1
 	}
 
-	m, err := transaction.NewMoney(value)
+	m, err := money.NewMoney(value)
 	if err != nil {
-		return time.Time{}, "", &transaction.Money{}, err
+		return time.Time{}, "", &money.Money{}, err
 	}
 
 	return date, s, m, nil

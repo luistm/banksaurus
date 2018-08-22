@@ -1,6 +1,7 @@
 package transaction_test
 
 import (
+	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
@@ -10,7 +11,7 @@ import (
 
 func TestUnitTransactionNew(t *testing.T) {
 
-	m, err := transaction.NewMoney(1)
+	m, err := money.NewMoney(1)
 	testkit.AssertIsNil(t, err)
 
 	t.Run("Returns error if id is not defined", func(t *testing.T) {
