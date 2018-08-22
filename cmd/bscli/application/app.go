@@ -28,8 +28,7 @@ func New() (*App, error) {
 	if err != nil {
 		return &App{}, err
 	}
-	return application, nil
-
+	
 	return application, nil
 }
 
