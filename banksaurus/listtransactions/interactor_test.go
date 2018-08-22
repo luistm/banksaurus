@@ -3,6 +3,7 @@ package listtransactions_test
 import (
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactions"
+	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
 	"testing"
@@ -64,7 +65,8 @@ func TestUnitNewReport(t *testing.T) {
 
 func TestUnitReport(t *testing.T) {
 
-	s1 := "Seller1"
+	s1, err := seller.New("Seller1", "")
+	testkit.AssertIsNil(t, err)
 	v1, err := transaction.NewMoney(1234)
 	testkit.AssertIsNil(t, err)
 	t1, err := transaction.New(1, time.Now(), s1, v1)
@@ -84,7 +86,7 @@ func TestUnitReport(t *testing.T) {
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
 			},
-			outputSeller: s1,
+			outputSeller: s1.ID(),
 			outputValue:  v1.String(),
 		},
 		{

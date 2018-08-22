@@ -32,15 +32,13 @@ type Repository struct {
 }
 
 // GetBySeller returns transactions for the specified sellers
-func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error) {
-
-	// TODO: The repository should no know that the seller has an ID method.
+func (r *Repository) GetBySeller(lookUpID string) ([]*transaction.Entity, error) {
 
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
 		sellerID := strings.TrimSpace(line[2])
-		if sellerID != s.ID() {
+		if sellerID != lookUpID {
 			continue
 		}
 
@@ -73,7 +71,12 @@ func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error
 			return []*transaction.Entity{}, err
 		}
 
-		t, err := transaction.New(1, date, sellerID, m)
+		s, err := seller.New(sellerID, "")
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -121,7 +124,12 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		t, err := transaction.New(1, date, sellerID, m)
+		s, err := seller.New(sellerID, "")
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}

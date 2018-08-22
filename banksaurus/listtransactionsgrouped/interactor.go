@@ -2,15 +2,11 @@ package listtransactionsgrouped
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 )
 
 // ErrTransactionsRepositoryUndefined ...
 var ErrTransactionsRepositoryUndefined = errors.New("transactions repository is not defined")
-
-// ErrSellersRepositoryUndefined ...
-var ErrSellersRepositoryUndefined = errors.New("sellers repository is not defined")
 
 // ErrPresenterUndefined ...
 var ErrPresenterUndefined = errors.New("presenter is not defined")
@@ -37,27 +33,26 @@ type Interactor struct {
 // Execute the report grouped interactor
 func (i *Interactor) Execute() error {
 
-	// TODO: error handling is missing
-	ts, _ := i.transactions.GetAll()
+	ts, err := i.transactions.GetAll()
+	if err != nil {
+		return err
+	}
 
 	presenterData := []map[string]*transaction.Money{}
 	transactionsForSeller := []*transaction.Entity{}
-
 	sellersSeen := map[string]bool{}
-	for _, t := range ts {
-		s, err := seller.New(t.Seller(), "")
-		if err != nil {
-			return err
-		}
 
-		_, ok := sellersSeen[t.Seller()]
+	for _, t := range ts {
+		_, ok := sellersSeen[t.Seller().ID()]
 		if ok {
 			continue
 		}
-		sellersSeen[t.Seller()] = true
+		sellersSeen[t.Seller().ID()] = true
 
-		// TODO: error handling is missing
-		transactionsForSeller, _ = i.transactions.GetBySeller(s)
+		transactionsForSeller, err = i.transactions.GetBySeller(t.Seller().ID())
+		if err != nil {
+			return err
+		}
 
 		// TODO: If transactionsForSeller len is zero, something wicked happened
 		//       beware of it...
@@ -74,10 +69,13 @@ func (i *Interactor) Execute() error {
 			}
 		}
 
-		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller(): sellerTotal})
+		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller().ID(): sellerTotal})
 	}
 
-	i.presenter.Present(presenterData)
+	err = i.presenter.Present(presenterData)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

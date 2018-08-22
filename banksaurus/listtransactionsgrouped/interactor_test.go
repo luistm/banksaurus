@@ -1,6 +1,7 @@
 package listtransactionsgrouped_test
 
 import (
+	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
 	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
@@ -14,13 +15,18 @@ type adapterStub struct {
 	Transactions          []*transaction.Entity
 	TransactionsForSeller [][]*transaction.Entity
 	callNumber            int
+	getAllError           error
+	presentError          error
 }
 
 func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
+	if as.getAllError != nil {
+		return []*transaction.Entity{}, as.getAllError
+	}
 	return as.Transactions, nil
 }
 
-func (as *adapterStub) GetBySeller(entity *seller.Entity) ([]*transaction.Entity, error) {
+func (as *adapterStub) GetBySeller(entity string) ([]*transaction.Entity, error) {
 	if as.callNumber == 0 {
 		as.callNumber += 1
 		return as.TransactionsForSeller[0], nil
@@ -28,11 +34,11 @@ func (as *adapterStub) GetBySeller(entity *seller.Entity) ([]*transaction.Entity
 	return as.TransactionsForSeller[1], nil
 }
 
-func (*adapterStub) GetByID() ([]*seller.Entity, error) {
-	panic("implement me")
-}
-
 func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
+	if as.presentError != nil {
+		return as.presentError
+	}
+
 	as.ReceivedData = receivedData
 	return nil
 }
@@ -56,21 +62,23 @@ func TestUnitReportGroupedNew(t *testing.T) {
 
 func TestUnitReportGroupedExecute(t *testing.T) {
 
-	// How to get a transaction with an ID?
-	//factory, err := NewTransactionFactory(transactionRepository)
-	//transaction ,err := factory.NewTransaction(time.Now(), "SellerID", m1)
+	s1, err := seller.New("SellerID", "")
+	testkit.AssertIsNil(t, err)
+
+	s2, err := seller.New("AnotherSellerID", "")
+	testkit.AssertIsNil(t, err)
 
 	m1, err := transaction.NewMoney(123456789)
 	testkit.AssertIsNil(t, err)
-	t1, err := transaction.New(1, time.Now(), "SellerID", m1)
+	t1, err := transaction.New(1, time.Now(), s1, m1)
 	testkit.AssertIsNil(t, err)
 
 	m2, err := transaction.NewMoney(10)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(2, time.Now(), "AnotherSellerID", m2)
+	t2, err := transaction.New(2, time.Now(), s2, m2)
 	testkit.AssertIsNil(t, err)
 
-	t3, err := transaction.New(3, time.Now(), "SellerID", m1)
+	t3, err := transaction.New(3, time.Now(), s1, m1)
 	testkit.AssertIsNil(t, err)
 
 	m1plusm3, err := t1.Value().Add(t3.Value())
@@ -85,10 +93,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 	}{
 		{
 			name:         "Returns nothing if no data available",
-			transactions: &adapterStub{
-				//Transactions:          []*transaction.Entity{},
-				////TransactionsForSeller: *transaction.Entity{},
-			},
+			transactions: &adapterStub{},
 			presenter:    &adapterStub{},
 			expectedData: []map[string]*transaction.Money{},
 		},
@@ -99,7 +104,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
 			presenter:    &adapterStub{},
-			expectedData: []map[string]*transaction.Money{{t1.Seller(): m1}},
+			expectedData: []map[string]*transaction.Money{{t1.Seller().ID(): m1}},
 		},
 		{
 			name: "Returns a multiple transactions",
@@ -109,8 +114,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 			},
 			presenter: &adapterStub{},
 			expectedData: []map[string]*transaction.Money{
-				{t1.Seller(): t1.Value()},
-				{t2.Seller(): t2.Value()},
+				{t1.Seller().ID(): t1.Value()},
+				{t2.Seller().ID(): t2.Value()},
 			},
 		},
 		{
@@ -121,12 +126,28 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 			},
 			presenter: &adapterStub{},
 			expectedData: []map[string]*transaction.Money{
-				{t1.Seller(): m1plusm3},
-				{t2.Seller(): m2},
+				{t1.Seller().ID(): m1plusm3},
+				{t2.Seller().ID(): m2},
 			},
 		},
-
-		// TODO: Test it can handle errors from repositories and presenter
+		{
+			name: "Handles repository error",
+			transactions: &adapterStub{
+				Transactions: []*transaction.Entity{},
+				getAllError:  errors.New("test error"),
+			},
+			presenter:   &adapterStub{},
+			expectedErr: errors.New("test error"),
+		},
+		{
+			name: "Handles presenter error",
+			transactions: &adapterStub{
+				Transactions:          []*transaction.Entity{t1},
+				TransactionsForSeller: [][]*transaction.Entity{{t1}},
+			},
+			presenter:   &adapterStub{presentError: errors.New("test error")},
+			expectedErr: errors.New("test error"),
+		},
 	}
 
 	for _, tc := range testCases {

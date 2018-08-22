@@ -41,13 +41,19 @@ func TestUnitGetAll(t *testing.T) {
 	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)
 
+	s1, err := seller.New("COMPRA CONTINENTE MAI", "")
+	testkit.AssertIsNil(t, err)
+
+	s2, err := seller.New("COMPRA CONTINENTE", "")
+	testkit.AssertIsNil(t, err)
+
 	m1, err := transaction.NewMoney(-7752)
 	testkit.AssertIsNil(t, err)
-	t1, err := transaction.New(1, date, "COMPRA CONTINENTE MAI", m1)
+	t1, err := transaction.New(1, date, s1, m1)
 	testkit.AssertIsNil(t, err)
 	m2, err := transaction.NewMoney(7752)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(1, date, "COMPRA CONTINENTE", m2)
+	t2, err := transaction.New(1, date, s2, m2)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
@@ -83,16 +89,15 @@ func TestUnitGetAll(t *testing.T) {
 func TestUnitReturnGetBySeller(t *testing.T) {
 
 	sellerID := "COMPRA CONTINENTE"
+	s1, err := seller.New(sellerID, "")
+	testkit.AssertIsNil(t, err)
 
 	date, err := time.Parse("02-01-2006", "25-10-2017")
 	testkit.AssertIsNil(t, err)
 
 	m1, err := transaction.NewMoney(7752)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(1, date, sellerID, m1)
-	testkit.AssertIsNil(t, err)
-
-	s1, err := seller.New(sellerID, "")
+	t2, err := transaction.New(1, date, s1, m1)
 	testkit.AssertIsNil(t, err)
 
 	testCases := []struct {
@@ -118,7 +123,7 @@ func TestUnitReturnGetBySeller(t *testing.T) {
 			r, err := cgdgateway.New(tc.input)
 			testkit.AssertIsNil(t, err)
 
-			ts, err := r.GetBySeller(tc.seller)
+			ts, err := r.GetBySeller(tc.seller.ID())
 
 			testkit.AssertEqual(t, tc.err, err)
 			testkit.AssertEqual(t, len(tc.output), len(ts))

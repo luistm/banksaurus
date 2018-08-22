@@ -29,10 +29,10 @@ type Repository struct {
 }
 
 // GetAll returns all transactions
-func (t *Repository) GetAll() ([]*transaction.Entity, error) {
+func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	statement := `SELECT * FROM "transaction"`
-	rows, err := t.db.Query(statement)
+	rows, err := r.db.Query(statement)
 	if err != nil {
 		return []*transaction.Entity{}, err
 	}
@@ -42,12 +42,10 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	for rows.Next() {
 		var id uint64
-		//var date time.Time
-		var seller string
+		var sellerID string
 		var value int64
 
-		// TODO: Add date
-		err := rows.Scan(&id, &seller, &value)
+		err := rows.Scan(&id, &sellerID, &value)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -57,7 +55,12 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		tr, err := transaction.New(id, time.Now(), seller, m)
+		s, err := r.getSellerByID(sellerID)
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		tr, err := transaction.New(id, time.Now(), s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -71,6 +74,42 @@ func (t *Repository) GetAll() ([]*transaction.Entity, error) {
 	}
 
 	return transactions, nil
+}
+
+func (r *Repository) getSellerByID(id string) (*seller.Entity, error) {
+
+	selectStatement := "SELECT * FROM seller WHERE slug = ?"
+	rows, err := r.db.Query(selectStatement, id)
+
+	var s *seller.Entity
+	for rows.Next() {
+		var slug string
+		var name string
+
+		err := rows.Scan(&slug, &name)
+		if err != nil {
+			return &seller.Entity{}, err
+		}
+
+		s, err = seller.New(slug, name)
+		if err != nil {
+			return &seller.Entity{}, err
+		}
+
+		break // expecting one row max
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	err = rows.Close()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	return s, nil
 }
 
 func transactionFromline(line []string) (time.Time, string, *transaction.Money, error) {
@@ -127,7 +166,6 @@ func (r *Repository) NewFromLine(line []string) error {
 		return err
 	}
 
-	// TODO: Add date
 	statement := `INSERT INTO "transaction" (seller, amount ) VALUES (?,?)`
 	_, err = r.db.Exec(statement, sellerID, m.Value())
 	if err != nil {
