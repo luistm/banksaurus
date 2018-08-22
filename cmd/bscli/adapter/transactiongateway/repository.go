@@ -55,7 +55,7 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		s, err := seller.New(sellerID, "")
+		s, err := r.getSellerByID(sellerID)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -74,6 +74,42 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 	}
 
 	return transactions, nil
+}
+
+func (r *Repository) getSellerByID(id string) (*seller.Entity, error) {
+
+	selectStatement := "SELECT * FROM seller WHERE slug = ?"
+	rows, err := r.db.Query(selectStatement, id)
+
+	var s *seller.Entity
+	for rows.Next() {
+		var slug string
+		var name string
+
+		err := rows.Scan(&slug, &name)
+		if err != nil {
+			return &seller.Entity{}, err
+		}
+
+		s, err = seller.New(slug, name)
+		if err != nil {
+			return &seller.Entity{}, err
+		}
+
+		break // expecting one row max
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	err = rows.Close()
+	if err != nil {
+		return &seller.Entity{}, err
+	}
+
+	return s, nil
 }
 
 func transactionFromline(line []string) (time.Time, string, *transaction.Money, error) {

@@ -44,7 +44,7 @@ func (i *Interactor) Execute() error {
 
 	returnData := []map[string]*transaction.Money{}
 	for _, t := range ts {
-		transactionData := map[string]*transaction.Money{t.Seller().ID(): t.Value()}
+		transactionData := map[string]*transaction.Money{t.Seller().String(): t.Value()}
 		returnData = append(returnData, transactionData)
 	}
 

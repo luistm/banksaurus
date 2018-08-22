@@ -140,12 +140,12 @@ func TestAcceptance(t *testing.T) {
 			command:  []string{"seller", "show"},
 			expected: "Continente\nTRF CREDIT\nCOMPRA FARMACIA SAO J\n",
 		},
-		//{
-		//	name:          "Shows report, with seller name instead of slug",
-		//	command:       []string{"report", "--input", fixture},
-		//	expected:      "-77.52 Continente\n593,48€  TRF CREDIT\n-95.09 COMPRA FARMACIA SAO J\n-95.09 COMPRA FARMACIA SAO J\n",
-		//	errorExpected: false,
-		//},
+		{
+			name:          "Shows report, with seller name instead of slug",
+			command:       []string{"report"},
+			expected:      "-0,52€  Continente\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
+			errorExpected: false,
+		},
 	}
 
 	for _, tc := range testCases {
