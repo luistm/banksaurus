@@ -42,11 +42,9 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	for rows.Next() {
 		var id uint64
-		//var date time.Time
 		var seller string
 		var value int64
 
-		// TODO: Add date
 		err := rows.Scan(&id, &seller, &value)
 		if err != nil {
 			return []*transaction.Entity{}, err
@@ -127,7 +125,6 @@ func (r *Repository) NewFromLine(line []string) error {
 		return err
 	}
 
-	// TODO: Add date
 	statement := `INSERT INTO "transaction" (seller, amount ) VALUES (?,?)`
 	_, err = r.db.Exec(statement, sellerID, m.Value())
 	if err != nil {
