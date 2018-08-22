@@ -38,7 +38,7 @@ func (r *Repository) GetByID(id string) (*seller.Entity, error) {
 			return &seller.Entity{}, err
 		}
 
-		s, err = seller.New(slug, "")
+		s, err = seller.New(slug, name)
 		if err != nil {
 			return &seller.Entity{}, err
 		}
