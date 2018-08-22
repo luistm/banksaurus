@@ -2,7 +2,6 @@ package listtransactionsgrouped_test
 
 import (
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
-	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
 	"testing"
@@ -20,7 +19,7 @@ func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
 	return as.Transactions, nil
 }
 
-func (as *adapterStub) GetBySeller(entity *seller.Entity) ([]*transaction.Entity, error) {
+func (as *adapterStub) GetBySeller(entity string) ([]*transaction.Entity, error) {
 	if as.callNumber == 0 {
 		as.callNumber += 1
 		return as.TransactionsForSeller[0], nil
@@ -28,9 +27,9 @@ func (as *adapterStub) GetBySeller(entity *seller.Entity) ([]*transaction.Entity
 	return as.TransactionsForSeller[1], nil
 }
 
-func (*adapterStub) GetByID() ([]*seller.Entity, error) {
-	panic("implement me")
-}
+//func (*adapterStub) GetByID() ([]*seller.Entity, error) {
+//	panic("implement me")
+//}
 
 func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
 	as.ReceivedData = receivedData
@@ -55,10 +54,6 @@ func TestUnitReportGroupedNew(t *testing.T) {
 }
 
 func TestUnitReportGroupedExecute(t *testing.T) {
-
-	// How to get a transaction with an ID?
-	//factory, err := NewTransactionFactory(transactionRepository)
-	//transaction ,err := factory.NewTransaction(time.Now(), "SellerID", m1)
 
 	m1, err := transaction.NewMoney(123456789)
 	testkit.AssertIsNil(t, err)

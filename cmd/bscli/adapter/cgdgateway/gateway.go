@@ -2,7 +2,6 @@ package cgdgateway
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"strconv"
 	"strings"
@@ -32,15 +31,13 @@ type Repository struct {
 }
 
 // GetBySeller returns transactions for the specified sellers
-func (r *Repository) GetBySeller(s *seller.Entity) ([]*transaction.Entity, error) {
-
-	// TODO: The repository should no know that the seller has an ID method.
+func (r *Repository) GetBySeller(lookUpID string) ([]*transaction.Entity, error) {
 
 	transactions := []*transaction.Entity{}
 
 	for _, line := range r.lines {
 		sellerID := strings.TrimSpace(line[2])
-		if sellerID != s.ID() {
+		if sellerID != lookUpID {
 			continue
 		}
 

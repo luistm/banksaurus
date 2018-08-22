@@ -118,7 +118,7 @@ func TestUnitReturnGetBySeller(t *testing.T) {
 			r, err := cgdgateway.New(tc.input)
 			testkit.AssertIsNil(t, err)
 
-			ts, err := r.GetBySeller(tc.seller)
+			ts, err := r.GetBySeller(tc.seller.ID())
 
 			testkit.AssertEqual(t, tc.err, err)
 			testkit.AssertEqual(t, len(tc.output), len(ts))
