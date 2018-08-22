@@ -1,6 +1,7 @@
 package createaccount_test
 
 import (
+	"errors"
 	"github.com/luistm/banksaurus/account"
 	"github.com/luistm/banksaurus/banksaurus/createaccount"
 	"github.com/luistm/testkit"
@@ -8,10 +9,15 @@ import (
 )
 
 type repositoryStub struct {
+	err error
 	acc *account.Entity
 }
 
 func (rs *repositoryStub) New() (*account.Entity, error) {
+	if rs.err != nil {
+		return &account.Entity{}, rs.err
+	}
+
 	return rs.acc, nil
 }
 
@@ -44,6 +50,11 @@ func TestUnitInteractorExecute(t *testing.T) {
 			name:            "Creates a new account",
 			repository:      &repositoryStub{acc: ac1},
 			expectedAccount: ac1,
+		},
+		{
+			name:          "Handles repository error",
+			repository:    &repositoryStub{err: errors.New("test error")},
+			expectedError: errors.New("test error"),
 		},
 	}
 
