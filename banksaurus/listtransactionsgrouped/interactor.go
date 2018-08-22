@@ -2,7 +2,6 @@ package listtransactionsgrouped
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 )
 
@@ -41,21 +40,16 @@ func (i *Interactor) Execute() error {
 
 	presenterData := []map[string]*transaction.Money{}
 	transactionsForSeller := []*transaction.Entity{}
-
 	sellersSeen := map[string]bool{}
-	for _, t := range ts {
-		s, err := seller.New(t.Seller(), "")
-		if err != nil {
-			return err
-		}
 
-		_, ok := sellersSeen[t.Seller()]
+	for _, t := range ts {
+		_, ok := sellersSeen[t.Seller().ID()]
 		if ok {
 			continue
 		}
-		sellersSeen[t.Seller()] = true
+		sellersSeen[t.Seller().ID()] = true
 
-		transactionsForSeller, err = i.transactions.GetBySeller(s.ID())
+		transactionsForSeller, err = i.transactions.GetBySeller(t.Seller().ID())
 		if err != nil {
 			return err
 		}
@@ -75,7 +69,7 @@ func (i *Interactor) Execute() error {
 			}
 		}
 
-		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller(): sellerTotal})
+		presenterData = append(presenterData, map[string]*transaction.Money{t.Seller().ID(): sellerTotal})
 	}
 
 	err = i.presenter.Present(presenterData)

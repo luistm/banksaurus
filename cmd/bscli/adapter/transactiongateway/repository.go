@@ -42,10 +42,10 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 
 	for rows.Next() {
 		var id uint64
-		var seller string
+		var sellerID string
 		var value int64
 
-		err := rows.Scan(&id, &seller, &value)
+		err := rows.Scan(&id, &sellerID, &value)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -55,7 +55,12 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		tr, err := transaction.New(id, time.Now(), seller, m)
+		s, err := seller.New(sellerID, "")
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		tr, err := transaction.New(id, time.Now(), s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}

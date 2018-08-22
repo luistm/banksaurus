@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"fmt"
+	"github.com/luistm/banksaurus/seller"
 	"github.com/pkg/errors"
 	"time"
 )
@@ -21,7 +22,7 @@ var (
 )
 
 // New creates a new transaction
-func New(id uint64, date time.Time, sellerID string, value *Money) (*Entity, error) {
+func New(id uint64, date time.Time, seller *seller.Entity, value *Money) (*Entity, error) {
 	if id <= 0 {
 		return &Entity{}, ErrInvalidTransactionID
 	}
@@ -30,7 +31,7 @@ func New(id uint64, date time.Time, sellerID string, value *Money) (*Entity, err
 		return &Entity{}, ErrInvalidDate
 	}
 
-	if sellerID == "" {
+	if seller == nil {
 		return &Entity{}, ErrInvalidSeller
 	}
 
@@ -38,15 +39,15 @@ func New(id uint64, date time.Time, sellerID string, value *Money) (*Entity, err
 		return &Entity{}, ErrInvalidValue
 	}
 
-	return &Entity{date: date, sellerID: sellerID, value: value}, nil
+	return &Entity{date: date, seller: seller, value: value}, nil
 }
 
 // Entity represents a transaction
 type Entity struct {
-	id       uint64
-	date     time.Time
-	sellerID string
-	value    *Money
+	id     uint64
+	date   time.Time
+	seller *seller.Entity
+	value  *Money
 }
 
 // ID returns the identification of the transaction
@@ -55,8 +56,8 @@ func (t *Entity) ID() uint64 {
 }
 
 // Seller of the transaction
-func (t *Entity) Seller() string {
-	return t.sellerID
+func (t *Entity) Seller() *seller.Entity {
+	return t.seller
 }
 
 // Value of the transaction
@@ -66,5 +67,5 @@ func (t *Entity) Value() *Money {
 
 // GoString to satisfy fmt.GoStringer
 func (t *Entity) GoString() string {
-	return fmt.Sprintf("%d %s %s %d", t.id, t.date, t.sellerID, t.value)
+	return fmt.Sprintf("%d %s %s %d", t.id, t.date, t.seller, t.value)
 }

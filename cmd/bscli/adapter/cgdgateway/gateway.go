@@ -2,6 +2,7 @@ package cgdgateway
 
 import (
 	"errors"
+	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"strconv"
 	"strings"
@@ -70,7 +71,12 @@ func (r *Repository) GetBySeller(lookUpID string) ([]*transaction.Entity, error)
 			return []*transaction.Entity{}, err
 		}
 
-		t, err := transaction.New(1, date, sellerID, m)
+		s, err := seller.New(sellerID, "")
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}
@@ -118,7 +124,12 @@ func (r *Repository) GetAll() ([]*transaction.Entity, error) {
 			return []*transaction.Entity{}, err
 		}
 
-		t, err := transaction.New(1, date, sellerID, m)
+		s, err := seller.New(sellerID, "")
+		if err != nil {
+			return []*transaction.Entity{}, err
+		}
+
+		t, err := transaction.New(1, date, s, m)
 		if err != nil {
 			return []*transaction.Entity{}, err
 		}

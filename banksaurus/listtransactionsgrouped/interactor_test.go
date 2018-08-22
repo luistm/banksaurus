@@ -3,6 +3,7 @@ package listtransactionsgrouped_test
 import (
 	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
+	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
 	"testing"
@@ -61,17 +62,23 @@ func TestUnitReportGroupedNew(t *testing.T) {
 
 func TestUnitReportGroupedExecute(t *testing.T) {
 
+	s1, err := seller.New("SellerID", "")
+	testkit.AssertIsNil(t, err)
+
+	s2, err := seller.New("AnotherSellerID", "")
+	testkit.AssertIsNil(t, err)
+
 	m1, err := transaction.NewMoney(123456789)
 	testkit.AssertIsNil(t, err)
-	t1, err := transaction.New(1, time.Now(), "SellerID", m1)
+	t1, err := transaction.New(1, time.Now(), s1, m1)
 	testkit.AssertIsNil(t, err)
 
 	m2, err := transaction.NewMoney(10)
 	testkit.AssertIsNil(t, err)
-	t2, err := transaction.New(2, time.Now(), "AnotherSellerID", m2)
+	t2, err := transaction.New(2, time.Now(), s2, m2)
 	testkit.AssertIsNil(t, err)
 
-	t3, err := transaction.New(3, time.Now(), "SellerID", m1)
+	t3, err := transaction.New(3, time.Now(), s1, m1)
 	testkit.AssertIsNil(t, err)
 
 	m1plusm3, err := t1.Value().Add(t3.Value())
@@ -97,7 +104,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				TransactionsForSeller: [][]*transaction.Entity{{t1}},
 			},
 			presenter:    &adapterStub{},
-			expectedData: []map[string]*transaction.Money{{t1.Seller(): m1}},
+			expectedData: []map[string]*transaction.Money{{t1.Seller().ID(): m1}},
 		},
 		{
 			name: "Returns a multiple transactions",
@@ -107,8 +114,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 			},
 			presenter: &adapterStub{},
 			expectedData: []map[string]*transaction.Money{
-				{t1.Seller(): t1.Value()},
-				{t2.Seller(): t2.Value()},
+				{t1.Seller().ID(): t1.Value()},
+				{t2.Seller().ID(): t2.Value()},
 			},
 		},
 		{
@@ -119,8 +126,8 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 			},
 			presenter: &adapterStub{},
 			expectedData: []map[string]*transaction.Money{
-				{t1.Seller(): m1plusm3},
-				{t2.Seller(): m2},
+				{t1.Seller().ID(): m1plusm3},
+				{t2.Seller().ID(): m2},
 			},
 		},
 		{
