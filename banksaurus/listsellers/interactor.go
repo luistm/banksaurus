@@ -3,11 +3,14 @@ package listsellers
 import "github.com/pkg/errors"
 
 var (
-	ErrSellersRepositoryUndefined   = errors.New("seller repository is undefined")
+	// ErrSellersRepositoryUndefined ...
+	ErrSellersRepositoryUndefined = errors.New("seller repository is undefined")
+
+	// ErrPresenterRepositoryUndefined ...
 	ErrPresenterRepositoryUndefined = errors.New("seller presenter is undefined")
 )
 
-// Creates a new interactor instance
+// NewInteractor creates a new interactor instance
 func NewInteractor(sr SellerGateway, sp SellerPresenter) (*Interactor, error) {
 	if sr == nil {
 		return &Interactor{}, ErrSellersRepositoryUndefined

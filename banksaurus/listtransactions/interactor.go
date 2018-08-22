@@ -7,11 +7,9 @@ import (
 
 var (
 	// ErrPresenterUndefined ...
-	ErrPresenterUndefined = errors.New("presenter is not defined")
+	ErrPresenterUndefined = errors.New("presenterStub is not defined")
 	// ErrRepositoryUndefined ...
-	ErrRepositoryUndefined = errors.New("presenter is not defined")
-	// ErrPresenter ...
-	ErrPresenter = &customError{msg: "error in presenter"}
+	ErrRepositoryUndefined = errors.New("presenterStub is not defined")
 )
 
 // NewInteractor creates a new listtransactions interactor instance
@@ -50,7 +48,7 @@ func (i *Interactor) Execute() error {
 
 	err = i.presenter.Present(returnData)
 	if err != nil {
-		return ErrPresenter.AppendError(err)
+		return err
 	}
 
 	return nil

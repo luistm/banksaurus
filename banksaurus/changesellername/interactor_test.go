@@ -8,14 +8,14 @@ import (
 	"testing"
 )
 
-type repository struct {
+type repositoryStub struct {
 	seller          *seller.Entity
 	sellerReceived  *seller.Entity
 	getByIDErr      error
 	updateSellerErr error
 }
 
-func (r *repository) UpdateSeller(s *seller.Entity) error {
+func (r *repositoryStub) UpdateSeller(s *seller.Entity) error {
 	if r.updateSellerErr != nil {
 		return r.updateSellerErr
 	}
@@ -25,7 +25,7 @@ func (r *repository) UpdateSeller(s *seller.Entity) error {
 	return nil
 }
 
-func (r *repository) GetByID(string) (*seller.Entity, error) {
+func (r *repositoryStub) GetByID(string) (*seller.Entity, error) {
 	if r.getByIDErr != nil {
 		return &seller.Entity{}, r.getByIDErr
 	}
@@ -35,11 +35,11 @@ func (r *repository) GetByID(string) (*seller.Entity, error) {
 
 func TestUnitNewInteractor(t *testing.T) {
 	t.Run("Returns no error", func(t *testing.T) {
-		_, err := changesellername.NewInteractor(&repository{})
+		_, err := changesellername.NewInteractor(&repositoryStub{})
 		testkit.AssertIsNil(t, err)
 	})
 
-	t.Run("Returns error if repository is undefined", func(t *testing.T) {
+	t.Run("Returns error if repositoryStub is undefined", func(t *testing.T) {
 		_, err := changesellername.NewInteractor(nil)
 		testkit.AssertEqual(t, changesellername.ErrSellerRepositoryUndefined, err)
 	})
@@ -55,7 +55,7 @@ func TestUnitChangeSellerName(t *testing.T) {
 		name           string
 		sellerID       string
 		sellerName     string
-		repository     *repository
+		repository     *repositoryStub
 		expectedError  error
 		expectedSeller *seller.Entity
 	}{
@@ -63,21 +63,21 @@ func TestUnitChangeSellerName(t *testing.T) {
 			name:           "Changes a seller name",
 			sellerID:       s1.ID(),
 			sellerName:     sellerName,
-			repository:     &repository{seller: s1},
+			repository:     &repositoryStub{seller: s1},
 			expectedSeller: s1,
 		},
 		{
-			name:          "Handles repository GetByID error",
+			name:          "Handles repositoryStub GetByID error",
 			sellerID:      s1.ID(),
 			sellerName:    sellerName,
-			repository:    &repository{getByIDErr: errors.New("test error")},
+			repository:    &repositoryStub{getByIDErr: errors.New("test error")},
 			expectedError: errors.New("test error"),
 		},
 		{
-			name:          "Handles repository UpdateSeller error",
+			name:          "Handles repositoryStub UpdateSeller error",
 			sellerID:      s1.ID(),
 			sellerName:    sellerName,
-			repository:    &repository{seller: s1, updateSellerErr: errors.New("test error")},
+			repository:    &repositoryStub{seller: s1, updateSellerErr: errors.New("test error")},
 			expectedError: errors.New("test error"),
 		},
 	}

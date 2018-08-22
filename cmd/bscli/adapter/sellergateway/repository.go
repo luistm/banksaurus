@@ -70,6 +70,7 @@ func (r *Repository) UpdateSeller(seller *seller.Entity) error {
 	return nil
 }
 
+// GetAll returns all seller entities
 func (r *Repository) GetAll() ([]*seller.Entity, error) {
 
 	selectStatement := "SELECT * FROM seller"

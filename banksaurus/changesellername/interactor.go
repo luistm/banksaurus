@@ -6,7 +6,7 @@ import (
 )
 
 // ErrSellerRepositoryUndefined ...
-var ErrSellerRepositoryUndefined = errors.New("seller repository is undefined")
+var ErrSellerRepositoryUndefined = errors.New("seller repositoryStub is undefined")
 
 // NewInteractor creates a new instance
 // of the changesellername interactor

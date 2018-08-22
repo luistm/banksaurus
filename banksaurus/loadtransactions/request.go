@@ -1,15 +1,16 @@
 package loadtransactions
 
+// NewRequest creates an instance of a request
 func NewRequest(lines [][]string) (*Request, error) {
-	// TODO: Should i validate data here?
 	return &Request{lines}, nil
 }
 
-// Request ...
+// Request for load transactions
 type Request struct {
 	lines [][]string
 }
 
+// Lines ...
 func (r *Request) Lines() ([][]string, error) {
 	return r.lines, nil
 }

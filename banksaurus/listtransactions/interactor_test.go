@@ -11,13 +11,13 @@ import (
 	"time"
 )
 
-type presenter struct {
+type presenterStub struct {
 	seller string
 	value  *money.Money
 	err    error
 }
 
-func (p *presenter) Present(data []map[string]*money.Money) error {
+func (p *presenterStub) Present(data []map[string]*money.Money) error {
 	if p.err != nil {
 		return p.err
 	}
@@ -30,11 +30,11 @@ func (p *presenter) Present(data []map[string]*money.Money) error {
 	return nil
 }
 
-func (p *presenter) Seller() string {
+func (p *presenterStub) Seller() string {
 	return p.seller
 }
 
-func (p *presenter) Value() string {
+func (p *presenterStub) Value() string {
 	if p.value != nil {
 		return p.value.String()
 	}
@@ -60,7 +60,7 @@ func TestUnitNewReport(t *testing.T) {
 	_, err := listtransactions.NewInteractor(nil, nil)
 	testkit.AssertEqual(t, err, listtransactions.ErrPresenterUndefined)
 
-	_, err = listtransactions.NewInteractor(&presenter{}, nil)
+	_, err = listtransactions.NewInteractor(&presenterStub{}, nil)
 	testkit.AssertEqual(t, err, listtransactions.ErrRepositoryUndefined)
 }
 
@@ -75,7 +75,7 @@ func TestUnitReport(t *testing.T) {
 
 	testCases := []struct {
 		name         string
-		presenter    *presenter
+		presenter    *presenterStub
 		repository   *transactionRepository
 		err          error
 		outputSeller string
@@ -83,7 +83,7 @@ func TestUnitReport(t *testing.T) {
 	}{
 		{
 			name:      "Response has expected data",
-			presenter: &presenter{},
+			presenter: &presenterStub{},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
 			},
@@ -92,7 +92,7 @@ func TestUnitReport(t *testing.T) {
 		},
 		{
 			name:      "Returns error if repository returns error",
-			presenter: &presenter{},
+			presenter: &presenterStub{},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{},
 				err:          errors.New("test error"),
@@ -100,12 +100,12 @@ func TestUnitReport(t *testing.T) {
 			err: errors.New("test error"),
 		},
 		{
-			name:      "Returns error if presenter returns error",
-			presenter: &presenter{err: errors.New("test error")},
+			name:      "Returns error if presenterStub returns error",
+			presenter: &presenterStub{err: errors.New("test error")},
 			repository: &transactionRepository{
 				transactions: []*transaction.Entity{t1},
 			},
-			err: listtransactions.ErrPresenter.AppendError(errors.New("test error")),
+			err: errors.New("test error"),
 		},
 	}
 
