@@ -58,8 +58,10 @@ func (i *Interactor) Execute() error {
 		}
 		sellersSeen[t.Seller()] = true
 
-		// TODO: error handling is missing
-		transactionsForSeller, _ = i.transactions.GetBySeller(s.ID())
+		transactionsForSeller, err = i.transactions.GetBySeller(s.ID())
+		if err != nil {
+			return err
+		}
 
 		// TODO: If transactionsForSeller len is zero, something wicked happened
 		//       beware of it...
