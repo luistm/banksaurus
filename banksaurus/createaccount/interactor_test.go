@@ -14,12 +14,27 @@ type repositoryStub struct {
 	acc *account.Entity
 }
 
-func (rs *repositoryStub) New() (*account.Entity, error) {
+func (rs *repositoryStub) New(balance *money.Money) (*account.Entity, error) {
 	if rs.err != nil {
 		return &account.Entity{}, rs.err
 	}
 
+	acc, err := account.New(balance)
+	if err != nil {
+		return &account.Entity{}, err
+	}
+
+	rs.acc = acc
+
 	return rs.acc, nil
+}
+
+type requestStub struct {
+	money *money.Money
+}
+
+func (rs *requestStub) Balance() (*money.Money, error) {
+	return rs.money, nil
 }
 
 func TestUnitInteractorNew(t *testing.T) {
@@ -46,17 +61,20 @@ func TestUnitInteractorExecute(t *testing.T) {
 	testCases := []struct {
 		name            string
 		repository      *repositoryStub
+		request         *requestStub
 		expectedAccount *account.Entity
 		expectedError   error
 	}{
 		{
 			name:            "Creates a new account",
-			repository:      &repositoryStub{acc: ac1},
+			repository:      &repositoryStub{},
+			request:         &requestStub{m1},
 			expectedAccount: ac1,
 		},
 		{
 			name:          "Handles repository error",
 			repository:    &repositoryStub{err: errors.New("test error")},
+			request:       &requestStub{m1},
 			expectedError: errors.New("test error"),
 		},
 	}
@@ -66,7 +84,7 @@ func TestUnitInteractorExecute(t *testing.T) {
 			i, err := createaccount.NewInteractor(tc.repository)
 			testkit.AssertIsNil(t, err)
 
-			err = i.Execute()
+			err = i.Execute(tc.request)
 
 			testkit.AssertEqual(t, tc.expectedError, err)
 			testkit.AssertEqual(t, tc.expectedAccount, tc.repository.acc)

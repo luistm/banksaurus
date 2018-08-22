@@ -19,9 +19,11 @@ type Interactor struct {
 }
 
 // Execute the create account interactor
-func (i *Interactor) Execute() error {
+func (i *Interactor) Execute(r RequestCreateAccount) error {
 
-	_, err := i.accounts.New()
+	balance, _ := r.Balance()
+
+	_, err := i.accounts.New(balance)
 	if err != nil {
 		return err
 	}
