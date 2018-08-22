@@ -9,9 +9,6 @@ import (
 // ErrTransactionsRepositoryUndefined ...
 var ErrTransactionsRepositoryUndefined = errors.New("transactions repository is not defined")
 
-// ErrSellersRepositoryUndefined ...
-var ErrSellersRepositoryUndefined = errors.New("sellers repository is not defined")
-
 // ErrPresenterUndefined ...
 var ErrPresenterUndefined = errors.New("presenter is not defined")
 
