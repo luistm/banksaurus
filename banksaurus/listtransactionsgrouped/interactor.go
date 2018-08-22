@@ -37,8 +37,10 @@ type Interactor struct {
 // Execute the report grouped interactor
 func (i *Interactor) Execute() error {
 
-	// TODO: error handling is missing
-	ts, _ := i.transactions.GetAll()
+	ts, err := i.transactions.GetAll()
+	if err != nil {
+		return err
+	}
 
 	presenterData := []map[string]*transaction.Money{}
 	transactionsForSeller := []*transaction.Entity{}

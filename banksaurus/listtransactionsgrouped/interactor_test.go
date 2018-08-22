@@ -1,6 +1,7 @@
 package listtransactionsgrouped_test
 
 import (
+	"errors"
 	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
 	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
@@ -13,9 +14,13 @@ type adapterStub struct {
 	Transactions          []*transaction.Entity
 	TransactionsForSeller [][]*transaction.Entity
 	callNumber            int
+	getAllError           error
 }
 
 func (as *adapterStub) GetAll() ([]*transaction.Entity, error) {
+	if as.getAllError != nil {
+		return []*transaction.Entity{}, as.getAllError
+	}
 	return as.Transactions, nil
 }
 
@@ -26,10 +31,6 @@ func (as *adapterStub) GetBySeller(entity string) ([]*transaction.Entity, error)
 	}
 	return as.TransactionsForSeller[1], nil
 }
-
-//func (*adapterStub) GetByID() ([]*seller.Entity, error) {
-//	panic("implement me")
-//}
 
 func (as *adapterStub) Present(receivedData []map[string]*transaction.Money) error {
 	as.ReceivedData = receivedData
@@ -80,10 +81,7 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 	}{
 		{
 			name:         "Returns nothing if no data available",
-			transactions: &adapterStub{
-				//Transactions:          []*transaction.Entity{},
-				////TransactionsForSeller: *transaction.Entity{},
-			},
+			transactions: &adapterStub{},
 			presenter:    &adapterStub{},
 			expectedData: []map[string]*transaction.Money{},
 		},
@@ -119,6 +117,15 @@ func TestUnitReportGroupedExecute(t *testing.T) {
 				{t1.Seller(): m1plusm3},
 				{t2.Seller(): m2},
 			},
+		},
+		{
+			name: "Handles repository error",
+			transactions: &adapterStub{
+				Transactions: []*transaction.Entity{},
+				getAllError:  errors.New("test error"),
+			},
+			presenter:   &adapterStub{},
+			expectedErr: errors.New("test error"),
 		},
 
 		// TODO: Test it can handle errors from repositories and presenter
