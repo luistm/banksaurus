@@ -104,8 +104,13 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:     "Create account",
-			command:  []string{"account", "create", "--name", "test_account"},
+			command:  []string{"account", "create", "--name", "test_account", "--balance", "0.02"},
 			expected: "",
+		},
+		{
+			name:     "List account",
+			command:  []string{"account", "show"},
+			expected: "test_account 0.02",
 		},
 		{
 			name:     "Load records from file",
