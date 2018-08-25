@@ -1,6 +1,6 @@
 package createaccount
 
-import "github.com/pkg/errors"
+import "errors"
 
 // ErrRepositoryUndefined ...
 var ErrRepositoryUndefined = errors.New("account repository is undefined")

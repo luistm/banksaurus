@@ -1,8 +1,8 @@
 package seller
 
 import (
+	"errors"
 	"fmt"
-	"github.com/pkg/errors"
 )
 
 // ErrInvalidSellerID ...

@@ -1,6 +1,6 @@
 package listsellers
 
-import "github.com/pkg/errors"
+import "errors"
 
 var (
 	// ErrSellersRepositoryUndefined ...

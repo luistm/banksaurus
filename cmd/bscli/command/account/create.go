@@ -1,9 +1,9 @@
 package account
 
 import (
+	"github.com/luistm/banksaurus/banksaurus/createaccount"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/accountgateway"
 	"github.com/luistm/banksaurus/cmd/bscli/application"
-	"github.com/luistm/banksaurus/banksaurus/createaccount"
 )
 
 // CreateAccountCommand for account
@@ -28,7 +28,6 @@ func (c *CreateAccountCommand) Execute(input map[string]interface{}) error {
 	}
 
 	request, err := NewRequest()
-
 
 	err = i.Execute(r)
 	if err != nil {

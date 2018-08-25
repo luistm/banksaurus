@@ -2,9 +2,9 @@ package accountgateway
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/luistm/banksaurus/account"
 	"github.com/luistm/banksaurus/money"
-	"github.com/pkg/errors"
 )
 
 // ErrDatabaseUndefined ...

@@ -1,10 +1,10 @@
 package transaction
 
 import (
+	"errors"
 	"fmt"
 	"github.com/luistm/banksaurus/money"
 	"github.com/luistm/banksaurus/seller"
-	"github.com/pkg/errors"
 	"time"
 )
 
