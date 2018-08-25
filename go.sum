@@ -2,7 +2,7 @@ github.com/DATA-DOG/go-sqlmock v1.3.0 h1:ljjRxlddjfChBJdFKJs5LuCwCWPLaC1UZLwAo3P
 github.com/DATA-DOG/go-sqlmock v1.3.0/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/docopt/docopt-go v0.0.0-20160216232012-784ddc588536 h1:rHnpq7uNlix5l7tWZ55iJcHHrxCPnOVF4FGb7qOT2Jc=
 github.com/docopt/docopt-go v0.0.0-20160216232012-784ddc588536/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
-github.com/luistm/testkit v0.0.0-20180505121301-3155cb2ece55 h1:Kx5KGPvwkOZJGpDHQiGgjL5DEyOdP5bcozNa2duRZEI=
-github.com/luistm/testkit v0.0.0-20180505121301-3155cb2ece55/go.mod h1:Phjk/9n143kS5jlEBmImFHFzCo7My6r5gPoqSJ3O2Bo=
+github.com/luistm/testkit v0.0.3 h1:PC7x4IgpHfJhJYKDtgK4wlF1SGf8FmWzYLoVNOpl+2A=
+github.com/luistm/testkit v0.0.3/go.mod h1:Phjk/9n143kS5jlEBmImFHFzCo7My6r5gPoqSJ3O2Bo=
 github.com/mattn/go-sqlite3 v1.9.0 h1:pDRiWfl+++eC2FEFRy6jXmQlvp4Yh3z1MJKg4UeYM/4=
 github.com/mattn/go-sqlite3 v1.9.0/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
