@@ -4,7 +4,7 @@
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-local: deps ## Installs banksaurus locally
+local: ## Installs banksaurus locally
 	go install -ldflags '-s -w' ./cmd/bscli
 
 build: clean ## Builds the project
@@ -31,9 +31,6 @@ acceptance-tests: build ## Runs acceptance tests
 coverage-package: ## Runs coverage for package $PACKAGE
 	go test $(PACKAGE)  -run Unit -cover -covermode=count -coverprofile=count.out
 	go tool cover -func=count.out
-	
-deps: ## Ensures dependencies are met
-	dep ensure
 
 style: ## Formats the project
 	goimports -w .
