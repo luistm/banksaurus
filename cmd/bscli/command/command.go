@@ -3,6 +3,7 @@ package command
 import (
 	"errors"
 
+	"github.com/luistm/banksaurus/cmd/bscli/command/account"
 	"github.com/luistm/banksaurus/cmd/bscli/command/load"
 	"github.com/luistm/banksaurus/cmd/bscli/command/report"
 	"github.com/luistm/banksaurus/cmd/bscli/command/seller"
@@ -28,12 +29,18 @@ func New(cliRequest CLIRequest) (Commander, error) {
 
 	command := cliRequest[0]
 	switch command {
-	case "report":
-		return &report.Command{}, nil
 	case "load":
 		return &load.Command{}, nil
 	case "seller":
 		return &seller.Command{}, nil
+	case "report":
+		return &report.Command{}, nil
+	case "account":
+		c, err := account.NewCommand(cliRequest[1])
+		if err != nil {
+			return &account.CreateAccountCommand{}, err
+		}
+		return c, nil
 	default:
 		return nil, errCommandNotFound
 	}
