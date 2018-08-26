@@ -7,11 +7,6 @@ import (
 )
 
 func TestUnitNewMoney(t *testing.T) {
-	t.Run("Returns error if value is zero", func(t *testing.T) {
-		_, err := money.NewMoney(0)
-		testkit.AssertEqual(t, money.ErrInvalidMoneyValue, err)
-	})
-
 	t.Run("Does not return error", func(t *testing.T) {
 		_, err := money.NewMoney(1)
 		testkit.AssertIsNil(t, err)

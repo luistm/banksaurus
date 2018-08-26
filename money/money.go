@@ -1,19 +1,11 @@
 package money
 
 import (
-	"errors"
 	"strconv"
 )
 
-// ErrInvalidMoneyValue ...
-var ErrInvalidMoneyValue = errors.New("invalid money value")
-
 // NewMoney creates an instance of money
 func NewMoney(value int64) (*Money, error) {
-	if value == 0 {
-		return &Money{}, ErrInvalidMoneyValue
-	}
-
 	return &Money{value}, nil
 }
 
