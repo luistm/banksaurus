@@ -46,11 +46,11 @@ func TestAcceptanceUsage(t *testing.T) {
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		t.Log(fmt.Sprintf("$ bscli %s", strings.Join(tc.command, " ")))
-		cmd := exec.Command("../../bscli", tc.command...)
 		var outBuffer, errBuffer bytes.Buffer
+
+		cmd := exec.Command("../../bscli", tc.command...)
 		cmd.Stdout = &outBuffer
 		cmd.Stderr = &errBuffer
-
 		err := cmd.Run()
 
 		if !tc.errorExpected && err != nil {
@@ -79,13 +79,11 @@ func TestAcceptance(t *testing.T) {
 			name:          "Shows usage if option is '-h'",
 			command:       []string{"-h"},
 			expected:      intro + usage + options + "\n",
-			errorExpected: false,
 		},
 		{
 			name:          "Shows version if option is '--version'",
 			command:       []string{"--version"},
 			expected:      app.Version + "\n",
-			errorExpected: false,
 		},
 		{
 			name:     "No seller should be available here",
@@ -126,13 +124,11 @@ func TestAcceptance(t *testing.T) {
 			name:          "Shows report with all available transactions",
 			command:       []string{"report"},
 			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
 		},
 		{
 			name:          "Shows report from bank records file",
 			command:       []string{"report", "--input", fixture},
 			expected:      "-0,52€  COMPRA CONTINENTE MAI\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
 		},
 		{
 			name:          "Shows report from bank records file, returns error if path does not exist",
@@ -148,7 +144,6 @@ func TestAcceptance(t *testing.T) {
 				"--grouped",
 			},
 			expected:      "-0,52€   COMPRA CONTINENTE MAI\n593,48€  TRF CREDIT\n-190,18€ COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
 		},
 		{
 			name:     "Adds pretty name to seller",
@@ -164,18 +159,17 @@ func TestAcceptance(t *testing.T) {
 			name:          "Shows report, with seller name instead of slug",
 			command:       []string{"report"},
 			expected:      "-0,52€  Continente\n593,48€ TRF CREDIT\n-95,09€ COMPRA FARMACIA SAO J\n-95,09€ COMPRA FARMACIA SAO J\n",
-			errorExpected: false,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Log(tc.name)
 		t.Log(fmt.Sprintf("$ bscli %s", strings.Join(tc.command, " ")))
-		cmd := exec.Command("../../bscli", tc.command...)
 		var outBuffer, errBuffer bytes.Buffer
+
+		cmd := exec.Command("../../bscli", tc.command...)
 		cmd.Stdout = &outBuffer
 		cmd.Stderr = &errBuffer
-
 		err := cmd.Run()
 
 		if !tc.errorExpected && err != nil {
