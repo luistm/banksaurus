@@ -9,25 +9,45 @@ import (
 
 func TestUnitRequestUnit(t *testing.T) {
 	t.Run("Creates new request", func(t *testing.T) {
-		_, err := createaccount.NewRequest(1)
+		_, err := createaccount.NewRequest("123,123.123")
 		testkit.AssertIsNil(t, err)
+	})
+
+	t.Run("Returns error if input is empty", func(t *testing.T) {
+		_, err := createaccount.NewRequest("")
+		testkit.AssertEqual(t, createaccount.ErrInvalidData, err)
+	})
+
+	t.Run("Request handles unrecognized string", func(t *testing.T) {
+		_, err := createaccount.NewRequest("#%SDF")
+		testkit.AssertEqual(t, "strconv.ParseInt: parsing \"#%SDF\": invalid syntax", err.Error())
 	})
 }
 
 func TestUnitRequestBalance(t *testing.T) {
 
-	m1, err := money.NewMoney(1)
+	m1, err := money.NewMoney(1123)
 	testkit.AssertIsNil(t, err)
 
 	testsCases := []struct {
 		name          string
-		input         int64
+		input         string
 		expectedMoney *money.Money
 		expectedError error
 	}{
 		{
-			name:          "Balance returns money",
-			input:         m1.Value(),
+			name:          "Request handles string with dot",
+			input:         "11.23",
+			expectedMoney: m1,
+		},
+		{
+			name:          "Request handles string with comma",
+			input:         "11,23",
+			expectedMoney: m1,
+		},
+		{
+			name:          "Request handles string",
+			input:         "11,23",
 			expectedMoney: m1,
 		},
 	}
