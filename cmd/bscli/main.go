@@ -15,6 +15,7 @@ var intro = "    \n    Your command line finance manager.\n\n"
 var usage = `Usage:
 	bscli -h | --help
 	bscli account create --name <id> --balance <value>
+	bscli account show
 	bscli load --input <file> --account <id>
 	bscli report
 	bscli report --input <file> [ --grouped ]
