@@ -27,7 +27,7 @@ func (c *CreateAccountCommand) Execute(input map[string]interface{}) error {
 		return err
 	}
 
-	request, err := createaccount.NewRequest()
+	request, err := createaccount.NewRequest(input["<value>"].(string))
 	if err != nil {
 		return err
 	}
