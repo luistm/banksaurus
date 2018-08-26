@@ -14,15 +14,18 @@ var intro = "    \n    Your command line finance manager.\n\n"
 
 var usage = `Usage:
 	bscli -h | --help
+	bscli account create --name <id> --balance <value>
+	bscli load --input <file> --account <id>
 	bscli report
 	bscli report --input <file> [ --grouped ]
-	bscli load --input <file>
 	bscli seller change <id> --pretty <name>
 	bscli seller show`
 
 var options = `
 
 Options:
+	--account     The account which should be used
+	--balance     The initial balance of the account.
 	--grouped     The report is grouped by seller.
 	--input       The path to the records list.
 	--name        Specifies the name.
