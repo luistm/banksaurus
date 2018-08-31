@@ -107,7 +107,7 @@ func TestAcceptance(t *testing.T) {
 		},
 		{
 			name:     "Show account",
-			command:  []string{"account", "show", "--name", "test_account"},
+			command:  []string{"account", "show"},
 			expected: "test_account 0.02",
 		},
 		{
