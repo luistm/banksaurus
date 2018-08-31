@@ -6,13 +6,13 @@ import "errors"
 var ErrUnrecognizedCommand = errors.New("unrecognized command")
 
 const (
-	list   = "list"
+	show   = "show"
 	create = "create"
 )
 
 // NewCommand creates a new instance of the seller command
 func NewCommand(subCommand string) (Commander, error) {
-	if subCommand != list && subCommand != create {
+	if subCommand != show && subCommand != create {
 		return &CreateAccountCommand{}, ErrUnrecognizedCommand
 	}
 
@@ -21,7 +21,7 @@ func NewCommand(subCommand string) (Commander, error) {
 		command = &CreateAccountCommand{}
 	}
 
-	if subCommand == list {
+	if subCommand == show {
 		command = &ListAccountsCommand{}
 	}
 
