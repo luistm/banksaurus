@@ -3,6 +3,7 @@ package account
 import (
 	"github.com/luistm/banksaurus/banksaurus/showaccount"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/accountgateway"
+	"github.com/luistm/banksaurus/cmd/bscli/adapter/accountpresenter"
 	"github.com/luistm/banksaurus/cmd/bscli/application"
 )
 
@@ -21,7 +22,12 @@ func (*ListAccountsCommand) Execute(input map[string]interface{}) error {
 		return err
 	}
 
-	i, err := showaccount.NewInteractor(repository, presenter)
+	presenter, err := accountpresenter.New()
+	if err != nil {
+		return err
+	}
+
+	i, err := showaccount.NewInteractor(presenter, repository)
 	if err != nil {
 		return err
 	}
