@@ -96,7 +96,7 @@ func TestAcceptance(t *testing.T) {
 			expected: `Account "test_account" does not exist"`,
 		},
 		{
-			name:     "Shows seller loaded by the load records from file",
+			name:     "Shows seller loaded by the load records from file, because account did not exist",
 			command:  []string{"seller", "show"},
 			expected: "",
 		},
