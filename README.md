@@ -48,25 +48,6 @@ If you're interested in hacking or trying `banksaurus`, you can install via `go 
 go get -u github.com/luistm/banksaurus/cmd/bscli
 ```
 
-On macOS install the latest [dep](https://github.com/golang/dep) version with [Homebrew](https://brew.sh):
-
-```bash
-brew install dep
-brew upgrade dep
-```
-
-Change directory to your go path:
-
-```bash
-cd $GOPATH/src/github.com/luistm/banksaurus
-```
-
-To setup, run the following in the project root directory:
-
-```bash
-make deps
-```
-
 To run tests, execute the following:
 
 ```bash
