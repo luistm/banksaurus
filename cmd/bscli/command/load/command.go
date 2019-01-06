@@ -51,21 +51,22 @@ func (l *Command) Execute(arguments map[string]interface{}) error {
 	}
 
 	// Execute the interactor
-	i, err := loadtransactions.NewInteractor(sr)
+	i, err := loadtransactions.NewInteractor(sr, ag)
 	if err != nil {
 		return err
 	}
 
 	minLinesInWellFormattedFile := 8
 	if len(lines) < minLinesInWellFormattedFile {
-		return errors.New("Bad formatted file")
+		return errors.New("bad formatted file")
 	}
 
 	transactionStartLine := 5
 	lastTransactionLine := len(lines) - 2
 	lines = lines[transactionStartLine:lastTransactionLine]
 
-	r, err := loadtransactions.NewRequest(lines)
+	accountID := arguments["<id>"].(string)
+	r, err := loadtransactions.NewRequest(accountID, lines)
 	if err != nil {
 		return err
 	}
