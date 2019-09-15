@@ -1,0 +1,20 @@
+{
+  "version": "3",
+  "services": {
+    "db": {
+      "image": "postgres:11.5-alpine",
+      "ports": [
+        "5433:5433"
+      ],
+      "command": [
+        "-p",
+        "5433"
+      ],
+      "environment": {
+        "POSTGRES_DB": "banksaurus",
+        "POSTGRES_PASSWORD": "banksaurus",
+        "POSTGRES_USER": "banksaurus"
+      }
+    }
+  }
+}
