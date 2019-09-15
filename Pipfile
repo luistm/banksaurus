@@ -5,6 +5,8 @@ verify_ssl = true
 
 [dev-packages]
 selenium = "*"
+black = "==19.3b0"
+pre-commit = "*"
 
 [packages]
 
