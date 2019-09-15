@@ -8,8 +8,8 @@ import (
 	app "github.com/luistm/banksaurus/cmd/bscli/application"
 )
 
-func version(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, app.Version+"\n")
+func version(w http.ResponseWriter, _ *http.Request) {
+	_, _ = fmt.Fprintf(w, app.Version+"\n")
 }
 
 func main() {
