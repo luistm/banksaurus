@@ -12,11 +12,21 @@ This is a work in progress and is mainly a way to learn software stuff.
 
 For now, it offers only a command line interface.
 
-Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file.
+Currently it works only with [Caixa Geral de Depositos](https://www.cgd.pt) exported csv file. Login into your account and export the csv file with your account movements.
 
 ### How to use
 
-Login into your [Caixa Geral de Depositos](https://www.cgd.pt) and export the csv file with your account movements.
+#### Install
+
+These instructions assume you are using Ubuntu 18.04. Run the following on your shell:
+
+```bash
+sudo apt-get update
+sudo apt-get install golang
+go get -u github.com/luistm/banksaurus/cmd/bscli
+echo "PATH=$PATH:~/go/bin" >> ~/.bashrc
+source ~/.bashrc
+```
 
 #### Available commands
 
@@ -42,11 +52,13 @@ Options:
 
 ### Setup
 
-If you're interested in hacking or trying `banksaurus`, you can install via `go get`:
+If you're interested in hacking or trying `banksaurus`, first change directory.:
 
 ```bash
-go get -u github.com/luistm/banksaurus/cmd/bscli
+cd ~/go/src/github.com/luistm/banksaurus
 ```
+
+You will need to upgrade to go 1.13.
 
 To run tests, execute the following:
 
