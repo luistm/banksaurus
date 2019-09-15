@@ -50,11 +50,16 @@ Options:
 	-h --help     Show this screen.
 ```
 
-### Setup
+### Contributing
+
+Although this is mainly a way to learn Go, contributions are greatly appreciated.
+
+#### Setup for development
 
 If you're interested in hacking or trying `banksaurus`, first change directory.:
 
 ```bash
+go get -u github.com/luistm/banksaurus/cmd/bscli
 cd ~/go/src/github.com/luistm/banksaurus
 ```
 
@@ -72,10 +77,4 @@ For help about make commands just type:
 make
 ```
 
-### Feedback
 
-Feedback is greatly appreciated.
-
-### Contributing
-
-Although this is mainly a way to learn Go, contributions are greatly appreciated.
