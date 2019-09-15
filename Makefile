@@ -7,8 +7,11 @@ help:
 local: ## Installs banksaurus locally
 	go install -ldflags '-s -w' ./cmd/bscli
 
-build: clean ## Builds the project
+build: clean ## Builds the cli
 	go build -i -o bscli ./cmd/bscli
+
+container: clean ## Builds the container
+	docker build -t banksaurus .
 
 clean: ## Cleans binary created by make build
 	- rm banksaurus

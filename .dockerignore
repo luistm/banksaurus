@@ -1,0 +1,14 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+./.*
+Dockerfile
+geckodriver.log
+GUIDELINES.md
+LICENCE
+Makefile
+Pipfile
+Pipfile.lock
+README.md
