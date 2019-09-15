@@ -3,8 +3,8 @@ package sellergateway_test
 import (
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/sellergateway"
-	"github.com/luistm/banksaurus/seller"
 	"github.com/luistm/testkit"
 	"github.com/mattn/go-sqlite3"
 	"testing"

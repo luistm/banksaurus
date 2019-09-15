@@ -2,7 +2,7 @@ package loadtransactions_test
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/banksaurus/loadtransactions"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/loadtransactions"
 	"github.com/luistm/testkit"
 	"testing"
 )

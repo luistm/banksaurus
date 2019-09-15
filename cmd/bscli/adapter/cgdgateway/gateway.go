@@ -2,8 +2,8 @@ package cgdgateway
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/seller"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 	"strconv"
 	"strings"
 	"time"

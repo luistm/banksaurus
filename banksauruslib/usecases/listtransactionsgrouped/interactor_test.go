@@ -2,9 +2,9 @@ package listtransactionsgrouped_test
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
-	"github.com/luistm/banksaurus/seller"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/listtransactionsgrouped"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"

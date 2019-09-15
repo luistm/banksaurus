@@ -1,9 +1,9 @@
 package cgdgateway_test
 
 import (
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/cgdgateway"
-	"github.com/luistm/banksaurus/seller"
-	"github.com/luistm/banksaurus/transaction"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"

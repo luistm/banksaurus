@@ -1,7 +1,7 @@
 package transaction_test
 
 import (
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 	"github.com/luistm/testkit"
 	"testing"
 )

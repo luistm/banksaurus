@@ -4,8 +4,8 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/luistm/banksaurus/banksaurus/listtransactions"
-	"github.com/luistm/banksaurus/banksaurus/listtransactionsgrouped"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/listtransactions"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/listtransactionsgrouped"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/cgdgateway"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/presenterlisttransactions"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/transactiongateway"

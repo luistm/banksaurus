@@ -1,6 +1,6 @@
 package listtransactions
 
-import "github.com/luistm/banksaurus/transaction"
+import "github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 
 // Presenter interface for formatting data for presentation
 type Presenter interface {

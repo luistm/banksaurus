@@ -1,7 +1,7 @@
 package seller_test
 
 import (
-	"github.com/luistm/banksaurus/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
 	"github.com/luistm/testkit"
 	"testing"
 )

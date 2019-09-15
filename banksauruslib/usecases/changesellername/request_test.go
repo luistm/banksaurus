@@ -1,7 +1,7 @@
 package changesellername_test
 
 import (
-	"github.com/luistm/banksaurus/banksaurus/changesellername"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/changesellername"
 	"github.com/luistm/testkit"
 	"testing"
 )

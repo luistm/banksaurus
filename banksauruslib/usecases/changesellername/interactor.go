@@ -2,7 +2,7 @@ package changesellername
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
 )
 
 // ErrSellerRepositoryUndefined ...

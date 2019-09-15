@@ -2,7 +2,7 @@ package presenterlisttransactions
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 	"strings"
 )
 

@@ -3,7 +3,7 @@ package sellergateway
 import (
 	"database/sql"
 	"errors"
-	"github.com/luistm/banksaurus/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
 	"github.com/mattn/go-sqlite3"
 )
 

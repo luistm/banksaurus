@@ -2,9 +2,9 @@ package listtransactions_test
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/banksaurus/listtransactions"
-	"github.com/luistm/banksaurus/seller"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/listtransactions"
 	"github.com/luistm/testkit"
 	"testing"
 	"time"

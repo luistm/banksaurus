@@ -2,8 +2,8 @@ package listsellers_test
 
 import (
 	"errors"
-	"github.com/luistm/banksaurus/banksaurus/listsellers"
-	"github.com/luistm/banksaurus/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/listsellers"
 	"github.com/luistm/testkit"
 	"testing"
 )

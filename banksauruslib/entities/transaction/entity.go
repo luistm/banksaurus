@@ -2,7 +2,7 @@ package transaction
 
 import (
 	"fmt"
-	"github.com/luistm/banksaurus/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
 	"github.com/pkg/errors"
 	"time"
 )

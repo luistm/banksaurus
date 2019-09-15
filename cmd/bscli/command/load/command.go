@@ -3,7 +3,7 @@ package load
 import (
 	"encoding/csv"
 	"errors"
-	"github.com/luistm/banksaurus/banksaurus/loadtransactions"
+	"github.com/luistm/banksaurus/banksauruslib/usecases/loadtransactions"
 	"github.com/luistm/banksaurus/cmd/bscli/adapter/transactiongateway"
 	"github.com/luistm/banksaurus/cmd/bscli/application"
 	"os"

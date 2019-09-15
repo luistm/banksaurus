@@ -1,6 +1,6 @@
 package changesellername
 
-import "github.com/luistm/banksaurus/seller"
+import "github.com/luistm/banksaurus/banksauruslib/entities/seller"
 
 // SellerRepository interface
 type SellerRepository interface {

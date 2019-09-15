@@ -1,8 +1,8 @@
 package listtransactionsgrouped
 
 import (
-	"github.com/luistm/banksaurus/seller"
-	"github.com/luistm/banksaurus/transaction"
+	"github.com/luistm/banksaurus/banksauruslib/entities/seller"
+	"github.com/luistm/banksaurus/banksauruslib/entities/transaction"
 )
 
 // Presenter interface for formatting data for presentation
