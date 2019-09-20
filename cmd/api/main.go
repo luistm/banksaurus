@@ -13,7 +13,7 @@ func version(w http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
-	port := ":8080"
+	const port = ":8080"
 	fmt.Println("Starting banksaurus web server on port", port)
 	http.HandleFunc("/version", version)
 	log.Fatal(http.ListenAndServe(port, nil))
