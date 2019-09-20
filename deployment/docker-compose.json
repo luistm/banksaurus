@@ -15,6 +15,11 @@
         "POSTGRES_PASSWORD": "banksaurus",
         "POSTGRES_USER": "banksaurus"
       }
+    },
+    "service": {
+      "image": "banksaurus",
+      "ports": ["8081:8080"],
+      "depends_on": ["db"]
     }
   }
 }
