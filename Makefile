@@ -15,8 +15,9 @@ container: clean ## Builds the container
 
 clean: ## Cleans binary created by make build
 	- rm banksaurus
+	- rm bscli
 
-tests:  unit-tests integration-tests acceptance-tests ## Runs all tests
+tests:  unit-tests integration-tests acceptance-tests clean ## Runs all tests
 
 unit-tests: ## Runs unit tests
 	go test ./... -run Unit
@@ -28,6 +29,8 @@ coverage-unit: ## Runs coverage for unit tests
 	go test ./... -run Unit -cover
 
 acceptance-tests: build ## Runs acceptance tests
+	invoke run-containers
+	curl --fail -s http://localhost:8081/version > /dev/null
 	- go test ./... -run Acceptance
 	- rm bscli
 
